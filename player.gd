@@ -39,11 +39,16 @@ var throttle_down_button: Button = null
 var throttle_down_connected: bool = false
 var quest_label: Label = null
 var talked_ids: Array = []
+var speed_label: Label = null
+var clock_label: Label = null
+var orbit_button: Button = null
+var orbit_button_connected: bool = false
 
 func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
+	_update_clock_label()
 	if driving:
 		velocity = Vector3.ZERO
 		move_and_slide()
@@ -51,6 +56,7 @@ func _physics_process(delta: float) -> void:
 			talk_button.visible = false
 		# Driving: only the vehicle Exit button stays on screen.
 		_update_action_buttons()
+		_update_speed_label()
 		return
 	if not is_on_floor():
 		velocity.y -= 20.0 * delta
@@ -78,6 +84,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_update_talk_button()
 	_update_action_buttons()
+	_update_speed_label()
 	if Input.is_action_just_pressed("ui_accept"):
 		_try_enter_vehicle()
 	# E is a desktop-debug fallback ONLY — the primary path is the
@@ -160,6 +167,15 @@ func _update_action_buttons() -> void:
 		throttle_up_button.visible = false
 	if throttle_down_button != null:
 		throttle_down_button.visible = false
+	# Slice 9 orbit button: tap to rotate the camera around the
+	# player/vehicle (touch orbit — Q/E remain a desktop fallback).
+	if orbit_button == null:
+		orbit_button = get_node_or_null("../JoystickLayer/OrbitButton") as Button
+		if orbit_button != null and not orbit_button_connected:
+			orbit_button.pressed.connect(_on_orbit_pressed)
+			orbit_button_connected = true
+	if orbit_button != null:
+		orbit_button.visible = true
 	if vehicle_button != null:
 		var near := _nearest_vehicle()
 		vehicle_button.visible = near != null
@@ -175,6 +191,54 @@ func _on_sprint_up() -> void:
 func _on_jump_pressed() -> void:
 	if not driving:
 		jump_requested = true
+
+func _on_orbit_pressed() -> void:
+	var cam := get_node_or_null("../FollowCamera")
+	if cam != null:
+		cam.orbit_angle += 0.6
+
+## Slice 9 driving readout: vehicle name + speed, shown only
+## while driving. Speed comes from the vehicle's own `speed`
+## variable where it has one (car/cart/bike/heli/cow), else from
+## its velocity (airplane). Names are shown in Burmese.
+func _update_speed_label() -> void:
+	if speed_label == null:
+		speed_label = get_node_or_null("../JoystickLayer/SpeedLabel") as Label
+	if speed_label == null:
+		return
+	if not driving or driving_vehicle == null:
+		speed_label.visible = false
+		return
+	var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
+		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်"}
+	var vname := names.get(driving_vehicle.name, driving_vehicle.name)
+	var spd := 0.0
+	if driving_vehicle.get("speed") != null:
+		spd = absf(float(driving_vehicle.get("speed")))
+	elif driving_vehicle.get("velocity") != null:
+		spd = (driving_vehicle.get("velocity") as Vector3).length()
+	speed_label.text = vname + " — " + ("%.1f" % spd)
+	speed_label.visible = true
+
+## Slice 9 clock: in-game time from DayNight.time (120 s = 1 day).
+## Guarded: an older scene without DayNight just shows no clock.
+func _update_clock_label() -> void:
+	if clock_label == null:
+		clock_label = get_node_or_null("../JoystickLayer/ClockLabel") as Label
+	if clock_label == null:
+		return
+	var dn := get_node_or_null("../DayNight")
+	if dn == null or dn.get("time") == null or dn.get("day_length_seconds") == null:
+		clock_label.visible = false
+		return
+	var day_len := float(dn.get("day_length_seconds"))
+	if day_len <= 0.0:
+		clock_label.visible = false
+		return
+	var frac := fmod(float(dn.get("time")) / day_len, 1.0)
+	var total_min := int(frac * 24.0 * 60.0)
+	clock_label.text = "အချိန် %02d:%02d" % [total_min / 60, total_min % 60]
+	clock_label.visible = true
 
 func _on_throttle_up_down() -> void:
 	touch_throttle_up = true

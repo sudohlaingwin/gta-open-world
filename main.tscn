@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3]
+[gd_scene load_steps=64 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Script" path="res://car.gd" id="1_car"]
@@ -52,6 +52,116 @@ roughness = 0.8
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_longyi_maroon"]
 albedo_color = Color(0.45, 0.12, 0.18, 1)
 roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ground"]
+albedo_color = Color(0.25, 0.55, 0.25, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_path"]
+albedo_color = Color(0.65, 0.52, 0.32, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_house1"]
+albedo_color = Color(0.95, 0.88, 0.75, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_house2"]
+albedo_color = Color(0.62, 0.42, 0.28, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_car_red"]
+albedo_color = Color(0.85, 0.1, 0.15, 1)
+roughness = 0.4
+metallic = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cart_wood"]
+albedo_color = Color(0.55, 0.35, 0.18, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bike"]
+albedo_color = Color(0.1, 0.55, 0.6, 1)
+roughness = 0.4
+metallic = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_plane_white"]
+albedo_color = Color(0.95, 0.95, 0.95, 1)
+roughness = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_plane_wing"]
+albedo_color = Color(0.95, 0.75, 0.1, 1)
+roughness = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_heli"]
+albedo_color = Color(0.95, 0.5, 0.1, 1)
+roughness = 0.4
+metallic = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rotor"]
+albedo_color = Color(0.15, 0.15, 0.15, 1)
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cow"]
+albedo_color = Color(0.65, 0.48, 0.32, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_leg_dark"]
+albedo_color = Color(0.35, 0.22, 0.12, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skin"]
+albedo_color = Color(0.85, 0.65, 0.5, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trunk"]
+albedo_color = Color(0.4, 0.25, 0.12, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_leaf"]
+albedo_color = Color(0.15, 0.5, 0.2, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pond"]
+albedo_color = Color(0.2, 0.5, 0.85, 1)
+roughness = 0.2
+metallic = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_roof"]
+albedo_color = Color(0.55, 0.15, 0.12, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_leg"]
+size = Vector3(0.2, 0.7, 0.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_path"]
+size = Vector3(2, 0.1, 24)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_plaza"]
+top_radius = 5.0
+bottom_radius = 5.0
+height = 0.1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pond"]
+size = Vector2(8, 6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_roof"]
+size = Vector3(2.4, 0.3, 4.4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_trunk"]
+top_radius = 0.25
+bottom_radius = 0.35
+height = 2.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_foliage"]
+radius = 1.2
+height = 2.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_stall"]
+size = Vector3(2, 1, 1.2)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_well"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 1.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_car"]
 size = Vector3(2, 1, 4)
@@ -129,6 +239,7 @@ shape = SubResource("BoxShape3D_ground")
 
 [node name="GroundMesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_ground")
+surface_material_override/0 = SubResource("StandardMaterial3D_ground")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5)
@@ -140,6 +251,7 @@ shape = SubResource("CapsuleShape3D_player")
 [node name="Head" type="MeshInstance3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
 mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
 
 [node name="Torso" type="MeshInstance3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
@@ -160,14 +272,27 @@ shape = SubResource("BoxShape3D_car")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Car"]
 mesh = SubResource("BoxMesh_car")
+surface_material_override/0 = SubResource("StandardMaterial3D_car_red")
 
 [node name="House1" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2, -8)
 mesh = SubResource("BoxMesh_car")
+surface_material_override/0 = SubResource("StandardMaterial3D_house1")
+
+[node name="Roof1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2.6, -8)
+mesh = SubResource("BoxMesh_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_roof")
 
 [node name="House2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2, -10)
 mesh = SubResource("BoxMesh_car")
+surface_material_override/0 = SubResource("StandardMaterial3D_house2")
+
+[node name="Roof2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2.6, -10)
+mesh = SubResource("BoxMesh_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_roof")
 
 [node name="Cart" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, -3)
@@ -175,6 +300,7 @@ script = ExtResource("1_cart")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Cart"]
 mesh = SubResource("BoxMesh_car")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
 
 [node name="Cow" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.5, -5)
@@ -182,22 +308,27 @@ script = ExtResource("1_cow")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Cow"]
 mesh = SubResource("CapsuleMesh_player")
+surface_material_override/0 = SubResource("StandardMaterial3D_cow")
 
 [node name="LegFL" type="MeshInstance3D" parent="Cow"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.2, 0.35)
 mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_leg_dark")
 
 [node name="LegFR" type="MeshInstance3D" parent="Cow"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.2, 0.35)
 mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_leg_dark")
 
 [node name="LegBL" type="MeshInstance3D" parent="Cow"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.2, -0.35)
 mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_leg_dark")
 
 [node name="LegBR" type="MeshInstance3D" parent="Cow"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.2, -0.35)
 mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_leg_dark")
 
 [node name="FollowCamera" type="Camera3D" parent="."]
 script = ExtResource("1_camera")
@@ -307,14 +438,46 @@ offset_bottom = 0.0
 horizontal_alignment = 1
 text = "တာဝန်: ရွာသားနဲ့ စကားပြောပါ (0/3)"
 
+[node name="SpeedLabel" type="Label" parent="JoystickLayer"]
+anchor_left = 0.02
+anchor_top = 0.02
+anchor_right = 0.25
+anchor_bottom = 0.07
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = ""
+
+[node name="ClockLabel" type="Label" parent="JoystickLayer"]
+anchor_left = 0.78
+anchor_top = 0.02
+anchor_right = 0.97
+anchor_bottom = 0.07
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+horizontal_alignment = 2
+text = "အချိန် 06:00"
+
+[node name="OrbitButton" type="Button" parent="JoystickLayer"]
+anchor_left = 0.02
+anchor_top = 0.09
+anchor_right = 0.14
+anchor_bottom = 0.19
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+text = "ကင်မရာ"
+
 [sub_resource type="BoxMesh" id="BoxMesh_bike"]
 size = Vector3(0.6, 0.8, 2)
 
 [sub_resource type="BoxMesh" id="BoxMesh_wing"]
 size = Vector3(8, 0.3, 1.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_leg"]
-size = Vector3(0.2, 0.7, 0.2)
 
 [node name="Motorcycle" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 8)
@@ -325,6 +488,7 @@ shape = SubResource("BoxShape3D_car")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Motorcycle"]
 mesh = SubResource("BoxMesh_bike")
+surface_material_override/0 = SubResource("StandardMaterial3D_bike")
 
 [node name="Airplane" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, -15)
@@ -335,9 +499,11 @@ shape = SubResource("BoxShape3D_car")
 
 [node name="Fuselage" type="MeshInstance3D" parent="Airplane"]
 mesh = SubResource("BoxMesh_car")
+surface_material_override/0 = SubResource("StandardMaterial3D_plane_white")
 
 [node name="Wings" type="MeshInstance3D" parent="Airplane"]
 mesh = SubResource("BoxMesh_wing")
+surface_material_override/0 = SubResource("StandardMaterial3D_plane_wing")
 
 [node name="Helicopter" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1, 10)
@@ -348,10 +514,182 @@ shape = SubResource("BoxShape3D_car")
 
 [node name="Body" type="MeshInstance3D" parent="Helicopter"]
 mesh = SubResource("BoxMesh_car")
+surface_material_override/0 = SubResource("StandardMaterial3D_heli")
 
 [node name="Rotor" type="MeshInstance3D" parent="Helicopter"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 mesh = SubResource("BoxMesh_wing")
+surface_material_override/0 = SubResource("StandardMaterial3D_rotor")
+
+[node name="PathA" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11, -12)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_path")
+
+[node name="PathB" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0.11, -25)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_path")
+
+[node name="Plaza" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("CylinderMesh_plaza")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="House3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 2, 10)
+mesh = SubResource("BoxMesh_car")
+surface_material_override/0 = SubResource("StandardMaterial3D_house1")
+
+[node name="Roof3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 2.6, 10)
+mesh = SubResource("BoxMesh_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_roof")
+
+[node name="Pond" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.03, -2)
+mesh = SubResource("PlaneMesh_pond")
+surface_material_override/0 = SubResource("StandardMaterial3D_pond")
+
+[node name="WellRing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.5, 12)
+mesh = SubResource("CylinderMesh_well")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="WellPostA" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 1.0, 12)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="WellPostB" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8, 1.0, 12)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="WellRoof" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 6, 2.2, 12)
+mesh = SubResource("BoxMesh_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_roof")
+
+[node name="TreeTrunk_8_6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.25, 6)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_8_6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 3.2, 6)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_-12_4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.25, 4)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_-12_4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 3.2, 4)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_14_-8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 1.25, -8)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_14_-8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 3.2, -8)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="StallCounter_-6_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.5, 2)
+mesh = SubResource("BoxMesh_stall")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="StallPostA_-6_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8, 1.0, 2)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="StallPostB_-6_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 1.0, 2)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="StallAwning_-6_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, -6, 2.0, 2)
+mesh = SubResource("BoxMesh_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_roof")
+
+[node name="StallCounter_-6_6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.5, 6)
+mesh = SubResource("BoxMesh_stall")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="StallPostA_-6_6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8, 1.0, 6)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="StallPostB_-6_6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 1.0, 6)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="StallAwning_-6_6" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, -6, 2.0, 6)
+mesh = SubResource("BoxMesh_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_roof")
+
+[node name="PagodaPillar_-28_-25" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 3, 0, 0, 0, 2, -28, 1.05, -25)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="PagodaPillar_-12_-25" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 3, 0, 0, 0, 2, -12, 1.05, -25)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="PagodaPillar_-20_-33" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 3, 0, 0, 0, 2, -20, 1.05, -33)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="PagodaPillar_-20_-17" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 3, 0, 0, 0, 2, -20, 1.05, -17)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="FencePost_-2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.35, -2)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FencePost_-6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.35, -6)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FencePost_-10" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.35, -10)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FencePost_-14" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.35, -14)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FencePost_-18" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.35, -18)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FencePost_-22" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.35, -22)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
 
 [node name="Pagoda" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -25)
@@ -403,6 +741,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_gold")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, -10)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ရွာထဲ လည်ပတ်တာ ပျော်ရွှင်ပါစေ။"
+villager_name = "မောင်မောင်လွင်"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager1"]
 shape = SubResource("CapsuleShape3D_player")
@@ -410,6 +749,7 @@ shape = SubResource("CapsuleShape3D_player")
 [node name="Head" type="MeshInstance3D" parent="Villager1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
 mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
 
 [node name="Torso" type="MeshInstance3D" parent="Villager1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
@@ -428,10 +768,18 @@ text = "မင်္ဂလာပါ! ရွာထဲ လည်ပတ်တာ �
 font_size = 28
 visible = false
 
+[node name="PromptLabel" type="Label3D" parent="Villager1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+text = "!"
+font_size = 36
+visible = false
+
 [node name="Villager2" type="CharacterBody3D" parent="." groups=["villagers"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1, 8)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ ခင်ဗျာ! ဒီနေ့ ရာသီဥတု သိပ်ကောင်းတာပဲ။"
+villager_name = "ဦးဖိုးသော်"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager2"]
 shape = SubResource("CapsuleShape3D_player")
@@ -439,6 +787,7 @@ shape = SubResource("CapsuleShape3D_player")
 [node name="Head" type="MeshInstance3D" parent="Villager2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
 mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
 
 [node name="Torso" type="MeshInstance3D" parent="Villager2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
@@ -457,10 +806,18 @@ text = "မင်္ဂလာပါ ခင်ဗျာ! ဒီနေ့ ရာ�
 font_size = 28
 visible = false
 
+[node name="PromptLabel" type="Label3D" parent="Villager2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+text = "!"
+font_size = 36
+visible = false
+
 [node name="Villager3" type="CharacterBody3D" parent="." groups=["villagers"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -15)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ဘုရားကို သွားချင်ရင် အဲဒီဘက် သွားပါ။"
+villager_name = "ဒေါ်မြ"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager3"]
 shape = SubResource("CapsuleShape3D_player")
@@ -468,6 +825,7 @@ shape = SubResource("CapsuleShape3D_player")
 [node name="Head" type="MeshInstance3D" parent="Villager3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
 mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
 
 [node name="Torso" type="MeshInstance3D" parent="Villager3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
@@ -484,4 +842,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 billboard = 1
 text = "မင်္ဂလာပါ! ဘုရားကို သွားချင်ရင် အဲဒီဘက် သွားပါ။"
 font_size = 28
+visible = false
+
+[node name="PromptLabel" type="Label3D" parent="Villager3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+text = "!"
+font_size = 36
 visible = false

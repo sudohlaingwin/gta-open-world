@@ -342,25 +342,52 @@ Defects that remain, with file evidence:
 - `mobile_touch_hud.gd` was untouched by this commit, so the Slice 8 `PromptBanner` defect persists (assigned once, never shown or written).
 - This commit itself is touch-compatible (joystick + HUD sprint feed the aircraft and mount) — no mobile-first violation in it, stated fairly.
 
-## Slice 9 — Muse beats it: BIG BATCH, per the owner's new rule (on top of 090735f, all Slice 8 features kept)
+## Slice 9 — Muse beats it: ~33-ITEM MAJOR UPGRADE, per the owner's new rule (on top of 090735f, all Slice 8 features kept)
 
-The owner redirected Slice 9 on 2026-10-21 23:52 +07: upgrades must be BIG batches at once, not tiny little slices. So Slice 9 bundles FOUR substantial, working items in one upgrade — every one of them in the shipped scene and wired code, none of them a headline-only script:
+Timing, stated plainly: Slice 9 was FIRST pushed as a smaller batch (game main `c6772ce`, items 1–8 below: joystick car/cart, cow trot, airplane throttle + yaw, helicopter, cow animation, quest) BEFORE the owner's second redirection arrived (2026-10-21 23:58 +07: upgrades must be ~30 items at once, with major graphics / UI / layout / icon / controls work, no tiny slices). This expansion commit completes Slice 9 on the same branch to 33 items. Nothing below is padding: every numbered item is in the shipped scene or wired code, and the list was counted after implementation, not before.
 
-### 1. Joystick-steered driving for EVERY vehicle — the known touch gap, closed
-Slice 8 stated this gap plainly: steering while driving was still keyboard for car/cart/airplane. Slice 9 closes it:
-- `car.gd` and `cart.gd` now read the driver's `touch_vector` (joystick x = steer, joystick up = forward, down = reverse), the exact convention the motorcycle has used since Slice 3. Arrow keys / WASD remain ONLY as desktop fallbacks.
-- `cow.gd` direction was already joystick-driven; Slice 9 adds touch trot — holding the on-screen Sprint button (`driver.touch_sprint`) trots at 4.5, so a phone rider no longer needs Shift.
-- `airplane.gd` pitch/roll were already joystick-driven; Slice 9 adds on-screen ThrottleUp / ThrottleDown buttons (hold-to-change, shown only while flying an aircraft) feeding `driver.touch_throttle_up / touch_throttle_down`, plus coordinated yaw from roll (`rotate_y(-roll_in * yaw_speed * 0.5 * delta)`), so a joystick-only pilot can turn, climb, and slow down without any keyboard. Q/E yaw and Shift/Ctrl throttle remain as desktop fallbacks only.
-- The motorcycle needed no change here — it has been joystick-steered since Slice 3, stated honestly rather than re-claimed as new.
+### Controls — touch-first (no keyboard-primary interaction anywhere)
+1. **Car joystick steering** — `car.gd` reads the driver's `touch_vector` (x = steer, up = forward, down = reverse), the motorcycle's Slice 3 convention. WASD/arrows are desktop fallbacks only.
+2. **Cart joystick steering** — same convention in `cart.gd`.
+3. **Cow touch trot** — holding the on-screen Sprint button (`driver.touch_sprint`) trots the cow at 4.5; Shift is now a fallback, not the only way.
+4. **Airplane touch throttle** — on-screen ThrottleUp / ThrottleDown buttons (hold-to-change, shown only while flying an aircraft) feed `driver.touch_throttle_up / touch_throttle_down` in `airplane.gd`. Throttle finally reaches 0 — the opponent's 0.35 cruise floor problem does not exist here. Shift/Ctrl are fallbacks.
+5. **Airplane coordinated yaw** — roll input now also yaws the plane (`rotate_y(-roll_in * yaw_speed * 0.5 * delta)`), so a joystick-only pilot can turn. Q/E yaw remains as a desktop fallback.
+6. **Helicopter (new vehicle)** — `helicopter.gd` + Helicopter node at (20, 1, 10): hovers when no vertical input is given, climbs with ThrottleUp, descends with ThrottleDown, turns with joystick x, moves with joystick y, Rotor mesh spins while flying. Same `start_driving()` / `exit_vehicle()` interface as every other vehicle, so the nearest-vehicle picker (now including "Helicopter") and camera retarget work unchanged. No weapons, no helicopter missions yet — stated plainly.
+7. **Cow walk animation** — four leg meshes (LegFL/FR/BL/BR) swing in diagonal pairs while the cow moves, body bobs slightly, legs ease to neutral when still. Primitive mesh animation, not a skinned rig — stated honestly. Lookups are guarded, so an older scene without legs runs without crashing.
+8. **First quest** — `QuestLabel` (top of screen) shows "တာဝန်: ရွာသားနဲ့ စကားပြောပါ (0/3)"; `npc.gd` `talk_to()` calls `player.record_talk()`, so the Talk button AND the direct-tap path both advance it; talking to all villagers flips it to "တာဝန် ပြီးပါပြီ!". No quest rewards or quest chain yet — stated plainly.
 
-### 2. Helicopter — a new owner-spec aircraft type
-`helicopter.gd` + a Helicopter node in `main.tscn` at (20, 1, 10): it hovers (release all vertical input and vertical speed eases to 0 — it does not fall), climbs with ThrottleUp, descends with ThrottleDown, turns with joystick x, moves with joystick y, and its Rotor mesh spins while flying (slow idle spin when parked). Same `start_driving()` / `exit_vehicle()` interface as every other vehicle, so the player's nearest-vehicle picker (now including "Helicopter") and camera retarget work unchanged. Desktop fallbacks: WASD/arrows + Shift/Ctrl. No weapons and no helicopter missions yet — stated plainly.
+### Graphics — materials, paint, colour
+9. **Ground grass material** — GroundMesh now has a green `StandardMaterial3D_ground` instead of default grey.
+10. **House wall colours** — House1 cream, House2 warm brown (previously bare grey boxes).
+11. **House roofs** — Roof1/Roof2/Roof3 (dark-red `BoxMesh_roof`) on all three houses.
+12. **Car red paint** — red metallic body material.
+13. **Cart wood paint** — wood-brown body material.
+14. **Motorcycle teal paint** — teal metallic body material.
+15. **Airplane paint** — white fuselage + yellow wings.
+16. **Helicopter paint** — orange body + dark rotor.
+17. **Cow paint** — light-brown body + dark-brown legs.
+18. **Skin-tone heads** — Player + all three villagers' heads now use a skin material instead of default grey.
 
-### 3. Cow walk animation — no longer a sliding capsule
-The cow in `main.tscn` now has four leg meshes (LegFL / LegFR / LegBL / LegBR, `BoxMesh_leg`). While the cow moves, `cow.gd` swings the legs in diagonal pairs (`sin(walk_phase) * 0.5`) and bobs the body slightly; standing still, the legs ease back to neutral. This is primitive mesh animation, stated honestly — not a skinned walk cycle, not motion capture. All leg lookups are guarded, so an older scene without the leg nodes runs without crashing (it just shows no animation).
+### Layout — village arrangement, roads, site context
+19. **Dirt roads to the pagoda** — PathA (along z to −25) + PathB (along x to the pagoda), tan strips forming an L-shaped road from the village to the pagoda.
+20. **Village plaza** — stone cylinder plaza (r5) at the village centre.
+21. **Third house** — House3 at (−14, 10) with its own roof, so the village is no longer two floating boxes.
+22. **Market stalls (2)** — counter + awning + 2 posts each at (−6, 2) and (−6, 6).
+23. **Trees (3)** — trunk + foliage-sphere trees at (8, 6), (−12, 4), (14, −8).
+24. **Pond** — blue water plane at (16, −2).
+25. **Well** — stone ring + 2 posts + roof at (6, 12).
+26. **Pagoda pillars** — 4 stone pillars around the pagoda platform, giving the landmark site context instead of a lone monument.
+27. **Fence posts** — 6 wooden posts along the east side of the road.
 
-### 4. First quest — talk to every villager
-`QuestLabel` in `main.tscn` (top of screen) shows "တာဝန်: ရွာသားနဲ့ စကားပြောပါ (0/3)". Every conversation counts — `npc.gd` `talk_to()` now calls `player.record_talk()`, so the Talk button path AND the direct-tap path both advance the quest. When all villagers in the "villagers" group have been talked to, the label switches to "တာဝန် ပြီးပါပြီ! ရွာသား အားလုံးနဲ့ စကားပြောပြီးပါပြီ". It is a first, simple quest — no quest rewards, no quest chain, no villager obstacle avoidance yet, all stated plainly.
+### UI — HUD layout, prompts, dialogue presentation
+28. **Speed + vehicle status readout** — `SpeedLabel` (top-left, shown only while driving) shows the Burmese vehicle name + speed (e.g. "ကား — 12.0"), from the vehicle's own `speed` variable or the airplane's velocity. Hidden on foot.
+29. **Villager "!" prompt** — a floating "!" `PromptLabel` above a villager while the player is in talk range (hidden while talking), so a phone player can SEE who is talkable.
+30. **Villager names in dialogue** — new `villager_name` export (မောင်မောင်လွင် / ဦးဖိုးသော် / ဒေါ်မြ, set in `main.tscn`); the greeting bubble now shows name + greeting instead of a bare greeting.
+31. **In-game clock** — `ClockLabel` (top-right) shows the time from `DayNight.time` (120 s = 1 day) as "အချိန် HH:MM". Guarded: no DayNight node, no clock — never a crash.
 
-- `main.tscn` load_steps correctly goes 36 → 38 (11 ext + 27 sub, verified by count: +1 ext for `helicopter.gd`, +1 sub for `BoxMesh_leg`; Button/Label/Leg nodes add no resources beyond that).
-- Still honest gaps: no quests beyond this first one, no villager obstacle avoidance, no parachute, no Android APK, no whole-country map, no PUBG graphics; NOT run in Godot (no binary on this VM), no APK claimed.
+### User controls + icon
+32. **Tap-to-orbit camera button** — `OrbitButton` ("ကင်မရာ") rotates `FollowCamera.orbit_angle` by 0.6 per tap, on foot or driving. Touch orbit previously did not exist at all (camera.gd said so plainly); Q/E remain desktop fallbacks. Touch-drag orbit is still not implemented — stated plainly.
+33. **Game icon** — `icon.png` (256×256 RGBA PNG, verified: PNG magic + IHDR dims) + `config/icon="res://icon.png"` in `project.godot`. The icon is programmatically generated (navy field, gold pagoda dome, green ground) — a real, valid icon file replacing the previous absence, NOT hand-drawn art; a hand-drawn icon can replace it later.
+
+- `main.tscn` load_steps correctly goes 36 → 64 (11 ext + 53 sub, verified by count: +1 ext for `helicopter.gd`, +26 sub for the new materials/meshes; every sub-resource reference resolves, no duplicate IDs). Button/Label/node additions add no further resources.
+- Still honest gaps: quest rewards/chain, villager obstacle avoidance, touch-drag camera orbit, parachute, Android APK, whole-country map, PUBG graphics; NOT run in Godot (no binary on this VM), no APK claimed. Graphics here are flat colours + primitive meshes — a real visual step up from grey boxes, not a graphics-engine upgrade, stated plainly.

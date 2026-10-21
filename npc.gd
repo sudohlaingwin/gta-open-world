@@ -15,6 +15,7 @@ extends CharacterBody3D
 @export var wander_radius: float = 12.0
 @export var talk_seconds: float = 4.0
 @export var dialogue_text: String = "မင်္ဂလာပါ!"
+@export var villager_name: String = ""
 
 var home: Vector3 = Vector3.ZERO
 var target: Vector3 = Vector3.ZERO
@@ -42,7 +43,10 @@ func talk_to(player_pos: Vector3) -> void:
 	talking_left = talk_seconds
 	var label := get_node_or_null("DialogueLabel") as Label3D
 	if label != null:
-		label.text = dialogue_text
+		if villager_name != "":
+			label.text = villager_name + "\n" + dialogue_text
+		else:
+			label.text = dialogue_text
 		label.visible = true
 	var player := get_node_or_null("../Player")
 	if player != null and player.has_method("record_talk"):
@@ -59,7 +63,25 @@ func _pick_target() -> void:
 			return
 	target = home
 
+## Slice 9 prompt: a "!" floats above this villager while the
+## player is in talk range (and not already talking), so a phone
+## player can SEE who is talkable without hunting for buttons.
+## Guarded: no player node, no prompt — never a crash.
+func _update_prompt() -> void:
+	var prompt := get_node_or_null("PromptLabel") as Label3D
+	if prompt == null:
+		return
+	if talking_left > 0.0:
+		prompt.visible = false
+		return
+	var player := get_node_or_null("../Player")
+	if player == null:
+		prompt.visible = false
+		return
+	prompt.visible = global_position.distance_to(player.global_position) <= 3.5
+
 func _physics_process(delta: float) -> void:
+	_update_prompt()
 	if not is_on_floor():
 		velocity.y -= 20.0 * delta
 	else:
