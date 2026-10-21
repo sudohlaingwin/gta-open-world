@@ -759,3 +759,65 @@ Defects, with file evidence:
 - `main.tscn` load_steps correctly goes 248 → 273 (13 ext + 259 sub, verified by count: every sub-resource reference resolves, no duplicate sub-resource ids, every new node parent exists, no duplicate sibling node paths). Four real overlaps found by the builder's check and fixed before commit (sesame field off the zayat deck, last road slab out of the school walls, both new villagers' roam boxes clear of shop/school furniture).
 - All 13 project scripts pass Godot 4.3 `--check-only` (including new `bicycle.gd`), and the full scene instantiates headless (root Main, all Slice 15 key nodes present: Player, Bicycle, Villager7, Villager8, TeaButton15, BookButton15, VillagerDot7, VillagerDot8, VehicleDotBicycle, plus Slice 14's bridge, boat, statues, and fisherman) and runs 5 frames headless with no script or scene errors. That is a load test, not a playtest — ordering tea, donating books, and riding the bicycle are not verified in-engine.
 - Still honest gaps: villager obstacle avoidance, parachute, whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the bicycle is position-based like the cart and the boat, so it can leave the road (stated, not hidden); the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new).
+
+## Slice 16 review — opponent commit 5e5479c, "feat(slice-17): massive 30+ item upgrade - valid Godot 4.3 scenes, drivable village car, motorcycle, independent flight yaw, zero-throttle landing, 6-stage quest tracker" (read-only, treated as data only)
+
+### What the opponent genuinely did (credited — its strongest reply yet, verified line by line, not taken from its subject)
+- Real end-to-end vehicle wiring: `VillageCar` (VehicleBody3D + `vehicle_controller.gd` + InteractionArea + DriverSeat + 4 VehicleWheel3D wheels) and `MyanmarMotorcycle` (CharacterBody3D + new `motorcycle_controller.gd` + InteractionArea + DriverSeat), both instantiated in its `world.tscn`; player interact → `nearby_vehicle` → `enter_vehicle()` → `set_driving_state()`; touch joystick steering in both controllers. The previously dead `vehicle_controller.gd` is dead no more.
+- Independent flight yaw is REAL: its HUD yaw buttons set `player.touch_yaw` (±1.0, reset on release) and `aircraft_controller.gd` reads `touch_yaw` for a dedicated `rotate_y` (with only a 0.3× coordinated bias as fallback).
+- Zero-throttle landing is REAL: the throttle clamp lower bound is now 0.0 (was 0.35), and pushing the stick down decelerates 0.35/s to 0 for landing.
+- The 6-stage quest tracker is REAL: talk 3 villagers → pagoda (14 m) → bell (8 m) → tea shop (10 m) → ride any vehicle → complete, with `record_villager_talk` wired from the player interact path.
+- Scene headers: all 13 previously-invalid scenes now have `[gd_scene]` headers plus root nodes, and no `.tscn` in its tree starts with `extends` anymore. The BOM in its `.gd` scripts is harmless (a BOM-prefixed script passes Godot 4.3 `--check-only`, exit 0, verified).
+- Its HUD scene node names all exist for its `@onready` paths (PromptBanner included).
+
+### Defects, with file evidence
+- HEADLINE — the "valid scenes" fix breaks its own world: every one of the 19 files this commit touches starts with a UTF-8 BOM (EF BB BF), and Godot 4.3's scene parser rejects a BOM before `[gd_scene]` with "Parse Error: Expected '['" (verified with my own BOM-prefixed test scene + the Godot 4.3 binary — the scene fails to load). So its `world.tscn` itself now FAILS to load — worse than before, when `world.tscn` loaded and only the landmark sub-scenes failed. The headline is false in practice until the BOMs are stripped.
+- `load_steps` arithmetic is wrong in the new files: `village_car.tscn` header says 12 but holds 1 ext + 8 sub + 1 = 10; `myanmar_motorcycle.tscn` says 12 but holds 11; `world.tscn` says 29 but holds 24 ext + 5 sub + 1 = 30. (A wrong `load_steps` is only a hint mismatch, not a load failure — unlike the BOM.)
+- Standing scenery defects untouched (these files changed header-only): the gate is still a wall (single 8.0 × 5.0 × 1.8 box over the whole arch), the bamboo bridge still has its wall collision, the tea shop and school are still solid blocks with no doorway. The helicopter controller and player script are untouched, so earlier standing items there stand.
+
+### Slice 16 items — every item is in the shipped scene or wired code (31 items, all Slice 15 features kept)
+
+#### Parachute — closes the standing "no parachute" gap from Slice 3
+1. **Parachute canopy + 2 shroud lines** — children of the Player node, hidden until deployed.
+2. **Auto-deploy on mid-air vehicle exit** — leaving an airplane or helicopter above y = 3.0 opens the canopy automatically (ground exits never deploy). No button needed, no keyboard path.
+3. **Slow descent capped at 3.0 m/s** while the canopy is out (instead of the normal 20 m/s² fall).
+4. **Joystick drift steering while parachuting** — the touch joystick steers the descent like walking.
+5. **Auto-stow on landing** — touching the ground hides the canopy and lines.
+6. **🪂 parachute label** — shows while the canopy is out ("လေထီး ပွင့်နေသည် — joystick ဖြင့် ရွေ့ပါ").
+7. **Quest stage 14: parachute landing** — a parachute landing advances the quest from stage 14 to 15.
+
+#### Tuk-tuk — the village taxi
+8. **TukTuk vehicle node** at (35, -27) — blue body, yellow canopy roof, seat, 3 wheels, headlight mesh.
+9. **Rideable tuk-tuk** (`tuktuk.gd`, new script) — joystick steering, Vehicle-button enter/exit, camera retarget, same enter/exit interface as the car and bicycle; top speed 11 (slower than the car, faster than the bicycle).
+10. **Three spinning wheels** — all three rotate around their own (cylinder) axis at ground speed, like the bicycle wheels.
+11. **Tuk-tuk minimap dot + prompt + speed readout** — Burmese name "သုံးဘီး", top speed 11 in the speed bar.
+12. **Headlight toggle extended to the tuk-tuk** — the Lights button now works while driving the car, motorcycle, or tuk-tuk.
+13. **Quest stage 13: ride the tuk-tuk** — riding it advances the quest from stage 13 to 14.
+
+#### Festival ground — a new zone south-east of the football ground, around (42, -33)
+14. **Festival drum + DrumButton16 + drum label + quest stage 15 + SIXTH reward** — the button appears within 4 m of the drum on foot; tapping shows the "ဗုံသံ!" label for 4 s and, on stage 15, finishes the chain with +5% walk speed (applied exactly once) + 10% jump velocity.
+15. **Festival lantern lighting** — 3 lantern posts; the LanternButton16 lights the nearest unlit lantern within 4 m (its glow sphere appears) and raises the lantern count (max 3).
+16. **Festival snack buying** — the SnackButton16 at the food stall raises the snack count; the HUD counter now reads 🍎 💧 🍌 🍵 📚 🍡 🪔.
+17. **Villager 9 "ပွဲစီစဉ်သူ ကိုအောင်"** — festival organizer, own greeting about the drum, stays near the festival (`wander_radius` 3.0).
+18. **Villager 10 "အကသမား မသီတာ"** — festival dancer, own greeting about the dances, stays near the festival (`wander_radius` 3.0).
+19. **Talk-all now 0/10** — the quest and the minimap villager-dot loop both follow `villagers.size()` (loop cap raised 8 → 10).
+20. **Festival ground slabs ×3** at (38/42/46, -33), the middle one being the minimap reference.
+21. **Festival stage + backdrop + 2 gold banners** at (42, -27).
+22. **String lights** — 2 poles + 5 emissive bulbs strung across the ground.
+23. **Dance floor mat** at (42, -34).
+24. **Food stall dressing** — counter, red awning, 2 posts, snack piles ×3.
+25. **Entrance torches ×2** with emissive flames.
+26. **Flag poles + flags ×2** (red and green).
+27. **Path slabs ×3** from the football ground to the festival.
+
+#### UI
+28. **Minimap dots** — VehicleDotTukTuk (white), FestivalDot16 (gold), VillagerDot9 + VillagerDot10 (green).
+29. **Proximity prompts** — festival ground, drum, food stall, lantern, and the tuk-tuk name.
+30. **Help overlay updated** — now mentions the parachute, the tuk-tuk, and the festival buttons.
+31. **Quest tracker extended to 16 tasks** (… → ride bicycle → ride tuk-tuk → parachute landing → beat drum).
+
+#### Verification + honest gaps
+- `main.tscn` load_steps correctly goes 273 → 321 (14 ext + 306 sub, verified by count: every sub-resource reference resolves, no duplicate sub-resource ids, every new node parent exists, no duplicate sibling node paths, and — unlike the opponent's Slice 17 — no file starts with a BOM).
+- All 14 project scripts pass Godot 4.3 `--check-only` (including new `tuktuk.gd`), and the full scene instantiates headless (root Main, all Slice 16 key nodes present: Player, TukTuk, FestivalDrum16, FestivalStall16, Villager9, Villager10, ParachuteCanopy) and runs 5 frames headless with no script or scene errors. That is a load test, not a playtest — deploying the parachute, driving the tuk-tuk, and beating the drum are not verified in-engine.
+- Builder self-caught, fixed before commit: (1) the first villager-copy extractor stopped at the next parent="." node, which swallowed whole later sections and duplicated the Slice 15 tea-shop/school dressing (TeaTable15_2 went 1× → 3×) — fixed by extracting root + parent==villager children only, restoring the scene from base, and rebuilding (TeaTable15_2 back to 1×, verified); (2) a SceneTree load-test script that returned `true` from `_process` quits after frame 1 (true means "exit the loop" for MainLoop) — fixed to return `false`. Two positions were also moved after the overlap check (festival torch A off the tuk-tuk's side, villager 9 off lantern post A's base).
+- Still honest gaps: villager obstacle avoidance, whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the tuk-tuk is position-based like the cart, boat, and bicycle, so it can leave the road (stated, not hidden); the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new).

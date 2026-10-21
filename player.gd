@@ -94,6 +94,22 @@ var lights_on: bool = true
 var quest_tracker_label: Label = null
 var camera_reset_button: Button = null
 var camera_reset_connected: bool = false
+# Slice 16: parachute + festival. The parachute deploys itself on
+# a mid-air vehicle exit and stows itself on landing (no button
+# needed); drum / lantern / snack buttons are touch-first like
+# every other interaction button.
+var parachuting: bool = false
+var parachute_label: Label = null
+var drum_button: Button = null
+var drum_button_connected: bool = false
+var lantern_button: Button = null
+var lantern_button_connected: bool = false
+var snack_button: Button = null
+var snack_button_connected: bool = false
+var drum_timer: float = 0.0
+var snack_count: int = 0
+var lantern_count: int = 0
+var quest_rewarded6: bool = false
 # Slice 14: hinthar prayer. The Pray button lives in the real scene
 # (JoystickLayer/PrayButton); the blessing label shows 4 s.
 var pray_button: Button = null
@@ -125,6 +141,7 @@ func _physics_process(delta: float) -> void:
 	_update_banana_button()
 	_update_pray_button()
 	_update_tea_book_buttons()
+	_update_festival_buttons()
 	_update_blessing(delta)
 	_update_lights_button()
 	if driving:
@@ -139,8 +156,15 @@ func _physics_process(delta: float) -> void:
 		return
 	if not is_on_floor():
 		velocity.y -= 20.0 * delta
+		# Slice 16 parachute: gentle descent while the canopy is out.
+		if parachuting:
+			velocity.y = maxf(velocity.y, -3.0)
 	else:
 		velocity.y = 0.0
+		# Slice 16: touching down stows the canopy (and can finish
+		# the parachute quest stage).
+		if parachuting:
+			_stow_parachute()
 		if Input.is_physical_key_pressed(KEY_J) or jump_requested:
 			velocity.y = jump_velocity
 		jump_requested = false
@@ -224,6 +248,12 @@ func _physics_process(delta: float) -> void:
 			var bl2 := get_node_or_null("../MonasteryBell/BellLabel") as Label3D
 			if bl2 != null:
 				bl2.visible = false
+	if drum_timer > 0.0:
+		drum_timer -= delta
+		if drum_timer <= 0.0:
+			var dl2 := get_node_or_null("../FestivalDrum16/DrumLabel") as Label3D
+			if dl2 != null:
+				dl2.visible = false
 	if Input.is_action_just_pressed("ui_accept"):
 		_try_enter_vehicle()
 	# E is a desktop-debug fallback ONLY — the primary path is the
@@ -416,9 +446,9 @@ func _update_speed_label() -> void:
 			speed_bar.visible = false
 		return
 	var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
-		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး"}
+		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး"}
 	var vmax := {"Car": 14.0, "Cart": 6.0, "Motorcycle": 18.0,
-		"Airplane": 50.0, "Cow": 4.5, "Helicopter": 12.0, "Boat": 5.0, "Bicycle": 7.0}
+		"Airplane": 50.0, "Cow": 4.5, "Helicopter": 12.0, "Boat": 5.0, "Bicycle": 7.0, "TukTuk": 11.0}
 	var vname: String = str(names.get(driving_vehicle.name, driving_vehicle.name))
 	var spd := 0.0
 	if driving_vehicle.get("speed") != null:
@@ -517,6 +547,14 @@ func _update_quest_label() -> void:
 		quest_label.text = "တာဝန်: ကျောင်းကို စာအုပ်လှူပါ"
 	elif quest_stage == 12:
 		quest_label.text = "တာဝန်: စက်ဘီးစီးပါ"
+	elif quest_stage == 13:
+		quest_label.text = "တာဝန်: သုံးဘီးစီးပါ"
+	elif quest_stage == 14:
+		quest_label.text = "တာဝန်: လေထီးနဲ့ မြေပြင်ကို ဆင်းပါ"
+	elif quest_stage == 15:
+		quest_label.text = "တာဝန်: ပွဲတော်မှာ ဗုံတီးပါ"
+	elif quest_rewarded6:
+		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် + အပြေးမြန် +10% + ခုန်အား +10%"
 	elif quest_rewarded5:
 		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် + အပြေးမြန် +10%"
 	elif quest_rewarded4:
@@ -534,9 +572,9 @@ func _update_quest_label() -> void:
 	if quest_tracker_label == null:
 		quest_tracker_label = get_node_or_null("../JoystickLayer/QuestTrackerLabel") as Label
 	if quest_tracker_label != null:
-		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ", "မုခ်ဦးဖြတ်", "ငှက်ပျောခူး", "ဝါးတံတားဖြတ်", "ဟင်္သာဆုတောင်း", "လက်ဖက်ရည်မှာစား", "စာအုပ်လှူ", "စက်ဘီးစီး"]
+		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ", "မုခ်ဦးဖြတ်", "ငှက်ပျောခူး", "ဝါးတံတားဖြတ်", "ဟင်္သာဆုတောင်း", "လက်ဖက်ရည်မှာစား", "စာအုပ်လှူ", "စက်ဘီးစီး", "သုံးဘီးစီး", "လေထီးဆင်း", "ဗုံတီး"]
 		var parts: Array = []
-		for i in range(13):
+		for i in range(16):
 			parts.append(("✓ " if quest_stage > i else "○ ") + stage_names[i])
 		quest_tracker_label.text = "   ".join(parts)
 		quest_tracker_label.visible = true
@@ -551,7 +589,7 @@ func _on_vehicle_button_pressed() -> void:
 func _nearest_vehicle() -> Node:
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat", "Bicycle"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat", "Bicycle", "TukTuk"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -580,7 +618,7 @@ func _try_enter_vehicle() -> void:
 	# list order, which could pick a farther vehicle over a nearer one).
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat", "Bicycle"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat", "Bicycle", "TukTuk"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -599,12 +637,48 @@ func _try_enter_vehicle() -> void:
 		if quest_stage == 12 and best.name == "Bicycle":
 			quest_stage = 13
 			_update_quest_label()
+		# Slice 16 quest stage 13: riding the tuk-tuk continues it.
+		if quest_stage == 13 and best.name == "TukTuk":
+			quest_stage = 14
+			_update_quest_label()
 		best.start_driving(self)
 
 func leave_vehicle() -> void:
 	driving = false
 	driving_vehicle = null
 	visible = true
+	# Slice 16 parachute: leaving a vehicle high above the ground
+	# opens the canopy automatically — this closes the standing
+	# "no parachute" gap from Slice 3. Ground exits (y near 1)
+	# never deploy.
+	if global_position.y > 3.0:
+		_deploy_parachute()
+
+## Slice 16 parachute (TOUCH-FIRST — no button needed: it opens
+## itself on a mid-air exit and stows itself on landing; the
+## joystick steers the drift while it is out, like walking).
+func _deploy_parachute() -> void:
+	parachuting = true
+	for nname in ["ParachuteCanopy", "ParachuteLineL", "ParachuteLineR"]:
+		var n := get_node_or_null(nname) as Node3D
+		if n != null:
+			n.visible = true
+	if parachute_label == null:
+		parachute_label = get_node_or_null("../JoystickLayer/ParachuteLabel") as Label
+	if parachute_label != null:
+		parachute_label.visible = true
+
+func _stow_parachute() -> void:
+	parachuting = false
+	for nname in ["ParachuteCanopy", "ParachuteLineL", "ParachuteLineR"]:
+		var n := get_node_or_null(nname) as Node3D
+		if n != null:
+			n.visible = false
+	if parachute_label != null:
+		parachute_label.visible = false
+	if quest_stage == 14:
+		quest_stage = 15
+		_update_quest_label()
 
 ## Slice 10 stamina: sprinting drains it, resting restores it, and
 ## sprint is blocked at 0. The bar lives in the real scene.
@@ -693,7 +767,8 @@ func _update_minimap() -> void:
 				"BellDot", "ZayatDot", "GroveDot", "MarketDot", "WellDot", "VillagerDot5",
 			"GateDot13", "GroveDot13", "SchoolDot13", "TeaShopDot13", "FootballDot13",
 			"VillagerDot6", "VehicleDotBoat", "HintharDot14L", "HintharDot14R", "BridgeDot14",
-			"VillagerDot7", "VillagerDot8", "VehicleDotBicycle"]:
+			"VillagerDot7", "VillagerDot8", "VehicleDotBicycle", "VehicleDotTukTuk",
+			"FestivalDot16", "VillagerDot9", "VillagerDot10"]:
 			var dot := panel.get_node_or_null(name) as ColorRect
 			if dot != null:
 				minimap_dots[name] = dot
@@ -707,7 +782,7 @@ func _update_minimap() -> void:
 			dot.position = Vector2(mx, my)
 	put.call("PlayerDot", global_position)
 	var villagers := get_tree().get_nodes_in_group("villagers")
-	for i in range(min(villagers.size(), 8)):
+	for i in range(min(villagers.size(), 10)):
 		put.call("VillagerDot%d" % (i + 1), (villagers[i] as Node3D).global_position)
 	var pag := get_node_or_null("../Pagoda")
 	if pag != null:
@@ -739,7 +814,7 @@ func _update_minimap() -> void:
 		var lm := get_node_or_null("../" + pair[0]) as Node3D
 		if lm != null:
 			put.call(pair[1], lm.global_position)
-	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat", "Bicycle"]:
+	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat", "Bicycle", "TukTuk"]:
 		var v := get_node_or_null("../" + vname)
 		if v != null:
 			put.call("VehicleDot" + vname, (v as Node3D).global_position)
@@ -754,6 +829,10 @@ func _update_minimap() -> void:
 	var hsR := get_node_or_null("../HintharStatue14R")
 	if hsR != null:
 		put.call("HintharDot14R", (hsR as Node3D).global_position)
+	# Slice 16 festival dot: the festival ground slab.
+	var fest16 := get_node_or_null("../FestivalGround16")
+	if fest16 != null:
+		put.call("FestivalDot16", fest16.global_position)
 
 ## Slice 10 nearby prompt: what is close enough to use, on foot.
 func _update_prompt_label() -> void:
@@ -775,7 +854,7 @@ func _update_prompt_label() -> void:
 	var veh := _nearest_vehicle()
 	if veh != null:
 		var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
-			"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး"}
+			"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး"}
 		prompt_label.text = "အနီး: " + names.get(veh.name, veh.name) + " — စီးမည်"
 		prompt_label.visible = true
 		return
@@ -795,7 +874,11 @@ func _update_prompt_label() -> void:
 			["Football13", "ဘောလုံးကွင်း", 5.0],
 			["BambooBridge14", "ဝါးတံတား", 4.0],
 			["HintharStatue14L", "ဟင်္သာရုပ်တု", 4.0],
-			["HintharStatue14R", "ဟင်္သာရုပ်တု", 4.0]]:
+			["HintharStatue14R", "ဟင်္သာရုပ်တု", 4.0],
+			["FestivalGround16", "ပွဲတော်", 6.0],
+			["FestivalDrum16", "ဗုံ", 4.0],
+			["FestivalStall16", "ပွဲဈေးဆိုင်", 4.0],
+			["FestivalLantern16A", "ပွဲမီးအိမ်", 4.0]]:
 		var lm := get_node_or_null("../" + pair[0]) as Node3D
 		if lm != null and global_position.distance_to(lm.global_position) < float(pair[2]):
 			prompt_label.text = "အနီး: " + str(pair[1])
@@ -884,7 +967,7 @@ func _update_fruit_water_label() -> void:
 		fruit_water_label = get_node_or_null("../JoystickLayer/FruitWaterLabel") as Label
 	if fruit_water_label == null:
 		return
-	fruit_water_label.text = "🍎 %d 💧 %d 🍌 %d 🍵 %d 📚 %d" % [fruit_count, water_count, banana_count, tea_count, book_count]
+	fruit_water_label.text = "🍎 %d 💧 %d 🍌 %d 🍵 %d 📚 %d 🍡 %d 🪔 %d" % [fruit_count, water_count, banana_count, tea_count, book_count, snack_count, lantern_count]
 	fruit_water_label.visible = true
 
 ## Slice 12: the well bucket lowers to the water and rises back
@@ -992,6 +1075,11 @@ func _apply_lights() -> void:
 		var bh := bike.get_node_or_null("BikeHeadlight") as Node3D
 		if bh != null:
 			bh.visible = lights_on
+	var tuk := get_node_or_null("../TukTuk")
+	if tuk != null:
+		var th := tuk.get_node_or_null("TukHeadlight") as Node3D
+		if th != null:
+			th.visible = lights_on
 
 func _update_lights_button() -> void:
 	if lights_button == null:
@@ -1001,7 +1089,7 @@ func _update_lights_button() -> void:
 			lights_button_connected = true
 	if lights_button == null:
 		return
-	lights_button.visible = driving and driving_vehicle != null and driving_vehicle.name in ["Car", "Motorcycle"]
+	lights_button.visible = driving and driving_vehicle != null and driving_vehicle.name in ["Car", "Motorcycle", "TukTuk"]
 	if lights_button.visible:
 		_apply_lights()
 
@@ -1121,4 +1209,95 @@ func _on_donate_book() -> void:
 			quest_rewarded5 = true
 			sprint_multiplier *= 1.1
 	_update_quest_label()
+	_update_fruit_water_label()
+
+## Slice 16 festival interactions (TOUCH-FIRST — this is a mobile
+## game). Drum / lantern / snack buttons live in the real scene
+## (JoystickLayer/DrumButton16, LanternButton16, SnackButton16)
+## and show only on foot, near the festival. Beating the drum on
+## quest stage 15 finishes the chain with the sixth reward
+## (+5% walk speed, applied exactly once, +10% jump).
+func _update_festival_buttons() -> void:
+	if drum_button == null:
+		drum_button = get_node_or_null("../JoystickLayer/DrumButton16") as Button
+		if drum_button != null and not drum_button_connected:
+			drum_button.pressed.connect(_on_beat_drum)
+			drum_button_connected = true
+	if lantern_button == null:
+		lantern_button = get_node_or_null("../JoystickLayer/LanternButton16") as Button
+		if lantern_button != null and not lantern_button_connected:
+			lantern_button.pressed.connect(_on_light_lantern)
+			lantern_button_connected = true
+	if snack_button == null:
+		snack_button = get_node_or_null("../JoystickLayer/SnackButton16") as Button
+		if snack_button != null and not snack_button_connected:
+			snack_button.pressed.connect(_on_buy_snack)
+			snack_button_connected = true
+	if driving:
+		if drum_button != null:
+			drum_button.visible = false
+		if lantern_button != null:
+			lantern_button.visible = false
+		if snack_button != null:
+			snack_button.visible = false
+		return
+	var drum := get_node_or_null("../FestivalDrum16") as Node3D
+	if drum_button != null:
+		drum_button.visible = drum != null and global_position.distance_to(drum.global_position) < 4.0
+	if lantern_button != null:
+		lantern_button.visible = _nearest_unlit_lantern() != null
+	var stall := get_node_or_null("../FestivalStall16") as Node3D
+	if snack_button != null:
+		snack_button.visible = stall != null and global_position.distance_to(stall.global_position) < 4.0
+
+func _nearest_unlit_lantern() -> Node:
+	var best: Node = null
+	var best_dist: float = 4.0
+	for lname in ["FestivalLantern16A", "FestivalLantern16B", "FestivalLantern16C"]:
+		var l := get_node_or_null("../" + lname) as Node3D
+		if l == null:
+			continue
+		var glow := l.get_node_or_null("LanternGlow") as Node3D
+		if glow != null and glow.visible:
+			continue
+		var d := global_position.distance_to(l.global_position)
+		if d < best_dist:
+			best_dist = d
+			best = l
+	return best
+
+func _on_beat_drum() -> void:
+	if driving:
+		return
+	var drum := get_node_or_null("../FestivalDrum16") as Node3D
+	if drum == null:
+		return
+	var dl := drum.get_node_or_null("DrumLabel") as Label3D
+	if dl != null:
+		dl.visible = true
+	drum_timer = 4.0
+	if quest_stage == 15:
+		quest_stage = 16
+		if not quest_rewarded6:
+			quest_rewarded6 = true
+			walk_speed *= 1.05
+			jump_velocity *= 1.1
+		_update_quest_label()
+
+func _on_light_lantern() -> void:
+	if driving:
+		return
+	var l := _nearest_unlit_lantern()
+	if l == null:
+		return
+	var glow := (l as Node3D).get_node_or_null("LanternGlow") as Node3D
+	if glow != null:
+		glow.visible = true
+	lantern_count += 1
+	_update_fruit_water_label()
+
+func _on_buy_snack() -> void:
+	if driving:
+		return
+	snack_count += 1
 	_update_fruit_water_label()

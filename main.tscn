@@ -1,4 +1,4 @@
-[gd_scene load_steps=273 format=3]
+[gd_scene load_steps=321 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Script" path="res://car.gd" id="1_car"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://airplane.gd" id="1_airplane"]
 [ext_resource type="Script" path="res://helicopter.gd" id="1_helicopter"]
 [ext_resource type="Script" path="res://npc.gd" id="1_npc"]
+[ext_resource type="Script" path="res://tuktuk.gd" id="1_tuktuk"]
 [ext_resource type="Script" path="res://boat.gd" id="1_boat"]
 [ext_resource type="Script" path="res://bicycle.gd" id="1_bicycle"]
 
@@ -951,6 +952,127 @@ albedo_color = Color(0.1, 0.4, 0.15, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s15_house_wall"]
 albedo_color = Color(0.55, 0.45, 0.35, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s16_tuk_body"]
+size = Vector3(1.4, 0.7, 2.4)
+[sub_resource type="BoxMesh" id="BoxMesh_s16_tuk_canopy"]
+size = Vector3(1.5, 0.15, 2.2)
+[sub_resource type="BoxMesh" id="BoxMesh_s16_tuk_seat"]
+size = Vector3(1.2, 0.4, 1.0)
+[sub_resource type="BoxMesh" id="BoxMesh_s16_tuk_headlight"]
+size = Vector3(0.25, 0.25, 0.1)
+[sub_resource type="CylinderMesh" id="CylinderMesh_s16_tuk_wheel"]
+top_radius = 0.35
+bottom_radius = 0.35
+height = 0.2
+[sub_resource type="SphereMesh" id="SphereMesh_s16_canopy"]
+radius = 1.0
+height = 2.0
+[sub_resource type="BoxMesh" id="BoxMesh_s16_line"]
+size = Vector3(0.03, 1.4, 0.03)
+[sub_resource type="BoxMesh" id="BoxMesh_s16_slab"]
+size = Vector3(4.0, 0.12, 4.0)
+[sub_resource type="BoxMesh" id="BoxMesh_s16_path"]
+size = Vector3(2.0, 0.1, 2.0)
+[sub_resource type="BoxMesh" id="BoxMesh_s16_stage"]
+size = Vector3(6.0, 0.5, 3.0)
+[sub_resource type="BoxMesh" id="BoxMesh_s16_backdrop"]
+size = Vector3(6.0, 2.5, 0.2)
+[sub_resource type="BoxMesh" id="BoxMesh_s16_banner"]
+size = Vector3(1.0, 1.6, 0.1)
+[sub_resource type="CylinderMesh" id="CylinderMesh_s16_drum"]
+top_radius = 0.55
+bottom_radius = 0.55
+height = 0.7
+[sub_resource type="BoxMesh" id="BoxMesh_s16_drum_leg"]
+size = Vector3(0.15, 0.5, 0.15)
+[sub_resource type="BoxMesh" id="BoxMesh_s16_stall_counter"]
+size = Vector3(2.5, 0.9, 1.2)
+[sub_resource type="BoxMesh" id="BoxMesh_s16_stall_awning"]
+size = Vector3(3.0, 0.15, 1.8)
+[sub_resource type="BoxMesh" id="BoxMesh_s16_stall_post"]
+size = Vector3(0.15, 2.2, 0.15)
+[sub_resource type="CylinderMesh" id="CylinderMesh_s16_lantern_post"]
+top_radius = 0.08
+bottom_radius = 0.08
+height = 2.4
+[sub_resource type="BoxMesh" id="BoxMesh_s16_lantern"]
+size = Vector3(0.45, 0.6, 0.45)
+[sub_resource type="SphereMesh" id="SphereMesh_s16_glow"]
+radius = 0.28
+height = 0.56
+[sub_resource type="CylinderMesh" id="CylinderMesh_s16_string_pole"]
+top_radius = 0.08
+bottom_radius = 0.08
+height = 3.2
+[sub_resource type="SphereMesh" id="SphereMesh_s16_bulb"]
+radius = 0.12
+height = 0.24
+[sub_resource type="BoxMesh" id="BoxMesh_s16_mat"]
+size = Vector3(4.0, 0.06, 4.0)
+[sub_resource type="CylinderMesh" id="CylinderMesh_s16_torch"]
+top_radius = 0.07
+bottom_radius = 0.07
+height = 1.6
+[sub_resource type="SphereMesh" id="SphereMesh_s16_flame"]
+radius = 0.18
+height = 0.36
+[sub_resource type="CylinderMesh" id="CylinderMesh_s16_flagpole"]
+top_radius = 0.06
+bottom_radius = 0.06
+height = 2.6
+[sub_resource type="BoxMesh" id="BoxMesh_s16_flag"]
+size = Vector3(0.9, 0.55, 0.05)
+[sub_resource type="SphereMesh" id="SphereMesh_s16_snack"]
+radius = 0.16
+height = 0.32
+[sub_resource type="BoxShape3D" id="BoxShape3D_s16_tuk"]
+size = Vector3(1.4, 1.0, 2.4)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_tuk_blue"]
+albedo_color = Color(0.1, 0.4, 0.8, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_tuk_yellow"]
+albedo_color = Color(0.95, 0.75, 0.15, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_dark"]
+albedo_color = Color(0.12, 0.12, 0.12, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_canopy"]
+albedo_color = Color(0.95, 0.95, 0.9, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_ground"]
+albedo_color = Color(0.75, 0.65, 0.45, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_stage_red"]
+albedo_color = Color(0.7, 0.15, 0.15, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_banner_gold"]
+albedo_color = Color(0.9, 0.75, 0.2, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_drum"]
+albedo_color = Color(0.6, 0.15, 0.15, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_lantern_paper"]
+albedo_color = Color(1.0, 0.85, 0.5, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_glow"]
+albedo_color = Color(1, 0.8, 0.3, 1)
+emission_enabled = true
+emission = Color(1, 0.7, 0.2, 1)
+emission_energy = 1.5
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_flame"]
+albedo_color = Color(1, 0.5, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.4, 0.05, 1)
+emission_energy = 1.5
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_bulb"]
+albedo_color = Color(1, 0.9, 0.5, 1)
+emission_enabled = true
+emission = Color(1, 0.85, 0.4, 1)
+emission_energy = 1.5
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_mat"]
+albedo_color = Color(0.5, 0.2, 0.6, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_flag_red"]
+albedo_color = Color(0.85, 0.15, 0.15, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_flag_green"]
+albedo_color = Color(0.15, 0.6, 0.3, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_snack"]
+albedo_color = Color(0.9, 0.8, 0.5, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_stall_wood"]
+albedo_color = Color(0.55, 0.4, 0.25, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s16_path"]
+albedo_color = Color(0.6, 0.6, 0.6, 1)
 
 [node name="Main" type="Node3D"]
 
@@ -2138,7 +2260,7 @@ offset_top = 0.0
 offset_right = 0.0
 offset_bottom = 0.0
 visible = false
-text = "ထိန်းချုပ်နည်း: ဘယ်ဘက် joystick နဲ့ လမ်း လျှောက် / ကား မောင်း။ အပြေး ခလုတ် ဖိထား = ပြေး။ ခုန် = ခုန်။ ရွာသားနား ရောက်ရင် စကားပြော ခလုတ် ပေါ်မယ်။ ယာဉ်နား ရောက်ရင် စီးမည် ခလုတ် ပေါ်မယ်။ လေယာဉ် / ရဟတ်ယာဉ် မောင်းရင် အရှိန် + / - နဲ့ ယိမ်း ခလုတ်တွေ သုံးပါ။ ကင်မရာ ခလုတ် = ကင်မရာ လှည့်၊ ညာဘက်ခြမ်း ပွတ်ဆွဲရင်လည်း လှည့်ပါတယ်။ ဈေးနား ရောက်ရင် သစ်သီးဝယ် ခလုတ်၊ ရေတွင်းနား ရောက်ရင် ရေဆွဲ ခလုတ် ပေါ်မယ်။ ငှက်ပျောတောနား ရောက်ရင် ငှက်ပျောသီးခူး ခလုတ် ပေါ်မယ်။ ရွာမုခ်ဦးကို ဖြတ်ပြီး ငှက်ပျောသီး ၃ လုံး ခူးပါ။ မီးခလုတ် = ကား/ဆိုင်ကယ် မီးဖွင့်/ပိတ်။ ဝါးတံတားကို ဖြတ်ပြီး ဟင်္သာရုပ်တုနား ရောက်ရင် ဆုတောင်း ခလုတ် ပေါ်မယ်။ မြစ်မှာ လှေစီးလို့ရတယ်။ လက်ဖက်ရည်ဆိုင်နား ရောက်ရင် လက်ဖက်ရည်မှာစား ခလုတ်၊ ကျောင်းနား ရောက်ရင် စာအုပ်လှူ ခလုတ် ပေါ်မယ်။ စက်ဘီးလည်း စီးလို့ရတယ်။"
+text = "ထိန်းချုပ်နည်း: ဘယ်ဘက် joystick နဲ့ လမ်း လျှောက် / ကား မောင်း။ အပြေး ခလုတ် ဖိထား = ပြေး။ ခုန် = ခုန်။ ရွာသားနား ရောက်ရင် စကားပြော ခလုတ် ပေါ်မယ်။ ယာဉ်နား ရောက်ရင် စီးမည် ခလုတ် ပေါ်မယ်။ လေယာဉ် / ရဟတ်ယာဉ် မောင်းရင် အရှိန် + / - နဲ့ ယိမ်း ခလုတ်တွေ သုံးပါ။ ကင်မရာ ခလုတ် = ကင်မရာ လှည့်၊ ညာဘက်ခြမ်း ပွတ်ဆွဲရင်လည်း လှည့်ပါတယ်။ ဈေးနား ရောက်ရင် သစ်သီးဝယ် ခလုတ်၊ ရေတွင်းနား ရောက်ရင် ရေဆွဲ ခလုတ် ပေါ်မယ်။ ငှက်ပျောတောနား ရောက်ရင် ငှက်ပျောသီးခူး ခလုတ် ပေါ်မယ်။ ရွာမုခ်ဦးကို ဖြတ်ပြီး ငှက်ပျောသီး ၃ လုံး ခူးပါ။ မီးခလုတ် = ကား/ဆိုင်ကယ် မီးဖွင့်/ပိတ်။ ဝါးတံတားကို ဖြတ်ပြီး ဟင်္သာရုပ်တုနား ရောက်ရင် ဆုတောင်း ခလုတ် ပေါ်မယ်။ မြစ်မှာ လှေစီးလို့ရတယ်။ လက်ဖက်ရည်ဆိုင်နား ရောက်ရင် လက်ဖက်ရည်မှာစား ခလုတ်၊ ကျောင်းနား ရောက်ရင် စာအုပ်လှူ ခလုတ် ပေါ်မယ်။ စက်ဘီးလည်း စီးလို့ရတယ်။ လေယာဉ်/ရဟတ်ယာဉ်ပေါ်က အမြင့်မှာ ဆင်းရင် လေထီး အလိုအလို ပွင့်ပါတယ်။ သုံးဘီး စီးလို့ရတယ်။ ပွဲတော်နား ရောက်ရင် ဗုံတီး၊ မီးအိမ်ထွန်း၊ မုန့်ဝယ် ခလုတ်တွေ ပေါ်မယ်။"
 
 [node name="YawLeftButton" type="Button" parent="JoystickLayer"]
 theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
@@ -5540,3 +5662,503 @@ offset_top = 0.0
 offset_right = 8.0
 offset_bottom = 8.0
 color = Color(1, 1, 1, 1)
+
+[node name="TukTuk" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 1, -27)
+script = ExtResource("1_tuktuk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TukTuk"]
+shape = SubResource("BoxShape3D_s16_tuk")
+
+[node name="TukBody" type="MeshInstance3D" parent="TukTuk"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("BoxMesh_s16_tuk_body")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_tuk_blue")
+
+[node name="TukSeat" type="MeshInstance3D" parent="TukTuk"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0.4)
+mesh = SubResource("BoxMesh_s16_tuk_seat")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="TukCanopy" type="MeshInstance3D" parent="TukTuk"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+mesh = SubResource("BoxMesh_s16_tuk_canopy")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_tuk_yellow")
+
+[node name="TukHeadlight" type="MeshInstance3D" parent="TukTuk"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -1.25)
+mesh = SubResource("BoxMesh_s16_tuk_headlight")
+surface_material_override/0 = SubResource("StandardMaterial3D_headlight")
+
+[node name="TukWheelF" type="MeshInstance3D" parent="TukTuk"]
+Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, -0.65, -1.1)
+mesh = SubResource("CylinderMesh_s16_tuk_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="TukWheelL" type="MeshInstance3D" parent="TukTuk"]
+Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, -0.7, -0.65, 0.9)
+mesh = SubResource("CylinderMesh_s16_tuk_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="TukWheelR" type="MeshInstance3D" parent="TukTuk"]
+Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0.7, -0.65, 0.9)
+mesh = SubResource("CylinderMesh_s16_tuk_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="ParachuteCanopy" type="MeshInstance3D" parent="Player"]
+visible = false
+transform = Transform3D(1.6, 0, 0, 0, 0.5, 0, 0, 0, 1.6, 0, 2.3, 0)
+mesh = SubResource("SphereMesh_s16_canopy")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_canopy")
+
+[node name="ParachuteLineL" type="MeshInstance3D" parent="Player"]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 1.4, 0)
+mesh = SubResource("BoxMesh_s16_line")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="ParachuteLineR" type="MeshInstance3D" parent="Player"]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 1.4, 0)
+mesh = SubResource("BoxMesh_s16_line")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="FestivalSlab16A" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 0.06, -33)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_ground")
+
+[node name="FestivalGround16" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 0.06, -33)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_ground")
+
+[node name="FestivalSlab16C" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0.06, -33)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_ground")
+
+[node name="FestivalStage16" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 0.25, -27)
+mesh = SubResource("BoxMesh_s16_stage")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_stage_red")
+
+[node name="FestivalBackdrop16" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 1.5, -25.6)
+mesh = SubResource("BoxMesh_s16_backdrop")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_stage_red")
+
+[node name="FestivalBanner16L" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 1.6, -25.5)
+mesh = SubResource("BoxMesh_s16_banner")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_banner_gold")
+
+[node name="FestivalBanner16R" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 1.6, -25.5)
+mesh = SubResource("BoxMesh_s16_banner")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_banner_gold")
+
+[node name="FestivalMat16" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 0.13, -34)
+mesh = SubResource("BoxMesh_s16_mat")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_mat")
+
+[node name="FestivalDrum16" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 0, -31)
+
+[node name="DrumBody" type="MeshInstance3D" parent="FestivalDrum16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+mesh = SubResource("CylinderMesh_s16_drum")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_drum")
+
+[node name="DrumLegL" type="MeshInstance3D" parent="FestivalDrum16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.25, 0)
+mesh = SubResource("BoxMesh_s16_drum_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="DrumLegR" type="MeshInstance3D" parent="FestivalDrum16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.25, 0)
+mesh = SubResource("BoxMesh_s16_drum_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="DrumLabel" type="Label3D" parent="FestivalDrum16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+billboard = 1
+text = "ဗုံသံ!"
+font_size = 30
+visible = false
+
+[node name="FestivalStall16" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, -38)
+
+[node name="StallCounter16" type="MeshInstance3D" parent="FestivalStall16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+mesh = SubResource("BoxMesh_s16_stall_counter")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_stall_wood")
+
+[node name="StallAwning16" type="MeshInstance3D" parent="FestivalStall16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+mesh = SubResource("BoxMesh_s16_stall_awning")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_stage_red")
+
+[node name="StallPost16L" type="MeshInstance3D" parent="FestivalStall16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3, 1.1, 0)
+mesh = SubResource("BoxMesh_s16_stall_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_stall_wood")
+
+[node name="StallPost16R" type="MeshInstance3D" parent="FestivalStall16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3, 1.1, 0)
+mesh = SubResource("BoxMesh_s16_stall_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_stall_wood")
+
+[node name="Snack16_0" type="MeshInstance3D" parent="FestivalStall16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 1.05, 0)
+mesh = SubResource("SphereMesh_s16_snack")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_snack")
+
+[node name="Snack16_1" type="MeshInstance3D" parent="FestivalStall16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
+mesh = SubResource("SphereMesh_s16_snack")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_snack")
+
+[node name="Snack16_2" type="MeshInstance3D" parent="FestivalStall16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 1.05, 0)
+mesh = SubResource("SphereMesh_s16_snack")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_snack")
+
+[node name="FestivalLantern16A" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39, 0, -36)
+
+[node name="LanternPost" type="MeshInstance3D" parent="FestivalLantern16A"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+mesh = SubResource("CylinderMesh_s16_lantern_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="LanternBox" type="MeshInstance3D" parent="FestivalLantern16A"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("BoxMesh_s16_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_lantern_paper")
+
+[node name="LanternGlow" type="MeshInstance3D" parent="FestivalLantern16A"]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("SphereMesh_s16_glow")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_glow")
+
+[node name="FestivalLantern16B" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, -30)
+
+[node name="LanternPost" type="MeshInstance3D" parent="FestivalLantern16B"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+mesh = SubResource("CylinderMesh_s16_lantern_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="LanternBox" type="MeshInstance3D" parent="FestivalLantern16B"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("BoxMesh_s16_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_lantern_paper")
+
+[node name="LanternGlow" type="MeshInstance3D" parent="FestivalLantern16B"]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("SphereMesh_s16_glow")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_glow")
+
+[node name="FestivalLantern16C" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41, 0, -39)
+
+[node name="LanternPost" type="MeshInstance3D" parent="FestivalLantern16C"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+mesh = SubResource("CylinderMesh_s16_lantern_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="LanternBox" type="MeshInstance3D" parent="FestivalLantern16C"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("BoxMesh_s16_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_lantern_paper")
+
+[node name="LanternGlow" type="MeshInstance3D" parent="FestivalLantern16C"]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("SphereMesh_s16_glow")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_glow")
+
+[node name="StringPole16L" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 1.6, -33)
+mesh = SubResource("CylinderMesh_s16_string_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="StringPole16R" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 1.6, -33)
+mesh = SubResource("CylinderMesh_s16_string_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="StringBulb16_0" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 3.0, -33)
+mesh = SubResource("SphereMesh_s16_bulb")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_bulb")
+
+[node name="StringBulb16_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 3.1, -33)
+mesh = SubResource("SphereMesh_s16_bulb")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_bulb")
+
+[node name="StringBulb16_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 3.0, -33)
+mesh = SubResource("SphereMesh_s16_bulb")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_bulb")
+
+[node name="StringBulb16_3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 3.1, -33)
+mesh = SubResource("SphereMesh_s16_bulb")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_bulb")
+
+[node name="StringBulb16_4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 3.0, -33)
+mesh = SubResource("SphereMesh_s16_bulb")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_bulb")
+
+[node name="FestivalTorch16A" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33, 0, -27)
+
+[node name="TorchPost" type="MeshInstance3D" parent="FestivalTorch16A"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+mesh = SubResource("CylinderMesh_s16_torch")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="TorchFlame" type="MeshInstance3D" parent="FestivalTorch16A"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+mesh = SubResource("SphereMesh_s16_flame")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_flame")
+
+[node name="FestivalTorch16B" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, -39)
+
+[node name="TorchPost" type="MeshInstance3D" parent="FestivalTorch16B"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+mesh = SubResource("CylinderMesh_s16_torch")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="TorchFlame" type="MeshInstance3D" parent="FestivalTorch16B"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+mesh = SubResource("SphereMesh_s16_flame")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_flame")
+
+[node name="FestivalFlag16L" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 0, -27)
+
+[node name="FlagPole" type="MeshInstance3D" parent="FestivalFlag16L"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+mesh = SubResource("CylinderMesh_s16_flagpole")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="FlagCloth" type="MeshInstance3D" parent="FestivalFlag16L"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 2.3, 0)
+mesh = SubResource("BoxMesh_s16_flag")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_flag_red")
+
+[node name="FestivalFlag16R" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, -27)
+
+[node name="FlagPole" type="MeshInstance3D" parent="FestivalFlag16R"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+mesh = SubResource("CylinderMesh_s16_flagpole")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_dark")
+
+[node name="FlagCloth" type="MeshInstance3D" parent="FestivalFlag16R"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 2.3, 0)
+mesh = SubResource("BoxMesh_s16_flag")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_flag_green")
+
+[node name="FestivalPath16_0" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 0.05, -24)
+mesh = SubResource("BoxMesh_s16_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_path")
+
+[node name="FestivalPath16_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37, 0.05, -28)
+mesh = SubResource("BoxMesh_s16_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_path")
+
+[node name="FestivalPath16_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0.05, -31)
+mesh = SubResource("BoxMesh_s16_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_path")
+
+[node name="Villager9" type="CharacterBody3D" parent="." groups=["villagers"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39, 1, -34)
+script = ExtResource("1_npc")
+dialogue_text = "မင်္ဂလာပါ! ပွဲတော်ကို လာလည်တာ ဝမ်းသာပါတယ်။ ဗုံတီးကြည့်ပါဦး။"
+villager_name = "ပွဲစီစဉ်သူ ကိုအောင်"
+wander_radius = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Villager9"]
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="Head" type="MeshInstance3D" parent="Villager9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Torso" type="MeshInstance3D" parent="Villager9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+mesh = SubResource("BoxMesh_torso")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_robe_maroon")
+
+[node name="Longyi" type="MeshInstance3D" parent="Villager9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
+mesh = SubResource("CylinderMesh_longyi")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_robe_maroon")
+
+[node name="DialogueLabel" type="Label3D" parent="Villager9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+billboard = 1
+text = "မင်္ဂလာပါ! စာသင်ကျောင်းကို စာအုပ်လှူရင် ကုသိုလ်ရတယ်။"
+font_size = 28
+visible = false
+
+[node name="PromptLabel" type="Label3D" parent="Villager9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+text = "!"
+font_size = 36
+visible = false
+
+[node name="Arm_R" type="MeshInstance3D" parent="Villager9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Arm_L" type="MeshInstance3D" parent="Villager9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Villager10" type="CharacterBody3D" parent="." groups=["villagers"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 1, -35)
+script = ExtResource("1_npc")
+dialogue_text = "မင်္ဂလာပါ! ပွဲတော်မှာ အကအလှတွေ ကြည့်လို့ရတယ်။"
+villager_name = "အကသမား မသီတာ"
+wander_radius = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Villager10"]
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="Head" type="MeshInstance3D" parent="Villager10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Torso" type="MeshInstance3D" parent="Villager10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+mesh = SubResource("BoxMesh_torso")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_robe_maroon")
+
+[node name="Longyi" type="MeshInstance3D" parent="Villager10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
+mesh = SubResource("CylinderMesh_longyi")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_robe_maroon")
+
+[node name="DialogueLabel" type="Label3D" parent="Villager10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+billboard = 1
+text = "မင်္ဂလာပါ! စာသင်ကျောင်းကို စာအုပ်လှူရင် ကုသိုလ်ရတယ်။"
+font_size = 28
+visible = false
+
+[node name="PromptLabel" type="Label3D" parent="Villager10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+text = "!"
+font_size = 36
+visible = false
+
+[node name="Arm_R" type="MeshInstance3D" parent="Villager10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Arm_L" type="MeshInstance3D" parent="Villager10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="DrumButton16" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.42
+anchor_top = 0.44
+anchor_right = 0.56
+anchor_bottom = 0.54
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "ဗုံတီး"
+
+[node name="LanternButton16" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.58
+anchor_top = 0.44
+anchor_right = 0.72
+anchor_bottom = 0.54
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "မီးအိမ်ထွန်း"
+
+[node name="SnackButton16" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.58
+anchor_top = 0.32
+anchor_right = 0.72
+anchor_bottom = 0.42
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "မုန့်ဝယ်"
+
+[node name="ParachuteLabel" type="Label" parent="JoystickLayer"]
+anchor_left = 0.30
+anchor_top = 0.12
+anchor_right = 0.70
+anchor_bottom = 0.17
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "🪂 လေထီး ပွင့်နေသည် — joystick ဖြင့် ရွေ့ပါ"
+
+[node name="VehicleDotTukTuk" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(1, 1, 1, 1)
+
+[node name="FestivalDot16" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(1, 0.8, 0.2, 1)
+
+[node name="VillagerDot9" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.8, 0.3, 1)
+
+[node name="VillagerDot10" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.8, 0.3, 1)
+
