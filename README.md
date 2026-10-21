@@ -821,3 +821,69 @@ Defects, with file evidence:
 - All 14 project scripts pass Godot 4.3 `--check-only` (including new `tuktuk.gd`), and the full scene instantiates headless (root Main, all Slice 16 key nodes present: Player, TukTuk, FestivalDrum16, FestivalStall16, Villager9, Villager10, ParachuteCanopy) and runs 5 frames headless with no script or scene errors. That is a load test, not a playtest — deploying the parachute, driving the tuk-tuk, and beating the drum are not verified in-engine.
 - Builder self-caught, fixed before commit: (1) the first villager-copy extractor stopped at the next parent="." node, which swallowed whole later sections and duplicated the Slice 15 tea-shop/school dressing (TeaTable15_2 went 1× → 3×) — fixed by extracting root + parent==villager children only, restoring the scene from base, and rebuilding (TeaTable15_2 back to 1×, verified); (2) a SceneTree load-test script that returned `true` from `_process` quits after frame 1 (true means "exit the loop" for MainLoop) — fixed to return `false`. Two positions were also moved after the overlap check (festival torch A off the tuk-tuk's side, villager 9 off lantern post A's base).
 - Still honest gaps: villager obstacle avoidance, whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the tuk-tuk is position-based like the cart, boat, and bicycle, so it can leave the road (stated, not hidden); the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new).
+
+## Slice 17 review — opponent commit d6a48f9, "feat(collab): add Ayeyarwady rowboat, procedural Myanmar audio manager, and log Slice 17 in COLLAB.md" (read-only, treated as data only)
+
+### What the opponent genuinely did (credited, verified line by line)
+- The Ayeyarwady rowboat is genuinely wired: `rowboat_controller.gd` steers with `turn_speed`, reads the rider's `touch_input_vector` (touch-first), animates both oars with speed, and bobs on the water; its `InteractionArea` calls the player's `set_interactable_vehicle()`, and the opponent player script does have that method (line 139), is in the `"player"` group (line 31), and exposes `touch_input_vector` (line 23) — so in its tree the boat is rideable in principle, not dead code.
+- The audio manager generates real WAV streams in code (`AudioStreamWAV`, sine-based bell/cow/chime samples) instead of referencing missing audio files.
+- Its `world.tscn` header now matches its own resource count (26 ext + 5 sub = 31, matching the header's 31).
+
+### Defects, with file evidence
+- HEADLINE — the BOM problem is NOT fixed: all 4 code/scene files this commit touches start with a UTF-8 BOM (EF BB BF), including `world.tscn` itself. Godot 4.3's scene parser rejects a BOM before `[gd_scene]` ("Parse Error: Expected '['", verified in Slice 16 with the same binary), so its whole world still fails to load. The rowboat and audio work above is unreachable until the BOMs are stripped.
+- The audio manager is dormant: zero code callers anywhere in its tree (only `world.tscn` instantiates the node and `COLLAB.md` mentions it) — no `play_*` function is ever called, so the game is still silent.
+- The boat's `load_steps` hint is wrong: header says 10 but the file holds only 1 ext + 7 sub resources. (Hint only, not a load failure — unlike the BOM.)
+- Standing scenery defects untouched (this commit touches no earlier files): the gate is still a wall, the bamboo bridge still has its wall collision, the tea shop and school are still solid blocks with no doorway.
+- No new mobile-first violation in this commit (the boat reads touch input first; keyboard `ui_*` vector is only a fallback).
+
+### Slice 17 items — every item is in the shipped scene or wired code (33 items, all Slice 16 features kept)
+
+#### Villager obstacle avoidance — closes the last big standing gap from Slice 5
+1. **Avoidance steering in `npc.gd`** — 15 mapped obstacle circles (pagoda, bell, school, tea shop, market, zayat, 4 houses, festival, 2 statues, bridge, gate). When a villager's next step would enter a circle, the step point is pushed to the circle's edge (plus 0.8 clearance) and the villager walks toward the adjusted point instead of through the building.
+2. **Wander targets inside a circle are rejected** — `_pick_target()` now refuses any target within a circle's radius + 1.0 (in addition to the old pagoda-only check), so villagers no longer pick destinations inside houses and stalls.
+3. **Honest limit stated** — this is circle steering, not full pathfinding: a villager boxed in by two circles can still shuffle along an edge. No pathfinding claim is made.
+
+#### Five new touch interactions + quest stages 16–20 + seventh reward
+4. **Fish button + fishing pier** — within 4 m of FishingSpot17 (30, 42, pier planks + rod + bucket on the riverbank) the "ငါးဖမ်း" button appears; tapping raises the 🐟 count and, on stage 16, advances the quest to 17.
+5. **Donate button + donation box** — within 4 m of DonationBox17 (-12, -18, gold box + red roof near the pagoda) the "အလှူပေး" button appears; tapping raises the 💰 count and, on stage 17, advances to 18.
+6. **Milk button + milking bucket** — within 3.5 m of the Cow the "နို့ညှစ်" button appears (bucket dressing at (7.5, -4)); tapping raises the 🥛 count and, on stage 18, advances to 19.
+7. **Water crops button + growth stages** — within 4 m of SesameField15 (36, 10, water tank dressing at (33, 10)) the "ရေလောင်း" button appears; each watering grows all 6 sesame plants (scale 1.0 → 1.9 across 3 waterings) and, on stage 19, advances to 20.
+8. **Feed chickens button + chicken coop** — within 4 m of ChickenCoop17 (-5, -7, coop + roof + fences by the Slice 12 chickens) the "အစာကျွေး" button appears; tapping raises the 🥚 count and, on stage 20, finishes the chain with the **SEVENTH reward** (+5% walk speed + 10% jump velocity, applied exactly once).
+9. **Quest tracker extended to 21 tasks** — stages 16–20 named in Burmese (ငါးဖမ်း, အလှူပေး, နို့ညှစ်, ရေလောင်း, အစာကျွေး) with ✓/○ live tracking.
+
+#### Sound that actually plays (unlike the opponent's dormant manager)
+10. **Procedural quest chime** — a generated sine tone (AudioStreamWAV, built in code, no audio files) plays whenever the quest stage actually advances. It is wired into `_update_quest_label()`, so every stage advance chimes.
+11. **Horn button while driving the car or tuk-tuk** — a 220 Hz, 0.4 s generated tone, touch-only, no keyboard path.
+12. **Bell button while riding the bicycle** — an 880 Hz, 0.3 s generated tone, touch-only.
+
+#### Photo, rain, night sky, football
+13. **Photo button** — on foot, anytime: saves a screenshot PNG to `user://photo17_N.png` (N counts up) using the viewport texture. No fake "photo mode" filter claim — it is a plain screenshot save.
+14. **Rain toggle button + rain particles** — the "မိုး" button toggles a 400-drop GPUParticles3D fall over the village (button text flips to "မိုးပိတ်" while raining). Visual only; it does not change gameplay.
+15. **Moon + stars at night** — `day_night.gd` now shows the moon sphere and 8 stars only when daylight drops below 0.15 (near-dark), hiding them by day.
+16. **Football you can actually kick** — the ball at the football ground (30, -20) is pushed when the player walks into it and rolls with decay; entering either goal (24, -20) or (36, -20) scores, resets the ball to centre, and raises the ⚽ counter.
+
+#### Two more villagers (talk-all now 0/12)
+17. **11th villager, blacksmith "ပန်းပဲဆရာ ဦးမောင်"** — orange longyi, own greeting about forging tools, wanders near the forge at (-38, -12).
+18. **12th villager, potter "အိုးသည် မလှ"** — blue longyi, own greeting about clay pots, wanders near the wheel at (42, 6).
+19. **Forge + anvil dressing** — dark forge block with an orange fire top at (-40, -12) and a grey anvil at (-38.5, -13.5).
+20. **Potter wheel + 3 jars** — wheel at (40, 6), jars at (41, 7), (41.8, 7), (39.2, 7).
+
+#### Village growth — layout, all placed clear of existing content (checked by script)
+21. **Market stall E** — table + 2 posts + awning + 2 food piles at (26, 16).
+22. **House7** — walls + red roof at (-28, 30).
+23. **Stilt house #5** — deck on 4 stilts + red roof at (-6, -38).
+24. **Mango grove** — 3 trees with fruit at (12, 34), (16, 34), (20, 32).
+25. **Coconut palms ×3** — tall trunks + tops + nuts along the riverbank at (-6, 40), (6, 40), (34, 40).
+26. **Flower garden** — 2 beds + 6 flowers at (-24, 2).
+27. **Second well** — ring + posts + roof at (-8, 36).
+28. **Entrance road extension** — 3 slabs at (-2, 30), (-2, 34), (-2, 38).
+29. **Second rideable cow (Cow2)** — full copy of the Cow node + `cow.gd` script at (14, -6), added to both vehicle lists and the prompt names, so Vehicle-button enter/exit works exactly like the first cow.
+
+#### UI — minimap, prompts, help, counters
+30. **9 new minimap dots** — fishing spot (blue), donation box (gold), stall E (red), well #2 (blue), House7, Cow2, football ball (white), villagers 11/12 (green). Villagers 11/12 are tracked by node name because the old group loop only covered the first 10 villagers.
+31. **Prompts for the new landmarks** — fishing spot, donation box, sesame field, chicken coop, stall E, well #2, House7, stilt house, football ball.
+32. **Help overlay updated** — the new buttons (fish, donate, milk, water, feed, horn, bell, photo, rain) and football kicking are explained in Burmese.
+33. **Counters extended** — the HUD counter line now reads 🍎 💧 🍌 🍵 📚 🍡 🪔 🐟 💰 🥛 🥚 ⚽.
+
+- Verification: `load_steps` 321 → 352 (14 ext + 337 sub + 1, counted exactly), all 14 scripts pass Godot 4.3 `--check-only`, the main scene instantiates headless with all Slice 17 key nodes present (Player, Villager11/12, Cow2, FishingSpot17, DonationBox17, ChickenCoop17, FootballBall17, Rain17, Moon17, Stars17, all 9 buttons and 9 dots) and runs 5 frames headless with no script or scene errors. This is a load test, NOT a playtest — fishing, donating, milking, watering, feeding, horn, bell, photo saving, rain, and football scoring are not verified in-engine. Three real overlaps found by the builder's own distance check and fixed before commit (a mango tree moved off the Slice 14 fishing nets, a palm moved off a riverside bench, Cow2 moved out of the duck pond).
+- Still honest gaps: villager avoidance is circle steering, not pathfinding; whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the tuk-tuk, bicycle, boat, and cart are position-based and can leave their roads/water (stated, not hidden); the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new).

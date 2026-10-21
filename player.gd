@@ -110,6 +110,40 @@ var drum_timer: float = 0.0
 var snack_count: int = 0
 var lantern_count: int = 0
 var quest_rewarded6: bool = false
+# Slice 17: fishing / donating / milking / watering / feeding, horn,
+# bell, photo, rain, football, seventh reward. All buttons touch-first;
+# the chime is generated in code (AudioStreamWAV sine) and actually
+# played on quest advance — no dormant audio manager.
+var fish_count: int = 0
+var donation_count: int = 0
+var milk_count: int = 0
+var egg_count: int = 0
+var goal_count: int = 0
+var photo_count: int = 0
+var crop_growth: int = 0
+var quest_rewarded7: bool = false
+var ball_vel: Vector2 = Vector2.ZERO
+var rain_on: bool = false
+var chime_player: AudioStreamPlayer = null
+var last_chime_stage: int = 0
+var fish_button: Button = null
+var fish_button_connected: bool = false
+var donate_button: Button = null
+var donate_button_connected: bool = false
+var milk_button: Button = null
+var milk_button_connected: bool = false
+var water17_button: Button = null
+var water17_button_connected: bool = false
+var feed_button: Button = null
+var feed_button_connected: bool = false
+var horn_button: Button = null
+var horn_button_connected: bool = false
+var bell17_button: Button = null
+var bell17_button_connected: bool = false
+var photo_button: Button = null
+var photo_button_connected: bool = false
+var rain_button: Button = null
+var rain_button_connected: bool = false
 # Slice 14: hinthar prayer. The Pray button lives in the real scene
 # (JoystickLayer/PrayButton); the blessing label shows 4 s.
 var pray_button: Button = null
@@ -144,6 +178,8 @@ func _physics_process(delta: float) -> void:
 	_update_festival_buttons()
 	_update_blessing(delta)
 	_update_lights_button()
+	_update_slice17_buttons()
+	_update_football(delta)
 	if driving:
 		velocity = Vector3.ZERO
 		move_and_slide()
@@ -553,6 +589,18 @@ func _update_quest_label() -> void:
 		quest_label.text = "တာဝန်: လေထီးနဲ့ မြေပြင်ကို ဆင်းပါ"
 	elif quest_stage == 15:
 		quest_label.text = "တာဝန်: ပွဲတော်မှာ ဗုံတီးပါ"
+	elif quest_stage == 16:
+		quest_label.text = "တာဝန်: မြစ်မှာ ငါးဖမ်းပါ"
+	elif quest_stage == 17:
+		quest_label.text = "တာဝန်: ဘုရားမှာ အလှူပေးပါ"
+	elif quest_stage == 18:
+		quest_label.text = "တာဝန်: နွားနို့ ညှစ်ပါ"
+	elif quest_stage == 19:
+		quest_label.text = "တာဝန်: သီးနှံခင်းကို ရေလောင်းပါ"
+	elif quest_stage == 20:
+		quest_label.text = "တာဝန်: ကြက်တွေကို အစာကျွေးပါ"
+	elif quest_rewarded7:
+		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် + အပြေးမြန် +10% + ခုန်အား +10% + ခုန်အား ထပ် +10%"
 	elif quest_rewarded6:
 		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် + အပြေးမြန် +10% + ခုန်အား +10%"
 	elif quest_rewarded5:
@@ -572,12 +620,17 @@ func _update_quest_label() -> void:
 	if quest_tracker_label == null:
 		quest_tracker_label = get_node_or_null("../JoystickLayer/QuestTrackerLabel") as Label
 	if quest_tracker_label != null:
-		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ", "မုခ်ဦးဖြတ်", "ငှက်ပျောခူး", "ဝါးတံတားဖြတ်", "ဟင်္သာဆုတောင်း", "လက်ဖက်ရည်မှာစား", "စာအုပ်လှူ", "စက်ဘီးစီး", "သုံးဘီးစီး", "လေထီးဆင်း", "ဗုံတီး"]
+		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ", "မုခ်ဦးဖြတ်", "ငှက်ပျောခူး", "ဝါးတံတားဖြတ်", "ဟင်္သာဆုတောင်း", "လက်ဖက်ရည်မှာစား", "စာအုပ်လှူ", "စက်ဘီးစီး", "သုံးဘီးစီး", "လေထီးဆင်း", "ဗုံတီး", "ငါးဖမ်း", "အလှူပေး", "နို့ညှစ်", "ရေလောင်း", "အစာကျွေး"]
 		var parts: Array = []
-		for i in range(16):
+		for i in range(21):
 			parts.append(("✓ " if quest_stage > i else "○ ") + stage_names[i])
 		quest_tracker_label.text = "   ".join(parts)
 		quest_tracker_label.visible = true
+	# Slice 17 quest chime: a short generated tone whenever the stage
+	# actually advances (not on every label refresh).
+	if quest_stage != last_chime_stage:
+		last_chime_stage = quest_stage
+		_play_tone(660.0, 0.25)
 
 func _on_vehicle_button_pressed() -> void:
 	if driving:
@@ -589,7 +642,7 @@ func _on_vehicle_button_pressed() -> void:
 func _nearest_vehicle() -> Node:
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat", "Bicycle", "TukTuk"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -618,7 +671,7 @@ func _try_enter_vehicle() -> void:
 	# list order, which could pick a farther vehicle over a nearer one).
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat", "Bicycle", "TukTuk"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -768,7 +821,8 @@ func _update_minimap() -> void:
 			"GateDot13", "GroveDot13", "SchoolDot13", "TeaShopDot13", "FootballDot13",
 			"VillagerDot6", "VehicleDotBoat", "HintharDot14L", "HintharDot14R", "BridgeDot14",
 			"VillagerDot7", "VillagerDot8", "VehicleDotBicycle", "VehicleDotTukTuk",
-			"FestivalDot16", "VillagerDot9", "VillagerDot10"]:
+			"FestivalDot16", "VillagerDot9", "VillagerDot10",
+			"FishDot17", "DonateDot17", "VillagerDot11", "VillagerDot12", "StallDot17", "WellDot17", "VehicleDotCow2", "BallDot17", "HouseDot17"]:
 			var dot := panel.get_node_or_null(name) as ColorRect
 			if dot != null:
 				minimap_dots[name] = dot
@@ -814,7 +868,7 @@ func _update_minimap() -> void:
 		var lm := get_node_or_null("../" + pair[0]) as Node3D
 		if lm != null:
 			put.call(pair[1], lm.global_position)
-	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat", "Bicycle", "TukTuk"]:
+	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk"]:
 		var v := get_node_or_null("../" + vname)
 		if v != null:
 			put.call("VehicleDot" + vname, (v as Node3D).global_position)
@@ -833,6 +887,17 @@ func _update_minimap() -> void:
 	var fest16 := get_node_or_null("../FestivalGround16")
 	if fest16 != null:
 		put.call("FestivalDot16", fest16.global_position)
+	# Slice 17 dots: fishing spot, donation box, stall E, well #2,
+	# House7, Cow2, football ball; villagers 11/12 by node name
+	# (the group loop above only covers the first 10 villagers).
+	for pair in [["FishingSpot17", "FishDot17"], ["DonationBox17", "DonateDot17"],
+			["MarketStallE17", "StallDot17"], ["Well17_2", "WellDot17"],
+			["House7_17", "HouseDot17"], ["Cow2", "VehicleDotCow2"],
+			["FootballBall17", "BallDot17"], ["Villager11", "VillagerDot11"],
+			["Villager12", "VillagerDot12"]]:
+		var lm17 := get_node_or_null("../" + pair[0]) as Node3D
+		if lm17 != null:
+			put.call(pair[1], lm17.global_position)
 
 ## Slice 10 nearby prompt: what is close enough to use, on foot.
 func _update_prompt_label() -> void:
@@ -854,7 +919,7 @@ func _update_prompt_label() -> void:
 	var veh := _nearest_vehicle()
 	if veh != null:
 		var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
-			"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး"}
+			"Airplane": "လေယာဉ်", "Cow": "နွား", "Cow2": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး"}
 		prompt_label.text = "အနီး: " + names.get(veh.name, veh.name) + " — စီးမည်"
 		prompt_label.visible = true
 		return
@@ -876,6 +941,15 @@ func _update_prompt_label() -> void:
 			["HintharStatue14L", "ဟင်္သာရုပ်တု", 4.0],
 			["HintharStatue14R", "ဟင်္သာရုပ်တု", 4.0],
 			["FestivalGround16", "ပွဲတော်", 6.0],
+		["FishingSpot17", "ငါးဖမ်းဆိပ်", 4.0],
+		["DonationBox17", "အလှူခံပုံး", 4.0],
+		["SesameField15", "နှမ်းခင်း", 4.0],
+		["ChickenCoop17", "ကြက်အိမ်", 4.0],
+		["MarketStallE17", "ဈေးဆိုင် E", 5.0],
+		["Well17_2", "ရေတွင်း ၂", 5.0],
+		["House7_17", "အိမ် ၇", 5.0],
+		["StiltHouse17_5", "ခြေတံရှည် အိမ်", 5.0],
+		["FootballBall17", "ဘောလုံး", 4.0],
 			["FestivalDrum16", "ဗုံ", 4.0],
 			["FestivalStall16", "ပွဲဈေးဆိုင်", 4.0],
 			["FestivalLantern16A", "ပွဲမီးအိမ်", 4.0]]:
@@ -967,7 +1041,7 @@ func _update_fruit_water_label() -> void:
 		fruit_water_label = get_node_or_null("../JoystickLayer/FruitWaterLabel") as Label
 	if fruit_water_label == null:
 		return
-	fruit_water_label.text = "🍎 %d 💧 %d 🍌 %d 🍵 %d 📚 %d 🍡 %d 🪔 %d" % [fruit_count, water_count, banana_count, tea_count, book_count, snack_count, lantern_count]
+	fruit_water_label.text = "🍎 %d 💧 %d 🍌 %d 🍵 %d 📚 %d 🍡 %d 🪔 %d 🐟 %d 💰 %d 🥛 %d 🥚 %d ⚽ %d" % [fruit_count, water_count, banana_count, tea_count, book_count, snack_count, lantern_count, fish_count, donation_count, milk_count, egg_count, goal_count]
 	fruit_water_label.visible = true
 
 ## Slice 12: the well bucket lowers to the water and rises back
@@ -1301,3 +1375,193 @@ func _on_buy_snack() -> void:
 		return
 	snack_count += 1
 	_update_fruit_water_label()
+
+## Slice 17: fishing / donating / milking / watering / feeding, horn,
+## bell, photo, rain, football. Every button is touch-first and lives
+## in the real scene (JoystickLayer); driving buttons (horn, bell)
+## show only while driving the matching vehicle, the rest only on
+## foot near their spot. No keyboard path exists for any of them.
+func _play_tone(freq: float, dur: float) -> void:
+	if chime_player == null:
+		chime_player = AudioStreamPlayer.new()
+		add_child(chime_player)
+	var wav := AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_16_BITS
+	wav.mix_rate = 22050
+	wav.stereo = false
+	var n := int(22050 * dur)
+	var data := PackedByteArray()
+	data.resize(n * 2)
+	for i in range(n):
+		var s := int(sin(float(i) / 22050.0 * freq * TAU) * 12000.0)
+		data[i * 2] = s & 0xFF
+		data[i * 2 + 1] = (s >> 8) & 0xFF
+	wav.data = data
+	chime_player.stream = wav
+	chime_player.play()
+
+func _wire17(btn_name: String, btn: Button, connected: bool, handler: Callable) -> Button:
+	if btn == null:
+		btn = get_node_or_null("../JoystickLayer/" + btn_name) as Button
+		if btn != null and not connected:
+			btn.pressed.connect(handler)
+			connected = true
+	return btn
+
+func _update_slice17_buttons() -> void:
+	fish_button = _wire17("FishButton17", fish_button, fish_button_connected, _on_fish)
+	if fish_button != null and not fish_button_connected:
+		fish_button_connected = true
+	donate_button = _wire17("DonateButton17", donate_button, donate_button_connected, _on_donate)
+	if donate_button != null and not donate_button_connected:
+		donate_button_connected = true
+	milk_button = _wire17("MilkButton17", milk_button, milk_button_connected, _on_milk)
+	if milk_button != null and not milk_button_connected:
+		milk_button_connected = true
+	water17_button = _wire17("WaterButton17", water17_button, water17_button_connected, _on_water_crops)
+	if water17_button != null and not water17_button_connected:
+		water17_button_connected = true
+	feed_button = _wire17("FeedButton17", feed_button, feed_button_connected, _on_feed_chickens)
+	if feed_button != null and not feed_button_connected:
+		feed_button_connected = true
+	horn_button = _wire17("HornButton17", horn_button, horn_button_connected, _on_horn)
+	if horn_button != null and not horn_button_connected:
+		horn_button_connected = true
+	bell17_button = _wire17("BellButton17", bell17_button, bell17_button_connected, _on_bell17)
+	if bell17_button != null and not bell17_button_connected:
+		bell17_button_connected = true
+	photo_button = _wire17("PhotoButton17", photo_button, photo_button_connected, _on_photo)
+	if photo_button != null and not photo_button_connected:
+		photo_button_connected = true
+	rain_button = _wire17("RainButton17", rain_button, rain_button_connected, _on_rain)
+	if rain_button != null and not rain_button_connected:
+		rain_button_connected = true
+	if driving:
+		if horn_button != null:
+			horn_button.visible = driving_vehicle != null and driving_vehicle.name in ["Car", "TukTuk"]
+		if bell17_button != null:
+			bell17_button.visible = driving_vehicle != null and driving_vehicle.name == "Bicycle"
+		for b in [fish_button, donate_button, milk_button, water17_button, feed_button, photo_button, rain_button]:
+			if b != null:
+				b.visible = false
+		return
+	var spot := get_node_or_null("../FishingSpot17") as Node3D
+	if fish_button != null:
+		fish_button.visible = spot != null and global_position.distance_to(spot.global_position) < 4.0
+	var box := get_node_or_null("../DonationBox17") as Node3D
+	if donate_button != null:
+		donate_button.visible = box != null and global_position.distance_to(box.global_position) < 4.0
+	var cow := get_node_or_null("../Cow") as Node3D
+	if milk_button != null:
+		milk_button.visible = cow != null and global_position.distance_to(cow.global_position) < 3.5
+	var field := get_node_or_null("../SesameField15") as Node3D
+	if water17_button != null:
+		water17_button.visible = field != null and global_position.distance_to(field.global_position) < 4.0
+	var coop := get_node_or_null("../ChickenCoop17") as Node3D
+	if feed_button != null:
+		feed_button.visible = coop != null and global_position.distance_to(coop.global_position) < 4.0
+	if photo_button != null:
+		photo_button.visible = true
+	if rain_button != null:
+		rain_button.visible = true
+		rain_button.text = "မိုးပိတ်" if rain_on else "မိုး"
+	if horn_button != null:
+		horn_button.visible = false
+	if bell17_button != null:
+		bell17_button.visible = false
+
+func _on_fish() -> void:
+	if driving:
+		return
+	fish_count += 1
+	if quest_stage == 16:
+		quest_stage = 17
+		_update_quest_label()
+	_update_fruit_water_label()
+
+func _on_donate() -> void:
+	if driving:
+		return
+	donation_count += 1
+	if quest_stage == 17:
+		quest_stage = 18
+		_update_quest_label()
+	_update_fruit_water_label()
+
+func _on_milk() -> void:
+	if driving:
+		return
+	milk_count += 1
+	if quest_stage == 18:
+		quest_stage = 19
+		_update_quest_label()
+	_update_fruit_water_label()
+
+func _on_water_crops() -> void:
+	if driving:
+		return
+	if crop_growth < 3:
+		crop_growth += 1
+		var s := 1.0 + 0.3 * float(crop_growth)
+		for i in range(6):
+			var p := get_node_or_null("../SesameField15/SesamePlant15_%d" % i) as Node3D
+			if p != null:
+				p.scale = Vector3(s, s, s)
+	if quest_stage == 19:
+		quest_stage = 20
+		_update_quest_label()
+
+func _on_feed_chickens() -> void:
+	if driving:
+		return
+	egg_count += 1
+	if quest_stage == 20:
+		quest_stage = 21
+		if not quest_rewarded7:
+			quest_rewarded7 = true
+			walk_speed *= 1.05
+			jump_velocity *= 1.1
+		_update_quest_label()
+	_update_fruit_water_label()
+
+func _on_horn() -> void:
+	_play_tone(220.0, 0.4)
+
+func _on_bell17() -> void:
+	_play_tone(880.0, 0.3)
+
+func _on_photo() -> void:
+	if driving:
+		return
+	var img := get_viewport().get_texture().get_image()
+	photo_count += 1
+	img.save_png("user://photo17_%d.png" % photo_count)
+
+func _on_rain() -> void:
+	rain_on = not rain_on
+	var rain := get_node_or_null("../Rain17") as GPUParticles3D
+	if rain != null:
+		rain.visible = rain_on
+		rain.emitting = rain_on
+
+## Slice 17 football: the ball is pushed when the player walks into
+## it and rolls with decay; entering either goal (24,-20) or (36,-20)
+## scores, resets the ball to centre, and bumps the goal counter.
+func _update_football(delta: float) -> void:
+	var ball := get_node_or_null("../FootballBall17") as Node3D
+	if ball == null:
+		return
+	if not driving:
+		var to_ball := Vector2(ball.global_position.x - global_position.x, ball.global_position.z - global_position.z)
+		if to_ball.length() < 1.2 and to_ball.length() > 0.01:
+			ball_vel += to_ball.normalized() * 8.0
+	ball.global_position.x += ball_vel.x * delta
+	ball.global_position.z += ball_vel.y * delta
+	ball_vel *= maxf(0.0, 1.0 - 2.0 * delta)
+	for g in [Vector2(24.0, -20.0), Vector2(36.0, -20.0)]:
+		if Vector2(ball.global_position.x, ball.global_position.z).distance_to(g) < 2.0:
+			goal_count += 1
+			ball.global_position = Vector3(30.0, 0.35, -20.0)
+			ball_vel = Vector2.ZERO
+			_update_fruit_water_label()
+			break

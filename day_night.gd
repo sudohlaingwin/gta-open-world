@@ -16,3 +16,10 @@ func _process(delta: float) -> void:
 	sun.rotation_degrees.x = angle - 90.0
 	var daylight: float = clampf(sin(deg_to_rad(angle)), 0.0, 1.0)
 	sun.light_energy = 0.05 + daylight * 1.15
+	# Slice 17 night sky: the moon and stars show only when dark.
+	var moon := get_node_or_null("../Moon17")
+	if moon != null:
+		moon.visible = daylight < 0.15
+	var stars := get_node_or_null("../Stars17")
+	if stars != null:
+		stars.visible = daylight < 0.15

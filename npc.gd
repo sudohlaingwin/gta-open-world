@@ -6,10 +6,13 @@ extends CharacterBody3D
 ## shows when in range — both call talk_to(). E is only a desktop
 ## debug fallback. talk_to() faces the player and shows his own
 ## Burmese greeting in a Label3D bubble for 4 seconds, then walks on.
-## No quests, no obstacle avoidance yet — stated plainly in
-## README.md. Wander targets are picked around the villager's spawn
-## (home) point, not the world origin, and stay clear of the pagoda
-## platform at (-20, -25).
+## Slice 17 obstacle avoidance: villagers steer around the mapped
+## obstacle circles below (pagoda, school, tea shop, market, zayat,
+## houses, festival, statues, bridge, gate) instead of walking
+## through them, and wander targets inside a circle are rejected.
+## This is steering around circles, not full pathfinding — stated
+## plainly. Wander targets are picked around the villager's spawn
+## (home) point, not the world origin.
 
 @export var walk_speed: float = 1.6
 @export var wander_radius: float = 12.0
@@ -21,6 +24,16 @@ var home: Vector3 = Vector3.ZERO
 var target: Vector3 = Vector3.ZERO
 var pause_left: float = 0.0
 var talking_left: float = 0.0
+## Slice 17 obstacle circles: [x, z, radius] for the structures a
+## villager must not walk through. Radii cover the footprint plus
+## a small margin; steering adds its own 0.8 clearance.
+const OBSTACLES: Array = [
+	[-20.0, -25.0, 10.0], [-6.0, -32.0, 2.0], [-34.0, 14.0, 7.0],
+	[-14.0, 20.0, 5.0], [18.0, 15.0, 7.0], [28.0, 2.0, 5.0],
+	[-8.0, -8.0, 4.0], [10.0, -10.0, 4.0], [-14.0, 10.0, 4.0],
+	[-16.0, 14.0, 4.0], [42.0, -33.0, 7.0], [-26.0, -16.0, 2.0],
+	[-14.0, -16.0, 2.0], [18.0, 44.0, 4.0], [0.0, 26.0, 3.0],
+]
 
 func _ready() -> void:
 	home = global_position
@@ -58,7 +71,12 @@ func _pick_target() -> void:
 			home.x + randf_range(-wander_radius, wander_radius),
 			0.0,
 			home.z + randf_range(-wander_radius, wander_radius))
-		if Vector2(t.x, t.z).distance_to(Vector2(-20.0, -25.0)) > 13.0:
+		var clear := true
+		for ob in OBSTACLES:
+			if Vector2(t.x, t.z).distance_to(Vector2(ob[0], ob[1])) <= float(ob[2]) + 1.0:
+				clear = false
+				break
+		if clear:
 			target = t
 			return
 	target = home
@@ -110,6 +128,19 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 	var dir := to.normalized()
+	# Slice 17 avoidance: if the next step would enter an obstacle
+	# circle, push the step-out point to the circle's edge first,
+	# then walk toward that adjusted point instead.
+	var nxt := Vector2(global_position.x, global_position.z) + Vector2(dir.x, dir.z) * 0.6
+	for ob in OBSTACLES:
+		var c := Vector2(ob[0], ob[1])
+		var r := float(ob[2]) + 0.8
+		var d := nxt.distance_to(c)
+		if d < r and d > 0.001:
+			nxt = c + (nxt - c).normalized() * r
+	var ndir := Vector2(nxt.x - global_position.x, nxt.y - global_position.z)
+	if ndir.length() > 0.05:
+		dir = Vector3(ndir.x, 0.0, ndir.y).normalized()
 	rotation.y = atan2(dir.x, dir.z)
 	velocity.x = dir.x * walk_speed
 	velocity.z = dir.z * walk_speed
