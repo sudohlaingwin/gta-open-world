@@ -1,6 +1,10 @@
 extends Node3D
 ## Slice 2 cart: DRIVABLE (slower than the car).
-## Same enter/exit interface as car.gd: Enter/Space to exit.
+## Slice 9 joystick driving (TOUCH-FIRST — this is a mobile game):
+## the wired touch joystick now steers + drives the cart
+## (joystick x = steer, joystick up = forward, down = reverse),
+## same convention as the motorcycle. Arrow keys / WASD remain
+## ONLY as a desktop fallback. Same enter/exit interface as car.gd.
 ## No physics body in Slice 2 (flat ground, houses have no collision
 ## in this scene either) — movement is position-based, stated plainly.
 
@@ -26,6 +30,9 @@ func _process(delta: float) -> void:
 		return
 	var fwd := Input.get_axis("ui_down", "ui_up")
 	var steer := Input.get_axis("ui_left", "ui_right")
+	if driver.get("touch_vector") != null and driver.touch_vector != Vector2.ZERO:
+		steer = driver.touch_vector.x
+		fwd = -driver.touch_vector.y
 	speed += fwd * accel * delta
 	speed = clamp(speed, -max_speed * 0.4, max_speed)
 	if fwd == 0.0:

@@ -326,3 +326,41 @@ The opponent's HUD exposed a real Muse gap: Muse's sprint (Shift) and jump (J) w
 - `main.tscn` load_steps correctly stays 36 — Button nodes add no resources (10 ext + 26 sub, verified by count).
 
 - Still honest gaps: vehicle STEERING while driving is still keyboard (WASD/arrows) for car/cart/airplane — the joystick drives on-foot movement only, so joystick-steered driving is the next touch gap; no quests, no villager obstacle avoidance, no cow walk animation, helicopter, Android APK, whole-country map, PUBG graphics still missing; NOT run in Godot (no binary on this VM), no APK claimed.
+
+## Slice 9 — review of opponent 6145f71 ("Slice 10: flight stall physics, decoupled pitch/roll/yaw, explicit throttle, clean mount sprint, removed obsolete files")
+
+Credited — this commit genuinely closes two defects Slice 8 listed, and it is the opponent's most honest physics fix yet:
+- Stall is REAL now: `stall_speed` is actually read in `aircraft_controller.gd` — below stall speed lift collapses by a stall factor and the nose drops. The unused-export defect is closed.
+- Mount sprint is FIXED: `mount_controller.gd` now reads the rider's `is_sprinting` state (set by the HUD Sprint button) or physical Shift — the undefined "sprint" input action is gone.
+- Throttle is BETTER: it no longer rises unconditionally every frame — sprint raises it, otherwise it decays toward a 0.35 cruise floor.
+- Dead-file cleanup is honest: deleting `mobile_touch_ui.gd` removes a file no scene referenced; nothing that worked is lost by it.
+
+Defects that remain, with file evidence:
+- `vehicle_controller.gd` is STILL dead: zero `.tscn` references in the whole tree (checked all 8 scenes at 6145f71). The opponent tree still has no car, no motorcycle, and no helicopter.
+- Airplane throttle still cannot reach zero: the cruise floor is 0.35, and there is no throttle-down input below cruise — a pilot still cannot slow down to land except by exiting mid-air.
+- No independent yaw: roll and yaw still share `input_dir.x` — yaw is now only a 0.4× coordinated turn from the roll input, and the old Q/E yaw is gone, so there is no way to yaw without rolling.
+- `mobile_touch_hud.gd` was untouched by this commit, so the Slice 8 `PromptBanner` defect persists (assigned once, never shown or written).
+- This commit itself is touch-compatible (joystick + HUD sprint feed the aircraft and mount) — no mobile-first violation in it, stated fairly.
+
+## Slice 9 — Muse beats it: BIG BATCH, per the owner's new rule (on top of 090735f, all Slice 8 features kept)
+
+The owner redirected Slice 9 on 2026-10-21 23:52 +07: upgrades must be BIG batches at once, not tiny little slices. So Slice 9 bundles FOUR substantial, working items in one upgrade — every one of them in the shipped scene and wired code, none of them a headline-only script:
+
+### 1. Joystick-steered driving for EVERY vehicle — the known touch gap, closed
+Slice 8 stated this gap plainly: steering while driving was still keyboard for car/cart/airplane. Slice 9 closes it:
+- `car.gd` and `cart.gd` now read the driver's `touch_vector` (joystick x = steer, joystick up = forward, down = reverse), the exact convention the motorcycle has used since Slice 3. Arrow keys / WASD remain ONLY as desktop fallbacks.
+- `cow.gd` direction was already joystick-driven; Slice 9 adds touch trot — holding the on-screen Sprint button (`driver.touch_sprint`) trots at 4.5, so a phone rider no longer needs Shift.
+- `airplane.gd` pitch/roll were already joystick-driven; Slice 9 adds on-screen ThrottleUp / ThrottleDown buttons (hold-to-change, shown only while flying an aircraft) feeding `driver.touch_throttle_up / touch_throttle_down`, plus coordinated yaw from roll (`rotate_y(-roll_in * yaw_speed * 0.5 * delta)`), so a joystick-only pilot can turn, climb, and slow down without any keyboard. Q/E yaw and Shift/Ctrl throttle remain as desktop fallbacks only.
+- The motorcycle needed no change here — it has been joystick-steered since Slice 3, stated honestly rather than re-claimed as new.
+
+### 2. Helicopter — a new owner-spec aircraft type
+`helicopter.gd` + a Helicopter node in `main.tscn` at (20, 1, 10): it hovers (release all vertical input and vertical speed eases to 0 — it does not fall), climbs with ThrottleUp, descends with ThrottleDown, turns with joystick x, moves with joystick y, and its Rotor mesh spins while flying (slow idle spin when parked). Same `start_driving()` / `exit_vehicle()` interface as every other vehicle, so the player's nearest-vehicle picker (now including "Helicopter") and camera retarget work unchanged. Desktop fallbacks: WASD/arrows + Shift/Ctrl. No weapons and no helicopter missions yet — stated plainly.
+
+### 3. Cow walk animation — no longer a sliding capsule
+The cow in `main.tscn` now has four leg meshes (LegFL / LegFR / LegBL / LegBR, `BoxMesh_leg`). While the cow moves, `cow.gd` swings the legs in diagonal pairs (`sin(walk_phase) * 0.5`) and bobs the body slightly; standing still, the legs ease back to neutral. This is primitive mesh animation, stated honestly — not a skinned walk cycle, not motion capture. All leg lookups are guarded, so an older scene without the leg nodes runs without crashing (it just shows no animation).
+
+### 4. First quest — talk to every villager
+`QuestLabel` in `main.tscn` (top of screen) shows "တာဝန်: ရွာသားနဲ့ စကားပြောပါ (0/3)". Every conversation counts — `npc.gd` `talk_to()` now calls `player.record_talk()`, so the Talk button path AND the direct-tap path both advance the quest. When all villagers in the "villagers" group have been talked to, the label switches to "တာဝန် ပြီးပါပြီ! ရွာသား အားလုံးနဲ့ စကားပြောပြီးပါပြီ". It is a first, simple quest — no quest rewards, no quest chain, no villager obstacle avoidance yet, all stated plainly.
+
+- `main.tscn` load_steps correctly goes 36 → 38 (11 ext + 27 sub, verified by count: +1 ext for `helicopter.gd`, +1 sub for `BoxMesh_leg`; Button/Label/Leg nodes add no resources beyond that).
+- Still honest gaps: no quests beyond this first one, no villager obstacle avoidance, no parachute, no Android APK, no whole-country map, no PUBG graphics; NOT run in Godot (no binary on this VM), no APK claimed.

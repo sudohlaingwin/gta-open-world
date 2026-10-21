@@ -21,6 +21,8 @@ var driving: bool = false
 var driving_vehicle: Node = null
 var touch_vector: Vector2 = Vector2.ZERO
 var touch_sprint: bool = false
+var touch_throttle_up: bool = false
+var touch_throttle_down: bool = false
 var jump_requested: bool = false
 var e_was_pressed: bool = false
 var talk_button: Button = null
@@ -31,6 +33,12 @@ var jump_button: Button = null
 var jump_button_connected: bool = false
 var vehicle_button: Button = null
 var vehicle_button_connected: bool = false
+var throttle_up_button: Button = null
+var throttle_up_connected: bool = false
+var throttle_down_button: Button = null
+var throttle_down_connected: bool = false
+var quest_label: Label = null
+var talked_ids: Array = []
 
 func _ready() -> void:
 	pass
@@ -115,6 +123,21 @@ func _update_action_buttons() -> void:
 		if vehicle_button != null and not vehicle_button_connected:
 			vehicle_button.pressed.connect(_on_vehicle_button_pressed)
 			vehicle_button_connected = true
+	# Slice 9 throttle buttons: hold-to-climb / hold-to-descend for
+	# aircraft (airplane throttle, helicopter lift). They live in
+	# the real scene (JoystickLayer), found lazily like the rest.
+	if throttle_up_button == null:
+		throttle_up_button = get_node_or_null("../JoystickLayer/ThrottleUpButton") as Button
+		if throttle_up_button != null and not throttle_up_connected:
+			throttle_up_button.button_down.connect(_on_throttle_up_down)
+			throttle_up_button.button_up.connect(_on_throttle_up_up)
+			throttle_up_connected = true
+	if throttle_down_button == null:
+		throttle_down_button = get_node_or_null("../JoystickLayer/ThrottleDownButton") as Button
+		if throttle_down_button != null and not throttle_down_connected:
+			throttle_down_button.button_down.connect(_on_throttle_down_down)
+			throttle_down_button.button_up.connect(_on_throttle_down_up)
+			throttle_down_connected = true
 	if driving:
 		if sprint_button != null:
 			sprint_button.visible = false
@@ -123,11 +146,20 @@ func _update_action_buttons() -> void:
 		if vehicle_button != null:
 			vehicle_button.visible = true
 			vehicle_button.text = "ဆင်းမည်"
+		var flying := driving_vehicle != null and driving_vehicle.name in ["Airplane", "Helicopter"]
+		if throttle_up_button != null:
+			throttle_up_button.visible = flying
+		if throttle_down_button != null:
+			throttle_down_button.visible = flying
 		return
 	if sprint_button != null:
 		sprint_button.visible = true
 	if jump_button != null:
 		jump_button.visible = true
+	if throttle_up_button != null:
+		throttle_up_button.visible = false
+	if throttle_down_button != null:
+		throttle_down_button.visible = false
 	if vehicle_button != null:
 		var near := _nearest_vehicle()
 		vehicle_button.visible = near != null
@@ -144,6 +176,41 @@ func _on_jump_pressed() -> void:
 	if not driving:
 		jump_requested = true
 
+func _on_throttle_up_down() -> void:
+	touch_throttle_up = true
+
+func _on_throttle_up_up() -> void:
+	touch_throttle_up = false
+
+func _on_throttle_down_down() -> void:
+	touch_throttle_down = true
+
+func _on_throttle_down_up() -> void:
+	touch_throttle_down = false
+
+## Slice 9 first quest: talk to every villager in the village.
+## Called by npc.gd talk_to(), so BOTH the Talk button and the
+## direct-tap path count — a tap-only conversation is not lost.
+## The QuestLabel lives in the real scene (JoystickLayer) with its
+## starting text set in main.tscn; this only rewrites it on progress.
+func record_talk(villager: Node) -> void:
+	var vid := villager.get_instance_id()
+	if not talked_ids.has(vid):
+		talked_ids.append(vid)
+	_update_quest_label()
+
+func _update_quest_label() -> void:
+	if quest_label == null:
+		quest_label = get_node_or_null("../JoystickLayer/QuestLabel") as Label
+	if quest_label == null:
+		return
+	var villagers := get_tree().get_nodes_in_group("villagers")
+	var total := villagers.size()
+	if total > 0 and talked_ids.size() >= total:
+		quest_label.text = "တာဝန် ပြီးပါပြီ! ရွာသား အားလုံးနဲ့ စကားပြောပြီးပါပြီ"
+	else:
+		quest_label.text = "တာဝန်: ရွာသားနဲ့ စကားပြောပါ (" + str(talked_ids.size()) + "/" + str(total) + ")"
+
 func _on_vehicle_button_pressed() -> void:
 	if driving:
 		if driving_vehicle != null and driving_vehicle.has_method("exit_vehicle"):
@@ -154,7 +221,7 @@ func _on_vehicle_button_pressed() -> void:
 func _nearest_vehicle() -> Node:
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -183,7 +250,7 @@ func _try_enter_vehicle() -> void:
 	# list order, which could pick a farther vehicle over a nearer one).
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)

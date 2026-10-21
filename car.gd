@@ -1,6 +1,11 @@
 extends CharacterBody3D
 ## Slice 1 car: simple drivable car.
-## While driving: arrow keys / WASD steer + accelerate, Enter/Space exits.
+## Slice 9 joystick driving (TOUCH-FIRST — this is a mobile game):
+## the wired touch joystick now steers + accelerates the car
+## (joystick x = steer, joystick up = forward, down = reverse),
+## exactly like the motorcycle has done since Slice 3. Arrow keys /
+## WASD remain ONLY as a desktop fallback. Enter/Space exits
+## (the on-screen Vehicle button calls exit_vehicle() since Slice 8).
 
 @export var max_speed: float = 14.0
 @export var accel: float = 8.0
@@ -26,6 +31,9 @@ func _physics_process(delta: float) -> void:
 		return
 	var fwd := Input.get_axis("ui_down", "ui_up")
 	var steer := Input.get_axis("ui_left", "ui_right")
+	if driver.get("touch_vector") != null and driver.touch_vector != Vector2.ZERO:
+		steer = driver.touch_vector.x
+		fwd = -driver.touch_vector.y
 	speed += fwd * accel * delta
 	speed = clamp(speed, -max_speed * 0.4, max_speed)
 	# Gentle friction when no input.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3]
+[gd_scene load_steps=38 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Script" path="res://car.gd" id="1_car"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://joystick.gd" id="1_joystick"]
 [ext_resource type="Script" path="res://motorcycle.gd" id="1_motorcycle"]
 [ext_resource type="Script" path="res://airplane.gd" id="1_airplane"]
+[ext_resource type="Script" path="res://helicopter.gd" id="1_helicopter"]
 [ext_resource type="Script" path="res://npc.gd" id="1_npc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
@@ -182,6 +183,22 @@ script = ExtResource("1_cow")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Cow"]
 mesh = SubResource("CapsuleMesh_player")
 
+[node name="LegFL" type="MeshInstance3D" parent="Cow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.2, 0.35)
+mesh = SubResource("BoxMesh_leg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Cow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.2, 0.35)
+mesh = SubResource("BoxMesh_leg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Cow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.2, -0.35)
+mesh = SubResource("BoxMesh_leg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Cow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.2, -0.35)
+mesh = SubResource("BoxMesh_leg")
+
 [node name="FollowCamera" type="Camera3D" parent="."]
 script = ExtResource("1_camera")
 target = NodePath("../Player")
@@ -254,11 +271,50 @@ offset_bottom = 0.0
 visible = false
 text = "စီးမည်"
 
+[node name="ThrottleUpButton" type="Button" parent="JoystickLayer"]
+anchor_left = 0.78
+anchor_top = 0.56
+anchor_right = 0.97
+anchor_bottom = 0.66
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "အရှိန် +"
+
+[node name="ThrottleDownButton" type="Button" parent="JoystickLayer"]
+anchor_left = 0.6
+anchor_top = 0.56
+anchor_right = 0.74
+anchor_bottom = 0.66
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "အရှိန် −"
+
+[node name="QuestLabel" type="Label" parent="JoystickLayer"]
+anchor_left = 0.25
+anchor_top = 0.02
+anchor_right = 0.75
+anchor_bottom = 0.07
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+horizontal_alignment = 1
+text = "တာဝန်: ရွာသားနဲ့ စကားပြောပါ (0/3)"
+
 [sub_resource type="BoxMesh" id="BoxMesh_bike"]
 size = Vector3(0.6, 0.8, 2)
 
 [sub_resource type="BoxMesh" id="BoxMesh_wing"]
 size = Vector3(8, 0.3, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_leg"]
+size = Vector3(0.2, 0.7, 0.2)
 
 [node name="Motorcycle" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 8)
@@ -281,6 +337,20 @@ shape = SubResource("BoxShape3D_car")
 mesh = SubResource("BoxMesh_car")
 
 [node name="Wings" type="MeshInstance3D" parent="Airplane"]
+mesh = SubResource("BoxMesh_wing")
+
+[node name="Helicopter" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1, 10)
+script = ExtResource("1_helicopter")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Helicopter"]
+shape = SubResource("BoxShape3D_car")
+
+[node name="Body" type="MeshInstance3D" parent="Helicopter"]
+mesh = SubResource("BoxMesh_car")
+
+[node name="Rotor" type="MeshInstance3D" parent="Helicopter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 mesh = SubResource("BoxMesh_wing")
 
 [node name="Pagoda" type="StaticBody3D" parent="."]

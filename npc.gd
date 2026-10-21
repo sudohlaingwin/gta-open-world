@@ -31,7 +31,9 @@ func _hide_label() -> void:
 	if label != null:
 		label.visible = false
 
-## Called by player.gd when the player presses E near this villager.
+## Called by the Talk button, by direct tap, or (desktop fallback)
+## by E near this villager. Slice 9: talking also counts toward
+## the player's first quest (record_talk), whichever path started it.
 func talk_to(player_pos: Vector3) -> void:
 	var to_player := player_pos - global_position
 	to_player.y = 0.0
@@ -42,6 +44,9 @@ func talk_to(player_pos: Vector3) -> void:
 	if label != null:
 		label.text = dialogue_text
 		label.visible = true
+	var player := get_node_or_null("../Player")
+	if player != null and player.has_method("record_talk"):
+		player.call("record_talk", self)
 
 func _pick_target() -> void:
 	for _i in range(8):

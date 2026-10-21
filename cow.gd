@@ -7,10 +7,15 @@ extends Node3D
 ## arrow keys move the cow in that world direction and the cow faces
 ## its direction of travel; the wired touch joystick works too via
 ## the driver's touch_vector. Walk 3.0, trot 4.5 with Shift (physical
-## key, no undefined input action). The camera retargets to the cow
-## while riding and back to the player on dismount (see Slice 7 note
-## in README.md: previously the camera stayed at the mount point).
-## No walk animation yet — stated plainly, not faked.
+## key, no undefined input action) or, TOUCH-FIRST, by holding the
+## on-screen Sprint button (driver.touch_sprint, Slice 9).
+## The camera retargets to the cow while riding and back to the
+## player on dismount (see Slice 7 note in README.md: previously
+## the camera stayed at the mount point).
+## Slice 9 walk animation (primitive, honest — not a skinned rig):
+## while the cow moves, its four leg meshes swing in diagonal pairs
+## and the body bobs slightly; standing still, the legs ease back to
+## neutral. Legs are LegFL / LegFR / LegBL / LegBR in main.tscn.
 
 @export var walk_speed: float = 3.0
 @export var trot_multiplier: float = 1.5
@@ -18,6 +23,7 @@ extends Node3D
 
 var driver: Node = null
 var speed: float = 0.0
+var walk_phase: float = 0.0
 
 func start_driving(p: Node) -> void:
 	driver = p
@@ -28,6 +34,7 @@ func start_driving(p: Node) -> void:
 
 func _process(delta: float) -> void:
 	if driver == null:
+		_animate_walk(delta, false)
 		return
 	if Input.is_action_just_pressed("ui_accept"):
 		_exit_cow()
@@ -41,13 +48,40 @@ func _process(delta: float) -> void:
 	if dir.length() > 0.01:
 		dir = dir.normalized()
 		var target_speed := walk_speed
-		if Input.is_physical_key_pressed(KEY_SHIFT):
+		if Input.is_physical_key_pressed(KEY_SHIFT) or driver.get("touch_sprint") == true:
 			target_speed *= trot_multiplier
 		rotation.y = lerp_angle(rotation.y, atan2(dir.x, dir.z), 10.0 * delta)
 		speed = move_toward(speed, target_speed, accel * delta)
 		position += dir * speed * delta
 	else:
 		speed = move_toward(speed, 0.0, accel * delta)
+	_animate_walk(delta, speed > 0.1)
+
+## Slice 9: diagonal-pair leg swing + body bob while moving.
+## All lookups are guarded, so an older scene without the leg
+## nodes still runs (it just shows no animation, not a crash).
+func _animate_walk(delta: float, moving: bool) -> void:
+	if moving:
+		walk_phase += delta * speed * 2.5
+	var swing := 0.0
+	if moving:
+		swing = sin(walk_phase) * 0.5
+	var legs := {
+		"LegFL": swing,
+		"LegBR": swing,
+		"LegFR": -swing,
+		"LegBL": -swing,
+	}
+	for leg_name in legs:
+		var leg := get_node_or_null(leg_name) as Node3D
+		if leg != null:
+			leg.rotation.x = lerp(leg.rotation.x, legs[leg_name], 10.0 * delta)
+	var body := get_node_or_null("MeshInstance3D") as Node3D
+	if body != null:
+		var bob := 0.0
+		if moving:
+			bob = sin(walk_phase * 2.0) * 0.05
+		body.position.y = lerp(body.position.y, bob, 10.0 * delta)
 
 ## Slice 8 touch exit: the on-screen Vehicle button calls this.
 func exit_vehicle() -> void:

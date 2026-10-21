@@ -4,12 +4,18 @@ extends CharacterBody3D
 ## (throttle rising every frame with no way down) and its unused
 ## stall_speed export (stall is actually applied here).
 ##
-## Controls while flying (keyboard; joystick also works):
-##   Throttle: Shift = up, Ctrl = down (explicit, clamped 0..1)
-##   Pitch: Up/Down arrows. Roll: Left/Right arrows. Yaw: Q/E.
-##   Joystick: x = roll, y = pitch.
-##   Exit: Enter/Space. Exiting mid-air drops the pilot (falling);
-##   there is NO parachute yet — stated plainly, not faked.
+## Controls while flying (TOUCH-FIRST — this is a mobile game):
+##   Throttle: hold the on-screen ThrottleUp / ThrottleDown buttons
+##   (Slice 9, shown only while flying an aircraft; player.gd wires
+##   them to driver.touch_throttle_up / touch_throttle_down).
+##   Shift / Ctrl remain ONLY as desktop fallbacks (explicit,
+##   clamped 0..1, never auto-rising).
+##   Joystick: x = roll (+ coordinated yaw, so a phone can turn
+##   without a keyboard), y = pitch. Q/E yaw remains as a desktop
+##   fallback only.
+##   Exit: on-screen Vehicle button (or Enter/Space on desktop).
+##   Exiting mid-air drops the pilot (falling); there is NO
+##   parachute yet — stated plainly, not faked.
 ## Enter/exit: same start_driving()/leave_vehicle() interface as
 ## the other vehicles, so the player's vehicle picker works unchanged.
 
@@ -41,10 +47,11 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_accept"):
 		_exit_aircraft()
 		return
-	# Explicit throttle: Shift up, Ctrl down. Never auto-rises.
-	if Input.is_physical_key_pressed(KEY_SHIFT):
+	# Explicit throttle: touch buttons first, Shift/Ctrl as fallback.
+	# Never auto-rises.
+	if Input.is_physical_key_pressed(KEY_SHIFT) or driver.get("touch_throttle_up") == true:
 		throttle += 0.5 * delta
-	if Input.is_physical_key_pressed(KEY_CTRL):
+	if Input.is_physical_key_pressed(KEY_CTRL) or driver.get("touch_throttle_down") == true:
 		throttle -= 0.5 * delta
 	throttle = clamp(throttle, 0.0, 1.0)
 	var pitch_in := Input.get_axis("ui_up", "ui_down")
@@ -54,6 +61,8 @@ func _physics_process(delta: float) -> void:
 		roll_in = driver.touch_vector.x
 	rotate_object_local(Vector3.RIGHT, pitch_in * pitch_speed * delta)
 	rotate_object_local(Vector3.FORWARD, -roll_in * roll_speed * delta)
+	# Coordinated yaw from roll: a joystick-only pilot can turn.
+	rotate_y(-roll_in * yaw_speed * 0.5 * delta)
 	if Input.is_physical_key_pressed(KEY_Q):
 		rotate_y(0.8 * delta)
 	if Input.is_physical_key_pressed(KEY_E):
