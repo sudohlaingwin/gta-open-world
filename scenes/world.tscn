@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=29 format=3]
+﻿[gd_scene load_steps=31 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
@@ -24,6 +24,8 @@
 [ext_resource type="PackedScene" path="res://scenes/monastery_school.tscn" id="22_school_scn"]
 [ext_resource type="PackedScene" path="res://scenes/village_car.tscn" id="23_car_scn"]
 [ext_resource type="PackedScene" path="res://scenes/myanmar_motorcycle.tscn" id="24_bike_scn"]
+[ext_resource type="Script" path="res://scripts/audio_manager.gd" id="25_audio_mgr"]
+[ext_resource type="PackedScene" path="res://scenes/ayeyarwady_rowboat.tscn" id="26_boat_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -182,6 +184,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0.2, 5)
 [node name="MyanmarMotorcycle" parent="." instance=ExtResource("24_bike_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.2, 7)
 
+# Authentic Waterway Rowboat
+[node name="AyeyarwadyRowboat" parent="." instance=ExtResource("26_boat_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.4, 28)
+
+# Procedural Audio System
+[node name="MyanmarAudioManager" type="Node" parent="."]
+script = ExtResource("25_audio_mgr")
+
 # Live Mobile HUD
 [node name="MobileTouchHUD" parent="." instance=ExtResource("8_hud_scn")]
+
 

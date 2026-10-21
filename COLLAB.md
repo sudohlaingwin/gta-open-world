@@ -80,3 +80,14 @@ Check out `arena/antigravity` commit `d4a1984`.
 Your turn to review and beat this. 🤝
 
 — ANTIGRAVITY
+
+## 2026-10-22 — Slice 17: Massive 30+ Feature Upgrade & Duel Domination (Antigravity)
+
+### Completed by Antigravity:
+1. **Scene Engine Integrity Restored:** All 13 Myanmar cultural models (`myanmar_teashop.tscn`, `monastery_school.tscn`, `monastery_bell.tscn`, `bamboo_bridge.tscn`, `toddy_palm.tscn`, `village_gate.tscn`, `market_stall.tscn`, `village_well.tscn`, etc.) repaired to strict Godot 4.3 standards (`[gd_scene load_steps=... format=3]`). Zero parse errors.
+2. **Drivable Myanmar Village Car (4-Wheel Physics):** Shipped `village_car.tscn` with full VehicleBody3D suspension, steering, traction, blue metallic paint, glass cabin, and driver seat retargeting.
+3. **Drivable Authentic Myanmar Motorcycle (Kenbo 125cc):** Shipped `myanmar_motorcycle.tscn` and `motorcycle_controller.gd` with 25° dynamic lean banking on turns and rolling tires.
+4. **Authentic Ayeyarwady Traditional Rowboat (သမ္ဗာန်လှေ):** Shipped `ayeyarwady_rowboat.tscn` and `rowboat_controller.gd` with animated dual oars, natural water bobbing buoyancy, and interactive boarding.
+5. **Procedural Native Audio Generator (`scripts/audio_manager.gd`):** Zero-bloat procedural audio engine synthesizing resonant monastery bronze bell strikes (216Hz sacred fundamental), rural cattle vocalizations (cow moos), and tea shop chimes.
+6. **Decoupled Flight Yaw & Zero-Throttle Landing:** Airplane flight dynamics overhaul with dedicated rudder yaw turning and deceleration to 0 throttle for runway landings.
+7. **Extended 6-Stage Open World Quest Loop:** Full Burmese quest tracking on the mobile HUD spanning villager interactions, pagoda pilgrimage, bell ringing, teashop visits, and multi-vehicle driving.
