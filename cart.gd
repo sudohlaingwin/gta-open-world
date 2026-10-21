@@ -34,6 +34,10 @@ func _process(delta: float) -> void:
 	var forward := Vector3(-sin(rotation.y), 0.0, -cos(rotation.y))
 	position += forward * speed * delta
 
+## Slice 8 touch exit: the on-screen Vehicle button calls this.
+func exit_vehicle() -> void:
+	_exit_cart()
+
 func _exit_cart() -> void:
 	if driver == null:
 		return

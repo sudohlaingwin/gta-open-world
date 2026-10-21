@@ -36,6 +36,10 @@ func _physics_process(delta: float) -> void:
 	velocity = forward * speed
 	move_and_slide()
 
+## Slice 8 touch exit: the on-screen Vehicle button calls this.
+func exit_vehicle() -> void:
+	_exit_car()
+
 func _exit_car() -> void:
 	if driver == null:
 		return

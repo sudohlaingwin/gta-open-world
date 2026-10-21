@@ -70,6 +70,10 @@ func _physics_process(delta: float) -> void:
 	velocity = velocity.limit_length(50.0)
 	move_and_slide()
 
+## Slice 8 touch exit: the on-screen Vehicle button calls this.
+func exit_vehicle() -> void:
+	_exit_aircraft()
+
 func _exit_aircraft() -> void:
 	if driver == null:
 		return

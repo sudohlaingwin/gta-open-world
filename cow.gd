@@ -49,6 +49,10 @@ func _process(delta: float) -> void:
 	else:
 		speed = move_toward(speed, 0.0, accel * delta)
 
+## Slice 8 touch exit: the on-screen Vehicle button calls this.
+func exit_vehicle() -> void:
+	_exit_cow()
+
 func _exit_cow() -> void:
 	if driver == null:
 		return

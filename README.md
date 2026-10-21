@@ -302,3 +302,27 @@ Previously the camera stayed at the spot where you mounted, so a driven vehicle 
 
 - `main.tscn` load_steps correctly stays 36 — the TalkButton node adds no resource.
 - Still honest gaps: no quests, no villager obstacle avoidance, no cow walk animation, helicopter, Android APK, whole-country map, PUBG graphics still missing; NOT run in Godot (no binary on this VM), no APK claimed.
+
+## Slice 8 — review of opponent e0c57ee ("Slice 9: live MobileTouchHUD in world.tscn + contextual action buttons + villager dialogue overrides")
+
+Credited — this is the opponent's strongest HUD reply yet, and two old defects are genuinely closed:
+- The HUD is LIVE this time: `scenes/mobile_touch_hud.tscn` is actually instantiated in `scenes/world.tscn` (load_steps 13 = 8 ext + 5 sub, correct), and `scripts/mobile_touch_hud.gd` wires against a real player API — `current_state` / `State` enum, `nearby_mount` / `nearby_vehicle` / `nearby_aircraft`, `_get_nearest_villager(4.0)`, `interact()` (which now falls back to villager `talk_to()`), `jump()`, `set_sprint()`, the `player` group, and both joystick signals (`joystick_moved`, `joystick_released`) are all present in its own `player.gd` / `virtual_joystick.gd`. The contextual Interact label (Ride Mount / Fly Plane / Drive / Talk / Dismount / Exit) is a real improvement.
+- Villager variety is REAL this time: `world.tscn` Villager1/2/3 now carry actual overrides — names ကိုဘသောင်း / ဦးရွှေရိုး / ဒေါ်အေးကြည်, three distinct greetings, three distinct longyi colours. This fixes the Slice 8 "exports-only" defect.
+- Touch-first: the HUD is buttons + joystick, no keyboard as primary path in this commit.
+
+Defects that remain, with file evidence:
+- `PromptBanner` is dead: assigned once (`@onready var prompt_banner`) and never shown, hidden, or written anywhere else in `mobile_touch_hud.gd` — its prompt text can never appear.
+- `mobile_touch_hud.tscn` load_steps says 3 but holds 2 ext resources and 0 sub resources — off by one, same class of count slip as before (minor).
+- The OLD dead files are still there: `scripts/mobile_touch_ui.gd` and `scripts/vehicle_controller.gd` are referenced by NO scene (git grep over `*.tscn` returns nothing for either).
+- Standing defects NOT fixed by this commit (files untouched): mount sprint still reads the undefined "sprint" action (`mount_controller.gd:49`, no sprint action in `project.godot`); airplane throttle still auto-rises (`aircraft_controller.gd:41`, `throttle + delta * 0.4`, no throttle-down), `stall_speed` is still exported but never read, and roll (line 46) and yaw (line 47) still both use `input_dir.x`.
+
+## Slice 8 — Muse beats it (on top of 1100d9c, all Slice 7 features kept)
+
+### Touch-first action HUD — closing Muse's own keyboard gap
+The opponent's HUD exposed a real Muse gap: Muse's sprint (Shift) and jump (J) were still keyboard-only, and vehicle enter/exit was Enter/Space only. Slice 8 closes it in the shipped scene, not in a dead script:
+- On-screen **Sprint button** ("အပြေး", hold-to-sprint via button_down/up → `player.touch_sprint`), **Jump button** ("ခုန်", pressed → `jump_requested`, consumed on the next ground frame), and **Vehicle button** (shows "စီးမည်" near a vehicle within 4 m, "ဆင်းမည်" while driving) — all Button nodes in `main.tscn` under `JoystickLayer`, wired lazily by `player.gd` exactly like the Slice 7 Talk button.
+- Every vehicle (car, cart, motorcycle, airplane, cow) gained a uniform `exit_vehicle()` wrapper around its existing `_exit_*()` method, so the touch Exit button uses the same dismount path (including stepping out beside the vehicle and retargeting the camera) as the keyboard path — no second, divergent exit implementation.
+- Shift / J / Enter-Space remain ONLY as desktop fallbacks. Talk button + tap-villager dialogue from Slice 7 is untouched.
+- `main.tscn` load_steps correctly stays 36 — Button nodes add no resources (10 ext + 26 sub, verified by count).
+
+- Still honest gaps: vehicle STEERING while driving is still keyboard (WASD/arrows) for car/cart/airplane — the joystick drives on-foot movement only, so joystick-steered driving is the next touch gap; no quests, no villager obstacle avoidance, no cow walk animation, helicopter, Android APK, whole-country map, PUBG graphics still missing; NOT run in Godot (no binary on this VM), no APK claimed.
