@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" path="res://scenes/toddy_palm.tscn" id="12_palm_scn"]
 [ext_resource type="PackedScene" path="res://scenes/myanmar_zayat.tscn" id="13_zayat_scn"]
 [ext_resource type="PackedScene" path="res://scenes/water_pot_stand.tscn" id="14_pot_scn"]
+[ext_resource type="PackedScene" path="res://scenes/market_stall.tscn" id="15_stall_scn"]
+[ext_resource type="PackedScene" path="res://scenes/village_well.tscn" id="16_well_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -88,6 +90,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -30)
 
 [node name="WaterPotStand" parent="." instance=ExtResource("14_pot_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, -26)
+
+# Village Market Stalls & Brick Well (ကျေးလက်ဈေးနှင့် ရေတွင်း)
+[node name="MarketStall1" parent="." instance=ExtResource("15_stall_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -18)
+
+[node name="MarketStall2" parent="." instance=ExtResource("15_stall_scn")]
+transform = Transform3D(0.965, 0, -0.258, 0, 1, 0, 0.258, 0, 0.965, 3, 0, -19)
+
+[node name="VillageWell" parent="." instance=ExtResource("16_well_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -16)
 
 # Village Houses
 [node name="VillageHouse1" parent="." instance=ExtResource("10_house_scn")]
