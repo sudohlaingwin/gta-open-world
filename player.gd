@@ -66,6 +66,12 @@ var zoom_in_button: Button = null
 var zoom_in_connected: bool = false
 var zoom_out_button: Button = null
 var zoom_out_connected: bool = false
+# Slice 11: bell quest + reward + tracker + camera reset.
+var bell_label_timer: float = 0.0
+var quest_rewarded: bool = false
+var quest_tracker_label: Label = null
+var camera_reset_button: Button = null
+var camera_reset_connected: bool = false
 
 func _ready() -> void:
 	pass
@@ -130,6 +136,26 @@ func _physics_process(delta: float) -> void:
 		if pag != null and global_position.distance_to(pag.global_position) < 8.0:
 			quest_stage = 2
 			_update_quest_label()
+	# Slice 11 quest stage 3: walk within 3.5 m of the monastery
+	# bell to ring it. The bell label shows on any ring (with a 4 s
+	# cooldown); the quest advances only once stage 2 (ride) is done.
+	var bell := get_node_or_null("../MonasteryBell") as Node3D
+	if bell != null and global_position.distance_to(bell.global_position) < 3.5 and bell_label_timer <= 0.0:
+		bell_label_timer = 4.0
+		var bl := get_node_or_null("../MonasteryBell/BellLabel") as Label3D
+		if bl != null:
+			bl.visible = true
+		if quest_stage == 3:
+			quest_stage = 4
+			if not quest_rewarded:
+				quest_rewarded = true
+			_update_quest_label()
+	if bell_label_timer > 0.0:
+		bell_label_timer -= delta
+		if bell_label_timer <= 0.0:
+			var bl2 := get_node_or_null("../MonasteryBell/BellLabel") as Label3D
+			if bl2 != null:
+				bl2.visible = false
 	if Input.is_action_just_pressed("ui_accept"):
 		_try_enter_vehicle()
 	# E is a desktop-debug fallback ONLY — the primary path is the
@@ -219,6 +245,15 @@ func _update_action_buttons() -> void:
 		if help_button != null and not help_button_connected:
 			help_button.pressed.connect(_on_help_pressed)
 			help_button_connected = true
+	# Slice 11 camera reset button: tap to restore default orbit
+	# angle and zoom (touch-first; it lives in the real scene).
+	if camera_reset_button == null:
+		camera_reset_button = get_node_or_null("../JoystickLayer/CameraResetButton") as Button
+		if camera_reset_button != null and not camera_reset_connected:
+			camera_reset_button.pressed.connect(_on_camera_reset)
+			camera_reset_connected = true
+	if camera_reset_button != null:
+		camera_reset_button.visible = true
 	if help_label == null:
 		help_label = get_node_or_null("../JoystickLayer/HelpLabel") as Label
 	if driving:
@@ -316,7 +351,7 @@ func _update_speed_label() -> void:
 		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်"}
 	var vmax := {"Car": 14.0, "Cart": 6.0, "Motorcycle": 18.0,
 		"Airplane": 50.0, "Cow": 4.5, "Helicopter": 12.0}
-	var vname := names.get(driving_vehicle.name, driving_vehicle.name)
+	var vname: String = str(names.get(driving_vehicle.name, driving_vehicle.name))
 	var spd := 0.0
 	if driving_vehicle.get("speed") != null:
 		spd = absf(float(driving_vehicle.get("speed")))
@@ -325,7 +360,7 @@ func _update_speed_label() -> void:
 	speed_label.text = vname + " — " + ("%d km/h" % int(spd * 3.6))
 	speed_label.visible = true
 	if speed_bar != null:
-		var top := vmax.get(driving_vehicle.name, 14.0)
+		var top: float = float(vmax.get(driving_vehicle.name, 14.0))
 		speed_bar.value = clampf(spd / top * 100.0, 0.0, 100.0)
 		speed_bar.visible = true
 
@@ -394,8 +429,22 @@ func _update_quest_label() -> void:
 		quest_label.text = "တာဝန်: ဘုရားကို သွားပါ"
 	elif quest_stage == 2:
 		quest_label.text = "တာဝန်: ယာဉ်တစ်စီး စီးပါ"
+	elif quest_stage == 3:
+		quest_label.text = "တာဝန်: ခေါင်းလောင်းထိုးပါ"
+	elif quest_rewarded:
+		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့်"
 	else:
 		quest_label.text = "တာဝန်များ အားလုံး ပြီးပါပြီ!"
+	# Slice 11 quest tracker: live checklist of the 4 stages.
+	if quest_tracker_label == null:
+		quest_tracker_label = get_node_or_null("../JoystickLayer/QuestTrackerLabel") as Label
+	if quest_tracker_label != null:
+		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း"]
+		var parts: Array = []
+		for i in range(4):
+			parts.append(("✓ " if quest_stage > i else "○ ") + stage_names[i])
+		quest_tracker_label.text = "   ".join(parts)
+		quest_tracker_label.visible = true
 
 func _on_vehicle_button_pressed() -> void:
 	if driving:
@@ -464,10 +513,17 @@ func _update_stamina(delta: float) -> void:
 	if stamina_bar == null:
 		stamina_bar = get_node_or_null("../JoystickLayer/StaminaBar") as ProgressBar
 	var sprinting := (Input.is_physical_key_pressed(KEY_SHIFT) or touch_sprint) and not driving
+	# Slice 11 quest reward: finishing the chain blesses stamina —
+	# it drains half as fast and restores twice as fast.
+	var drain := 25.0
+	var regen := 15.0
+	if quest_rewarded:
+		drain = 12.5
+		regen = 30.0
 	if sprinting and velocity.length() > 0.5:
-		stamina = maxf(stamina - 25.0 * delta, 0.0)
+		stamina = maxf(stamina - drain * delta, 0.0)
 	else:
-		stamina = minf(stamina + 15.0 * delta, 100.0)
+		stamina = minf(stamina + regen * delta, 100.0)
 	if stamina_bar != null:
 		stamina_bar.value = stamina
 		stamina_bar.visible = not driving
@@ -534,7 +590,8 @@ func _update_minimap() -> void:
 			return
 		for name in ["PlayerDot", "VillagerDot1", "VillagerDot2", "VillagerDot3", "PagodaDot",
 				"VehicleDotCar", "VehicleDotCart", "VehicleDotMotorcycle", "VehicleDotAirplane",
-				"VehicleDotCow", "VehicleDotHelicopter"]:
+				"VehicleDotCow", "VehicleDotHelicopter",
+				"BellDot", "ZayatDot", "GroveDot"]:
 			var dot := panel.get_node_or_null(name) as ColorRect
 			if dot != null:
 				minimap_dots[name] = dot
@@ -553,6 +610,17 @@ func _update_minimap() -> void:
 	var pag := get_node_or_null("../Pagoda")
 	if pag != null:
 		put.call("PagodaDot", (pag as Node3D).global_position)
+	# Slice 11 landmark dots: bell (bronze), zayat (brown), grove
+	# (green, tracked at the first palm trunk).
+	var bellm := get_node_or_null("../MonasteryBell")
+	if bellm != null:
+		put.call("BellDot", (bellm as Node3D).global_position)
+	var zay := get_node_or_null("../Zayat")
+	if zay != null:
+		put.call("ZayatDot", (zay as Node3D).global_position)
+	var palm := get_node_or_null("../PalmTrunk_s11_1")
+	if palm != null:
+		put.call("GroveDot", (palm as Node3D).global_position)
 	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter"]:
 		var v := get_node_or_null("../" + vname)
 		if v != null:
@@ -582,6 +650,15 @@ func _update_prompt_label() -> void:
 		prompt_label.text = "အနီး: " + names.get(veh.name, veh.name) + " — စီးမည်"
 		prompt_label.visible = true
 		return
+	# Slice 11 landmark prompts: bell, zayat, grove, village sign.
+	for pair in [["MonasteryBell", "ခေါင်းလောင်း", 3.5],
+			["Zayat", "ဇရပ်", 5.0],
+			["PalmTrunk_s11_1", "ထန်းတော", 5.0]]:
+		var lm := get_node_or_null("../" + pair[0]) as Node3D
+		if lm != null and global_position.distance_to(lm.global_position) < float(pair[2]):
+			prompt_label.text = "အနီး: " + str(pair[1])
+			prompt_label.visible = true
+			return
 	prompt_label.visible = false
 
 func _on_yaw_left_down() -> void:
@@ -609,3 +686,9 @@ func _on_zoom_out() -> void:
 func _on_help_pressed() -> void:
 	if help_label != null:
 		help_label.visible = not help_label.visible
+
+func _on_camera_reset() -> void:
+	var cam := get_node_or_null("../FollowCamera")
+	if cam != null:
+		cam.set("orbit_angle", 0.0)
+		cam.set("zoom", 1.0)

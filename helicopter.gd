@@ -70,8 +70,8 @@ func _physics_process(delta: float) -> void:
 	velocity.z = forward.z * speed
 	# Vertical: touch throttle buttons first, Shift/Ctrl as fallback.
 	# No input = hover (vertical speed eases to 0, it does not fall).
-	var climb := Input.is_physical_key_pressed(KEY_SHIFT) or driver.get("touch_throttle_up") == true
-	var descend := Input.is_physical_key_pressed(KEY_CTRL) or driver.get("touch_throttle_down") == true
+	var climb: bool = Input.is_physical_key_pressed(KEY_SHIFT) or driver.get("touch_throttle_up") == true
+	var descend: bool = Input.is_physical_key_pressed(KEY_CTRL) or driver.get("touch_throttle_down") == true
 	if climb:
 		velocity.y = climb_speed
 	elif descend:

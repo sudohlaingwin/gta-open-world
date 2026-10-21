@@ -14,5 +14,5 @@ func _process(delta: float) -> void:
 	if sun == null:
 		return
 	sun.rotation_degrees.x = angle - 90.0
-	var daylight := clamp(sin(deg_to_rad(angle)), 0.0, 1.0)
+	var daylight: float = clampf(sin(deg_to_rad(angle)), 0.0, 1.0)
 	sun.light_energy = 0.05 + daylight * 1.15

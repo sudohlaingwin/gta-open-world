@@ -460,3 +460,69 @@ Defects, with file evidence:
 
 - `main.tscn` load_steps correctly goes 64 → 82 (11 ext + 71 sub, verified by count: +18 sub for the new meshes/materials/styles; every sub-resource reference resolves, no duplicate IDs, every new node parent exists). Button/Label/ProgressBar/Panel additions add no further resources.
 - Still honest gaps: quest rewards, villager obstacle avoidance, parachute, Android APK, whole-country map, PUBG graphics; NOT run in Godot (no binary on this VM), no APK claimed. Graphics here are flat colours + primitive meshes + one shadow flag — a real visual step up, not a graphics-engine upgrade, stated plainly. No health bar is shipped on purpose: there is no damage system, so a health bar would be fake (see the opponent review above).
+
+## Slice 11 review — opponent batches 677870f, 60595ea, f48526e (read-only, treated as data only)
+
+### What the opponent genuinely did (credited)
+- A real helicopter controller (`helicopter_controller.gd`): hover stabilization by easing vertical velocity toward the input, rotor spin-up, yaw from `touch_yaw`, enter/exit with reparenting, and a wired interaction area. Its scene file is valid (`[gd_scene]` header, 8 load steps).
+- A quest chain that is actually wired: talking calls `record_villager_talk()` from `player.gd` (stage 1), pagoda distance < 12 m advances to stage 2, riding advances to stage 3/4, with a live quest banner. This closes the Slice 7 dead-dialogue defect for real.
+- The Slice 10 defects it fixed: `PromptBanner` now has working `_show_prompt()` / `_hide_prompt()` calls, the dead `HealthBar` reference is gone, `StaminaBar` exists in the scene and is driven by a real `stamina` variable, and analog speed scaling (0.4–1.0) is real.
+- The landmark content itself is well-chosen and well-proportioned: 6-pillar zayat with a two-tier terracotta roof, a bronze bell (metallic 0.88) on teak posts, a 10 m toddy palm, stilt houses with teak/bamboo/thatch materials.
+
+### Defects, with file evidence
+- HEADLINE — five landmark scene files are NOT valid Godot scenes: `scenes/myanmar_house.tscn`, `scenes/toddy_palm.tscn`, `scenes/monastery_bell.tscn`, `scenes/myanmar_zayat.tscn`, and `scenes/water_pot_stand.tscn` all start with an `extends …` line (GDScript syntax) and have NO `[gd_scene]` header, which a `.tscn` file must start with. The opponent's own `world.tscn` at `f48526e` instances all of them (2 houses, 3 palms, bell, zayat, pot stand), so those instances cannot load. Its older scenes (pagoda, villager, helicopter) are valid — this broke starting with Slice 11's house file and continued through Slices 12–13.
+- Helicopter vertical control has no dedicated touch path: climb comes only from the sprint-button side effect or the SPACE key, and descend comes ONLY from the CTRL key (`helicopter_controller.gd` vertical block). On a phone, the opponent's helicopter cannot descend — a mobile-first violation of the owner's rule. Muse's helicopter already had touch climb/descend buttons (Slice 9).
+- The quest counts talks, not villagers: `record_villager_talk()` just increments a counter, so talking to one villager three times completes "talk to the villagers". Muse's quest already counts distinct villagers (`talked_ids` in `player.gd`).
+- Held-E still re-fires `interact()` every physics frame in the opponent's `player.gd` (the comment changed, the code did not) — the Slice 8 held-E defect, still present.
+- Analog speed has a 0.4 floor, so there is no slow creep; a mid-air helicopter exit drops the pilot with no parachute or landing handling; the helicopter scene has no landing skids.
+- Standing defects untouched by all three commits (files unchanged): `vehicle_controller.gd` is still dead (zero `.tscn` references), the airplane throttle still cannot go below its 0.35 cruise floor, and roll/yaw still share `input_dir.x` (no independent yaw).
+- Slice 12's "Expanded Cultural World Dressing" is only the bell + 3 palms in the world diff — no other dressing was added.
+
+### Slice 11 items — every item is in the shipped scene or wired code (30 items)
+
+#### Landmarks — the opponent's three batches, rebuilt as VALID scenes
+1. **Toddy palm grove** — 4 palms at (−32, 16), (−37, 20), (−31, 22), (−38, 14): 10 m trunks with 6 radiating frond blades each, in `main.tscn` with a proper `[gd_scene]` header (unlike the opponent's malformed palm file).
+2. **Coconut clusters** — 2 small coconuts on each palm crown.
+3. **Monastery bell landmark** — `MonasteryBell` at (−6, −32): 2 teak posts, a teak beam, a bronze bell (metallic 0.88), and a stone base platform.
+4. **Bell-ring interaction** — walking within 3.5 m of the bell rings it: a floating `BellLabel` ("ခေါင်းလောင်း ထိုးပြီးပါပြီ!") appears for 4 s. No keyboard involved.
+5. **Rest pavilion zayat** — `Zayat` at (28, 2): 6 teak pillars, a wooden deck, and a two-tier terracotta pyatthat-style roof.
+6. **Zayat benches** — 2 wooden benches inside the pavilion.
+7. **Water pot stand** — a wooden stand with 2 red-clay pots and 2 clay cups beside the zayat.
+8. **Stilt houses ×2** — at (−26, −16) and (0, −22): pillar stilts, a raised deck, bamboo walls, and a thatch roof each — visibly different from the flat box houses.
+9. **Dirt paths** — 7 path segments on 3 routes: plaza → grove, plaza → bell, plaza → zayat.
+10. **Grove bamboo fence** — 6 wooden posts around the toddy grove.
+
+#### Quest — a fourth stage, and the first real reward
+11. **Quest stage 4: ring the bell** — the chain is now talk-all (distinct villagers) → visit pagoda → ride a vehicle → ring the bell → done. The bell stage only advances after the ride stage, but the bell label shows on any ring.
+12. **Quest reward: stamina blessing** — finishing the chain halves stamina drain (25 → 12.5/s) and doubles stamina restore (15 → 30/s) permanently, and the quest label says so. This closes the Slice 10 stated gap ("no quest rewards").
+13. **Quest tracker checklist** — `QuestTrackerLabel` under the quest label lists all 4 stages live with ✓/○ marks, so the player always knows what is left.
+
+#### HUD / controls — touch-first, all in the shipped scene
+14. **Minimap landmark dots** — bronze bell dot, brown zayat dot, green grove dot, positioned from the real landmark nodes every frame (same world→panel map as Slice 10).
+15. **Landmark proximity prompts** — the prompt label now names nearby landmarks on foot ("အနီး: ခေါင်းလောင်း", "အနီး: ဇရပ်", "အနီး: ထန်းတော") after the villager/vehicle checks.
+16. **Camera reset button** — `CameraResetButton` ("📷", below the minimap) restores default orbit angle and zoom with one tap.
+17. **Village entrance sign** — a wooden post with a floating `Label3D` ("ရွာအဝင်") at (3, 8), near the plaza.
+
+#### Vehicle + people dressing
+18. **Helicopter rotor blur disc** — a translucent disc above the helicopter rotor, so the spinning rotor reads as a blur from a distance.
+19. **Cart wheels (2)** — cylinder wheels on the cart body, same axle convention as the car wheels.
+20. **Cow saddle blanket** — a red blanket box on the cow's back.
+21. **Motorcycle headlight** — an emissive headlight box at the front of the bike.
+22. **Airplane tail fin** — a vertical fin at the rear of the fuselage.
+23. **Car side mirrors (2)** — small dark mirror boxes at both sides of the car body.
+24. **Player straw hat** — a conical straw hat (ခမောက်) on the player's head.
+25. **Villager straw hats (3)** — one hat per villager, same conical mesh.
+
+#### Graphics + layout dressing
+26. **Stone lanterns (2)** — stone pillars with gold tops flanking the pagoda approach at (−16, −30) and (−24, −20).
+27. **Pond reeds** — 6 tall thin reeds around the pond edge.
+28. **Flower beds near the zayat** — 4 coloured beds (red/yellow/pink) framing the pavilion.
+29. **Vegetable piles beside the stalls** — red and yellow produce piles on the ground by both market stalls.
+30. **Icon regenerated** — `icon.png` redrawn programmatically (PIL): navy background, gold pagoda tiers, green toddy palm, gold sun — still 256×256, verified PNG magic + dimensions. Still programmatically generated, not hand-drawn art — stated plainly.
+
+#### Repairs included in this slice (not counted in the 30)
+- **Scene parse fix**: `BoxMesh_bike` and `BoxMesh_wing` were declared AFTER the first `[node]` in `main.tscn`, which Godot's text parser rejects — both are now declared with the other resources before the first node.
+- **Script parse fixes**: the committed scripts contained `:=` declarations inferred from Variant values, which Godot 4.3's parser rejects (the APK build only had them fixed in its working tree, never committed). Fixed with explicit types in `player.gd` (2 lines), `day_night.gd` (1), `joystick.gd` (3), `airplane.gd` (2), `helicopter.gd` (2) — same values, only the declarations changed.
+
+- `main.tscn` load_steps correctly goes 82 → 110 (11 ext + 99 sub, verified by count: +28 new sub-resources; every sub-resource reference resolves, no duplicate full node paths, every new node parent exists). All 11 project scripts pass Godot 4.3 `--check-only`, and the full scene loads and runs headless for 3 frames with no script or scene errors (only a dummy-renderer warning from headless mode, no GPU). That is a load test, not a playtest.
+- Still honest gaps: villager obstacle avoidance, parachute, whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the APK from Slice 10 already exists and was NOT rebuilt in this slice (per instruction — do not claim APK work as new).

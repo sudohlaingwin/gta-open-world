@@ -25,16 +25,16 @@ func _gui_input(event: InputEvent) -> void:
 				player.touch_vector = Vector2.ZERO
 			$Base/Handle.position = Vector2(50, 50)
 	elif event is InputEventScreenDrag and dragging:
-		var diff := event.position - start_pos
-		var dist := diff.length()
+		var diff: Vector2 = event.position - start_pos
+		var dist: float = diff.length()
 		if dist > radius:
 			diff = diff.normalized() * radius
 			dist = radius
 		$Base/Handle.position = Vector2(50, 50) + diff
 		if player != null:
-			var norm := dist / radius
+			var norm: float = dist / radius
 			if norm < deadzone:
 				player.touch_vector = Vector2.ZERO
 			else:
-				var scaled := (norm - deadzone) / (1.0 - deadzone)
+				var scaled: float = (norm - deadzone) / (1.0 - deadzone)
 				player.touch_vector = diff.normalized() * scaled

@@ -85,8 +85,8 @@ func _physics_process(delta: float) -> void:
 	var thrust := forward * (throttle * max_thrust)
 	# Lift scales with forward speed; below stall speed it collapses
 	# and the plane sinks — stall_speed is actually used here.
-	var lift_factor := clamp(forward_speed / stall_speed, 0.0, 1.0)
-	var lift := Vector3.UP * (max(0.0, forward_speed) * lift_coefficient * lift_factor)
+	var lift_factor: float = clampf(forward_speed / stall_speed, 0.0, 1.0)
+	var lift: Vector3 = Vector3.UP * (maxf(0.0, forward_speed) * lift_coefficient * lift_factor)
 	var gravity_force := Vector3.DOWN * 9.8
 	velocity += (thrust + lift + gravity_force) * delta
 	velocity = velocity.limit_length(50.0)
