@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/camera_orbit.gd" id="2_cam"]
@@ -7,9 +7,27 @@
 radius = 0.4
 height = 1.8
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_1"]
-radius = 0.4
-height = 1.8
+# Head
+[sub_resource type="SphereMesh" id="SphereMesh_head"]
+radius = 0.2
+height = 0.4
+
+# Traditional Shirt (တိုက်ပုံ / အင်္ကျီအဖြူ)
+[sub_resource type="BoxMesh" id="BoxMesh_torso"]
+size = Vector3(0.5, 0.6, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_taikpon"]
+albedo_color = Color(0.96, 0.94, 0.90, 1) # Cream White Taikpon
+
+# Traditional Longyi (မြန်မာ့ရိုးရာ လုံချည်စိမ်း)
+[sub_resource type="CylinderMesh" id="CylinderMesh_longyi"]
+top_radius = 0.28
+bottom_radius = 0.30
+height = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_longyi"]
+albedo_color = Color(0.08, 0.35, 0.22, 1) # Dark Emerald Green Traditional Longyi
+roughness = 0.8
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_player")
@@ -20,9 +38,22 @@ shape = SubResource("CapsuleShape3D_1")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-mesh = SubResource("CapsuleMesh_1")
+# Head
+[node name="Head" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+mesh = SubResource("SphereMesh_head")
+
+# Torso (Taikpon)
+[node name="Torso" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+mesh = SubResource("BoxMesh_torso")
+surface_material_override/0 = SubResource("StandardMaterial3D_taikpon")
+
+# Longyi
+[node name="Longyi" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+mesh = SubResource("CylinderMesh_longyi")
+surface_material_override/0 = SubResource("StandardMaterial3D_longyi")
 
 [node name="CameraPivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)

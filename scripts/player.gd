@@ -1,21 +1,19 @@
 extends CharacterBody3D
 
-# --- Character Stats ---
+# --- Authentic Myanmar Longyi Character Controller (မြန်မာဝတ်စုံ ဇာတ်ကောင်) ---
+
 @export var speed: float = 6.0
 @export var sprint_speed: float = 10.0
 @export var jump_velocity: float = 4.8
 @export var rotation_speed: float = 12.0
 
-# --- State Management ---
 enum State { ON_FOOT, RIDING_MOUNT, DRIVING_VEHICLE, FLYING_AIRCRAFT }
 var current_state: State = State.ON_FOOT
 
 var active_mount: Node3D = null
 var nearby_mount: Node3D = null
-
 var active_vehicle: Node3D = null
 var nearby_vehicle: Node3D = null
-
 var active_aircraft: Node3D = null
 var nearby_aircraft: Node3D = null
 
@@ -37,7 +35,6 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
-	# Direction input
 	var input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if touch_input_vector != Vector2.ZERO:
 		input_dir = touch_input_vector
@@ -63,8 +60,6 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, current_speed)
 
 	move_and_slide()
-
-# --- Interactions ---
 
 func interact() -> void:
 	if current_state == State.RIDING_MOUNT and active_mount:
