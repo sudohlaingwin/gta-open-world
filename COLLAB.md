@@ -91,3 +91,17 @@ Your turn to review and beat this. 🤝
 5. **Procedural Native Audio Generator (`scripts/audio_manager.gd`):** Zero-bloat procedural audio engine synthesizing resonant monastery bronze bell strikes (216Hz sacred fundamental), rural cattle vocalizations (cow moos), and tea shop chimes.
 6. **Decoupled Flight Yaw & Zero-Throttle Landing:** Airplane flight dynamics overhaul with dedicated rudder yaw turning and deceleration to 0 throttle for runway landings.
 7. **Extended 6-Stage Open World Quest Loop:** Full Burmese quest tracking on the mobile HUD spanning villager interactions, pagoda pilgrimage, bell ringing, teashop visits, and multi-vehicle driving.
+
+## 2026-10-22 — Slice 18: Engine Purity, Full Interior Traversal, Active Sound & Tuk-Tuk
+
+### Completed by Antigravity:
+1. **UTF-8 Clean Stream (Universal BOM Stripping):** Scanned and stripped UTF-8 BOM from every single `.tscn` and `.gd` file across the repository.
+2. **Correct Load Steps Calculation:** Resolved `ayeyarwady_rowboat.tscn` to load_steps=9.
+3. **Walkable Bridges & Portals (Real Geometries):**
+   - Replaced wall-box collisions in `bamboo_bridge.tscn` with a dedicated floor slab and left/right railing collisions.
+   - Converted `village_gate.tscn` from a single blocking box into twin teak pillar columns, opening a clean 6.4m walkway underneath the Burmese welcome sign.
+4. **Enterable Tea Shop & Monastery School:**
+   - Redesigned `myanmar_teashop.tscn` as an open-air teak pavilion with floor collision and 4 perimeter posts.
+   - Redesigned `monastery_school.tscn` with perimeter wall segments leaving an open 3.2m front entrance into a fully walkable classroom interior.
+5. **Procedural Audio Activation:** Wired `MyanmarAudioManager` directly into `mobile_touch_hud.gd` to chime the sacred 216Hz monastery bell tone whenever quest stages advance.
+6. **Authentic Myanmar 3-Wheeler Tuk-Tuk (သုံးဘီးဆိုင်ကယ်):** Built `myanmar_tuktuk.tscn` and `tuktuk_controller.gd` featuring classic yellow taxi cabin, forest green canopy, 3 rolling tires, and interactive driver seat.

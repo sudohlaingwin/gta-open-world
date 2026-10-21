@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=31 format=3]
+[gd_scene load_steps=32 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" path="res://scenes/myanmar_motorcycle.tscn" id="24_bike_scn"]
 [ext_resource type="Script" path="res://scripts/audio_manager.gd" id="25_audio_mgr"]
 [ext_resource type="PackedScene" path="res://scenes/ayeyarwady_rowboat.tscn" id="26_boat_scn"]
+[ext_resource type="PackedScene" path="res://scenes/myanmar_tuktuk.tscn" id="27_tuktuk_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -191,6 +192,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.4, 28)
 # Procedural Audio System
 [node name="MyanmarAudioManager" type="Node" parent="."]
 script = ExtResource("25_audio_mgr")
+
+# Authentic Myanmar Tuk-Tuk
+[node name="MyanmarTukTuk" parent="." instance=ExtResource("27_tuktuk_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0.2, -4)
 
 # Live Mobile HUD
 [node name="MobileTouchHUD" parent="." instance=ExtResource("8_hud_scn")]

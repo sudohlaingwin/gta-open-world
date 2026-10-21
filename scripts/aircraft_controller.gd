@@ -1,4 +1,4 @@
-﻿extends CharacterBody3D
+extends CharacterBody3D
 
 # --- Realistic Airplane Flight Dynamics & Airspace System ---
 

@@ -1,4 +1,4 @@
-﻿extends CanvasLayer
+extends CanvasLayer
 
 # --- High-Fidelity Mobile Touch Gaming HUD & Flight Deck ---
 
@@ -55,6 +55,9 @@ func _ready() -> void:
 		yaw_right_btn.button_up.connect(func(): if player: player.touch_yaw = 0.0)
 
 	_update_quest_text()
+	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
+	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
+		audio_mgr.play_bell_strike()
 
 func _process(delta: float) -> void:
 	if not player:
@@ -93,18 +96,30 @@ func _process(delta: float) -> void:
 		if player.global_position.distance_to(pagoda_node.global_position) < 14.0:
 			quest_stage = 3
 			_update_quest_text()
+	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
+	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
+		audio_mgr.play_bell_strike()
 	elif quest_stage == 3 and bell_node:
 		if player.global_position.distance_to(bell_node.global_position) < 8.0:
 			quest_stage = 4
 			_update_quest_text()
+	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
+	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
+		audio_mgr.play_bell_strike()
 	elif quest_stage == 4 and teashop_node:
 		if player.global_position.distance_to(teashop_node.global_position) < 10.0:
 			quest_stage = 5
 			_update_quest_text()
+	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
+	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
+		audio_mgr.play_bell_strike()
 	elif quest_stage == 5:
 		if player.current_state != player.State.ON_FOOT:
 			quest_stage = 6
 			_update_quest_text()
+	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
+	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
+		audio_mgr.play_bell_strike()
 
 	# 5. Speedometer & Flight Controls Toggle
 	if player.current_state == player.State.FLYING_AIRCRAFT:
@@ -179,8 +194,14 @@ func record_villager_talk() -> void:
 		if villagers_talked_count >= 3:
 			quest_stage = 2
 		_update_quest_text()
+	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
+	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
+		audio_mgr.play_bell_strike()
 
-func _update_quest_text() -> void:
+func _update_quest_text()
+	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
+	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
+		audio_mgr.play_bell_strike() -> void:
 	if not quest_banner:
 		return
 	match quest_stage:

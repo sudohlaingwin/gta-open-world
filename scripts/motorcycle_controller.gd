@@ -1,4 +1,4 @@
-﻿extends CharacterBody3D
+extends CharacterBody3D
 
 # --- Authentic Myanmar Village Motorcycle / Kenbo 125cc ---
 

@@ -1,4 +1,4 @@
-﻿extends Node
+extends Node
 
 # --- Authentic Myanmar Ambient & Sound Effects Generator ---
 # Procedural Synthesized Audio Streams for Mobile Performance
