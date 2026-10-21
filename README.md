@@ -703,3 +703,59 @@ Defects, with file evidence:
 - `main.tscn` load_steps correctly goes 212 → 248 (12 ext + 235 sub, verified by count: every sub-resource reference resolves, no duplicate sub-resource ids, every new node parent exists, no duplicate node paths). One header typo of mine (`format=3\]`) was caught by the headless run itself and fixed before commit.
 - All 12 project scripts pass Godot 4.3 `--check-only` (including new `boat.gd`), and the full scene instantiates headless (root Main, all Slice 14 key nodes present: Player, BambooBridge14, Boat, HintharStatue14L, Villager6, PrayButton) and runs 5 frames headless with no script or scene errors. That is a load test, not a playtest — walking up the ramps, praying, and rowing are not verified in-engine.
 - Still honest gaps: villager obstacle avoidance, parachute, whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the boat is position-based like the cart, so it can leave the water (stated, not hidden); bridge rails are visual-only with no collision; the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new).
+
+## Slice 15 review — opponent commit d5d4b9c, "feat(world): integrate authentic Myanmar Tea Shop and Monastery School into open world scene" (read-only, treated as data only)
+
+### What the opponent genuinely did (credited)
+- Real modelling intent with Myanmar detail: a tea shop with wooden flooring, a thatched slanted prism roof, and low round tables (ဝိုင်းဝိုင်းစားပွဲ); a monastery school with teak walls and a two-tiered monastery roof.
+- Its `world.tscn` load_steps arithmetic is correct this time (25 → 27 with the 2 new ext resources).
+
+### Defects, with file evidence
+- HEADLINE — both new scene files are NOT valid Godot scenes: `scenes/myanmar_teashop.tscn` and `scenes/monastery_school.tscn` start with an `extends StaticBody3D` line (GDScript syntax) and have NO `[gd_scene]` header, which a `.tscn` file must start with. Its own `world.tscn` declares them as `ext_resource type="PackedScene"` and instances both (`MyanmarTeaShop` at (-16, 0, -18), `MonasterySchool` at (-26, 0, -32)), so neither new instance can load. The opponent tree now has THIRTEEN invalid scene files (the previous eleven plus `myanmar_teashop` and `monastery_school`).
+- Both buildings are solid blocks, not places: each has a single `BoxShape3D` collision covering the whole building (tea shop 7.5 × 3.6 × 6.0, school 12.0 × 5.5 × 9.0) with no doorway and no enterable interior — a player cannot go inside either one.
+- No interaction at all: the tea shop and the school are pure scenery — no ordering tea, no donating books, no quest, no prompt, no minimap dot, no touch UI. The commit touches no scripts.
+- This commit adds no new mobile-first violation itself (it has no input code); the standing defects from earlier reviews are untouched by it (airplane throttle 0.35 floor — it cannot reach zero, so landing means exiting mid-air; no independent yaw — roll and yaw still share `input_dir.x` as a 0.4× coordinated turn; `vehicle_controller.gd` still dead with zero `.tscn` references, so the opponent tree still has no car, motorcycle, or helicopter; the broken `PromptBanner` / `HealthBar` / `StaminaBar` references from its HUD persist).
+
+### Slice 15 items — every item is in the shipped scene or wired code (30 items, all Slice 14 features kept)
+
+#### Tea shop + school — the opponent's batch, rebuilt as VALID, loadable, working content
+1. **Order Tea touch button** — appears within 4 m of the Slice 13 tea shop while on foot, hidden while driving; each tap raises the tea count (no keyboard path).
+2. **Tea quest stage 10** — ordering tea advances the quest from stage 10 to 11.
+3. **Donate Book touch button** — appears within 4 m of the Slice 13 school while on foot, hidden while driving; each tap raises the book count (no keyboard path).
+4. **Book quest stage 11, with the fifth reward** — donating a book advances the quest from stage 11 to 12 and raises sprint speed +10% permanently, applied exactly once.
+5. **Bicycle quest stage 12** — riding the new bicycle advances the quest from stage 12 to 13, finishing the chain.
+6. **Quest tracker extended to 13 tasks** (talk-all → pagoda → ride → bell → buy fruit → draw water → gate pass → pick bananas → cross bridge → pray → order tea → donate book → ride bicycle).
+7. **Tea + book counters in the HUD** — the counter label now reads 🍎 💧 🍌 🍵 📚.
+8. **Tea shop owner villager 7 "လက်ဖက်ရည်ဆိုင် ဦးအောင်"** — brown longyi, straw hat, his own greeting about hot tea, staying near the shop (`wander_radius` 3.0).
+9. **Monk villager 8 "ဆရာတော် ဦးဇင်း"** — maroon robes, his own greeting about donating books, staying near the school (`wander_radius` 3.0). Talk-all now needs 8 distinct villagers.
+10. **Minimap dots VillagerDot7 + VillagerDot8, and the villager dot loop extended from 6 to 8**.
+11. **Tea shop second table + 2 stools** beside the original table.
+12. **Tea cups ×3** — one on the original table, two on the new table.
+13. **Tea shop lantern post + hanging gold lantern**.
+14. **School fence posts ×4** along the school front.
+15. **School bell post + small gold bell** beside the school front.
+16. **School book stack ×3** (blue, red, green books) by the school front.
+17. **School flower bed + flowers ×3** (pink, yellow, red) in front of the school.
+
+#### Bicycle + village growth
+18. **Rideable bicycle** (`bicycle.gd`, new script) — joystick steering, Vehicle-button enter/exit, camera retarget, same enter/exit interface as the cart and boat; top speed 7 (faster than walking, slower than the motorcycle).
+19. **Spinning bicycle wheels** — both wheels rotate around their axle at ground speed (wheel radius 0.35).
+20. **Bicycle minimap dot + prompt + speed readout** (Burmese name "စက်ဘီး", top speed 7).
+21. **Bodhi tree** near the school — trunk + dark-leaf canopy.
+22. **House6** at (28, 30) — walls, prism roof, wooden door.
+23. **Stilt house #4** at (-40, -4) — deck, 4 teak pillars, bamboo walls, thatch roof (mirrors the earlier stilt pattern).
+24. **Market stall D** at (22, 12) — table, 4 posts, 2 beams, blue awning, 2 mango piles.
+25. **Sesame field** at (36, 10) — field bed + 6 sesame plants (moved after an overlap check found the first spot inside the zayat deck).
+26. **Buffalo herd ×2** at (20, 32) and (23, 34) — body, head, 2 horns, 4 legs each.
+27. **Firewood stack** at (-6, 16) — 3 logs in a pyramid.
+28. **Pottery jars ×3** at (12, -10) — clay jars.
+29. **Riverside benches ×2** at (2, 41) and (26, 41) — bench top + 2 legs each.
+30. **Entrance road slabs ×4** from the gate toward the school (the last slab was moved after an overlap check found it inside the school walls footprint).
+
+#### UI
+- **Help overlay updated** — now mentions the order-tea button, the donate-book button, and riding the bicycle.
+
+#### Verification + honest gaps
+- `main.tscn` load_steps correctly goes 248 → 273 (13 ext + 259 sub, verified by count: every sub-resource reference resolves, no duplicate sub-resource ids, every new node parent exists, no duplicate sibling node paths). Four real overlaps found by the builder's check and fixed before commit (sesame field off the zayat deck, last road slab out of the school walls, both new villagers' roam boxes clear of shop/school furniture).
+- All 13 project scripts pass Godot 4.3 `--check-only` (including new `bicycle.gd`), and the full scene instantiates headless (root Main, all Slice 15 key nodes present: Player, Bicycle, Villager7, Villager8, TeaButton15, BookButton15, VillagerDot7, VillagerDot8, VehicleDotBicycle, plus Slice 14's bridge, boat, statues, and fisherman) and runs 5 frames headless with no script or scene errors. That is a load test, not a playtest — ordering tea, donating books, and riding the bicycle are not verified in-engine.
+- Still honest gaps: villager obstacle avoidance, parachute, whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the bicycle is position-based like the cart and the boat, so it can leave the road (stated, not hidden); the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new).

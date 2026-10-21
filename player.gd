@@ -100,6 +100,14 @@ var pray_button: Button = null
 var pray_button_connected: bool = false
 var blessing_timer: float = 0.0
 var quest_rewarded4: bool = false
+# Slice 15: tea shop + school come alive, bicycle, 2 more villagers.
+var tea_count: int = 0
+var book_count: int = 0
+var quest_rewarded5: bool = false
+var tea_button: Button = null
+var tea_button_connected: bool = false
+var book_button: Button = null
+var book_button_connected: bool = false
 
 func _ready() -> void:
 	pass
@@ -116,6 +124,7 @@ func _physics_process(delta: float) -> void:
 	_update_banana_regrow(delta)
 	_update_banana_button()
 	_update_pray_button()
+	_update_tea_book_buttons()
 	_update_blessing(delta)
 	_update_lights_button()
 	if driving:
@@ -407,9 +416,9 @@ func _update_speed_label() -> void:
 			speed_bar.visible = false
 		return
 	var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
-		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ"}
+		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး"}
 	var vmax := {"Car": 14.0, "Cart": 6.0, "Motorcycle": 18.0,
-		"Airplane": 50.0, "Cow": 4.5, "Helicopter": 12.0, "Boat": 5.0}
+		"Airplane": 50.0, "Cow": 4.5, "Helicopter": 12.0, "Boat": 5.0, "Bicycle": 7.0}
 	var vname: String = str(names.get(driving_vehicle.name, driving_vehicle.name))
 	var spd := 0.0
 	if driving_vehicle.get("speed") != null:
@@ -502,6 +511,14 @@ func _update_quest_label() -> void:
 		quest_label.text = "တာဝန်: ဝါးတံတားကို ဖြတ်ပါ"
 	elif quest_stage == 9:
 		quest_label.text = "တာဝန်: ဟင်္သာရုပ်တုမှာ ဆုတောင်းပါ"
+	elif quest_stage == 10:
+		quest_label.text = "တာဝန်: လက်ဖက်ရည်ဆိုင်မှာ လက်ဖက်ရည်မှာပါ"
+	elif quest_stage == 11:
+		quest_label.text = "တာဝန်: ကျောင်းကို စာအုပ်လှူပါ"
+	elif quest_stage == 12:
+		quest_label.text = "တာဝန်: စက်ဘီးစီးပါ"
+	elif quest_rewarded5:
+		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် + အပြေးမြန် +10%"
 	elif quest_rewarded4:
 		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် +5% + ဆုတောင်း"
 	elif quest_rewarded3:
@@ -517,9 +534,9 @@ func _update_quest_label() -> void:
 	if quest_tracker_label == null:
 		quest_tracker_label = get_node_or_null("../JoystickLayer/QuestTrackerLabel") as Label
 	if quest_tracker_label != null:
-		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ", "မုခ်ဦးဖြတ်", "ငှက်ပျောခူး", "ဝါးတံတားဖြတ်", "ဟင်္သာဆုတောင်း"]
+		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ", "မုခ်ဦးဖြတ်", "ငှက်ပျောခူး", "ဝါးတံတားဖြတ်", "ဟင်္သာဆုတောင်း", "လက်ဖက်ရည်မှာစား", "စာအုပ်လှူ", "စက်ဘီးစီး"]
 		var parts: Array = []
-		for i in range(10):
+		for i in range(13):
 			parts.append(("✓ " if quest_stage > i else "○ ") + stage_names[i])
 		quest_tracker_label.text = "   ".join(parts)
 		quest_tracker_label.visible = true
@@ -534,7 +551,7 @@ func _on_vehicle_button_pressed() -> void:
 func _nearest_vehicle() -> Node:
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat", "Bicycle"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -563,7 +580,7 @@ func _try_enter_vehicle() -> void:
 	# list order, which could pick a farther vehicle over a nearer one).
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat", "Bicycle"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -577,6 +594,10 @@ func _try_enter_vehicle() -> void:
 		# Slice 10 quest stage 2: riding any vehicle completes it.
 		if quest_stage == 2:
 			quest_stage = 3
+			_update_quest_label()
+		# Slice 15 quest stage 12: riding the bicycle finishes the chain.
+		if quest_stage == 12 and best.name == "Bicycle":
+			quest_stage = 13
 			_update_quest_label()
 		best.start_driving(self)
 
@@ -671,7 +692,8 @@ func _update_minimap() -> void:
 				"VehicleDotCow", "VehicleDotHelicopter",
 				"BellDot", "ZayatDot", "GroveDot", "MarketDot", "WellDot", "VillagerDot5",
 			"GateDot13", "GroveDot13", "SchoolDot13", "TeaShopDot13", "FootballDot13",
-			"VillagerDot6", "VehicleDotBoat", "HintharDot14L", "HintharDot14R", "BridgeDot14"]:
+			"VillagerDot6", "VehicleDotBoat", "HintharDot14L", "HintharDot14R", "BridgeDot14",
+			"VillagerDot7", "VillagerDot8", "VehicleDotBicycle"]:
 			var dot := panel.get_node_or_null(name) as ColorRect
 			if dot != null:
 				minimap_dots[name] = dot
@@ -685,7 +707,7 @@ func _update_minimap() -> void:
 			dot.position = Vector2(mx, my)
 	put.call("PlayerDot", global_position)
 	var villagers := get_tree().get_nodes_in_group("villagers")
-	for i in range(min(villagers.size(), 6)):
+	for i in range(min(villagers.size(), 8)):
 		put.call("VillagerDot%d" % (i + 1), (villagers[i] as Node3D).global_position)
 	var pag := get_node_or_null("../Pagoda")
 	if pag != null:
@@ -717,7 +739,7 @@ func _update_minimap() -> void:
 		var lm := get_node_or_null("../" + pair[0]) as Node3D
 		if lm != null:
 			put.call(pair[1], lm.global_position)
-	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat"]:
+	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat", "Bicycle"]:
 		var v := get_node_or_null("../" + vname)
 		if v != null:
 			put.call("VehicleDot" + vname, (v as Node3D).global_position)
@@ -753,7 +775,7 @@ func _update_prompt_label() -> void:
 	var veh := _nearest_vehicle()
 	if veh != null:
 		var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
-			"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ"}
+			"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး"}
 		prompt_label.text = "အနီး: " + names.get(veh.name, veh.name) + " — စီးမည်"
 		prompt_label.visible = true
 		return
@@ -862,7 +884,7 @@ func _update_fruit_water_label() -> void:
 		fruit_water_label = get_node_or_null("../JoystickLayer/FruitWaterLabel") as Label
 	if fruit_water_label == null:
 		return
-	fruit_water_label.text = "🍎 %d 💧 %d 🍌 %d" % [fruit_count, water_count, banana_count]
+	fruit_water_label.text = "🍎 %d 💧 %d 🍌 %d 🍵 %d 📚 %d" % [fruit_count, water_count, banana_count, tea_count, book_count]
 	fruit_water_label.visible = true
 
 ## Slice 12: the well bucket lowers to the water and rises back
@@ -1047,3 +1069,56 @@ func _update_blessing(delta: float) -> void:
 				var bl := s.get_node_or_null("BlessingLabel") as Label3D
 				if bl != null:
 					bl.visible = false
+
+## Slice 15 tea + book interactions (TOUCH-FIRST — no keyboard path).
+## The buttons live in the real scene (JoystickLayer/TeaButton15 and
+## BookButton15) and show only on foot, within 4 m of the Slice 13
+## tea shop / school. Ordering tea finishes quest stage 10;
+## donating a book finishes stage 11 with the fifth reward
+## (sprint +10%, applied exactly once).
+func _update_tea_book_buttons() -> void:
+	if tea_button == null:
+		tea_button = get_node_or_null("../JoystickLayer/TeaButton15") as Button
+		if tea_button != null and not tea_button_connected:
+			tea_button.pressed.connect(_on_order_tea)
+			tea_button_connected = true
+	if book_button == null:
+		book_button = get_node_or_null("../JoystickLayer/BookButton15") as Button
+		if book_button != null and not book_button_connected:
+			book_button.pressed.connect(_on_donate_book)
+			book_button_connected = true
+	if driving:
+		if tea_button != null:
+			tea_button.visible = false
+		if book_button != null:
+			book_button.visible = false
+		return
+	var shop := get_node_or_null("../TeaShop13") as Node3D
+	var near_shop := shop != null and global_position.distance_to(shop.global_position) < 4.0
+	var school := get_node_or_null("../School13") as Node3D
+	var near_school := school != null and global_position.distance_to(school.global_position) < 4.0
+	if tea_button != null:
+		tea_button.visible = near_shop
+	if book_button != null:
+		book_button.visible = near_school
+
+func _on_order_tea() -> void:
+	if driving:
+		return
+	tea_count += 1
+	if quest_stage == 10:
+		quest_stage = 11
+	_update_quest_label()
+	_update_fruit_water_label()
+
+func _on_donate_book() -> void:
+	if driving:
+		return
+	book_count += 1
+	if quest_stage == 11:
+		quest_stage = 12
+		if not quest_rewarded5:
+			quest_rewarded5 = true
+			sprint_multiplier *= 1.1
+	_update_quest_label()
+	_update_fruit_water_label()

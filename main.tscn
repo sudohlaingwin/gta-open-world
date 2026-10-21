@@ -1,4 +1,4 @@
-[gd_scene load_steps=248 format=3]
+[gd_scene load_steps=273 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Script" path="res://car.gd" id="1_car"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://helicopter.gd" id="1_helicopter"]
 [ext_resource type="Script" path="res://npc.gd" id="1_npc"]
 [ext_resource type="Script" path="res://boat.gd" id="1_boat"]
+[ext_resource type="Script" path="res://bicycle.gd" id="1_bicycle"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
 size = Vector3(100, 1, 100)
@@ -860,6 +861,96 @@ size = Vector3(1.2, 0.08, 0.4)
 
 [sub_resource type="BoxMesh" id="BoxMesh_s14_slab"]
 size = Vector3(1.4, 0.06, 1.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s15_house6_walls"]
+size = Vector3(6, 2.8, 5)
+
+[sub_resource type="PrismMesh" id="PrismMesh_s15_house6_roof"]
+left_to_right = 0.5
+size = Vector3(6.6, 1.6, 5.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s15_house6_door"]
+size = Vector3(0.9, 1.8, 0.1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_s15_bike_wheel"]
+top_radius = 0.35
+bottom_radius = 0.35
+height = 0.08
+
+[sub_resource type="BoxMesh" id="BoxMesh_s15_bike_frame"]
+size = Vector3(0.08, 0.08, 1.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s15_bike_seat"]
+size = Vector3(0.3, 0.08, 0.25)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s15_bike_bar"]
+size = Vector3(0.5, 0.08, 0.08)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_s15_log"]
+top_radius = 0.12
+bottom_radius = 0.12
+height = 1.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_s15_jar"]
+top_radius = 0.25
+bottom_radius = 0.3
+height = 0.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_s15_sesame"]
+top_radius = 0.06
+bottom_radius = 0.06
+height = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_s15_buffalo_body"]
+size = Vector3(1.6, 0.9, 0.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s15_buffalo_head"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s15_buffalo_leg"]
+size = Vector3(0.2, 0.6, 0.2)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_s15_horn"]
+top_radius = 0.05
+bottom_radius = 0.05
+height = 0.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_s15_trunk"]
+top_radius = 0.35
+bottom_radius = 0.45
+height = 2.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_s15_canopy"]
+radius = 2.0
+height = 2.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_s15_book"]
+size = Vector3(0.4, 0.06, 0.3)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_s15_bell"]
+top_radius = 0.18
+bottom_radius = 0.22
+height = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_s15_cup"]
+top_radius = 0.09
+bottom_radius = 0.07
+height = 0.12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s15_robe_maroon"]
+albedo_color = Color(0.45, 0.12, 0.18, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s15_longyi_brown"]
+albedo_color = Color(0.4, 0.3, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s15_buffalo"]
+albedo_color = Color(0.25, 0.2, 0.18, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s15_leaf_dark"]
+albedo_color = Color(0.1, 0.4, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s15_house_wall"]
+albedo_color = Color(0.55, 0.45, 0.35, 1)
 
 [node name="Main" type="Node3D"]
 
@@ -2047,7 +2138,7 @@ offset_top = 0.0
 offset_right = 0.0
 offset_bottom = 0.0
 visible = false
-text = "ထိန်းချုပ်နည်း: ဘယ်ဘက် joystick နဲ့ လမ်း လျှောက် / ကား မောင်း။ အပြေး ခလုတ် ဖိထား = ပြေး။ ခုန် = ခုန်။ ရွာသားနား ရောက်ရင် စကားပြော ခလုတ် ပေါ်မယ်။ ယာဉ်နား ရောက်ရင် စီးမည် ခလုတ် ပေါ်မယ်။ လေယာဉ် / ရဟတ်ယာဉ် မောင်းရင် အရှိန် + / - နဲ့ ယိမ်း ခလုတ်တွေ သုံးပါ။ ကင်မရာ ခလုတ် = ကင်မရာ လှည့်၊ ညာဘက်ခြမ်း ပွတ်ဆွဲရင်လည်း လှည့်ပါတယ်။ ဈေးနား ရောက်ရင် သစ်သီးဝယ် ခလုတ်၊ ရေတွင်းနား ရောက်ရင် ရေဆွဲ ခလုတ် ပေါ်မယ်။ ငှက်ပျောတောနား ရောက်ရင် ငှက်ပျောသီးခူး ခလုတ် ပေါ်မယ်။ ရွာမုခ်ဦးကို ဖြတ်ပြီး ငှက်ပျောသီး ၃ လုံး ခူးပါ။ မီးခလုတ် = ကား/ဆိုင်ကယ် မီးဖွင့်/ပိတ်။ ဝါးတံတားကို ဖြတ်ပြီး ဟင်္သာရုပ်တုနား ရောက်ရင် ဆုတောင်း ခလုတ် ပေါ်မယ်။ မြစ်မှာ လှေစီးလို့ရတယ်။"
+text = "ထိန်းချုပ်နည်း: ဘယ်ဘက် joystick နဲ့ လမ်း လျှောက် / ကား မောင်း။ အပြေး ခလုတ် ဖိထား = ပြေး။ ခုန် = ခုန်။ ရွာသားနား ရောက်ရင် စကားပြော ခလုတ် ပေါ်မယ်။ ယာဉ်နား ရောက်ရင် စီးမည် ခလုတ် ပေါ်မယ်။ လေယာဉ် / ရဟတ်ယာဉ် မောင်းရင် အရှိန် + / - နဲ့ ယိမ်း ခလုတ်တွေ သုံးပါ။ ကင်မရာ ခလုတ် = ကင်မရာ လှည့်၊ ညာဘက်ခြမ်း ပွတ်ဆွဲရင်လည်း လှည့်ပါတယ်။ ဈေးနား ရောက်ရင် သစ်သီးဝယ် ခလုတ်၊ ရေတွင်းနား ရောက်ရင် ရေဆွဲ ခလုတ် ပေါ်မယ်။ ငှက်ပျောတောနား ရောက်ရင် ငှက်ပျောသီးခူး ခလုတ် ပေါ်မယ်။ ရွာမုခ်ဦးကို ဖြတ်ပြီး ငှက်ပျောသီး ၃ လုံး ခူးပါ။ မီးခလုတ် = ကား/ဆိုင်ကယ် မီးဖွင့်/ပိတ်။ ဝါးတံတားကို ဖြတ်ပြီး ဟင်္သာရုပ်တုနား ရောက်ရင် ဆုတောင်း ခလုတ် ပေါ်မယ်။ မြစ်မှာ လှေစီးလို့ရတယ်။ လက်ဖက်ရည်ဆိုင်နား ရောက်ရင် လက်ဖက်ရည်မှာစား ခလုတ်၊ ကျောင်းနား ရောက်ရင် စာအုပ်လှူ ခလုတ် ပေါ်မယ်။ စက်ဘီးလည်း စီးလို့ရတယ်။"
 
 [node name="YawLeftButton" type="Button" parent="JoystickLayer"]
 theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
@@ -4833,3 +4924,619 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.95, -13)
 mesh = SubResource("SphereMesh_s14_lantern")
 surface_material_override/0 = SubResource("StandardMaterial3D_gold")
 
+
+[node name="Bicycle" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 27)
+script = ExtResource("1_bicycle")
+
+[node name="BikeFrame" type="MeshInstance3D" parent="Bicycle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+mesh = SubResource("BoxMesh_s15_bike_frame")
+surface_material_override/0 = SubResource("StandardMaterial3D_bike")
+
+[node name="BikeSeat" type="MeshInstance3D" parent="Bicycle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0.45)
+mesh = SubResource("BoxMesh_s15_bike_seat")
+surface_material_override/0 = SubResource("StandardMaterial3D_leg_dark")
+
+[node name="BikeHandle" type="MeshInstance3D" parent="Bicycle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -0.55)
+mesh = SubResource("BoxMesh_s15_bike_bar")
+surface_material_override/0 = SubResource("StandardMaterial3D_leg_dark")
+
+[node name="BikeWheelF" type="MeshInstance3D" parent="Bicycle"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0.35, -0.7)
+mesh = SubResource("CylinderMesh_s15_bike_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_leg_dark")
+
+[node name="BikeWheelB" type="MeshInstance3D" parent="Bicycle"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0.35, 0.7)
+mesh = SubResource("CylinderMesh_s15_bike_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_leg_dark")
+
+[node name="Villager7" type="CharacterBody3D" parent="." groups=["villagers"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 16)
+script = ExtResource("1_npc")
+dialogue_text = "မင်္ဂလာပါ! လက်ဖက်ရည် တစ်ခွက် သောက်ပါလား၊ ပူပူနွေးနွေး ရှိတယ်။"
+villager_name = "လက်ဖက်ရည်ဆိုင် ဦးအောင်"
+wander_radius = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Villager7"]
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="Head" type="MeshInstance3D" parent="Villager7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Torso" type="MeshInstance3D" parent="Villager7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+mesh = SubResource("BoxMesh_torso")
+surface_material_override/0 = SubResource("StandardMaterial3D_taikpon")
+
+[node name="Longyi" type="MeshInstance3D" parent="Villager7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
+mesh = SubResource("CylinderMesh_longyi")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_longyi_brown")
+
+[node name="DialogueLabel" type="Label3D" parent="Villager7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+billboard = 1
+text = "မင်္ဂလာပါ! လက်ဖက်ရည် တစ်ခွက် သောက်ပါလား၊ ပူပူနွေးနွေး ရှိတယ်။"
+font_size = 28
+visible = false
+
+[node name="PromptLabel" type="Label3D" parent="Villager7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+text = "!"
+font_size = 36
+visible = false
+
+[node name="Arm_R" type="MeshInstance3D" parent="Villager7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Arm_L" type="MeshInstance3D" parent="Villager7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="VillagerHat7" type="MeshInstance3D" parent="Villager7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+mesh = SubResource("CylinderMesh_hat")
+surface_material_override/0 = SubResource("StandardMaterial3D_straw")
+
+[node name="Villager8" type="CharacterBody3D" parent="." groups=["villagers"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 1, 8)
+script = ExtResource("1_npc")
+dialogue_text = "မင်္ဂလာပါ! စာသင်ကျောင်းကို စာအုပ်လှူရင် ကုသိုလ်ရတယ်။"
+villager_name = "ဆရာတော် ဦးဇင်း"
+wander_radius = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Villager8"]
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="Head" type="MeshInstance3D" parent="Villager8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Torso" type="MeshInstance3D" parent="Villager8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+mesh = SubResource("BoxMesh_torso")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_robe_maroon")
+
+[node name="Longyi" type="MeshInstance3D" parent="Villager8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
+mesh = SubResource("CylinderMesh_longyi")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_robe_maroon")
+
+[node name="DialogueLabel" type="Label3D" parent="Villager8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+billboard = 1
+text = "မင်္ဂလာပါ! စာသင်ကျောင်းကို စာအုပ်လှူရင် ကုသိုလ်ရတယ်။"
+font_size = 28
+visible = false
+
+[node name="PromptLabel" type="Label3D" parent="Villager8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+text = "!"
+font_size = 36
+visible = false
+
+[node name="Arm_R" type="MeshInstance3D" parent="Villager8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Arm_L" type="MeshInstance3D" parent="Villager8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="TeaTable15_2" type="MeshInstance3D" parent="TeaShop13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.75, 0.5)
+mesh = SubResource("BoxMesh_s12_table")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="TeaStool15_a" type="MeshInstance3D" parent="TeaShop13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0.22, 0.5)
+mesh = SubResource("CylinderMesh_s13_stool")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="TeaStool15_b" type="MeshInstance3D" parent="TeaShop13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4, 0.22, 0.5)
+mesh = SubResource("CylinderMesh_s13_stool")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="TeaCup15_1" type="MeshInstance3D" parent="TeaShop13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.85, 0.2)
+mesh = SubResource("CylinderMesh_s15_cup")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_clay")
+
+[node name="TeaCup15_2" type="MeshInstance3D" parent="TeaShop13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 0.85, 0.4)
+mesh = SubResource("CylinderMesh_s15_cup")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_clay")
+
+[node name="TeaCup15_3" type="MeshInstance3D" parent="TeaShop13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7, 0.85, 0.6)
+mesh = SubResource("CylinderMesh_s15_cup")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_clay")
+
+[node name="TeaLanternPost15" type="MeshInstance3D" parent="TeaShop13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.2, 0.5)
+mesh = SubResource("BoxMesh_s13_stall_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="TeaLantern15" type="MeshInstance3D" parent="TeaShop13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.45, 0.5)
+mesh = SubResource("SphereMesh_s13_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_gold")
+
+[node name="SchoolFence15_0" type="MeshInstance3D" parent="School13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.2, 5.0)
+mesh = SubResource("BoxMesh_s13_stall_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="SchoolFence15_1" type="MeshInstance3D" parent="School13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 1.2, 5.0)
+mesh = SubResource("BoxMesh_s13_stall_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="SchoolFence15_2" type="MeshInstance3D" parent="School13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7, 1.2, 5.0)
+mesh = SubResource("BoxMesh_s13_stall_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="SchoolFence15_3" type="MeshInstance3D" parent="School13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1.2, 5.0)
+mesh = SubResource("BoxMesh_s13_stall_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="SchoolBellPost15" type="MeshInstance3D" parent="School13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 1.2, 4.5)
+mesh = SubResource("BoxMesh_s13_stall_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="SchoolBell15" type="MeshInstance3D" parent="School13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 2.5, 4.5)
+mesh = SubResource("CylinderMesh_s15_bell")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="SchoolBook15_0" type="MeshInstance3D" parent="School13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.03, 4.2)
+mesh = SubResource("BoxMesh_s15_book")
+surface_material_override/0 = SubResource("StandardMaterial3D_longyi_blue")
+
+[node name="SchoolBook15_1" type="MeshInstance3D" parent="School13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.09, 4.2)
+mesh = SubResource("BoxMesh_s15_book")
+surface_material_override/0 = SubResource("StandardMaterial3D_flower_red")
+
+[node name="SchoolBook15_2" type="MeshInstance3D" parent="School13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9, 0.15, 4.2)
+mesh = SubResource("BoxMesh_s15_book")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="SchoolFlowerBed15" type="MeshInstance3D" parent="School13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 5.2)
+mesh = SubResource("BoxMesh_s13_garden_bed")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_clay")
+
+[node name="SchoolFlower15_0" type="MeshInstance3D" parent="School13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0.35, 5.2)
+mesh = SubResource("SphereMesh_s13_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_flower_pink")
+
+[node name="SchoolFlower15_1" type="MeshInstance3D" parent="School13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 5.2)
+mesh = SubResource("SphereMesh_s13_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_flower_yellow")
+
+[node name="SchoolFlower15_2" type="MeshInstance3D" parent="School13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0.35, 5.2)
+mesh = SubResource("SphereMesh_s13_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_flower_red")
+
+[node name="BodhiTree15" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 0, 6)
+
+[node name="BodhiTrunk15" type="MeshInstance3D" parent="BodhiTree15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+mesh = SubResource("CylinderMesh_s15_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_trunk_brown")
+
+[node name="BodhiCanopy15" type="MeshInstance3D" parent="BodhiTree15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("SphereMesh_s15_canopy")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_leaf_dark")
+
+[node name="House6" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 30)
+
+[node name="House6Walls" type="MeshInstance3D" parent="House6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="House6Roof" type="MeshInstance3D" parent="House6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_roof")
+
+[node name="House6Door" type="MeshInstance3D" parent="House6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 2.55)
+mesh = SubResource("BoxMesh_s15_house6_door")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="StiltHouse15_4" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0, -4)
+
+[node name="StiltDeck15_4" type="MeshInstance3D" parent="StiltHouse15_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+mesh = SubResource("BoxMesh_deck")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="StiltPillar15_4_0" type="MeshInstance3D" parent="StiltHouse15_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.6, -2.8)
+mesh = SubResource("CylinderMesh_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+
+[node name="StiltPillar15_4_1" type="MeshInstance3D" parent="StiltHouse15_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.6, -2.8)
+mesh = SubResource("CylinderMesh_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+
+[node name="StiltPillar15_4_2" type="MeshInstance3D" parent="StiltHouse15_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.6, 2.8)
+mesh = SubResource("CylinderMesh_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+
+[node name="StiltPillar15_4_3" type="MeshInstance3D" parent="StiltHouse15_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.6, 2.8)
+mesh = SubResource("CylinderMesh_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+
+[node name="StiltWalls15_4" type="MeshInstance3D" parent="StiltHouse15_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
+mesh = SubResource("BoxMesh_car")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="StiltRoof15_4" type="MeshInstance3D" parent="StiltHouse15_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+mesh = SubResource("BoxMesh_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_thatch")
+
+[node name="MarketStall15D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 12)
+
+[node name="StallDTable" type="MeshInstance3D" parent="MarketStall15D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_s12_table")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="StallDPost_0" type="MeshInstance3D" parent="MarketStall15D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 1.2, -1.2)
+mesh = SubResource("BoxMesh_s12_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="StallDPost_1" type="MeshInstance3D" parent="MarketStall15D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 1.2, -1.2)
+mesh = SubResource("BoxMesh_s12_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="StallDPost_2" type="MeshInstance3D" parent="MarketStall15D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 1.2, 1.2)
+mesh = SubResource("BoxMesh_s12_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="StallDPost_3" type="MeshInstance3D" parent="MarketStall15D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 1.2, 1.2)
+mesh = SubResource("BoxMesh_s12_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="StallDBeamF" type="MeshInstance3D" parent="MarketStall15D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, -1.2)
+mesh = SubResource("BoxMesh_s12_beam")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="StallDBeamB" type="MeshInstance3D" parent="MarketStall15D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 1.2)
+mesh = SubResource("BoxMesh_s12_beam")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="StallDAwning" type="MeshInstance3D" parent="MarketStall15D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.55, 0)
+mesh = SubResource("BoxMesh_s12_awning")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_awning_blue")
+
+[node name="StallDPile0" type="MeshInstance3D" parent="MarketStall15D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 1.05, 0)
+mesh = SubResource("SphereMesh_s12_mango")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_mango")
+
+[node name="StallDPile1" type="MeshInstance3D" parent="MarketStall15D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 1.05, 0)
+mesh = SubResource("SphereMesh_s12_mango")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_mango")
+
+[node name="SesameField15" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 10)
+
+[node name="SesameFieldBed" type="MeshInstance3D" parent="SesameField15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BoxMesh_s13_field")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_paddy")
+
+[node name="SesamePlant15_0" type="MeshInstance3D" parent="SesameField15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.25, 0)
+mesh = SubResource("CylinderMesh_s15_sesame")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_leaf")
+
+[node name="SesamePlant15_1" type="MeshInstance3D" parent="SesameField15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.25, 0)
+mesh = SubResource("CylinderMesh_s15_sesame")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_leaf")
+
+[node name="SesamePlant15_2" type="MeshInstance3D" parent="SesameField15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.25, 0)
+mesh = SubResource("CylinderMesh_s15_sesame")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_leaf")
+
+[node name="SesamePlant15_3" type="MeshInstance3D" parent="SesameField15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.25, 0)
+mesh = SubResource("CylinderMesh_s15_sesame")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_leaf")
+
+[node name="SesamePlant15_4" type="MeshInstance3D" parent="SesameField15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.25, 0)
+mesh = SubResource("CylinderMesh_s15_sesame")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_leaf")
+
+[node name="SesamePlant15_5" type="MeshInstance3D" parent="SesameField15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.25, 0)
+mesh = SubResource("CylinderMesh_s15_sesame")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_leaf")
+
+[node name="Buffalo15_1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 32)
+
+[node name="BuffaloBody15_1" type="MeshInstance3D" parent="Buffalo15_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("BoxMesh_s15_buffalo_body")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_buffalo")
+
+[node name="BuffaloHead15_1" type="MeshInstance3D" parent="Buffalo15_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, -0.95)
+mesh = SubResource("BoxMesh_s15_buffalo_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_buffalo")
+
+[node name="BuffaloHornL15_1" type="MeshInstance3D" parent="Buffalo15_1"]
+transform = Transform3D(0.707, 0.707, 0, -0.707, 0.707, 0, 0, 0, 1, -0.35, 1.2, -1.1)
+mesh = SubResource("CylinderMesh_s15_horn")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_clay")
+
+[node name="BuffaloHornR15_1" type="MeshInstance3D" parent="Buffalo15_1"]
+transform = Transform3D(0.707, -0.707, 0, 0.707, 0.707, 0, 0, 0, 1, 0.35, 1.2, -1.1)
+mesh = SubResource("CylinderMesh_s15_horn")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_clay")
+
+[node name="BuffaloLeg15_1_0" type="MeshInstance3D" parent="Buffalo15_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.3, -0.5)
+mesh = SubResource("BoxMesh_s15_buffalo_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_buffalo")
+
+[node name="BuffaloLeg15_1_1" type="MeshInstance3D" parent="Buffalo15_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.3, -0.5)
+mesh = SubResource("BoxMesh_s15_buffalo_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_buffalo")
+
+[node name="BuffaloLeg15_1_2" type="MeshInstance3D" parent="Buffalo15_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.3, 0.5)
+mesh = SubResource("BoxMesh_s15_buffalo_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_buffalo")
+
+[node name="BuffaloLeg15_1_3" type="MeshInstance3D" parent="Buffalo15_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.3, 0.5)
+mesh = SubResource("BoxMesh_s15_buffalo_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_buffalo")
+
+[node name="Buffalo15_2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 0, 34)
+
+[node name="BuffaloBody15_2" type="MeshInstance3D" parent="Buffalo15_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("BoxMesh_s15_buffalo_body")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_buffalo")
+
+[node name="BuffaloHead15_2" type="MeshInstance3D" parent="Buffalo15_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, -0.95)
+mesh = SubResource("BoxMesh_s15_buffalo_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_buffalo")
+
+[node name="BuffaloHornL15_2" type="MeshInstance3D" parent="Buffalo15_2"]
+transform = Transform3D(0.707, 0.707, 0, -0.707, 0.707, 0, 0, 0, 1, -0.35, 1.2, -1.1)
+mesh = SubResource("CylinderMesh_s15_horn")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_clay")
+
+[node name="BuffaloHornR15_2" type="MeshInstance3D" parent="Buffalo15_2"]
+transform = Transform3D(0.707, -0.707, 0, 0.707, 0.707, 0, 0, 0, 1, 0.35, 1.2, -1.1)
+mesh = SubResource("CylinderMesh_s15_horn")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_clay")
+
+[node name="BuffaloLeg15_2_0" type="MeshInstance3D" parent="Buffalo15_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.3, -0.5)
+mesh = SubResource("BoxMesh_s15_buffalo_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_buffalo")
+
+[node name="BuffaloLeg15_2_1" type="MeshInstance3D" parent="Buffalo15_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.3, -0.5)
+mesh = SubResource("BoxMesh_s15_buffalo_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_buffalo")
+
+[node name="BuffaloLeg15_2_2" type="MeshInstance3D" parent="Buffalo15_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.3, 0.5)
+mesh = SubResource("BoxMesh_s15_buffalo_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_buffalo")
+
+[node name="BuffaloLeg15_2_3" type="MeshInstance3D" parent="Buffalo15_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.3, 0.5)
+mesh = SubResource("BoxMesh_s15_buffalo_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_buffalo")
+
+[node name="Firewood15" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 16)
+
+[node name="FirewoodLog15_0" type="MeshInstance3D" parent="Firewood15"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("CylinderMesh_s15_log")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FirewoodLog15_1" type="MeshInstance3D" parent="Firewood15"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0.12, 0.28)
+mesh = SubResource("CylinderMesh_s15_log")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FirewoodLog15_2" type="MeshInstance3D" parent="Firewood15"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0.36, 0.14)
+mesh = SubResource("CylinderMesh_s15_log")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="Pottery15" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, -10)
+
+[node name="PotteryJar15_0" type="MeshInstance3D" parent="Pottery15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.25, 0)
+mesh = SubResource("CylinderMesh_s15_jar")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_clay")
+
+[node name="PotteryJar15_1" type="MeshInstance3D" parent="Pottery15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.25, 0.2)
+mesh = SubResource("CylinderMesh_s15_jar")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_clay")
+
+[node name="PotteryJar15_2" type="MeshInstance3D" parent="Pottery15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, -0.4)
+mesh = SubResource("CylinderMesh_s15_jar")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_clay")
+
+[node name="BenchTop15_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.48, 41)
+mesh = SubResource("BoxMesh_s12_bench")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="BenchLegL15_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3, 0.22, 41)
+mesh = SubResource("BoxMesh_s12_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="BenchLegR15_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7, 0.22, 41)
+mesh = SubResource("BoxMesh_s12_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="BenchTop15_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0.48, 41)
+mesh = SubResource("BoxMesh_s12_bench")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="BenchLegL15_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.3, 0.22, 41)
+mesh = SubResource("BoxMesh_s12_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="BenchLegR15_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.7, 0.22, 41)
+mesh = SubResource("BoxMesh_s12_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="RoadSlab15_0" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.03, 24.5)
+mesh = SubResource("BoxMesh_s14_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_path")
+
+[node name="RoadSlab15_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 0.03, 23)
+mesh = SubResource("BoxMesh_s14_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_path")
+
+[node name="RoadSlab15_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0.03, 19)
+mesh = SubResource("BoxMesh_s14_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_path")
+
+[node name="RoadSlab15_3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.03, 19)
+mesh = SubResource("BoxMesh_s14_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_path")
+
+[node name="TeaButton15" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.58
+anchor_top = 0.68
+anchor_right = 0.72
+anchor_bottom = 0.78
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "လက်ဖက်ရည်မှာစား"
+
+[node name="BookButton15" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.58
+anchor_top = 0.56
+anchor_right = 0.72
+anchor_bottom = 0.66
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "စာအုပ်လှူ"
+
+[node name="VillagerDot7" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.8, 0.3, 1)
+
+[node name="VillagerDot8" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.8, 0.3, 1)
+
+[node name="VehicleDotBicycle" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(1, 1, 1, 1)
