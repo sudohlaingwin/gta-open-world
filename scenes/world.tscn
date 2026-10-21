@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" path="res://scenes/myanmar_pagoda.tscn" id="6_pagoda_scn"]
 [ext_resource type="PackedScene" path="res://scenes/myanmar_villager.tscn" id="7_villager_scn"]
 [ext_resource type="PackedScene" path="res://scenes/mobile_touch_hud.tscn" id="8_hud_scn"]
+[ext_resource type="PackedScene" path="res://scenes/helicopter.tscn" id="9_heli_scn"]
+[ext_resource type="PackedScene" path="res://scenes/myanmar_house.tscn" id="10_house_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -52,22 +54,36 @@ shape = SubResource("BoxShape3D_ground")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain"]
 mesh = SubResource("PlaneMesh_ground")
 
+# Player
 [node name="Player" parent="." instance=ExtResource("1_player_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
+# Mounts & Traditional Vehicles
 [node name="RideableCow" parent="." instance=ExtResource("3_cow_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
 
 [node name="BullockCart" parent="." instance=ExtResource("4_cart_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 4)
 
+# Aircrafts: Airplane & Helicopter
 [node name="Airplane" parent="." instance=ExtResource("5_plane_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 15)
 
+[node name="Helicopter" parent="." instance=ExtResource("9_heli_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 18)
+
+# Cultural Landmarks: Golden Pagoda
 [node name="GoldenPagoda" parent="." instance=ExtResource("6_pagoda_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -35)
 
-# Interactive Myanmar Villagers with diverse custom names and longyis
+# Village Houses
+[node name="VillageHouse1" parent="." instance=ExtResource("10_house_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -10)
+
+[node name="VillageHouse2" parent="." instance=ExtResource("10_house_scn")]
+transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, -14, 0, -14)
+
+# Interactive Myanmar Villagers
 [node name="Villager1" parent="." instance=ExtResource("7_villager_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -8)
 villager_name = "ကိုဘသောင်း"
@@ -86,5 +102,5 @@ villager_name = "ဒေါ်အေးကြည်"
 dialogue_text = "ပျော်ရွှင်စရာ နေ့ရက်လေး ဖြစ်ပါစေနော်!"
 longyi_color = Color(0.15, 0.25, 0.6, 1)
 
-# Live Touch HUD Layer wired above 3D world
+# Live Mobile HUD
 [node name="MobileTouchHUD" parent="." instance=ExtResource("8_hud_scn")]

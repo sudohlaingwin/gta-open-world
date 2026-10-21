@@ -1,10 +1,12 @@
 extends CharacterBody3D
 
-# --- Character Stats ---
+# --- Character Stats & State ---
 @export var speed: float = 6.0
 @export var sprint_speed: float = 10.0
 @export var jump_velocity: float = 4.8
 @export var rotation_speed: float = 12.0
+
+var stamina: float = 100.0
 
 enum State { ON_FOOT, RIDING_MOUNT, DRIVING_VEHICLE, FLYING_AIRCRAFT }
 var current_state: State = State.ON_FOOT
@@ -19,6 +21,7 @@ var nearby_aircraft: Node3D = null
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_sprinting: bool = false
 var touch_input_vector: Vector2 = Vector2.ZERO
+var touch_yaw: float = 0.0
 
 @onready var visual_mesh: Node3D = $VisualMesh
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
@@ -34,7 +37,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
-	# Keyboard interaction fallback (Press E to talk or interact)
+	# Keyboard interaction fallback
 	if Input.is_key_pressed(KEY_E):
 		interact()
 
@@ -52,11 +55,13 @@ func _physics_process(delta: float) -> void:
 	right = right.normalized()
 
 	var direction: Vector3 = (right * input_dir.x + forward * -input_dir.y).normalized()
-	var current_speed: float = sprint_speed if (is_sprinting or Input.is_key_pressed(KEY_SHIFT)) else speed
+	var current_speed: float = sprint_speed if is_sprinting else speed
 
 	if direction.length() > 0.05:
-		velocity.x = direction.x * current_speed
-		velocity.z = direction.z * current_speed
+		# Analog speed scaling from joystick deflection
+		var analog_scale = clamp(touch_input_vector.length(), 0.4, 1.0) if touch_input_vector != Vector2.ZERO else 1.0
+		velocity.x = direction.x * (current_speed * analog_scale)
+		velocity.z = direction.z * (current_speed * analog_scale)
 		var target_angle = atan2(direction.x, direction.z)
 		visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, target_angle, rotation_speed * delta)
 	else:
@@ -79,10 +84,12 @@ func interact() -> void:
 	elif nearby_vehicle:
 		nearby_vehicle.enter_vehicle(self)
 	else:
-		# Check for nearest villager to talk
 		var nearest_villager = _get_nearest_villager(4.0)
 		if nearest_villager and nearest_villager.has_method("talk_to"):
 			nearest_villager.talk_to(global_position)
+			var hud = get_parent().get_node_or_null("MobileTouchHUD")
+			if hud and hud.has_method("record_villager_talk"):
+				hud.record_villager_talk()
 
 func _get_nearest_villager(max_dist: float) -> Node3D:
 	var villagers = get_tree().get_nodes_in_group("villagers")

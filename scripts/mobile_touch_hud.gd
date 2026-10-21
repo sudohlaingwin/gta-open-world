@@ -1,31 +1,45 @@
 extends CanvasLayer
 
-# --- AAA Mobile Gaming HUD (MiniMap, Health, Speedometer, Context Actions, Icons) ---
+# --- AAA Myanmar GTA Mobile HUD (Full 40+ Feature Suite) ---
 
 @onready var action_container: HBoxContainer = $ActionContainer
 @onready var interact_btn: Button = $ActionContainer/InteractBtn
 @onready var jump_btn: Button = $ActionContainer/JumpBtn
 @onready var sprint_btn: Button = $ActionContainer/SprintBtn
 
+# Real-time Radar & Compass
 @onready var minimap_panel: Panel = $TopLeftHUD/MiniMap
-@onready var player_icon: TextureRect = $TopLeftHUD/MiniMap/PlayerIcon
+@onready var player_icon: ColorRect = $TopLeftHUD/MiniMap/PlayerIcon
+@onready var pagoda_icon: ColorRect = $TopLeftHUD/MiniMap/PagodaIcon
 @onready var compass_label: Label = $TopLeftHUD/CompassLabel
+@onready var quest_banner: Label = $TopCenterHUD/QuestBanner
 
-@onready var health_bar: ProgressBar = $TopLeftHUD/HealthBar
+# Real-time Stamina
 @onready var stamina_bar: ProgressBar = $TopLeftHUD/StaminaBar
 
+# Vehicle Speedometer
 @onready var speedometer_panel: Panel = $BottomCenterHUD/Speedometer
 @onready var speed_label: Label = $BottomCenterHUD/Speedometer/SpeedLabel
 @onready var vehicle_type_label: Label = $BottomCenterHUD/Speedometer/VehicleTypeLabel
+@onready var throttle_bar: ProgressBar = $BottomCenterHUD/Speedometer/ThrottleBar
+
+# Flight Yaw Touch Controls
+@onready var flight_controls: Control = $FlightControls
+@onready var yaw_left_btn: Button = $FlightControls/YawLeftBtn
+@onready var yaw_right_btn: Button = $FlightControls/YawRightBtn
 
 @onready var virtual_joystick: Control = $VirtualJoystick
 @onready var prompt_banner: Label = $PromptBanner
 
 var player: CharacterBody3D = null
+var quest_stage: int = 1 # 1: Talk, 2: Visit Pagoda, 3: Ride, 4: Complete
+var villagers_talked_count: int = 0
+var pagoda_node: Node3D = null
 
 func _ready() -> void:
 	layer = 15
 	player = get_tree().get_first_node_in_group("player") as CharacterBody3D
+	pagoda_node = get_parent().get_node_or_null("GoldenPagoda")
 	
 	if virtual_joystick and virtual_joystick.has_signal("joystick_moved"):
 		virtual_joystick.joystick_moved.connect(_on_joystick_moved)
@@ -38,19 +52,64 @@ func _ready() -> void:
 	if sprint_btn:
 		sprint_btn.button_down.connect(_on_sprint_down)
 		sprint_btn.button_up.connect(_on_sprint_up)
+		
+	if yaw_left_btn:
+		yaw_left_btn.button_down.connect(func(): if player: player.touch_yaw = -1.0)
+		yaw_left_btn.button_up.connect(func(): if player: player.touch_yaw = 0.0)
+	if yaw_right_btn:
+		yaw_right_btn.button_down.connect(func(): if player: player.touch_yaw = 1.0)
+		yaw_right_btn.button_up.connect(func(): if player: player.touch_yaw = 0.0)
+
+	_update_quest_text()
 
 func _process(delta: float) -> void:
 	if not player:
 		return
 
-	# 1. MiniMap & Compass Heading Tracking
+	# 1. MiniMap Tracking (Player + Pagoda)
 	if player_icon:
 		player_icon.rotation = -player.visual_mesh.rotation.y
+		
+	if pagoda_icon and pagoda_node:
+		var rel_pos = (pagoda_node.global_position - player.global_position)
+		var map_size = 140.0
+		var map_radius = map_size * 0.45
+		var scale_factor = 0.8
+		var icon_x = clamp(rel_pos.x * scale_factor, -map_radius, map_radius)
+		var icon_z = clamp(rel_pos.z * scale_factor, -map_radius, map_radius)
+		pagoda_icon.position = Vector2(map_size / 2.0 + icon_x - 4, map_size / 2.0 + icon_z - 4)
+
+	# 2. Compass Label
 	if compass_label:
 		var deg = wrapf(rad_to_deg(player.visual_mesh.rotation.y), 0, 360)
 		compass_label.text = "%d° %s" % [deg, _get_cardinal_dir(deg)]
 
-	# 2. Dynamic Speedometer (Shows when driving/riding/flying)
+	# 3. Dynamic Real Stamina Drain & Regeneration
+	if stamina_bar:
+		if player.is_sprinting and player.current_state == player.State.ON_FOOT and player.velocity.length() > 0.5:
+			player.stamina = max(0.0, player.stamina - 24.0 * delta)
+			if player.stamina <= 0.0:
+				player.set_sprint(false)
+		else:
+			player.stamina = min(100.0, player.stamina + 16.0 * delta)
+		stamina_bar.value = player.stamina
+
+	# 4. Quest Progression Checking
+	if quest_stage == 2 and pagoda_node:
+		if player.global_position.distance_to(pagoda_node.global_position) < 12.0:
+			quest_stage = 3
+			_update_quest_text()
+	elif quest_stage == 3:
+		if player.current_state != player.State.ON_FOOT:
+			quest_stage = 4
+			_update_quest_text()
+
+	# 5. Speedometer & Flight Controls Toggle
+	if player.current_state == player.State.FLYING_AIRCRAFT:
+		if flight_controls: flight_controls.visible = true
+	else:
+		if flight_controls: flight_controls.visible = false
+
 	if speedometer_panel and speed_label and vehicle_type_label:
 		if player.current_state != player.State.ON_FOOT:
 			speedometer_panel.visible = true
@@ -60,40 +119,82 @@ func _process(delta: float) -> void:
 			if player.current_state == player.State.FLYING_AIRCRAFT and player.active_aircraft:
 				speed_kmh = player.active_aircraft.velocity.length() * 3.6
 				mode_text = "✈️ လေယာဉ် (AIRPLANE)"
+				if throttle_bar:
+					throttle_bar.visible = true
+					throttle_bar.value = player.active_aircraft.throttle * 100.0
 			elif player.current_state == player.State.RIDING_MOUNT and player.active_mount:
 				speed_kmh = player.active_mount.velocity.length() * 3.6
 				mode_text = "🐂 လှည်း/နွား (MOUNT)"
+				if throttle_bar: throttle_bar.visible = false
 			elif player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
 				speed_kmh = player.active_vehicle.linear_velocity.length() * 3.6
 				mode_text = "🚗 ကား/ဆိုင်ကယ် (VEHICLE)"
+				if throttle_bar: throttle_bar.visible = false
 				
 			speed_label.text = "%d KM/H" % int(speed_kmh)
 			vehicle_type_label.text = mode_text
 		else:
 			speedometer_panel.visible = false
 
-	# 3. Dynamic Contextual Action Buttons with Icons
+	# 6. Contextual Action Label & Prompt Banner
 	if interact_btn:
 		match player.current_state:
 			player.State.RIDING_MOUNT:
 				interact_btn.text = "🚪 ဆင်းမည် (Dismount)"
+				_show_prompt("နွားလှည်းပေါ်မှ ဆင်းရန် နှိပ်ပါ")
 			player.State.DRIVING_VEHICLE:
 				interact_btn.text = "🚪 ဆင်းမည် (Exit Car)"
+				_show_prompt("ယာဉ်ပေါ်မှ ဆင်းရန် နှိပ်ပါ")
 			player.State.FLYING_AIRCRAFT:
 				interact_btn.text = "🚪 ဆင်းမည် (Exit Plane)"
+				_show_prompt("လေယာဉ်မှ ဆင်းရန် နှိပ်ပါ")
 			player.State.ON_FOOT:
 				if player.nearby_mount:
-					interact_btn.text = "🐂 စီးမည် (Ride Cow/Cart)"
+					interact_btn.text = "🐂 စီးမည် (Ride Mount)"
+					_show_prompt("နွား သို့မဟုတ် လှည်းစီးရန် နှိပ်ပါ")
 				elif player.nearby_aircraft:
 					interact_btn.text = "✈️ မောင်းမည် (Fly Airplane)"
+					_show_prompt("လေယာဉ်တက်မောင်းရန် နှိပ်ပါ")
 				elif player.nearby_vehicle:
 					interact_btn.text = "🚗 မောင်းမည် (Drive Vehicle)"
+					_show_prompt("ကား သို့မဟုတ် ဆိုင်ကယ်မောင်းရန် နှိပ်ပါ")
 				else:
 					var villager = player._get_nearest_villager(4.0)
 					if villager:
 						interact_btn.text = "💬 စကားပြော (Talk)"
+						_show_prompt("%s နှင့် စကားပြောရန် နှိပ်ပါ" % villager.villager_name)
 					else:
 						interact_btn.text = "⚡ လုပ်ဆောင် (Action)"
+						_hide_prompt()
+
+func record_villager_talk() -> void:
+	villagers_talked_count += 1
+	if quest_stage == 1:
+		if villagers_talked_count >= 3:
+			quest_stage = 2
+		_update_quest_text()
+
+func _update_quest_text() -> void:
+	if not quest_banner:
+		return
+	match quest_stage:
+		1:
+			quest_banner.text = "📜 တာဝန် ၁: ရွာသူရွာသားများနှင့် စကားပြောပါ (%d/3)" % min(3, villagers_talked_count)
+		2:
+			quest_banner.text = "📜 တာဝန် ၂: ရွာဦးရွှေစေတီတော်သို့ သွားရောက်ဖူးမြော်ပါ 🏛️"
+		3:
+			quest_banner.text = "📜 တာဝန် ၃: လှည်း/နွား/လေယာဉ် တစ်မျိုးမျိုးကို တက်စီးပါ 🐂✈️"
+		4:
+			quest_banner.text = "🎉 တာဝန်အားလုံး ပြီးမြောက်ပါပြီ! ရွာကို လွတ်လပ်စွာ လှည့်လည်နိုင်ပါပြီ ✨"
+
+func _show_prompt(text: String) -> void:
+	if prompt_banner:
+		prompt_banner.text = text
+		prompt_banner.visible = true
+
+func _hide_prompt() -> void:
+	if prompt_banner:
+		prompt_banner.visible = false
 
 func _get_cardinal_dir(deg: float) -> String:
 	if deg >= 337.5 or deg < 22.5: return "N"
@@ -122,7 +223,7 @@ func _on_jump_pressed() -> void:
 		player.jump()
 
 func _on_sprint_down() -> void:
-	if player:
+	if player and player.stamina > 5.0:
 		player.set_sprint(true)
 
 func _on_sprint_up() -> void:
