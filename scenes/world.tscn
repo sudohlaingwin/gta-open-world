@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
@@ -12,6 +12,8 @@
 [ext_resource type="PackedScene" path="res://scenes/myanmar_house.tscn" id="10_house_scn"]
 [ext_resource type="PackedScene" path="res://scenes/monastery_bell.tscn" id="11_bell_scn"]
 [ext_resource type="PackedScene" path="res://scenes/toddy_palm.tscn" id="12_palm_scn"]
+[ext_resource type="PackedScene" path="res://scenes/myanmar_zayat.tscn" id="13_zayat_scn"]
+[ext_resource type="PackedScene" path="res://scenes/water_pot_stand.tscn" id="14_pot_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -74,12 +76,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 15)
 [node name="Helicopter" parent="." instance=ExtResource("9_heli_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 18)
 
-# Cultural Landmarks: Golden Pagoda & Monastery Bell
+# Cultural Landmarks: Golden Pagoda, Bell & Village Zayat
 [node name="GoldenPagoda" parent="." instance=ExtResource("6_pagoda_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -35)
 
 [node name="MonasteryBell" parent="." instance=ExtResource("11_bell_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -32)
+
+[node name="MyanmarZayat" parent="." instance=ExtResource("13_zayat_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -30)
+
+[node name="WaterPotStand" parent="." instance=ExtResource("14_pot_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, -26)
 
 # Village Houses
 [node name="VillageHouse1" parent="." instance=ExtResource("10_house_scn")]

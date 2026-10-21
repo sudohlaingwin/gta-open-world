@@ -1,0 +1,47 @@
+extends StaticBody3D
+
+# --- Traditional Myanmar Village Drinking Water Pot Stand (ရေချမ်းစင် 3D Model) ---
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pot"]
+size = Vector3(1.6, 1.8, 1.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_stand"]
+size = Vector3(1.4, 0.8, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
+albedo_color = Color(0.42, 0.25, 0.12, 1)
+
+# Clay Water Pots (မြေအိုး)
+[sub_resource type="SphereMesh" id="SphereMesh_pot"]
+radius = 0.26
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clay"]
+albedo_color = Color(0.68, 0.35, 0.22, 1) # Reddish-brown Terracotta Clay
+roughness = 0.8
+
+[node name="WaterPotStand" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_pot")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+# Wooden Stand
+[node name="Stand" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = SubResource("BoxMesh_stand")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+# Left Clay Pot
+[node name="PotLeft" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.95, 0)
+mesh = SubResource("SphereMesh_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_clay")
+
+# Right Clay Pot
+[node name="PotRight" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.95, 0)
+mesh = SubResource("SphereMesh_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_clay")
