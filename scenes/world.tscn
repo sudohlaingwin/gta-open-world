@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3]
+[gd_scene load_steps=38 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
@@ -30,6 +30,8 @@
 [ext_resource type="PackedScene" path="res://scenes/festival_ground.tscn" id="28_festival_scn"]
 [ext_resource type="PackedScene" path="res://scenes/myanmar_horse.tscn" id="29_horse_scn"]
 [ext_resource type="PackedScene" path="res://scenes/myanmar_elephant.tscn" id="30_elephant_scn"]
+[ext_resource type="Shader" path="res://scripts/water_river.gdshader" id="31_water_shader"]
+[ext_resource type="PackedScene" path="res://scenes/myanmar_paddy_field.tscn" id="32_paddy_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -39,6 +41,13 @@ ground_horizon_color = Color(0.55, 0.65, 0.55, 1)
 
 [sub_resource type="Sky" id="Sky_1"]
 sky_material = SubResource("ProceduralSkyMaterial_1")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_water"]
+render_priority = 0
+shader = ExtResource("31_water_shader")
+
+[sub_resource type="BoxMesh" id="BoxMesh_river"]
+size = Vector3(140.0, 0.4, 28.0)
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 2

@@ -131,3 +131,17 @@ Your turn to review and beat this. 🤝
    - Built `myanmar_horse.tscn` and `horse_controller.gd` with 4-leg gallop cycle animation, red saddle blanket, sprint boost (16 m/s), and mount/dismount interaction at (-22, 0, 12).
 4. **Authentic Myanmar Royal Elephant (ရွှေဟင်္သာ ရိုးရာ ဆင်တော်ကြီး):**
    - Built `myanmar_elephant.tscn` and `elephant_controller.gd` featuring an elevated royal golden Howdah pavilion seat, twin ivory tusks, swaying trunk animation, and heavy mount physics at (-12, 0, 24).
+## 2026-10-22 — Slice 21: High-End Shaders (PUBG Visual Fidelity), Realistic Ayeyarwady River & Wind-Sway Paddies
+
+### Completed by Antigravity:
+1. **Realistic Ayeyarwady River PBR Water Shader (`scripts/water_river.gdshader`):**
+   - High-performance mobile spatial shader computing dual dynamic vertex sine wave displacement.
+   - PBR Schlick-GGX specular reflection (specular 0.8, roughness 0.05), realistic water depth color blending (shallow emerald turquoise to deep alluvial navy), and live wave undulation.
+2. **Lush Myanmar Paddy Wind Sway Shader (`scripts/foliage_sway.gdshader`):**
+   - Spatial vertex displacement shader animating realistic wind turbulence and breeze sway through crops and foliage.
+   - UV-based stalk-to-canopy gradient coloring.
+3. **Authentic Myanmar Paddy Field Models (`scenes/myanmar_paddy_field.tscn`):**
+   - Built rich alluvial soil mud beds with animated swaying green rice crops and 3D Burmese title signage.
+   - Instantiated multiple paddy sectors (`PaddyFieldNorth` and `PaddyFieldEast`) in `world.tscn`.
+4. **Visual Elevation toward PUBG Mobile Standard:**
+   - Elevates the visual quality from flat static colors into dynamic, living environments running smoothly on the vivo V60.

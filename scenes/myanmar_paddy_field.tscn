@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Shader" path="res://scripts/foliage_sway.gdshader" id="1_sway"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_paddy"]
+size = Vector3(18.0, 0.4, 14.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mud_bed"]
+size = Vector3(18.0, 0.2, 14.0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mud"]
+albedo_color = Color(0.25, 0.18, 0.12, 1) # Rich fertile Myanmar alluvial soil
+roughness = 0.95
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crops"]
+render_priority = 0
+shader = ExtResource("1_sway")
+
+[sub_resource type="BoxMesh" id="BoxMesh_crops"]
+size = Vector3(17.5, 0.8, 13.5)
+
+[node name="MyanmarPaddyField" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+shape = SubResource("BoxShape3D_paddy")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+# Mud Bed
+[node name="MudBed" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BoxMesh_mud_bed")
+surface_material_override/0 = SubResource("StandardMaterial3D_mud")
+
+# Wind Swaying Green Crops
+[node name="RiceCrops" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_crops")
+surface_material_override/0 = SubResource("ShaderMaterial_crops")
+
+# Burmese Field Signboard
+[node name="FieldSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 7.2)
+text = "ရွှေဝါမြေ ရိုးရာ စပါးခင်းကြီး"
+font_size = 24
+outline_size = 6
+modulate = Color(0.9, 0.95, 0.4, 1)
