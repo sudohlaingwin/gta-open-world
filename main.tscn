@@ -2522,7 +2522,7 @@ offset_top = 0.0
 offset_right = 0.0
 offset_bottom = 0.0
 visible = false
-text = "ထိန်းချုပ်နည်း: ဘယ်ဘက် joystick နဲ့ လမ်း လျှောက် / ကား မောင်း။ အပြေး ခလုတ် ဖိထား = ပြေး။ ခုန် = ခုန်။ ရွာသားနား ရောက်ရင် စကားပြော ခလုတ် ပေါ်မယ်။ ယာဉ်နား ရောက်ရင် စီးမည် ခလုတ် ပေါ်မယ်။ လေယာဉ် / ရဟတ်ယာဉ် မောင်းရင် အရှိန် + / - နဲ့ ယိမ်း ခလုတ်တွေ သုံးပါ။ ကင်မရာ ခလုတ် = ကင်မရာ လှည့်၊ ညာဘက်ခြမ်း ပွတ်ဆွဲရင်လည်း လှည့်ပါတယ်။ ဈေးနား ရောက်ရင် သစ်သီးဝယ် ခလုတ်၊ ရေတွင်းနား ရောက်ရင် ရေဆွဲ ခလုတ် ပေါ်မယ်။ ငှက်ပျောတောနား ရောက်ရင် ငှက်ပျောသီးခူး ခလုတ် ပေါ်မယ်။ ရွာမုခ်ဦးကို ဖြတ်ပြီး ငှက်ပျောသီး ၃ လုံး ခူးပါ။ မီးခလုတ် = ကား/ဆိုင်ကယ် မီးဖွင့်/ပိတ်။ ဝါးတံတားကို ဖြတ်ပြီး ဟင်္သာရုပ်တုနား ရောက်ရင် ဆုတောင်း ခလုတ် ပေါ်မယ်။ မြစ်မှာ လှေစီးလို့ရတယ်။ လက်ဖက်ရည်ဆိုင်နား ရောက်ရင် လက်ဖက်ရည်မှာစား ခလုတ်၊ ကျောင်းနား ရောက်ရင် စာအုပ်လှူ ခလုတ် ပေါ်မယ်။ စက်ဘီးလည်း စီးလို့ရတယ်။ လေယာဉ်/ရဟတ်ယာဉ်ပေါ်က အမြင့်မှာ ဆင်းရင် လေထီး အလိုအလို ပွင့်ပါတယ်။ သုံးဘီး စီးလို့ရတယ်။ ပွဲတော်နား ရောက်ရင် ဗုံတီး၊ မီးအိမ်ထွန်း၊ မုန့်ဝယ် ခလုတ်တွေ ပေါ်မယ်။ မြစ်ကမ်းနား ရောက်ရင် ငါးဖမ်း ခလုတ်၊ ဘုရားနား ရောက်ရင် အလှူပေး ခလုတ်၊ နွားနား ရောက်ရင် နို့ညှစ် ခလုတ်၊ နှမ်းခင်းနား ရောက်ရင် ရေလောင်း ခလုတ်၊ ကြက်အိမ်နား ရောက်ရင် အစာကျွေး ခလုတ် ပေါ်မယ်။ ကားမောင်းရင် ဟွန်း၊ စက်ဘီးစီးရင် ခေါင်းလောင်း ခလုတ် ပေါ်မယ်။ 📷 ခလုတ် = ဓာတ်ပုံရိုက် သိမ်းမယ်။ မိုး ခလုတ် = မိုးရွာ/ရပ်မယ်။ ဘောလုံးကို လမ်းလျှောက် တိုက်ရင် ကန်လို့ရတယ်၊ ဂိုးသွင်းရင် ဂိုးရေတွက်မယ်။ ဆင်လည်း စီးလို့ရတယ်။ ဘုရားမှာ ပန်းကပ်ပြီး စပါးစိုက်လို့ရတယ်။ ခုံတန်းမှာ နားရင် အားပြည့်တယ်။ အသံ ခလုတ် = အသံဖွင့်/ပိတ်။ မြင်းလည်း စီးလို့ရတယ်။ ရွှေဆိုင်နား ရောက်ရင် ရွှေဝယ် ခလုတ်၊ ကျောင်းစာပွဲနား ရောက်ရင် စာသင်ခန်း ခလုတ်၊ မြင်းနား ရောက်ရင် မြင်းအစာ ခလုတ် ပေါ်မယ်။ မြင်းစီးရင် မြင်းအော် ခလုတ် ပေါ်မယ်။"
+text = "ထိန်းချုပ်နည်း: ဘယ်ဘက် joystick နဲ့ လမ်း လျှောက် / ကား မောင်း။ အပြေး ခလုတ် ဖိထား = ပြေး။ ခုန် = ခုန်။ ရွာသားနား ရောက်ရင် စကားပြော ခလုတ် ပေါ်မယ်။ ယာဉ်နား ရောက်ရင် စီးမည် ခလုတ် ပေါ်မယ်။ လေယာဉ် / ရဟတ်ယာဉ် မောင်းရင် အရှိန် + / - နဲ့ ယိမ်း ခလုတ်တွေ သုံးပါ။ ကင်မရာ ခလုတ် = ကင်မရာ လှည့်၊ ညာဘက်ခြမ်း ပွတ်ဆွဲရင်လည်း လှည့်ပါတယ်။ ဈေးနား ရောက်ရင် သစ်သီးဝယ် ခလုတ်၊ ရေတွင်းနား ရောက်ရင် ရေဆွဲ ခလုတ် ပေါ်မယ်။ ငှက်ပျောတောနား ရောက်ရင် ငှက်ပျောသီးခူး ခလုတ် ပေါ်မယ်။ ရွာမုခ်ဦးကို ဖြတ်ပြီး ငှက်ပျောသီး ၃ လုံး ခူးပါ။ မီးခလုတ် = ကား/ဆိုင်ကယ် မီးဖွင့်/ပိတ်။ ဝါးတံတားကို ဖြတ်ပြီး ဟင်္သာရုပ်တုနား ရောက်ရင် ဆုတောင်း ခလုတ် ပေါ်မယ်။ မြစ်မှာ လှေစီးလို့ရတယ်။ လက်ဖက်ရည်ဆိုင်နား ရောက်ရင် လက်ဖက်ရည်မှာစား ခလုတ်၊ ကျောင်းနား ရောက်ရင် စာအုပ်လှူ ခလုတ် ပေါ်မယ်။ စက်ဘီးလည်း စီးလို့ရတယ်။ လေယာဉ်/ရဟတ်ယာဉ်ပေါ်က အမြင့်မှာ ဆင်းရင် လေထီး အလိုအလို ပွင့်ပါတယ်။ သုံးဘီး စီးလို့ရတယ်။ ပွဲတော်နား ရောက်ရင် ဗုံတီး၊ မီးအိမ်ထွန်း၊ မုန့်ဝယ် ခလုတ်တွေ ပေါ်မယ်။ မြစ်ကမ်းနား ရောက်ရင် ငါးဖမ်း ခလုတ်၊ ဘုရားနား ရောက်ရင် အလှူပေး ခလုတ်၊ နွားနား ရောက်ရင် နို့ညှစ် ခလုတ်၊ နှမ်းခင်းနား ရောက်ရင် ရေလောင်း ခလုတ်၊ ကြက်အိမ်နား ရောက်ရင် အစာကျွေး ခလုတ် ပေါ်မယ်။ ကားမောင်းရင် ဟွန်း၊ စက်ဘီးစီးရင် ခေါင်းလောင်း ခလုတ် ပေါ်မယ်။ 📷 ခလုတ် = ဓာတ်ပုံရိုက် သိမ်းမယ်။ မိုး ခလုတ် = မိုးရွာ/ရပ်မယ်။ ဘောလုံးကို လမ်းလျှောက် တိုက်ရင် ကန်လို့ရတယ်၊ ဂိုးသွင်းရင် ဂိုးရေတွက်မယ်။ ဆင်လည်း စီးလို့ရတယ်။ ဘုရားမှာ ပန်းကပ်ပြီး စပါးစိုက်လို့ရတယ်။ ခုံတန်းမှာ နားရင် အားပြည့်တယ်။ အသံ ခလုတ် = အသံဖွင့်/ပိတ်။ မြင်းလည်း စီးလို့ရတယ်။ ရွှေဆိုင်နား ရောက်ရင် ရွှေဝယ် ခလုတ်၊ ကျောင်းစာပွဲနား ရောက်ရင် စာသင်ခန်း ခလုတ်၊ မြင်းနား ရောက်ရင် မြင်းအစာ ခလုတ် ပေါ်မယ်။ မြင်းစီးရင် မြင်းအော် ခလုတ် ပေါ်မယ်။ ညဈေးနား ရောက်ရင် ခေါက်ဆွဲဝယ်၊ အအေးဝယ် ခလုတ်တွေ၊ တည်းခိုခန်းနား ရောက်ရင် အိပ်၊ ဧည့်စာရင်းထိုး ခလုတ်တွေ ပေါ်မယ်။ ဒုတိယလှေနဲ့ ဒုတိယမြင်းလည်း စီးလို့ရတယ်။"
 
 [node name="YawLeftButton" type="Button" parent="JoystickLayer"]
 theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
@@ -8171,25 +8171,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.15, 0)
 mesh = SubResource("BoxMesh_arm")
 surface_material_override/0 = SubResource("StandardMaterial3D_skin")
 
-[node name="GoldStall18" type="Node3D" parent="."]
+[node name="GoldStall18B" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 0, 26)
 
-[node name="GoldTable18" type="MeshInstance3D" parent="GoldStall18"]
+[node name="GoldTable18" type="MeshInstance3D" parent="GoldStall18B"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 mesh = SubResource("BoxMesh_s16_slab")
 surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
 
-[node name="GoldBox18A" type="MeshInstance3D" parent="GoldStall18"]
+[node name="GoldBox18A" type="MeshInstance3D" parent="GoldStall18B"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 1.05, 0)
 mesh = SubResource("BoxMesh_s18_goldbox")
 surface_material_override/0 = SubResource("StandardMaterial3D_s18_gold")
 
-[node name="GoldBox18B" type="MeshInstance3D" parent="GoldStall18"]
+[node name="GoldBox18B" type="MeshInstance3D" parent="GoldStall18B"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
 mesh = SubResource("BoxMesh_s18_goldbox")
 surface_material_override/0 = SubResource("StandardMaterial3D_s18_gold")
 
-[node name="GoldBox18C" type="MeshInstance3D" parent="GoldStall18"]
+[node name="GoldBox18C" type="MeshInstance3D" parent="GoldStall18B"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 1.05, 0)
 mesh = SubResource("BoxMesh_s18_goldbox")
 surface_material_override/0 = SubResource("StandardMaterial3D_s18_gold")
@@ -8243,25 +8243,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.15, 0)
 mesh = SubResource("BoxMesh_arm")
 surface_material_override/0 = SubResource("StandardMaterial3D_skin")
 
-[node name="GoldStall18" type="Node3D" parent="."]
+[node name="GoldStall18C" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 0, 26)
 
-[node name="GoldTable18" type="MeshInstance3D" parent="GoldStall18"]
+[node name="GoldTable18" type="MeshInstance3D" parent="GoldStall18C"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 mesh = SubResource("BoxMesh_s16_slab")
 surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
 
-[node name="GoldBox18A" type="MeshInstance3D" parent="GoldStall18"]
+[node name="GoldBox18A" type="MeshInstance3D" parent="GoldStall18C"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 1.05, 0)
 mesh = SubResource("BoxMesh_s18_goldbox")
 surface_material_override/0 = SubResource("StandardMaterial3D_s18_gold")
 
-[node name="GoldBox18B" type="MeshInstance3D" parent="GoldStall18"]
+[node name="GoldBox18B" type="MeshInstance3D" parent="GoldStall18C"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
 mesh = SubResource("BoxMesh_s18_goldbox")
 surface_material_override/0 = SubResource("StandardMaterial3D_s18_gold")
 
-[node name="GoldBox18C" type="MeshInstance3D" parent="GoldStall18"]
+[node name="GoldBox18C" type="MeshInstance3D" parent="GoldStall18C"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 1.05, 0)
 mesh = SubResource("BoxMesh_s18_goldbox")
 surface_material_override/0 = SubResource("StandardMaterial3D_s18_gold")
@@ -8413,4 +8413,657 @@ offset_top = 0.0
 offset_right = 8.0
 offset_bottom = 8.0
 color = Color(0.6, 0.4, 0.2, 1)
+
+[node name="NightMarket20" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 0, 32)
+
+[node name="Stall20A" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.8, 0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="Awning20A" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2.2, 0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_flag_red")
+
+[node name="Post20A1" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 1.1, -1.2)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="Post20A2" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 1.1, -1.2)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="NoodlePot20" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.15, 0)
+mesh = SubResource("BoxMesh_torso")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_dark")
+
+[node name="Stall20B" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="Awning20B" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_gold")
+
+[node name="Post20B1" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 1.1, -1.2)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="Post20B2" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 1.1, -1.2)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="DrinkJar20A" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 1.15, 0)
+mesh = SubResource("BoxMesh_torso")
+surface_material_override/0 = SubResource("StandardMaterial3D_s14_longyi_teal")
+
+[node name="DrinkJar20B" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 1.15, 0)
+mesh = SubResource("BoxMesh_torso")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_gold")
+
+[node name="Stall20C" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.8, 0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="Awning20C" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2.2, 0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s14_longyi_teal")
+
+[node name="Post20C1" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 1.1, -1.2)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="Post20C2" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 1.1, -1.2)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="Balloon20_0" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4, 2.7, 0)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_flag_red")
+
+[node name="Balloon20_1" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0, 2.7, 0)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_gold")
+
+[node name="Balloon20_2" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 2.7, 0)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_s14_longyi_teal")
+
+[node name="LightPole20A" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1.5, 0)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="LightPole20B" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1.5, 0)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="StringBulb20_0" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 3.0, 0)
+mesh = SubResource("SphereMesh_s18_firefly")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_firefly")
+
+[node name="StringBulb20_1" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 3.0, 0)
+mesh = SubResource("SphereMesh_s18_firefly")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_firefly")
+
+[node name="StringBulb20_2" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 3.0, 0)
+mesh = SubResource("SphereMesh_s18_firefly")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_firefly")
+
+[node name="StringBulb20_3" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 3.0, 0)
+mesh = SubResource("SphereMesh_s18_firefly")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_firefly")
+
+[node name="StringBulb20_4" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 3.0, 0)
+mesh = SubResource("SphereMesh_s18_firefly")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_firefly")
+
+[node name="Bench20A" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.45, 2.5)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="Bench20B" type="MeshInstance3D" parent="NightMarket20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.45, 2.5)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="GuestHouse20" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, 36)
+
+[node name="GuestFloor20" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="GuestPost20_0" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.2, -2)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="GuestPost20_1" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.2, -2)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="GuestPost20_2" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.2, 2)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="GuestPost20_3" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.2, 2)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="GuestRoof20" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_flag_red")
+
+[node name="GuestBed20" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.45, -1.0)
+mesh = SubResource("BoxMesh_torso")
+surface_material_override/0 = SubResource("StandardMaterial3D_taikpon")
+
+[node name="GuestLampPost20" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 1.0, 1.5)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="GuestLamp20" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 2.1, 1.5)
+mesh = SubResource("SphereMesh_s18_firefly")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_gold")
+
+[node name="SleepLabel20" type="Label3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+billboard = 1
+text = "အိပ်ပျော်နေတယ်... အားပြည့်သွားပြီ!"
+font_size = 28
+visible = false
+
+[node name="GuestFlowerBed20" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 3.2)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="GuestFlower20_0" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.55, 3.2)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_flag_red")
+
+[node name="GuestFlower20_1" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.55, 3.2)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_gold")
+
+[node name="GuestFlower20_2" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.55, 3.2)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_s14_longyi_teal")
+
+[node name="GuestFlower20_3" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0.55, 3.2)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_taikpon")
+
+[node name="GuestPath20_0" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 4.0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="GuestPath20_1" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 6.0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="GuestPath20_2" type="MeshInstance3D" parent="GuestHouse20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 8.0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="Boat2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 44)
+script = ExtResource("1_boat")
+
+[node name="Hull" type="MeshInstance3D" parent="Boat2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("BoxMesh_s14_hull")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="BoatBenchF" type="MeshInstance3D" parent="Boat2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -0.6)
+mesh = SubResource("BoxMesh_s14_boat_bench")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="BoatBenchB" type="MeshInstance3D" parent="Boat2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0.6)
+mesh = SubResource("BoxMesh_s14_boat_bench")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="OarL" type="MeshInstance3D" parent="Boat2"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, -0.8, 0.45, 0.3)
+mesh = SubResource("CylinderMesh_s14_oar")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="OarR" type="MeshInstance3D" parent="Boat2"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0.8, 0.45, 0.3)
+mesh = SubResource("CylinderMesh_s14_oar")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="Horse2" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 1, -38)
+script = ExtResource("1_horse19")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Horse2"]
+shape = SubResource("BoxShape3D_s18_ele")
+
+[node name="HorseBody" type="MeshInstance3D" parent="Horse2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+mesh = SubResource("BoxMesh_s19_horse_body")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_longyi_brown")
+
+[node name="HorseHead" type="MeshInstance3D" parent="Horse2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, -1.2)
+mesh = SubResource("BoxMesh_s19_horse_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_longyi_brown")
+
+[node name="HorseMane" type="MeshInstance3D" parent="Horse2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05, -0.5)
+mesh = SubResource("BoxMesh_s19_horse_mane")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_dark")
+
+[node name="HorseTail" type="MeshInstance3D" parent="Horse2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 1.3)
+mesh = SubResource("BoxMesh_s19_horse_tail")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_dark")
+
+[node name="HorseBlanket" type="MeshInstance3D" parent="Horse2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85, 0.1)
+mesh = SubResource("BoxMesh_s19_horse_blanket")
+surface_material_override/0 = SubResource("StandardMaterial3D_s14_longyi_teal")
+
+[node name="HorseLegFL" type="MeshInstance3D" parent="Horse2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.55, -0.7)
+mesh = SubResource("BoxMesh_s19_horse_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_longyi_brown")
+
+[node name="HorseLegFR" type="MeshInstance3D" parent="Horse2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.55, -0.7)
+mesh = SubResource("BoxMesh_s19_horse_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_longyi_brown")
+
+[node name="HorseLegBL" type="MeshInstance3D" parent="Horse2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.55, 0.7)
+mesh = SubResource("BoxMesh_s19_horse_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_longyi_brown")
+
+[node name="HorseLegBR" type="MeshInstance3D" parent="Horse2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.55, 0.7)
+mesh = SubResource("BoxMesh_s19_horse_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_longyi_brown")
+
+[node name="HorsePen20" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, -38)
+
+[node name="PenPost20_0" type="MeshInstance3D" parent="HorsePen20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1, -2.5)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="PenPost20_1" type="MeshInstance3D" parent="HorsePen20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1, -2.5)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="PenPost20_2" type="MeshInstance3D" parent="HorsePen20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1, 2.5)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="PenPost20_3" type="MeshInstance3D" parent="HorsePen20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1, 2.5)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="PenHay20" type="MeshInstance3D" parent="HorsePen20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.25, 1.5)
+mesh = SubResource("BoxMesh_s18_hay")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="Villager17" type="CharacterBody3D" parent="." groups=["villagers"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 1, 33)
+script = ExtResource("1_npc")
+dialogue_text = "မင်္ဂလာပါ! တည်းခိုခန်း လွတ်နေပါတယ်၊ နားနားနေနေ အိပ်ပါ။"
+villager_name = "တည်းခိုခန်း ပိုင်ရှင် ဦးသိန်း"
+wander_radius = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Villager17"]
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="Head" type="MeshInstance3D" parent="Villager17"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Torso" type="MeshInstance3D" parent="Villager17"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+mesh = SubResource("BoxMesh_torso")
+surface_material_override/0 = SubResource("StandardMaterial3D_taikpon")
+
+[node name="Longyi" type="MeshInstance3D" parent="Villager17"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
+mesh = SubResource("CylinderMesh_longyi")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_longyi_brown")
+
+[node name="DialogueLabel" type="Label3D" parent="Villager17"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+billboard = 1
+text = "မင်္ဂလာပါ! တည်းခိုခန်း လွတ်နေပါတယ်၊ နားနားနေနေ အိပ်ပါ။"
+font_size = 28
+visible = false
+
+[node name="PromptLabel" type="Label3D" parent="Villager17"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+text = "!"
+font_size = 36
+visible = false
+
+[node name="Arm_R" type="MeshInstance3D" parent="Villager17"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Arm_L" type="MeshInstance3D" parent="Villager17"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Villager18" type="CharacterBody3D" parent="." groups=["villagers"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 1, 29)
+script = ExtResource("1_npc")
+dialogue_text = "မင်္ဂလာပါ! ခေါက်ဆွဲ ပူပူလေး၊ အအေးလည်း ရှိတယ်။"
+villager_name = "ညဈေး ရောင်းသူ မစု"
+wander_radius = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Villager18"]
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="Head" type="MeshInstance3D" parent="Villager18"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Torso" type="MeshInstance3D" parent="Villager18"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+mesh = SubResource("BoxMesh_torso")
+surface_material_override/0 = SubResource("StandardMaterial3D_taikpon")
+
+[node name="Longyi" type="MeshInstance3D" parent="Villager18"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
+mesh = SubResource("CylinderMesh_longyi")
+surface_material_override/0 = SubResource("StandardMaterial3D_flower_red")
+
+[node name="DialogueLabel" type="Label3D" parent="Villager18"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+billboard = 1
+text = "မင်္ဂလာပါ! ခေါက်ဆွဲ ပူပူလေး၊ အအေးလည်း ရှိတယ်။"
+font_size = 28
+visible = false
+
+[node name="PromptLabel" type="Label3D" parent="Villager18"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+text = "!"
+font_size = 36
+visible = false
+
+[node name="Arm_R" type="MeshInstance3D" parent="Villager18"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Arm_L" type="MeshInstance3D" parent="Villager18"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Pier20" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, 44)
+
+[node name="PierPlank20_0" type="MeshInstance3D" parent="Pier20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.15, 0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="PierPlank20_1" type="MeshInstance3D" parent="Pier20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.15, 0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="PierPlank20_2" type="MeshInstance3D" parent="Pier20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.15, 0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="LakesideBench20A" type="MeshInstance3D" parent="Pier20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.45, -2.0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="LakesideBench20B" type="MeshInstance3D" parent="Pier20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.45, -2.0)
+mesh = SubResource("BoxMesh_s16_slab")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_wood")
+
+[node name="Palm20_0" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 2.5, 42)
+mesh = SubResource("CylinderMesh_palm_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="PalmLeaf20_0" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.878, 0.479, 0, -0.479, 0.878, 0, 0, 0, 1, -20, 5.2, 42)
+mesh = SubResource("BoxMesh_s12_banana_leaf")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_leaf")
+
+[node name="Palm20_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2.5, 42)
+mesh = SubResource("CylinderMesh_palm_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="PalmLeaf20_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.878, 0.479, 0, -0.479, 0.878, 0, 0, 0, 1, -10, 5.2, 42)
+mesh = SubResource("BoxMesh_s12_banana_leaf")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_leaf")
+
+[node name="Palm20_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 42)
+mesh = SubResource("CylinderMesh_palm_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="PalmLeaf20_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.878, 0.479, 0, -0.479, 0.878, 0, 0, 0, 1, 0, 5.2, 42)
+mesh = SubResource("BoxMesh_s12_banana_leaf")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_leaf")
+
+[node name="Banana20_0_trunk" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 1.1, 28)
+mesh = SubResource("CylinderMesh_s12_banana_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_trunk_brown")
+
+[node name="Banana20_0_leaf" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.878, 0.479, 0, -0.479, 0.878, 0, 0, 0, 1, -28, 2.3, 28)
+mesh = SubResource("BoxMesh_s12_banana_leaf")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_leaf")
+
+[node name="Banana20_1_trunk" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 1.1, 28)
+mesh = SubResource("CylinderMesh_s12_banana_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_trunk_brown")
+
+[node name="Banana20_1_leaf" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.878, 0.479, 0, -0.479, 0.878, 0, 0, 0, 1, -44, 2.3, 28)
+mesh = SubResource("BoxMesh_s12_banana_leaf")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_leaf")
+
+[node name="RoadLantern20A" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 1.0, 32)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="RoadLantern20A_glow" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 2.1, 32)
+mesh = SubResource("SphereMesh_s18_firefly")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_gold")
+
+[node name="RoadLantern20B" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 1.0, 32)
+mesh = SubResource("BoxMesh_s13_pen_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_s17_teak")
+
+[node name="RoadLantern20B_glow" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 2.1, 32)
+mesh = SubResource("SphereMesh_s18_firefly")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_gold")
+
+[node name="Fireflies20" type="Node3D" parent="."]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 1.2, 32)
+
+[node name="Firefly20A" type="MeshInstance3D" parent="Fireflies20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.3, 0)
+mesh = SubResource("SphereMesh_s18_firefly")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_firefly")
+
+[node name="Firefly20B" type="MeshInstance3D" parent="Fireflies20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.6, 1.0)
+mesh = SubResource("SphereMesh_s18_firefly")
+surface_material_override/0 = SubResource("StandardMaterial3D_s18_firefly")
+
+[node name="NoodleButton20" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.42
+anchor_top = 0.32
+anchor_right = 0.56
+anchor_bottom = 0.42
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "ခေါက်ဆွဲဝယ်"
+
+[node name="DrinkButton20" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.58
+anchor_top = 0.32
+anchor_right = 0.72
+anchor_bottom = 0.42
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "အအေးဝယ်"
+
+[node name="SleepButton20" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.42
+anchor_top = 0.44
+anchor_right = 0.56
+anchor_bottom = 0.54
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "အိပ်"
+
+[node name="GuestbookButton20" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.58
+anchor_top = 0.44
+anchor_right = 0.72
+anchor_bottom = 0.54
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "ဧည့်စာရင်းထိုး"
+
+[node name="NightMarketDot20" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(1.0, 0.6, 0.0, 1)
+
+[node name="GuestHouseDot20" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.9, 0.9, 0.9, 1)
+
+[node name="PierDot20" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.5, 1.0, 1)
+
+[node name="VehicleDotBoat2" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.9, 0.9, 0.9, 1)
+
+[node name="VehicleDotHorse2" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.9, 0.9, 0.9, 1)
+
+[node name="VillagerDot17" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.8, 0.2, 1)
+
+[node name="VillagerDot18" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.8, 0.2, 1)
 

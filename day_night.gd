@@ -27,3 +27,7 @@ func _process(delta: float) -> void:
 	var flies := get_node_or_null("../Fireflies18")
 	if flies != null:
 		flies.visible = daylight < 0.15
+	# Slice 20 fireflies: same rule for the night-market swarm.
+	var flies20 := get_node_or_null("../Fireflies20")
+	if flies20 != null:
+		flies20.visible = daylight < 0.15

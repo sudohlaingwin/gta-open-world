@@ -39,6 +39,9 @@ const OBSTACLES: Array = [
 	[36.0, 30.0, 4.0], [-2.0, -40.0, 4.0], [-34.0, 6.0, 3.0],
 	# Slice 19: horse pen, lakeside hut, gold stall, bamboo workshop,
 	# clay kiln, fishing hut, tea plantation.
+	# Slice 20: night market, guest house, pier, horse pen 2, boat2.
+	[-36.0, 32.0, 5.0], [26.0, 36.0, 4.0], [46.0, 44.0, 3.0],
+	[-28.0, -38.0, 3.0], [30.0, 44.0, 2.0],
 	[-38.0, -30.0, 3.0], [44.0, 38.0, 3.0], [29.0, 22.0, 2.0],
 	[-20.0, 38.0, 3.0], [45.0, 10.0, 2.0], [39.0, 42.0, 3.0],
 	[-44.0, -4.0, 4.0],

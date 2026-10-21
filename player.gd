@@ -199,6 +199,22 @@ var feed_horse_button_connected: bool = false
 var whistle_button: Button = null
 var whistle_button_connected: bool = false
 
+# Slice 20: night market + guest house + second boat/horse, tenth reward.
+# All buttons touch-first; no keyboard path exists for any of them.
+var noodle_count: int = 0
+var drink_count: int = 0
+var guestbook_count: int = 0
+var quest_rewarded10: bool = false
+var sleep_timer: float = 0.0
+var noodle_button: Button = null
+var noodle_button_connected: bool = false
+var drink_button: Button = null
+var drink_button_connected: bool = false
+var sleep_button: Button = null
+var sleep_button_connected: bool = false
+var guestbook_button: Button = null
+var guestbook_button_connected: bool = false
+
 func _ready() -> void:
 	pass
 
@@ -221,6 +237,7 @@ func _physics_process(delta: float) -> void:
 	_update_slice17_buttons()
 	_update_slice18_buttons()
 	_update_slice19_buttons()
+	_update_slice20_buttons()
 	_update_football(delta)
 	if driving:
 		velocity = Vector3.ZERO
@@ -342,6 +359,12 @@ func _physics_process(delta: float) -> void:
 			var dl2 := get_node_or_null("../FestivalDrum16/DrumLabel") as Label3D
 			if dl2 != null:
 				dl2.visible = false
+	if sleep_timer > 0.0:
+		sleep_timer -= delta
+		if sleep_timer <= 0.0:
+			var sl2 := get_node_or_null("../GuestHouse20/SleepLabel20") as Label3D
+			if sl2 != null:
+				sl2.visible = false
 	if Input.is_action_just_pressed("ui_accept"):
 		_try_enter_vehicle()
 	# E is a desktop-debug fallback ONLY — the primary path is the
@@ -534,9 +557,9 @@ func _update_speed_label() -> void:
 			speed_bar.visible = false
 		return
 	var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
-		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း"}
+		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း", "Boat2": "လှေ", "Horse2": "မြင်း"}
 	var vmax := {"Car": 14.0, "Cart": 6.0, "Motorcycle": 18.0,
-		"Airplane": 50.0, "Cow": 4.5, "Helicopter": 12.0, "Boat": 5.0, "Bicycle": 7.0, "TukTuk": 11.0, "Elephant": 6.0, "Horse": 9.0}
+		"Airplane": 50.0, "Cow": 4.5, "Helicopter": 12.0, "Boat": 5.0, "Bicycle": 7.0, "TukTuk": 11.0, "Elephant": 6.0, "Horse": 9.0, "Boat2": 5.0, "Horse2": 9.0}
 	var vname: String = str(names.get(driving_vehicle.name, driving_vehicle.name))
 	var spd := 0.0
 	if driving_vehicle.get("speed") != null:
@@ -671,6 +694,18 @@ func _update_quest_label() -> void:
 		quest_label.text = "တာဝန်: မြင်းကို အစာကျွေးပါ"
 	elif quest_stage == 30:
 		quest_label.text = "တာဝန်: ရေကန်အိမ်ကို သွားပါ"
+	elif quest_stage == 31:
+		quest_label.text = "တာဝန်: ဒုတိယလှေစီးပါ"
+	elif quest_stage == 32:
+		quest_label.text = "တာဝန်: ဒုတိယမြင်းစီးပါ"
+	elif quest_stage == 33:
+		quest_label.text = "တာဝန်: ညဈေးမှာ ခေါက်ဆွဲဝယ်ပါ"
+	elif quest_stage == 34:
+		quest_label.text = "တာဝန်: တည်းခိုခန်းမှာ ဧည့်စာရင်းထိုးပါ"
+	elif quest_stage == 35:
+		quest_label.text = "တာဝန်: တည်းခိုခန်းမှာ အိပ်ပါ"
+	elif quest_rewarded10:
+		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် + အပြေးမြန် +10% + ခုန်အား +10% + ခုန်အား ထပ် +10% + လမ်းလျှောက် ထပ် +5% + လမ်းလျှောက် ထပ် +5% + လမ်းလျှောက် ထပ် +5% + ခုန်အား ထပ် +10%"
 	elif quest_rewarded9:
 		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် + အပြေးမြန် +10% + ခုန်အား +10% + ခုန်အား ထပ် +10% + လမ်းလျှောက် ထပ် +5% + လမ်းလျှောက် ထပ် +5%"
 	elif quest_rewarded8:
@@ -696,9 +731,9 @@ func _update_quest_label() -> void:
 	if quest_tracker_label == null:
 		quest_tracker_label = get_node_or_null("../JoystickLayer/QuestTrackerLabel") as Label
 	if quest_tracker_label != null:
-		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ", "မုခ်ဦးဖြတ်", "ငှက်ပျောခူး", "ဝါးတံတားဖြတ်", "ဟင်္သာဆုတောင်း", "လက်ဖက်ရည်မှာစား", "စာအုပ်လှူ", "စက်ဘီးစီး", "သုံးဘီးစီး", "လေထီးဆင်း", "ဗုံတီး", "ငါးဖမ်း", "အလှူပေး", "နို့ညှစ်", "ရေလောင်း", "အစာကျွေး", "ဆင်စီး", "ပန်းကပ်", "စပါးစိုက်", "ခုံတန်းနား", "ဆင်အစာကျွေး", "မြင်းစီး", "ရွှေဝယ်", "စာသင်ခန်း", "မြင်းအစာကျွေး", "ရေကန်အိမ်"]
+		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ", "မုခ်ဦးဖြတ်", "ငှက်ပျောခူး", "ဝါးတံတားဖြတ်", "ဟင်္သာဆုတောင်း", "လက်ဖက်ရည်မှာစား", "စာအုပ်လှူ", "စက်ဘီးစီး", "သုံးဘီးစီး", "လေထီးဆင်း", "ဗုံတီး", "ငါးဖမ်း", "အလှူပေး", "နို့ညှစ်", "ရေလောင်း", "အစာကျွေး", "ဆင်စီး", "ပန်းကပ်", "စပါးစိုက်", "ခုံတန်းနား", "ဆင်အစာကျွေး", "မြင်းစီး", "ရွှေဝယ်", "စာသင်ခန်း", "မြင်းအစာကျွေး", "ရေကန်အိမ်", "ဒုတိယလှေစီး", "ဒုတိယမြင်းစီး", "ခေါက်ဆွဲဝယ်", "ဧည့်စာရင်းထိုး", "တည်းခိုခန်းအိပ်"]
 		var parts: Array = []
-		for i in range(31):
+		for i in range(36):
 			parts.append(("✓ " if quest_stage > i else "○ ") + stage_names[i])
 		quest_tracker_label.text = "   ".join(parts)
 		quest_tracker_label.visible = true
@@ -718,7 +753,7 @@ func _on_vehicle_button_pressed() -> void:
 func _nearest_vehicle() -> Node:
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -747,7 +782,7 @@ func _try_enter_vehicle() -> void:
 	# list order, which could pick a farther vehicle over a nearer one).
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -777,6 +812,14 @@ func _try_enter_vehicle() -> void:
 		# Slice 19 quest stage 26: riding the horse continues it.
 		if quest_stage == 26 and best.name == "Horse":
 			quest_stage = 27
+			_update_quest_label()
+		# Slice 20 quest stage 31: riding the second boat continues it.
+		if quest_stage == 31 and best.name == "Boat2":
+			quest_stage = 32
+			_update_quest_label()
+		# Slice 20 quest stage 32: riding the second horse continues it.
+		if quest_stage == 32 and best.name == "Horse2":
+			quest_stage = 33
 			_update_quest_label()
 		best.start_driving(self)
 
@@ -907,7 +950,7 @@ func _update_minimap() -> void:
 			"VillagerDot7", "VillagerDot8", "VehicleDotBicycle", "VehicleDotTukTuk",
 			"FestivalDot16", "VillagerDot9", "VillagerDot10",
 			"FishDot17", "DonateDot17", "VillagerDot11", "VillagerDot12", "StallDot17", "WellDot17", "VehicleDotCow2", "BallDot17", "HouseDot17", "VehicleDotElephant", "VillagerDot13", "VillagerDot14", "PavilionDot18", "PaddyDot18",
-			"VehicleDotHorse", "VillagerDot15", "VillagerDot16", "HutDot19", "GoldStallDot19", "WorkshopDot19"]:
+			"VehicleDotHorse", "VillagerDot15", "VillagerDot16", "HutDot19", "GoldStallDot19", "WorkshopDot19", "NightMarketDot20", "GuestHouseDot20", "PierDot20", "VehicleDotBoat2", "VehicleDotHorse2", "VillagerDot17", "VillagerDot18"]:
 			var dot := panel.get_node_or_null(name) as ColorRect
 			if dot != null:
 				minimap_dots[name] = dot
@@ -953,7 +996,7 @@ func _update_minimap() -> void:
 		var lm := get_node_or_null("../" + pair[0]) as Node3D
 		if lm != null:
 			put.call(pair[1], lm.global_position)
-	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse"]:
+	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2"]:
 		var v := get_node_or_null("../" + vname)
 		if v != null:
 			put.call("VehicleDot" + vname, (v as Node3D).global_position)
@@ -999,6 +1042,14 @@ func _update_minimap() -> void:
 		var lm19 := get_node_or_null("../" + pair[0]) as Node3D
 		if lm19 != null:
 			put.call(pair[1], lm19.global_position)
+	# Slice 20 dots: villagers 17/18 by node name, night market,
+	# guest house, pier; boat2/horse2 ride the vehicle loop above.
+	for pair in [["Villager17", "VillagerDot17"], ["Villager18", "VillagerDot18"],
+			["NightMarket20", "NightMarketDot20"], ["GuestHouse20", "GuestHouseDot20"],
+			["Pier20", "PierDot20"]]:
+		var lm20 := get_node_or_null("../" + pair[0]) as Node3D
+		if lm20 != null:
+			put.call(pair[1], lm20.global_position)
 
 ## Slice 10 nearby prompt: what is close enough to use, on foot.
 func _update_prompt_label() -> void:
@@ -1020,7 +1071,7 @@ func _update_prompt_label() -> void:
 	var veh := _nearest_vehicle()
 	if veh != null:
 		var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
-			"Airplane": "လေယာဉ်", "Cow": "နွား", "Cow2": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း"}
+			"Airplane": "လေယာဉ်", "Cow": "နွား", "Cow2": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း", "Boat2": "လှေ", "Horse2": "မြင်း"}
 		prompt_label.text = "အနီး: " + names.get(veh.name, veh.name) + " — စီးမည်"
 		prompt_label.visible = true
 		return
@@ -1064,7 +1115,11 @@ func _update_prompt_label() -> void:
 			["Kiln19", "အိုးဖို", 4.0],
 			["FishingHut19", "ငါးဖမ်းတဲ", 5.0],
 			["TeaPlant19", "လက်ဖက်ခင်း", 5.0],
-			["TeacherDesk18", "ဆရာမ စာပွဲ", 4.0]]:
+			["TeacherDesk18", "ဆရာမ စာပွဲ", 4.0],
+			["NightMarket20", "ညဈေး", 5.0],
+			["GuestHouse20", "တည်းခိုခန်း", 5.0],
+			["Pier20", "ရေကန်ဆိပ်", 4.0],
+			["HorsePen20", "မြင်းခြံ ၂", 4.0]]:
 		var lm := get_node_or_null("../" + pair[0]) as Node3D
 		if lm != null and global_position.distance_to(lm.global_position) < float(pair[2]):
 			prompt_label.text = "အနီး: " + str(pair[1])
@@ -1153,7 +1208,7 @@ func _update_fruit_water_label() -> void:
 		fruit_water_label = get_node_or_null("../JoystickLayer/FruitWaterLabel") as Label
 	if fruit_water_label == null:
 		return
-	fruit_water_label.text = "🍎 %d 💧 %d 🍌 %d 🍵 %d 📚 %d 🍡 %d 🪔 %d 🐟 %d 💰 %d 🥛 %d 🥚 %d ⚽ %d 🌸 %d 📸 %d 🌾 %d 🪙 %d 📖 %d 🐴 %d" % [fruit_count, water_count, banana_count, tea_count, book_count, snack_count, lantern_count, fish_count, donation_count, milk_count, egg_count, goal_count, flower_count, photo_count, rice_count, gold_count, lesson_count, horse_feed]
+	fruit_water_label.text = "🍎 %d 💧 %d 🍌 %d 🍵 %d 📚 %d 🍡 %d 🪔 %d 🐟 %d 💰 %d 🥛 %d 🥚 %d ⚽ %d 🌸 %d 📸 %d 🌾 %d 🪙 %d 📖 %d 🐴 %d 🍜 %d 🥤 %d 📝 %d" % [fruit_count, water_count, banana_count, tea_count, book_count, snack_count, lantern_count, fish_count, donation_count, milk_count, egg_count, goal_count, flower_count, photo_count, rice_count, gold_count, lesson_count, horse_feed, noodle_count, drink_count, guestbook_count]
 	fruit_water_label.visible = true
 
 ## Slice 12: the well bucket lowers to the water and rises back
@@ -1807,7 +1862,7 @@ func _update_slice19_buttons() -> void:
 		whistle_button_connected = true
 	if driving:
 		if whistle_button != null:
-			whistle_button.visible = driving_vehicle != null and driving_vehicle.name == "Horse"
+			whistle_button.visible = driving_vehicle != null and driving_vehicle.name in ["Horse", "Horse2"]
 		for b in [gold_button, lesson_button, feed_horse_button]:
 			if b != null:
 				b.visible = false
@@ -1853,3 +1908,79 @@ func _on_feed_horse() -> void:
 
 func _on_whistle() -> void:
 	_play_tone(660.0, 0.4)
+
+## Slice 20: night-market + guest-house buttons. Every button is
+## touch-first and lives in the real scene (JoystickLayer); the
+## foot buttons show only near their spot. No keyboard path exists
+## for any of them.
+func _update_slice20_buttons() -> void:
+	noodle_button = _wire17("NoodleButton20", noodle_button, noodle_button_connected, _on_buy_noodles)
+	if noodle_button != null and not noodle_button_connected:
+		noodle_button_connected = true
+	drink_button = _wire17("DrinkButton20", drink_button, drink_button_connected, _on_buy_drink)
+	if drink_button != null and not drink_button_connected:
+		drink_button_connected = true
+	sleep_button = _wire17("SleepButton20", sleep_button, sleep_button_connected, _on_sleep)
+	if sleep_button != null and not sleep_button_connected:
+		sleep_button_connected = true
+	guestbook_button = _wire17("GuestbookButton20", guestbook_button, guestbook_button_connected, _on_guestbook)
+	if guestbook_button != null and not guestbook_button_connected:
+		guestbook_button_connected = true
+	if driving:
+		for b in [noodle_button, drink_button, sleep_button, guestbook_button]:
+			if b != null:
+				b.visible = false
+		return
+	var market := get_node_or_null("../NightMarket20") as Node3D
+	if noodle_button != null:
+		noodle_button.visible = market != null and global_position.distance_to(market.global_position) < 5.0
+	if drink_button != null:
+		drink_button.visible = market != null and global_position.distance_to(market.global_position) < 5.0
+	var house := get_node_or_null("../GuestHouse20") as Node3D
+	if sleep_button != null:
+		sleep_button.visible = house != null and global_position.distance_to(house.global_position) < 4.0
+	if guestbook_button != null:
+		guestbook_button.visible = house != null and global_position.distance_to(house.global_position) < 4.0
+
+func _on_buy_noodles() -> void:
+	if driving:
+		return
+	noodle_count += 1
+	_play_tone(520.0, 0.3)
+	if quest_stage == 33:
+		quest_stage = 34
+		_update_quest_label()
+	_update_fruit_water_label()
+
+func _on_buy_drink() -> void:
+	if driving:
+		return
+	drink_count += 1
+	_play_tone(520.0, 0.3)
+	_update_fruit_water_label()
+
+func _on_guestbook() -> void:
+	if driving:
+		return
+	guestbook_count += 1
+	if quest_stage == 34:
+		quest_stage = 35
+		_update_quest_label()
+	_update_fruit_water_label()
+
+func _on_sleep() -> void:
+	if driving:
+		return
+	stamina = 100.0
+	sleep_timer = 4.0
+	var sl := get_node_or_null("../GuestHouse20/SleepLabel20") as Label3D
+	if sl != null:
+		sl.visible = true
+	_play_tone(330.0, 0.5)
+	if quest_stage == 35:
+		quest_stage = 36
+		if not quest_rewarded10:
+			quest_rewarded10 = true
+			walk_speed *= 1.05
+			jump_velocity *= 1.10
+		_update_quest_label()
