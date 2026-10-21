@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/bullock_cart.tscn" id="4_cart_scn"]
 [ext_resource type="PackedScene" path="res://scenes/airplane.tscn" id="5_plane_scn"]
 [ext_resource type="PackedScene" path="res://scenes/myanmar_pagoda.tscn" id="6_pagoda_scn"]
+[ext_resource type="PackedScene" path="res://scenes/myanmar_villager.tscn" id="7_villager_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -64,3 +65,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 15)
 
 [node name="GoldenPagoda" parent="." instance=ExtResource("6_pagoda_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -35)
+
+# Interactive Myanmar Villagers in Village
+[node name="Villager1" parent="." instance=ExtResource("7_villager_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -8)
+
+[node name="Villager2" parent="." instance=ExtResource("7_villager_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -12)
+
+[node name="Villager3" parent="." instance=ExtResource("7_villager_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 10)
