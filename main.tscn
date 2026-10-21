@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Script" path="res://car.gd" id="1_car"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" path="res://camera.gd" id="1_camera"]
 [ext_resource type="Script" path="res://day_night.gd" id="1_daynight"]
 [ext_resource type="Script" path="res://joystick.gd" id="1_joystick"]
+[ext_resource type="Script" path="res://motorcycle.gd" id="1_motorcycle"]
+[ext_resource type="Script" path="res://airplane.gd" id="1_airplane"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
 size = Vector3(100, 1, 100)
@@ -113,3 +115,32 @@ offset_top = 50.0
 offset_right = 100.0
 offset_bottom = 100.0
 color = Color(1, 1, 1, 0.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bike"]
+size = Vector3(0.6, 0.8, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wing"]
+size = Vector3(8, 0.3, 1.5)
+
+[node name="Motorcycle" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 8)
+script = ExtResource("1_motorcycle")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Motorcycle"]
+shape = SubResource("BoxShape3D_car")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Motorcycle"]
+mesh = SubResource("BoxMesh_bike")
+
+[node name="Airplane" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, -15)
+script = ExtResource("1_airplane")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Airplane"]
+shape = SubResource("BoxShape3D_car")
+
+[node name="Fuselage" type="MeshInstance3D" parent="Airplane"]
+mesh = SubResource("BoxMesh_car")
+
+[node name="Wings" type="MeshInstance3D" parent="Airplane"]
+mesh = SubResource("BoxMesh_wing")

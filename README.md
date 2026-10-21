@@ -79,3 +79,62 @@ Slice 2 fixes/ports all of the above while keeping Slice 1:
   enter the nearest vehicle, car or cart, with Enter/Space.
 - Still honest gaps: motorcycle, cow riding, airplanes, real
   traditional-dress models, Android APK — later slices.
+
+## Slice 3 — motorcycle + airplane, beat opponent Slices 2/5 (MUSE, 2026-10-21)
+
+Reviewed opponent commits 0f1c7ec (rideable cow + bullock cart +
+vehicle base + mobile UI) and 278fc0b (Slice 5 airplane) line by
+line. Credit where due, by name:
+- mount_controller: real rideable cow + bullock cart with Area3D
+  proximity, saddle reparenting, and a player state machine
+  (ON_FOOT / RIDING / DRIVING / FLYING) with interact priority.
+- aircraft_controller: a real flight attempt — throttle, lift
+  proportional to forward speed, pitch/roll/yaw, cockpit reparent,
+  speed cap — and terrain grown 400 -> 1000, so the "1km airspace"
+  claim has a real ground plane behind it.
+- mobile_touch_ui: the right idea — wire joystick signals into
+  player.touch_input_vector and add Interact/Jump/Sprint buttons.
+
+Concrete defects found in 0f1c7ec / 278fc0b (file evidence):
+- vehicle_controller.gd is dead code: no scene in either tree
+  references it, and a VehicleBody3D with no VehicleWheel3D
+  children cannot drive anyway. The opponent tree still has no
+  drivable car and no motorcycle.
+- mobile_touch_ui.gd is dead code: setup() is never called — no
+  world or player scene contains a MobileTouchUI node — so its
+  joystick wiring never runs in-game. The Slice-1 dead-joystick
+  defect moved, it was not fixed.
+- mount_controller.gd reads Input.is_action_pressed("sprint"),
+  but project.godot at 278fc0b defines no "sprint" input action
+  (only [input_devices] emulate_touch) — undefined action, so
+  mount sprint never engages.
+- aircraft_controller.gd: throttle auto-rises every frame
+  (throttle = clamp(throttle + delta*0.4, 0, 1)) with no
+  throttle-down input, so a pilot cannot slow down or land on
+  purpose except by exiting mid-air; stall_speed is exported but
+  never read (no stall behaviour); roll and yaw both use
+  input_dir.x (double turn).
+- project.godot still references res://icon.svg, which is still
+  not in the repo (missing-file warning, carried from Slice 1).
+
+Slice 3 (this commit) keeps everything from Slice 2 (car, cart,
+wired joystick, sprint/jump, dark nights, Q/E orbit) and adds:
+- MOTORCYCLE (motorcycle.gd, third vehicle): faster than the car,
+  leans into turns, joystick steering/throttle works, Enter/Space
+  enter/exit via the same player vehicle picker.
+- AIRPLANE (airplane.gd): flyable with EXPLICIT throttle
+  (Shift up / Ctrl down, clamped, never auto-rises), pitch
+  (Up/Down arrows), roll (Left/Right arrows), yaw (Q/E), joystick
+  pitch/roll, and stall that is actually applied (lift collapses
+  below stall_speed). Enter/exit cockpit via Enter/Space; exiting
+  mid-air drops the pilot — NO parachute yet, stated plainly.
+- Muse's own code avoids the listed defects by design: no
+  undefined input actions (physical keys used), no unconnected
+  signals (joystick writes player.touch_vector directly),
+  no missing icon reference in project.godot.
+
+Honesty: Slice 3 code is statically reviewed, NOT run inside
+Godot (no Godot binary on this VM yet) — same standard as before:
+not a playable APK, not PUBG graphics. Still missing:
+traditional-dress character models, Android APK export, the whole
+country map, helicopters, parachute.

@@ -47,7 +47,7 @@ func _physics_process(delta: float) -> void:
 		_try_enter_vehicle()
 
 func _try_enter_vehicle() -> void:
-	for name in ["Car", "Cart"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane"]:
 		var v := get_node_or_null("../" + name)
 		if v != null and global_position.distance_to(v.global_position) < 4.0:
 			driving = true
