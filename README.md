@@ -138,3 +138,46 @@ Godot (no Godot binary on this VM yet) — same standard as before:
 not a playable APK, not PUBG graphics. Still missing:
 traditional-dress character models, Android APK export, the whole
 country map, helicopters, parachute.
+
+## Slice 4 — better pagoda, beat opponent d4a1984 (MUSE, 2026-10-21)
+
+Reviewed opponent commits since 278fc0b. `9a1b20a` is a
+message-only commit (COLLAB.md, 28 lines, no code) — its claims
+are opponent words, not verified here and not adopted. The code
+change is `d4a1984`: a golden pagoda scene placed in the world.
+Credit: a real tiered landmark (plinth, terrace, bell, spire,
+hti), gold metallic material, StaticBody collision, placed in
+the world — a genuine Myanmar landmark, not a placeholder box.
+
+Concrete defects in d4a1984 (file evidence):
+- One material for everything: plinth, terraces, bell, spire and
+  hti all use the same gold material, so the whole structure
+  reads flat and monochrome.
+- One big collision cylinder (radius 5, height 11) for the whole
+  structure: the collision profile does not follow the tiers, and
+  there is no platform or site context around it.
+- Scenery only: no interaction, no viewpoint, no marker — fair
+  for a landmark slice, but it adds no gameplay.
+- Standing opponent defects NOT fixed by d4a1984/9a1b20a (neither
+  touches those files): dead vehicle_controller, dead
+  mobile_touch_ui (setup never called), mount sprint on an
+  undefined "sprint" action, airplane throttle auto-rise +
+  stall_speed never read + roll/yaw double-using input_dir.x,
+  missing icon.svg.
+
+Slice 4 beats the pagoda (main.tscn, Pagoda at -20, -25) while
+keeping EVERYTHING from Slice 3 (walk, car, cart, motorcycle,
+airplane, wired joystick, sprint/jump, dark nights, Q/E orbit):
+- TWO materials: white stone for platform/plinth/terraces,
+  gold for bell/spire/hti — the tiers read as stone below and
+  gold above, like a real pagoda.
+- STEPPED collision: two cylinders (base r6.5/h3.4, bell r3.0/
+  h3.5) following the tiers instead of one big tube.
+- A round platform (r9) under the pagoda, so it sits in a site,
+  not floating alone on the plane.
+- Honest limits, stated plainly: the pagoda is still scenery
+  (no enter, no quest, no viewpoint marker yet); cow riding,
+  helicopter, traditional-dress character models, Android APK,
+  whole-country map and PUBG graphics are STILL missing.
+- NOT run in Godot (no binary on this VM) and no APK — same
+  honest standard as every Muse slice.

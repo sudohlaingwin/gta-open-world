@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=28 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Script" path="res://car.gd" id="1_car"]
@@ -29,6 +29,59 @@ size = Vector3(2, 1, 4)
 
 [sub_resource type="BoxMesh" id="BoxMesh_car"]
 size = Vector3(2, 0.8, 4)
+
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pag_platform"]
+top_radius = 9.0
+bottom_radius = 9.0
+height = 0.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pag_plinth"]
+top_radius = 5.5
+bottom_radius = 6.5
+height = 1.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pag_terrace"]
+top_radius = 4.5
+bottom_radius = 5.5
+height = 1.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pag_terrace2"]
+top_radius = 3.5
+bottom_radius = 4.5
+height = 1.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pag_bell"]
+top_radius = 1.8
+bottom_radius = 3.0
+height = 3.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pag_spire"]
+top_radius = 0.1
+bottom_radius = 1.4
+height = 5.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_pag_hti"]
+radius = 0.45
+height = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stone"]
+albedo_color = Color(0.93, 0.92, 0.88, 1)
+metallic = 0.0
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold"]
+albedo_color = Color(1.0, 0.84, 0.0, 1)
+metallic = 0.8
+roughness = 0.25
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_pag_base"]
+height = 3.4
+radius = 6.5
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_pag_bell"]
+height = 3.5
+radius = 3.0
 
 [node name="Main" type="Node3D"]
 
@@ -144,3 +197,49 @@ mesh = SubResource("BoxMesh_car")
 
 [node name="Wings" type="MeshInstance3D" parent="Airplane"]
 mesh = SubResource("BoxMesh_wing")
+
+[node name="Pagoda" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -25)
+
+[node name="CollisionBase" type="CollisionShape3D" parent="Pagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+shape = SubResource("CylinderShape3D_pag_base")
+
+[node name="CollisionBell" type="CollisionShape3D" parent="Pagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.15, 0)
+shape = SubResource("CylinderShape3D_pag_bell")
+
+[node name="Platform" type="MeshInstance3D" parent="Pagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("CylinderMesh_pag_platform")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="Plinth" type="MeshInstance3D" parent="Pagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CylinderMesh_pag_plinth")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="Terrace" type="MeshInstance3D" parent="Pagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, 0)
+mesh = SubResource("CylinderMesh_pag_terrace")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="Terrace2" type="MeshInstance3D" parent="Pagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+mesh = SubResource("CylinderMesh_pag_terrace2")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="Bell" type="MeshInstance3D" parent="Pagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.15, 0)
+mesh = SubResource("CylinderMesh_pag_bell")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="Spire" type="MeshInstance3D" parent="Pagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.4, 0)
+mesh = SubResource("CylinderMesh_pag_spire")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="Hti" type="MeshInstance3D" parent="Pagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.2, 0)
+mesh = SubResource("SphereMesh_pag_hti")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
