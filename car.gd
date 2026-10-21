@@ -40,7 +40,6 @@ func _exit_car() -> void:
 	driver = null
 	speed = 0.0
 	velocity = Vector3.ZERO
-	p.driving = false
-	p.visible = true
 	# Step out beside the car so the player is not stuck inside it.
 	p.global_position = global_position + Vector3(2.0, 0.5, 0.0)
+	p.leave_vehicle()

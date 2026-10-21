@@ -1,49 +1,62 @@
 extends CharacterBody3D
-## Slice 1 player: third-person walk + enter/exit the car.
-## Walk with arrow keys / WASD (ui_* actions, Godot defaults).
-## Press Enter/Space (ui_accept) near the car to get in/out.
+## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
+## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
+## Sprint: hold Shift. Jump: J key (on floor only).
+## Enter/exit vehicle: Enter/Space (ui_accept) near a vehicle.
 
 @export var walk_speed: float = 5.0
-@export var turn_speed: float = 2.5
+@export var sprint_multiplier: float = 1.6
+@export var jump_velocity: float = 5.0
 
 var driving: bool = false
-var car: Node = null
+var driving_vehicle: Node = null
+var touch_vector: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
-	car = get_node_or_null("../Car")
+	pass
 
 func _physics_process(delta: float) -> void:
 	if driving:
 		velocity = Vector3.ZERO
 		move_and_slide()
 		return
-	# Gravity so the player stays on the ground collision.
 	if not is_on_floor():
 		velocity.y -= 20.0 * delta
 	else:
 		velocity.y = 0.0
+		if Input.is_physical_key_pressed(KEY_J):
+			velocity.y = jump_velocity
 	var ix := Input.get_axis("ui_left", "ui_right")
 	var iz := Input.get_axis("ui_up", "ui_down")
-	# Camera-relative forward: camera looks along -Z of the player rig.
-	# Keep it simple for Slice 1: world-aligned movement, player faces
-	# the walk direction.
+	if touch_vector != Vector2.ZERO:
+		ix = touch_vector.x
+		iz = touch_vector.y
 	var dir := Vector3(ix, 0.0, iz).normalized()
+	var speed := walk_speed
+	if Input.is_physical_key_pressed(KEY_SHIFT):
+		speed *= sprint_multiplier
 	if dir != Vector3.ZERO:
 		rotation.y = atan2(dir.x, dir.z)
-		velocity.x = dir.x * walk_speed
-		velocity.z = dir.z * walk_speed
+		velocity.x = dir.x * speed
+		velocity.z = dir.z * speed
 	else:
 		velocity.x = 0.0
 		velocity.z = 0.0
 	move_and_slide()
 	if Input.is_action_just_pressed("ui_accept"):
-		_try_enter_car()
+		_try_enter_vehicle()
 
-func _try_enter_car() -> void:
-	if car == null:
-		return
-	# Only enter when close to the car (Slice 1 rule, 4 metres).
-	if global_position.distance_to(car.global_position) < 4.0:
-		driving = true
-		visible = false
-		car.start_driving(self)
+func _try_enter_vehicle() -> void:
+	for name in ["Car", "Cart"]:
+		var v := get_node_or_null("../" + name)
+		if v != null and global_position.distance_to(v.global_position) < 4.0:
+			driving = true
+			driving_vehicle = v
+			visible = false
+			v.start_driving(self)
+			return
+
+func leave_vehicle() -> void:
+	driving = false
+	driving_vehicle = null
+	visible = true

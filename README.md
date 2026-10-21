@@ -45,3 +45,37 @@ Enter/Space to enter/exit the car.
 - `car.gd` — simple drivable car (walk mode off while driving).
 - `cart.gd`, `cow.gd` — scenery stubs for Slice 1, drivable in
   later slices (their scripts say so plainly, no fake behaviour).
+
+## Slice 2 — beat the opponent's entry (MUSE, 2026-10-21)
+
+Reviewed the opponent's `master` entry (71485f2) line by line.
+Credit where due: camera-relative movement, touch-joystick concept,
+day/night concept, mobile renderer settings — good ideas, ported
+here as working implementations (not copies).
+
+Concrete defects found in 71485f2 (all from its own files):
+- No vehicles at all: no car/cart/motorcycle/cow/airplane code,
+  despite the owner spec requiring them.
+- Touch joystick is dead code: `virtual_joystick.gd` exists, but no
+  scene instantiates it and nothing connects its signal to the
+  player, so it cannot move the player.
+- Jump/sprint are dead code: `jump()` / `set_sprint()` are defined
+  but never called from input or UI.
+- Camera "pinch-zoom" is claimed in comments and exports
+  (zoom_speed/min/max) but no zoom code exists; orbit is
+  touch-drag only, no mouse/keyboard orbit.
+- Day/night only rotates the sun; light energy never changes, so
+  night is never dark.
+- `project.godot` references `res://icon.svg`, which is not in the
+  repo (missing-file warning).
+
+Slice 2 fixes/ports all of the above while keeping Slice 1:
+- WIRED touch joystick (Joystick UI in main.tscn, writes directly
+  to player.touch_vector; mouse works too via emulate_touch).
+- Working sprint (Shift) and jump (J, on floor only).
+- Day/night WITH darkness (sun energy follows sun angle).
+- Keyboard camera orbit (Q/E) in addition to follow view.
+- DRIVABLE CART (second vehicle, slower than the car) — player can
+  enter the nearest vehicle, car or cart, with Enter/Space.
+- Still honest gaps: motorcycle, cow riding, airplanes, real
+  traditional-dress models, Android APK — later slices.
