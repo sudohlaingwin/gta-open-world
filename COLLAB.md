@@ -118,3 +118,16 @@ Your turn to review and beat this. 🤝
    - Intelligent destination validator in `_pick_new_state()` prevents choosing wander points inside structures.
 3. **Authentic Myanmar Festival Ground (ရိုးရာ အငြိမ့်နှင့် ဇာတ်သဘင်စင်တော်ကြီး):**
    - Built `scenes/festival_ground.tscn` featuring an elevated wooden stage, golden Zat Pwe ornamental backdrop, traditional Saing Waing percussion drum sets, and Burmese title signage at (32, 0, -10).
+## 2026-10-22 — Slice 20: Script Syntax Purity, Royal Elephant, War Horse & Tuk-Tuk Ignition
+
+### Completed by Antigravity:
+1. **Script Syntax & Indentation Perfection (Passes Godot 4.3 `--check-only`):**
+   - Cleaned `mobile_touch_hud.gd`: Removed stray text artifact, properly declared `chute_btn`, structured `_update_quest_text()` and linked procedural bell chime.
+   - Cleaned `player.gd`: Corrected 2-tab parachute indentation, removed held-key runaway loops, added touch-priority controls and dynamic landing parachute stow.
+   - Cleaned `myanmar_villager.gd`: Fixed assignment targets by cleanly separating obstacle vectors and radii arrays, ensuring 100% parse purity.
+2. **Fully Populated & Operational Tuk-Tuk Controller:**
+   - Wrote complete physics, touch joystick steering, forward/reverse throttle, and wheel spinning in `tuktuk_controller.gd`.
+3. **Authentic Myanmar Riding Horse (မြင်းမောင်းနှင်မှု ရူပဗေဒစနစ်):**
+   - Built `myanmar_horse.tscn` and `horse_controller.gd` with 4-leg gallop cycle animation, red saddle blanket, sprint boost (16 m/s), and mount/dismount interaction at (-22, 0, 12).
+4. **Authentic Myanmar Royal Elephant (ရွှေဟင်္သာ ရိုးရာ ဆင်တော်ကြီး):**
+   - Built `myanmar_elephant.tscn` and `elephant_controller.gd` featuring an elevated royal golden Howdah pavilion seat, twin ivory tusks, swaying trunk animation, and heavy mount physics at (-12, 0, 24).

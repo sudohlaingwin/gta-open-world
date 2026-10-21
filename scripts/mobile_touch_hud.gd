@@ -13,7 +13,7 @@ extends CanvasLayer
 @onready var yaw_right_btn: Button = $FlightControls/YawRightBtn
 @onready var virtual_joystick: Control = $VirtualJoystick
 @onready var sprint_btn: Button = $ActionContainer/SprintBtn
-$insertBtnRef
+@onready var chute_btn: Button = $ActionContainer/ChuteBtn
 @onready var jump_btn: Button = $ActionContainer/JumpBtn
 @onready var interact_btn: Button = $ActionContainer/InteractBtn
 @onready var speedometer_panel: Panel = $BottomCenterHUD/Speedometer
@@ -23,7 +23,7 @@ $insertBtnRef
 @onready var prompt_banner: Label = $PromptBanner
 
 var player: CharacterBody3D = null
-var quest_stage: int = 1 # 1: Talk, 2: Visit Pagoda, 3: Ring Bell, 4: Tea Shop, 5: Ride Mount/Car/Bike/Plane, 6: Complete
+var quest_stage: int = 1
 var villagers_talked_count: int = 0
 var pagoda_node: Node3D = null
 var bell_node: Node3D = null
@@ -42,10 +42,10 @@ func _ready() -> void:
 
 	if interact_btn:
 		interact_btn.pressed.connect(_on_interact_pressed)
-		if chute_btn:
-		chute_btn.pressed.connect(_on_chute_pressed)
 	if jump_btn:
 		jump_btn.pressed.connect(_on_jump_pressed)
+	if chute_btn:
+		chute_btn.pressed.connect(_on_chute_pressed)
 	if sprint_btn:
 		sprint_btn.button_down.connect(_on_sprint_down)
 		sprint_btn.button_up.connect(_on_sprint_up)
@@ -58,16 +58,13 @@ func _ready() -> void:
 		yaw_right_btn.button_up.connect(func(): if player: player.touch_yaw = 0.0)
 
 	_update_quest_text()
-	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
-	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
-		audio_mgr.play_bell_strike()
 
 func _process(delta: float) -> void:
 	if not player:
 		return
 
-	# 1. MiniMap Tracking (Player + Pagoda)
-	if player_icon:
+	# 1. MiniMap Tracking
+	if player_icon and player.visual_mesh:
 		player_icon.rotation = -player.visual_mesh.rotation.y
 		
 	if pagoda_icon and pagoda_node:
@@ -80,14 +77,12 @@ func _process(delta: float) -> void:
 		pagoda_icon.position = Vector2(map_size / 2.0 + icon_x - 4, map_size / 2.0 + icon_z - 4)
 
 	# 2. Compass Label
-	if compass_label:
+	if compass_label and player.visual_mesh:
 		var deg = wrapf(rad_to_deg(player.visual_mesh.rotation.y), 0, 360)
 		compass_label.text = "%d° %s" % [deg, _get_cardinal_dir(deg)]
 
-	# 3. Dynamic Real Stamina Drain & Regeneration
-		if chute_btn:
-		chute_btn.visible = (player.current_state == player.State.ON_FOOT and not player.is_on_floor())
-if stamina_bar:
+	# 3. Dynamic Stamina
+	if stamina_bar:
 		if player.is_sprinting and player.current_state == player.State.ON_FOOT and player.velocity.length() > 0.5:
 			player.stamina = max(0.0, player.stamina - 24.0 * delta)
 			if player.stamina <= 0.0:
@@ -96,37 +91,29 @@ if stamina_bar:
 			player.stamina = min(100.0, player.stamina + 16.0 * delta)
 		stamina_bar.value = player.stamina
 
-	# 4. Quest Progression Checking
+	# 4. Parachute Button Visibility
+	if chute_btn:
+		chute_btn.visible = (player.current_state == player.State.ON_FOOT and not player.is_on_floor())
+
+	# 5. Quest Progression
 	if quest_stage == 2 and pagoda_node:
 		if player.global_position.distance_to(pagoda_node.global_position) < 14.0:
 			quest_stage = 3
 			_update_quest_text()
-	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
-	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
-		audio_mgr.play_bell_strike()
 	elif quest_stage == 3 and bell_node:
 		if player.global_position.distance_to(bell_node.global_position) < 8.0:
 			quest_stage = 4
 			_update_quest_text()
-	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
-	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
-		audio_mgr.play_bell_strike()
 	elif quest_stage == 4 and teashop_node:
 		if player.global_position.distance_to(teashop_node.global_position) < 10.0:
 			quest_stage = 5
 			_update_quest_text()
-	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
-	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
-		audio_mgr.play_bell_strike()
 	elif quest_stage == 5:
 		if player.current_state != player.State.ON_FOOT:
 			quest_stage = 6
 			_update_quest_text()
-	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
-	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
-		audio_mgr.play_bell_strike()
 
-	# 5. Speedometer & Flight Controls Toggle
+	# 6. Speedometer & Flight Controls Toggle
 	if player.current_state == player.State.FLYING_AIRCRAFT:
 		if flight_controls: flight_controls.visible = true
 	else:
@@ -146,7 +133,7 @@ if stamina_bar:
 					throttle_bar.value = player.active_aircraft.throttle * 100.0
 			elif player.current_state == player.State.RIDING_MOUNT and player.active_mount:
 				speed_kmh = player.active_mount.velocity.length() * 3.6
-				mode_text = "🐂 လှည်း/နွား (MOUNT)"
+				mode_text = "🐂 လှည်း/နွား/ဆင်/မြင်း (MOUNT)"
 				if throttle_bar: throttle_bar.visible = false
 			elif player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
 				if player.active_vehicle is VehicleBody3D:
@@ -154,7 +141,7 @@ if stamina_bar:
 					mode_text = "🚗 ကား (VILLAGE CAR)"
 				else:
 					speed_kmh = player.active_vehicle.velocity.length() * 3.6
-					mode_text = "🏍️ ဆိုင်ကယ် (MOTORCYCLE)"
+					mode_text = "🏍️ ဆိုင်ကယ်/သုံးဘီး/သမ္ဗာန် (VEHICLE)"
 				if throttle_bar: throttle_bar.visible = false
 				
 			speed_label.text = "%d KM/H" % int(speed_kmh)
@@ -162,12 +149,12 @@ if stamina_bar:
 		else:
 			speedometer_panel.visible = false
 
-	# 6. Contextual Action Label & Prompt Banner
+	# 7. Action Button Context
 	if interact_btn:
 		match player.current_state:
 			player.State.RIDING_MOUNT:
 				interact_btn.text = "🚪 ဆင်းမည် (Dismount)"
-				_show_prompt("နွားလှည်းပေါ်မှ ဆင်းရန် နှိပ်ပါ")
+				_show_prompt("စီးနင်းထားသော တိရစ္ဆာန်/လှည်း ပေါ်မှ ဆင်းရန် နှိပ်ပါ")
 			player.State.DRIVING_VEHICLE:
 				interact_btn.text = "🚪 ဆင်းမည် (Exit Vehicle)"
 				_show_prompt("ယာဉ်ပေါ်မှ ဆင်းရန် နှိပ်ပါ")
@@ -177,13 +164,13 @@ if stamina_bar:
 			player.State.ON_FOOT:
 				if player.nearby_mount:
 					interact_btn.text = "🐂 စီးမည် (Ride Mount)"
-					_show_prompt("နွား သို့မဟုတ် လှည်းစီးရန် နှိပ်ပါ")
+					_show_prompt("နွား/လှည်း/ဆင်/မြင်း တက်စီးရန် နှိပ်ပါ")
 				elif player.nearby_aircraft:
-					interact_btn.text = "✈️ မောင်းမည် (Fly Airplane)"
-					_show_prompt("လေယာဉ်တက်မောင်းရန် နှိပ်ပါ")
+					interact_btn.text = "✈️ မောင်းမည် (Fly Aircraft)"
+					_show_prompt("လေယာဉ်/ရဟတ်ယာဉ် တက်မောင်းရန် နှိပ်ပါ")
 				elif player.nearby_vehicle:
 					interact_btn.text = "🚗 မောင်းမည် (Drive Vehicle)"
-					_show_prompt("ကား သို့မဟုတ် ဆိုင်ကယ်မောင်းရန် နှိပ်ပါ")
+					_show_prompt("ကား/ဆိုင်ကယ်/သုံးဘီး/သမ္ဗာန် မောင်းရန် နှိပ်ပါ")
 				else:
 					var villager = player._get_nearest_villager(4.0)
 					if villager:
@@ -199,29 +186,26 @@ func record_villager_talk() -> void:
 		if villagers_talked_count >= 3:
 			quest_stage = 2
 		_update_quest_text()
+
+func _update_quest_text() -> void:
+	if quest_banner:
+		match quest_stage:
+			1:
+				quest_banner.text = "📜 တာဝန် ၁: ရွာသူရွာသားများနှင့် စကားပြောပါ (%d/3)" % min(3, villagers_talked_count)
+			2:
+				quest_banner.text = "📜 တာဝန် ၂: ရွာဦးရွှေစေတီတော်သို့ သွားရောက်ဖူးမြော်ပါ 🏛️"
+			3:
+				quest_banner.text = "📜 တာဝန် ၃: ကျောင်းတိုက်ခေါင်းလောင်းတော်သို့ သွားပါ 🔔"
+			4:
+				quest_banner.text = "📜 တာဝန် ၄: ရွာလယ်လက်ဖက်ရည်ဆိုင်သို့ သွားရောက်အပန်းဖြေပါ ☕"
+			5:
+				quest_banner.text = "📜 တာဝန် ၅: လှည်း/နွား/ကား/ဆိုင်ကယ်/လေယာဉ် တစ်မျိုးမျိုးကို မောင်းနှင်ပါ 🐂🚗✈️"
+			6:
+				quest_banner.text = "🎉 တာဝန်အားလုံး အောင်မြင်စွာပြီးမြောက်ပါပြီ! ရွာကို လွတ်လပ်စွာ လှည့်လည်နိုင်ပါပြီ ✨"
+
 	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
 	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
 		audio_mgr.play_bell_strike()
-
-func _update_quest_text()
-	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
-	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
-		audio_mgr.play_bell_strike() -> void:
-	if not quest_banner:
-		return
-	match quest_stage:
-		1:
-			quest_banner.text = "📜 တာဝန် ၁: ရွာသူရွာသားများနှင့် စကားပြောပါ (%d/3)" % min(3, villagers_talked_count)
-		2:
-			quest_banner.text = "📜 တာဝန် ၂: ရွာဦးရွှေစေတီတော်သို့ သွားရောက်ဖူးမြော်ပါ 🏛️"
-		3:
-			quest_banner.text = "📜 တာဝန် ၃: ကျောင်းတိုက်ခေါင်းလောင်းတော်သို့ သွားပါ 🔔"
-		4:
-			quest_banner.text = "📜 တာဝန် ၄: ရွာလယ်လက်ဖက်ရည်ဆိုင်သို့ သွားရောက်အပန်းဖြေပါ ☕"
-		5:
-			quest_banner.text = "📜 တာဝန် ၅: လှည်း/နွား/ကား/ဆိုင်ကယ်/လေယာဉ် တစ်မျိုးမျိုးကို မောင်းနှင်ပါ 🐂🚗✈️"
-		6:
-			quest_banner.text = "🎉 တာဝန်အားလုံး အောင်မြင်စွာပြီးမြောက်ပါပြီ! ရွာကို လွတ်လပ်စွာ လှည့်လည်နိုင်ပါပြီ ✨"
 
 func _show_prompt(text: String) -> void:
 	if prompt_banner:
@@ -258,6 +242,10 @@ func _on_jump_pressed() -> void:
 	if player:
 		player.jump()
 
+func _on_chute_pressed() -> void:
+	if player and player.has_method("toggle_parachute"):
+		player.toggle_parachute()
+
 func _on_sprint_down() -> void:
 	if player and player.stamina > 5.0:
 		player.set_sprint(true)
@@ -265,7 +253,3 @@ func _on_sprint_down() -> void:
 func _on_sprint_up() -> void:
 	if player:
 		player.set_sprint(false)
-
-func _on_chute_pressed() -> void:
-	if player and player.has_method("toggle_parachute"):
-		player.toggle_parachute()

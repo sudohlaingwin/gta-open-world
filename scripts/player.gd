@@ -38,7 +38,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	if not is_on_floor():
-				if is_parachuting:
+		if is_parachuting:
 			velocity.y = move_toward(velocity.y, -parachute_fall_speed, 10.0 * delta)
 			var forward = -camera_pivot.global_transform.basis.z
 			forward.y = 0.0
@@ -51,75 +51,82 @@ func _physics_process(delta: float) -> void:
 			velocity.z = glide_dir.z * parachute_glide_speed
 		else:
 			velocity.y -= gravity * delta
+	else:
+		if is_parachuting:
+			is_parachuting = false
+			var chute_mesh = visual_mesh.get_node_or_null("ParachuteMesh")
+			if chute_mesh:
+				chute_mesh.visible = false
 
-	# Keyboard interaction fallback
-	if Input.is_key_pressed(KEY_E):
-		interact()
-
-	# Direction input
+	# Input handling (Touch priority, keyboard fallback)
 	var input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if touch_input_vector != Vector2.ZERO:
 		input_dir = touch_input_vector
 
-	var camera_basis = camera_pivot.global_transform.basis
-	var forward = -camera_basis.z
-	var right = camera_basis.x
+	# Transform input relative to camera orbit
+	var cam_basis = camera_pivot.global_transform.basis
+	var forward = -cam_basis.z
 	forward.y = 0.0
-	right.y = 0.0
 	forward = forward.normalized()
+	var right = cam_basis.x
+	right.y = 0.0
 	right = right.normalized()
 
-	var direction: Vector3 = (right * input_dir.x + forward * -input_dir.y).normalized()
-	var current_speed: float = sprint_speed if is_sprinting else speed
+	var move_direction = (forward * -input_dir.y + right * input_dir.x).normalized()
+	var current_speed = sprint_speed if (is_sprinting and stamina > 0.0) else speed
 
-	if direction.length() > 0.05:
-		# Analog speed scaling from joystick deflection
-		var analog_scale = clamp(touch_input_vector.length(), 0.4, 1.0) if touch_input_vector != Vector2.ZERO else 1.0
-		velocity.x = direction.x * (current_speed * analog_scale)
-		velocity.z = direction.z * (current_speed * analog_scale)
-		var target_angle = atan2(direction.x, direction.z)
+	if move_direction != Vector3.ZERO and not is_parachuting:
+		velocity.x = move_direction.x * current_speed
+		velocity.z = move_direction.z * current_speed
+		var target_angle = atan2(move_direction.x, move_direction.z)
 		visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, target_angle, rotation_speed * delta)
-	else:
+	elif not is_parachuting:
 		velocity.x = move_toward(velocity.x, 0, current_speed)
 		velocity.z = move_toward(velocity.z, 0, current_speed)
 
 	move_and_slide()
 
 func interact() -> void:
-	if current_state == State.RIDING_MOUNT and active_mount:
-		active_mount.dismount()
-	elif current_state == State.DRIVING_VEHICLE and active_vehicle:
-		active_vehicle.exit_vehicle()
-	elif current_state == State.FLYING_AIRCRAFT and active_aircraft:
-		active_aircraft.exit_aircraft()
-	elif nearby_aircraft:
-		nearby_aircraft.enter_aircraft(self)
-	elif nearby_mount:
-		nearby_mount.mount(self)
-	elif nearby_vehicle:
-		nearby_vehicle.enter_vehicle(self)
-	else:
-		var nearest_villager = _get_nearest_villager(4.0)
-		if nearest_villager and nearest_villager.has_method("talk_to"):
-			nearest_villager.talk_to(global_position)
-			var hud = get_parent().get_node_or_null("MobileTouchHUD")
-			if hud and hud.has_method("record_villager_talk"):
-				hud.record_villager_talk()
+	match current_state:
+		State.RIDING_MOUNT:
+			if active_mount and active_mount.has_method("exit_mount"):
+				active_mount.exit_mount()
+		State.DRIVING_VEHICLE:
+			if active_vehicle and active_vehicle.has_method("exit_vehicle"):
+				active_vehicle.exit_vehicle()
+		State.FLYING_AIRCRAFT:
+			if active_aircraft and active_aircraft.has_method("exit_aircraft"):
+				active_aircraft.exit_aircraft()
+		State.ON_FOOT:
+			if nearby_mount and nearby_mount.has_method("enter_mount"):
+				nearby_mount.enter_mount(self)
+			elif nearby_vehicle and nearby_vehicle.has_method("enter_vehicle"):
+				nearby_vehicle.enter_vehicle(self)
+			elif nearby_aircraft and nearby_aircraft.has_method("enter_aircraft"):
+				nearby_aircraft.enter_aircraft(self)
+			else:
+				var villager = _get_nearest_villager(4.0)
+				if villager and villager.has_method("talk_to"):
+					villager.talk_to(global_position)
+					var hud = get_tree().get_first_node_in_group("hud")
+					if not hud:
+						hud = get_parent().get_node_or_null("MobileTouchHUD")
+					if hud and hud.has_method("record_villager_talk"):
+						hud.record_villager_talk()
 
 func _get_nearest_villager(max_dist: float) -> Node3D:
 	var villagers = get_tree().get_nodes_in_group("villagers")
 	var nearest: Node3D = null
-	var min_d = max_dist
+	var min_dist = max_dist
 	for v in villagers:
-		if v is Node3D:
-			var d = global_position.distance_to(v.global_position)
-			if d < min_d:
-				min_d = d
-				nearest = v
+		var d = global_position.distance_to(v.global_position)
+		if d < min_dist:
+			min_dist = d
+			nearest = v
 	return nearest
 
-func set_mounted_state(mounted: bool, mount_node: Node3D) -> void:
-	if mounted:
+func set_riding_state(riding: bool, mount_node: Node3D) -> void:
+	if riding:
 		current_state = State.RIDING_MOUNT
 		active_mount = mount_node
 		collision_shape.disabled = true
@@ -161,9 +168,6 @@ func jump() -> void:
 	if current_state == State.ON_FOOT and is_on_floor():
 		velocity.y = jump_velocity
 
-func set_sprint(sprint: bool) -> void:
-	is_sprinting = sprint
-
 func toggle_parachute() -> void:
 	if current_state == State.ON_FOOT and not is_on_floor():
 		is_parachuting = not is_parachuting
@@ -171,9 +175,5 @@ func toggle_parachute() -> void:
 		if chute_mesh:
 			chute_mesh.visible = is_parachuting
 
-func _check_landing() -> void:
-	if is_on_floor() and is_parachuting:
-		is_parachuting = false
-		var chute_mesh = visual_mesh.get_node_or_null("ParachuteMesh")
-		if chute_mesh:
-			chute_mesh.visible = false
+func set_sprint(sprint: bool) -> void:
+	is_sprinting = sprint
