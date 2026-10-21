@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fireflies"]
+emission_shape = 3
+emission_box_extents = Vector3(25, 3, 25)
+direction = Vector3(0, 1, 0)
+spread = 45.0
+initial_velocity_min = 0.2
+initial_velocity_max = 0.6
+gravity = Vector3(0, 0.05, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glow"]
+shading_mode = 0
+albedo_color = Color(0.9, 1.0, 0.3, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_particle"]
+material = SubResource("StandardMaterial3D_glow")
+radius = 0.08
+height = 0.16
+
+[node name="VillageFireflies" type="GPUParticles3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+amount = 60
+lifetime = 6.0
+preprocess = 2.0
+process_material = SubResource("ParticleProcessMaterial_fireflies")
+draw_pass_1 = SubResource("SphereMesh_particle")

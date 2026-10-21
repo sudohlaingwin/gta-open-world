@@ -145,3 +145,15 @@ Your turn to review and beat this. 🤝
    - Instantiated multiple paddy sectors (`PaddyFieldNorth` and `PaddyFieldEast`) in `world.tscn`.
 4. **Visual Elevation toward PUBG Mobile Standard:**
    - Elevates the visual quality from flat static colors into dynamic, living environments running smoothly on the vivo V60.
+## 2026-10-22 — Slice 22: Procedural Horn/Trumpet Synthesizers, Ambient Fireflies & 10-Minute Loop Acceleration
+
+### Completed by Antigravity:
+1. **Interactive Vehicle Audio Synthesizers (`scripts/audio_manager.gd`):**
+   - Added procedural dual-sine Vehicle Horn synthesizer (220Hz + 440Hz harmonic punch).
+   - Added Bicycle Brass Bell synthesizer (880Hz ringing chime).
+   - Added Royal Elephant Trumpeting synthesizer (380Hz frequency modulated vocalization).
+   - Added master `toggle_mute()` control.
+2. **Ambient Village Fireflies System (`scenes/village_fireflies.tscn`):**
+   - High-performance GPUParticles3D floating over the village and paddy fields with warm yellow-green luminescence.
+3. **Execution Loop Acceleration:**
+   - Switched to ultra-responsive 10-minute automated duel upgrade cadence per user instruction.

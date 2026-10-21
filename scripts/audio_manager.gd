@@ -116,3 +116,82 @@ func play_teashop_chime() -> void:
 	stream.data = data
 	teashop_chime_player.stream = stream
 	teashop_chime_player.play()
+
+var is_muted: bool = false
+var horn_player: AudioStreamPlayer
+var bicycle_bell_player: AudioStreamPlayer
+var elephant_trumpet_player: AudioStreamPlayer
+
+func toggle_mute() -> bool:
+	is_muted = not is_muted
+	AudioServer.set_bus_mute(0, is_muted)
+	return is_muted
+
+func play_horn() -> void:
+	if is_muted: return
+	if not horn_player:
+		horn_player = AudioStreamPlayer.new()
+		add_child(horn_player)
+	var sample_hz = 22050
+	var duration = 0.4
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var val = (sin(t * 220.0 * TAU) * 0.7 + sin(t * 440.0 * TAU) * 0.3)
+		var int_sample = int(clamp(val, -1.0, 1.0) * 32767.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	horn_player.stream = stream
+	horn_player.play()
+
+func play_bicycle_bell() -> void:
+	if is_muted: return
+	if not bicycle_bell_player:
+		bicycle_bell_player = AudioStreamPlayer.new()
+		add_child(bicycle_bell_player)
+	var sample_hz = 22050
+	var duration = 0.35
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env = exp(-t * 9.0)
+		var val = sin(t * 880.0 * TAU) * env
+		var int_sample = int(clamp(val, -1.0, 1.0) * 32767.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	bicycle_bell_player.stream = stream
+	bicycle_bell_player.play()
+
+func play_elephant_trumpet() -> void:
+	if is_muted: return
+	if not elephant_trumpet_player:
+		elephant_trumpet_player = AudioStreamPlayer.new()
+		add_child(elephant_trumpet_player)
+	var sample_hz = 22050
+	var duration = 0.9
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var pitch = 380.0 + sin(t * 12.0) * 45.0
+		var env = sin(clamp(t / duration, 0.0, 1.0) * PI)
+		var val = sin(t * pitch * TAU) * env
+		var int_sample = int(clamp(val, -1.0, 1.0) * 32767.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	elephant_trumpet_player.stream = stream
+	elephant_trumpet_player.play()
