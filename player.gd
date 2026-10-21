@@ -69,6 +69,17 @@ var zoom_out_connected: bool = false
 # Slice 11: bell quest + reward + tracker + camera reset.
 var bell_label_timer: float = 0.0
 var quest_rewarded: bool = false
+# Slice 12: market + well. Fruit/water are bought/drawn with on-screen
+# buttons only (touch-first; no keyboard path exists for them).
+var fruit_count: int = 0
+var water_count: int = 0
+var draw_timer: float = 0.0
+var quest_rewarded2: bool = false
+var fruit_button: Button = null
+var fruit_button_connected: bool = false
+var water_button: Button = null
+var water_button_connected: bool = false
+var fruit_water_label: Label = null
 var quest_tracker_label: Label = null
 var camera_reset_button: Button = null
 var camera_reset_connected: bool = false
@@ -83,11 +94,14 @@ func _physics_process(delta: float) -> void:
 	_update_compass()
 	_update_stamina(delta)
 	_update_prompt_label()
+	_update_fruit_water_label()
+	_update_draw_animation(delta)
 	if driving:
 		velocity = Vector3.ZERO
 		move_and_slide()
 		if talk_button != null:
 			talk_button.visible = false
+		_update_market_buttons()
 		# Driving: only the vehicle Exit button stays on screen.
 		_update_action_buttons()
 		_update_speed_label()
@@ -128,6 +142,7 @@ func _physics_process(delta: float) -> void:
 		velocity.z = 0.0
 	move_and_slide()
 	_update_talk_button()
+	_update_market_buttons()
 	_update_action_buttons()
 	_update_speed_label()
 	# Slice 10 quest stage 1: walk within 8 m of the pagoda.
@@ -431,17 +446,24 @@ func _update_quest_label() -> void:
 		quest_label.text = "တာဝန်: ယာဉ်တစ်စီး စီးပါ"
 	elif quest_stage == 3:
 		quest_label.text = "တာဝန်: ခေါင်းလောင်းထိုးပါ"
+	elif quest_stage == 4:
+		quest_label.text = "တာဝန်: ဈေးက သစ်သီးဝယ်ပါ"
+	elif quest_stage == 5:
+		quest_label.text = "တာဝန်: ရေတွင်းက ရေဆွဲပါ"
+	elif quest_rewarded2:
+		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန်"
 	elif quest_rewarded:
 		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့်"
 	else:
 		quest_label.text = "တာဝန်များ အားလုံး ပြီးပါပြီ!"
-	# Slice 11 quest tracker: live checklist of the 4 stages.
+	# Slice 11 quest tracker: live checklist of the stages.
+	# Slice 12: 6 stages now (market fruit + well water added).
 	if quest_tracker_label == null:
 		quest_tracker_label = get_node_or_null("../JoystickLayer/QuestTrackerLabel") as Label
 	if quest_tracker_label != null:
-		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း"]
+		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ"]
 		var parts: Array = []
-		for i in range(4):
+		for i in range(6):
 			parts.append(("✓ " if quest_stage > i else "○ ") + stage_names[i])
 		quest_tracker_label.text = "   ".join(parts)
 		quest_tracker_label.visible = true
@@ -588,10 +610,10 @@ func _update_minimap() -> void:
 		var panel := get_node_or_null("../JoystickLayer/MinimapPanel")
 		if panel == null:
 			return
-		for name in ["PlayerDot", "VillagerDot1", "VillagerDot2", "VillagerDot3", "PagodaDot",
+		for name in ["PlayerDot", "VillagerDot1", "VillagerDot2", "VillagerDot3", "VillagerDot4", "PagodaDot",
 				"VehicleDotCar", "VehicleDotCart", "VehicleDotMotorcycle", "VehicleDotAirplane",
 				"VehicleDotCow", "VehicleDotHelicopter",
-				"BellDot", "ZayatDot", "GroveDot"]:
+				"BellDot", "ZayatDot", "GroveDot", "MarketDot", "WellDot"]:
 			var dot := panel.get_node_or_null(name) as ColorRect
 			if dot != null:
 				minimap_dots[name] = dot
@@ -605,7 +627,7 @@ func _update_minimap() -> void:
 			dot.position = Vector2(mx, my)
 	put.call("PlayerDot", global_position)
 	var villagers := get_tree().get_nodes_in_group("villagers")
-	for i in range(min(villagers.size(), 3)):
+	for i in range(min(villagers.size(), 4)):
 		put.call("VillagerDot%d" % (i + 1), (villagers[i] as Node3D).global_position)
 	var pag := get_node_or_null("../Pagoda")
 	if pag != null:
@@ -621,6 +643,14 @@ func _update_minimap() -> void:
 	var palm := get_node_or_null("../PalmTrunk_s11_1")
 	if palm != null:
 		put.call("GroveDot", (palm as Node3D).global_position)
+	# Slice 12 market + well dots: the market square and the brick
+	# well are tracked like the other landmarks.
+	var stall := get_node_or_null("../MarketStallA")
+	if stall != null:
+		put.call("MarketDot", (stall as Node3D).global_position)
+	var well := get_node_or_null("../BrickWell")
+	if well != null:
+		put.call("WellDot", (well as Node3D).global_position)
 	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter"]:
 		var v := get_node_or_null("../" + vname)
 		if v != null:
@@ -650,10 +680,15 @@ func _update_prompt_label() -> void:
 		prompt_label.text = "အနီး: " + names.get(veh.name, veh.name) + " — စီးမည်"
 		prompt_label.visible = true
 		return
-	# Slice 11 landmark prompts: bell, zayat, grove, village sign.
+	# Slice 11 landmark prompts: bell, zayat, grove.
+	# Slice 12: market + well prompts added; village sign prompt
+	# added too (the old comment claimed it but the code never had it).
 	for pair in [["MonasteryBell", "ခေါင်းလောင်း", 3.5],
 			["Zayat", "ဇရပ်", 5.0],
-			["PalmTrunk_s11_1", "ထန်းတော", 5.0]]:
+			["PalmTrunk_s11_1", "ထန်းတော", 5.0],
+			["MarketStallA", "ဈေး", 5.0],
+			["BrickWell", "ရေတွင်း", 5.0],
+			["VillageSignPost", "ရွာဆိုင်း", 4.0]]:
 		var lm := get_node_or_null("../" + pair[0]) as Node3D
 		if lm != null and global_position.distance_to(lm.global_position) < float(pair[2]):
 			prompt_label.text = "အနီး: " + str(pair[1])
@@ -692,3 +727,86 @@ func _on_camera_reset() -> void:
 	if cam != null:
 		cam.set("orbit_angle", 0.0)
 		cam.set("zoom", 1.0)
+
+## Slice 12 market + well interactions (TOUCH-FIRST — no keyboard
+## path exists for buying fruit or drawing water). Both buttons
+## live in the real scene (JoystickLayer), found lazily like the
+## Talk button, and are hidden while driving.
+func _update_market_buttons() -> void:
+	if fruit_button == null:
+		fruit_button = get_node_or_null("../JoystickLayer/FruitButton") as Button
+		if fruit_button != null and not fruit_button_connected:
+			fruit_button.pressed.connect(_on_buy_fruit)
+			fruit_button_connected = true
+	if water_button == null:
+		water_button = get_node_or_null("../JoystickLayer/WaterButton") as Button
+		if water_button != null and not water_button_connected:
+			water_button.pressed.connect(_on_draw_water)
+			water_button_connected = true
+	if driving:
+		if fruit_button != null:
+			fruit_button.visible = false
+		if water_button != null:
+			water_button.visible = false
+		return
+	var stall := get_node_or_null("../MarketStallA") as Node3D
+	var near_stall := stall != null and global_position.distance_to(stall.global_position) < 4.0
+	var well := get_node_or_null("../BrickWell") as Node3D
+	var near_well := well != null and global_position.distance_to(well.global_position) < 4.0
+	if fruit_button != null:
+		fruit_button.visible = near_stall
+	if water_button != null:
+		water_button.visible = near_well and draw_timer <= 0.0
+
+func _on_buy_fruit() -> void:
+	if driving:
+		return
+	fruit_count += 1
+	if quest_stage == 4:
+		quest_stage = 5
+	_update_quest_label()
+	_update_fruit_water_label()
+
+func _on_draw_water() -> void:
+	if driving or draw_timer > 0.0:
+		return
+	draw_timer = 1.5
+
+func _update_fruit_water_label() -> void:
+	if fruit_water_label == null:
+		fruit_water_label = get_node_or_null("../JoystickLayer/FruitWaterLabel") as Label
+	if fruit_water_label == null:
+		return
+	fruit_water_label.text = "🍎 %d 💧 %d" % [fruit_count, water_count]
+	fruit_water_label.visible = true
+
+## Slice 12: the well bucket lowers to the water and rises back
+## over 1.5 s while drawing. The bucket node lives in the real
+## scene (BrickWell/WellBucket12); guarded lookups, no crash path.
+## When the draw completes the water count rises, and a stage-5
+## quest becomes stage 6 with the second quest reward: +10% walk
+## speed, applied exactly once (quest_rewarded2).
+func _update_draw_animation(delta: float) -> void:
+	if draw_timer <= 0.0:
+		return
+	draw_timer -= delta
+	var bucket := get_node_or_null("../BrickWell/WellBucket12") as Node3D
+	if bucket != null:
+		var phase := 1.0 - maxf(draw_timer, 0.0) / 1.5
+		var y := 1.6
+		if phase < 0.5:
+			y = 1.6 - (1.6 - 0.55) * (phase / 0.5)
+		else:
+			y = 0.55 + (1.6 - 0.55) * ((phase - 0.5) / 0.5)
+		var p := bucket.position
+		p.y = y
+		bucket.position = p
+	if draw_timer <= 0.0:
+		water_count += 1
+		if quest_stage == 5:
+			quest_stage = 6
+			if not quest_rewarded2:
+				quest_rewarded2 = true
+				walk_speed *= 1.1
+		_update_quest_label()
+		_update_fruit_water_label()

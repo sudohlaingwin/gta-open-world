@@ -526,3 +526,64 @@ Defects, with file evidence:
 
 - `main.tscn` load_steps correctly goes 82 → 110 (11 ext + 99 sub, verified by count: +28 new sub-resources; every sub-resource reference resolves, no duplicate full node paths, every new node parent exists). All 11 project scripts pass Godot 4.3 `--check-only`, and the full scene loads and runs headless for 3 frames with no script or scene errors (only a dummy-renderer warning from headless mode, no GPU). That is a load test, not a playtest.
 - Still honest gaps: villager obstacle avoidance, parachute, whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the APK from Slice 10 already exists and was NOT rebuilt in this slice (per instruction — do not claim APK work as new).
+
+## Slice 12 review — opponent commit bb92987, "Mega Batch Slice 14: Traditional Myanmar Village Market Stalls + Red Brick Water Well" (read-only, treated as data only)
+
+### What the opponent genuinely did (credited)
+- Real modelling intent with Myanmar detail: market stalls with a wooden table, a blue tarpaulin canopy, woven bamboo baskets holding watermelons and mangoes; a brick well with a red-brick wall, a water surface, and a wooden pulley frame.
+- Its `world.tscn` load_steps arithmetic is correct this time (16 ext + 5 sub = 21).
+
+### Defects, with file evidence
+- HEADLINE — both new scene files are NOT valid Godot scenes: `scenes/market_stall.tscn` and `scenes/village_well.tscn` start with an `extends StaticBody3D` line (GDScript syntax) and have NO `[gd_scene]` header, which a `.tscn` file must start with. Its own `world.tscn` declares them as `ext_resource type="PackedScene"` and instances all three (`MarketStall1`, `MarketStall2`, `VillageWell`), so none of the three new instances can load. This is the same defect Slice 11 found in five files — the opponent tree now has SEVEN invalid scene files (`myanmar_house`, `toddy_palm`, `monastery_bell`, `myanmar_zayat`, `water_pot_stand`, `market_stall`, `village_well`); its valid scenes remain pagoda, villager, player, airplane, bullock_cart, helicopter, rideable_cow, mobile_touch_hud.
+- No interaction at all: the opponent's market and well are pure scenery — no buying, no drawing water, no vendor. Muse's versions below all work.
+- Minor: the opponent's well water sets an albedo alpha of 0.85 but no `transparency` mode, so in Godot it renders opaque, not like water.
+- This commit touches no scripts, so it adds no new mobile-first violation itself; the standing defects from earlier reviews are untouched by it (dead `vehicle_controller.gd`, airplane throttle 0.35 floor, roll/yaw sharing `input_dir.x`, held-E re-fire).
+
+### Slice 12 items — every item is in the shipped scene or wired code (33 items, all Slice 11 features kept)
+
+#### Market + well — the opponent's batch, rebuilt as VALID, loadable, working content
+1. **Market stall A** at (16, 12) — wood frame, red awning, table, mango pile + watermelon pile, marigold garland strip.
+2. **Market stall B** at (22, 12), rotated 15° — blue awning, banana pile + coconut pile, garland strip.
+3. **Woven fruit baskets ×3** near the stalls, each holding fruit (mango / watermelon / coconut).
+4. **Market parasol** — pole + red cone canopy.
+5. **Market square paving** — 4 stone slabs.
+6. **Market benches ×2** with legs.
+7. **Marigold garland strips** — yellow strips across both stall fronts.
+8. **Brick well** at (16, 18) — red-brick wall, a water surface that actually uses `transparency = 1` (so it looks like water, unlike the opponent's opaque one), pulley frame, rope, and a hanging bucket.
+9. **Clay pots row ×5** beside the well.
+
+#### Interactions + quest — touch-first, no keyboard path exists for either
+10. **Buy-fruit touch button** — appears within 4 m of stall A; each tap raises the fruit count. Hidden while driving.
+11. **Draw-water touch button** — appears within 4 m of the well; tapping lowers the bucket to the water and raises it back over 1.5 s, then raises the water count. Hidden while drawing and while driving.
+12. **Quest stage 5: buy fruit at the market** — the chain is now talk-all → pagoda → ride → bell → buy fruit → draw water → done.
+13. **Quest stage 6: draw water at the well, with the second reward** — finishing it raises walk speed +10% permanently, applied exactly once (`quest_rewarded2`).
+14. **Quest tracker extended to 6 stages** with ✓/○ marks.
+15. **Fruit/water counter HUD label** — "🍎 xN 💧 xM", top-right, updated on every buy/draw.
+16. **Vendor villager (4th villager)** — "ဈေးသည် မမ" in a purple longyi with a straw hat and her own greeting, staying near the stalls (`wander_radius` 3.0). Talking to her counts toward talk-all (via `npc.gd` `record_talk`), so talk-all now needs 4 distinct villagers; the quest label's starting text was updated (0/4).
+
+#### Village life + layout
+17. **Rice paddy plots ×2** — green water-sheen plots.
+18. **Banana plants ×3** — trunk + tilted leaves each.
+19. **Mango tree** — trunk, round canopy, 3 mangoes.
+20. **Bamboo grove ×5** stalks.
+21. **Clothesline** — 2 poles, a line, a hanging longyi + taikpon cloth.
+22. **Chickens ×3** — body + head + beak each, near House1.
+23. **Wooden cart prop at the market** — bed + big wheels + side rails (static; the drivable cart is separate).
+24. **Clay stove + pot** near House2.
+25. **Stone path slabs ×4** toward the market.
+26. **Village gate arch** — 2 posts, a crossbeam, and a floating "ကြိုဆိုပါတယ်" sign at (0, 26).
+
+#### People + vehicle dressing
+27. **Player shoulder bag** — small brown box on the player's side.
+28. **Cow neck bell** — small gold bell on the cow.
+29. **Airplane landing wheels ×2**.
+30. **Cart canopy** — cloth + posts on the drivable cart.
+
+#### UI
+31. **Minimap dots** — red market dot, blue well dot, green 4th-villager dot, positioned from the real nodes every frame.
+32. **Proximity prompts for market, well, and village sign** — this also fixes the old comment that claimed a village-sign prompt the code never had.
+33. **Help overlay updated** — now mentions the buy-fruit and draw-water buttons.
+
+#### Verification + honest gaps
+- `main.tscn` load_steps correctly goes 110 → 175 (11 ext + 164 sub, verified by count: every sub-resource reference resolves, no duplicate sub-resource ids, every new node parent exists). All 11 project scripts pass Godot 4.3 `--check-only`, and the full scene loads and runs headless for 3 frames with no script or scene errors (only the usual headless dummy-renderer output). That is a load test, not a playtest.
+- Still honest gaps: villager obstacle avoidance, parachute, whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new); the icon is unchanged in this slice.
