@@ -1,0 +1,69 @@
+extends StaticBody3D
+
+# --- Authentic Myanmar Rural Buddhist Monastery School (ဘုန်းတော်ကြီးသင် ပညာရေးကျောင်း 3D Model) ---
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_school"]
+size = Vector3(12.0, 5.5, 9.0)
+
+# Monastery Building Floor
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(11.5, 0.4, 8.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak"]
+albedo_color = Color(0.35, 0.20, 0.10, 1)
+
+# Teak Walls
+[sub_resource type="BoxMesh" id="BoxMesh_walls"]
+size = Vector3(11.0, 3.2, 8.0)
+
+# Multi-tiered Monastery Roof
+[sub_resource type="PrismMesh" id="PrismMesh_roof1"]
+left_to_right = 0.5
+size = Vector3(12.2, 1.8, 9.2)
+
+[sub_resource type="PrismMesh" id="PrismMesh_roof2"]
+left_to_right = 0.5
+size = Vector3(8.5, 1.6, 6.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_monastery_roof"]
+albedo_color = Color(0.50, 0.22, 0.14, 1) # Terracotta monastery tiles
+
+[node name="MonasterySchool" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.75, 0)
+shape = SubResource("BoxShape3D_school")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+# Floor
+[node name="Floor" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("BoxMesh_floor")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+
+# Walls
+[node name="Walls" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
+mesh = SubResource("BoxMesh_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+
+# Lower Roof
+[node name="RoofLower" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, 0)
+mesh = SubResource("PrismMesh_roof1")
+surface_material_override/0 = SubResource("StandardMaterial3D_monastery_roof")
+
+# Upper Roof
+[node name="RoofUpper" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.2, 0)
+mesh = SubResource("PrismMesh_roof2")
+surface_material_override/0 = SubResource("StandardMaterial3D_monastery_roof")
+
+# Burmese School Signboard
+[node name="Signboard" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 4.2)
+text = "ရွာဦး ဘုန်းတော်ကြီးသင် မူလတန်းကျောင်းတော်"
+font_size = 28
+outline_size = 8
+modulate = Color(1, 0.9, 0.4, 1)

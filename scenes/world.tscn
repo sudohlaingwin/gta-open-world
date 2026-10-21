@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
@@ -20,6 +20,8 @@
 [ext_resource type="PackedScene" path="res://scenes/banana_plant.tscn" id="18_banana_scn"]
 [ext_resource type="PackedScene" path="res://scenes/hinthar_statue.tscn" id="19_hinthar_scn"]
 [ext_resource type="PackedScene" path="res://scenes/bamboo_bridge.tscn" id="20_bridge_scn"]
+[ext_resource type="PackedScene" path="res://scenes/myanmar_teashop.tscn" id="21_teashop_scn"]
+[ext_resource type="PackedScene" path="res://scenes/monastery_school.tscn" id="22_school_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -115,6 +117,14 @@ transform = Transform3D(0.965, 0, -0.258, 0, 1, 0, 0.258, 0, 0.965, 3, 0, -19)
 
 [node name="VillageWell" parent="." instance=ExtResource("16_well_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -16)
+
+# Traditional Myanmar Tea Shop (လက်ဖက်ရည်ဆိုင်)
+[node name="MyanmarTeaShop" parent="." instance=ExtResource("21_teashop_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -18)
+
+# Rural Monastery School (ဘုန်းတော်ကြီးသင်ကျောင်း)
+[node name="MonasterySchool" parent="." instance=ExtResource("22_school_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, -32)
 
 # Bamboo Footbridge (ဝါးတံတား)
 [node name="BambooBridge" parent="." instance=ExtResource("20_bridge_scn")]
