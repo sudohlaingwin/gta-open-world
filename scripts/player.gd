@@ -7,7 +7,7 @@ extends CharacterBody3D
 @export var rotation_speed: float = 12.0
 
 # --- State Management ---
-enum State { ON_FOOT, RIDING_MOUNT, DRIVING_VEHICLE }
+enum State { ON_FOOT, RIDING_MOUNT, DRIVING_VEHICLE, FLYING_AIRCRAFT }
 var current_state: State = State.ON_FOOT
 
 var active_mount: Node3D = null
@@ -15,6 +15,9 @@ var nearby_mount: Node3D = null
 
 var active_vehicle: Node3D = null
 var nearby_vehicle: Node3D = null
+
+var active_aircraft: Node3D = null
+var nearby_aircraft: Node3D = null
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_sprinting: bool = false
@@ -29,7 +32,6 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if current_state != State.ON_FOOT:
-		# When riding a mount or driving, movement is handled by the mount/vehicle
 		return
 
 	if not is_on_floor():
@@ -62,13 +64,17 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-# --- Mount & Vehicle Interactions ---
+# --- Interactions ---
 
 func interact() -> void:
 	if current_state == State.RIDING_MOUNT and active_mount:
 		active_mount.dismount()
 	elif current_state == State.DRIVING_VEHICLE and active_vehicle:
 		active_vehicle.exit_vehicle()
+	elif current_state == State.FLYING_AIRCRAFT and active_aircraft:
+		active_aircraft.exit_aircraft()
+	elif nearby_aircraft:
+		nearby_aircraft.enter_aircraft(self)
 	elif nearby_mount:
 		nearby_mount.mount(self)
 	elif nearby_vehicle:
@@ -94,11 +100,24 @@ func set_driving_state(driving: bool, vehicle_node: Node3D) -> void:
 		active_vehicle = null
 		collision_shape.disabled = false
 
+func set_flying_state(flying: bool, aircraft_node: Node3D) -> void:
+	if flying:
+		current_state = State.FLYING_AIRCRAFT
+		active_aircraft = aircraft_node
+		collision_shape.disabled = true
+	else:
+		current_state = State.ON_FOOT
+		active_aircraft = null
+		collision_shape.disabled = false
+
 func set_interactable_mount(mount_node: Node3D) -> void:
 	nearby_mount = mount_node
 
 func set_interactable_vehicle(vehicle_node: Node3D) -> void:
 	nearby_vehicle = vehicle_node
+
+func set_interactable_aircraft(aircraft_node: Node3D) -> void:
+	nearby_aircraft = aircraft_node
 
 func jump() -> void:
 	if current_state == State.ON_FOOT and is_on_floor():

@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
 [ext_resource type="PackedScene" path="res://scenes/rideable_cow.tscn" id="3_cow_scn"]
 [ext_resource type="PackedScene" path="res://scenes/bullock_cart.tscn" id="4_cart_scn"]
+[ext_resource type="PackedScene" path="res://scenes/airplane.tscn" id="5_plane_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -22,10 +23,10 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
-size = Vector3(400, 1, 400)
+size = Vector3(1000, 1, 1000)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
-size = Vector2(400, 400)
+size = Vector2(1000, 1000)
 
 [node name="World" type="Node3D"]
 
@@ -56,3 +57,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
 
 [node name="BullockCart" parent="." instance=ExtResource("4_cart_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 4)
+
+[node name="Airplane" parent="." instance=ExtResource("5_plane_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 10)
