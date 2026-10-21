@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
+[ext_resource type="PackedScene" path="res://scenes/rideable_cow.tscn" id="3_cow_scn"]
+[ext_resource type="PackedScene" path="res://scenes/bullock_cart.tscn" id="4_cart_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -20,10 +22,10 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
-size = Vector3(200, 1, 200)
+size = Vector3(400, 1, 400)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
-size = Vector2(200, 200)
+size = Vector2(400, 400)
 
 [node name="World" type="Node3D"]
 
@@ -48,3 +50,9 @@ mesh = SubResource("PlaneMesh_ground")
 
 [node name="Player" parent="." instance=ExtResource("1_player_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="RideableCow" parent="." instance=ExtResource("3_cow_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
+
+[node name="BullockCart" parent="." instance=ExtResource("4_cart_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 4)

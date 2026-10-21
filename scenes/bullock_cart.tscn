@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/mount_controller.gd" id="1_cart"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cart"]
+size = Vector3(2.0, 1.6, 3.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cart_body"]
+size = Vector3(1.8, 0.8, 2.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
+albedo_color = Color(0.45, 0.28, 0.14, 1) # Teak wood color for traditional cart
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
+top_radius = 0.8
+bottom_radius = 0.8
+height = 0.15
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_cart_interact"]
+radius = 3.2
+
+[node name="BullockCart" type="CharacterBody3D"]
+script = ExtResource("1_cart")
+mount_type = 1
+walk_speed = 3.5
+trot_speed = 6.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("BoxShape3D_cart")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+[node name="CartBody" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+mesh = SubResource("BoxMesh_cart_body")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="WheelLeft" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.0, 0.8, 0)
+mesh = SubResource("CylinderMesh_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="WheelRight" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.0, 0.8, 0)
+mesh = SubResource("CylinderMesh_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="SaddlePoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, -0.4)
+
+[node name="InteractionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+shape = SubResource("SphereShape3D_cart_interact")
