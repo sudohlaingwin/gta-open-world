@@ -1,0 +1,75 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/mobile_touch_hud.gd" id="1_hud"]
+[ext_resource type="Script" path="res://scripts/virtual_joystick.gd" id="2_joy"]
+
+[node name="MobileTouchHUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="VirtualJoystick" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = -220.0
+offset_right = 260.0
+offset_bottom = -20.0
+grow_vertical = 0
+script = ExtResource("2_joy")
+
+[node name="Base" type="ColorRect" parent="VirtualJoystick"]
+layout_mode = 0
+offset_right = 160.0
+offset_bottom = 160.0
+color = Color(1, 1, 1, 0.15)
+
+[node name="Handle" type="ColorRect" parent="VirtualJoystick/Base"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 48.0
+offset_right = 112.0
+offset_bottom = 112.0
+color = Color(1, 0.84, 0, 0.5)
+
+[node name="ActionContainer" type="HBoxContainer" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -460.0
+offset_top = -100.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/separation = 16
+
+[node name="SprintBtn" type="Button" parent="ActionContainer"]
+custom_minimum_size = Vector2(100, 60)
+layout_mode = 2
+text = "အပြေး (Sprint)"
+
+[node name="JumpBtn" type="Button" parent="ActionContainer"]
+custom_minimum_size = Vector2(100, 60)
+layout_mode = 2
+text = "ခုန် (Jump)"
+
+[node name="InteractBtn" type="Button" parent="ActionContainer"]
+custom_minimum_size = Vector2(140, 60)
+layout_mode = 2
+text = "လုပ်ဆောင် (Action)"
+
+[node name="PromptBanner" type="Label" parent="."]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 40.0
+offset_right = 200.0
+offset_bottom = 80.0
+grow_horizontal = 2
+text = "အနီးရှိ ရွာသား သို့မဟုတ် ယာဉ်ကို ထိတွေ့ပါ"
+horizontal_alignment = 1
