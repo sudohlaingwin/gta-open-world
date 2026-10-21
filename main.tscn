@@ -208,6 +208,18 @@ offset_right = 100.0
 offset_bottom = 100.0
 color = Color(1, 1, 1, 0.6)
 
+[node name="TalkButton" type="Button" parent="JoystickLayer"]
+anchor_left = 0.78
+anchor_top = 0.8
+anchor_right = 0.97
+anchor_bottom = 0.9
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "စကားပြော"
+
 [sub_resource type="BoxMesh" id="BoxMesh_bike"]
 size = Vector3(0.6, 0.8, 2)
 

@@ -12,6 +12,9 @@ var speed: float = 0.0
 func start_driving(p: Node) -> void:
 	driver = p
 	speed = 0.0
+	var cam := get_node_or_null("../FollowCamera")
+	if cam != null:
+		cam.set("target", get_path())
 
 func _physics_process(delta: float) -> void:
 	if driver == null:
@@ -42,4 +45,7 @@ func _exit_car() -> void:
 	velocity = Vector3.ZERO
 	# Step out beside the car so the player is not stuck inside it.
 	p.global_position = global_position + Vector3(2.0, 0.5, 0.0)
+	var cam := get_node_or_null("../FollowCamera")
+	if cam != null:
+		cam.set("target", p.get_path())
 	p.leave_vehicle()

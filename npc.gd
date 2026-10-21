@@ -1,13 +1,15 @@
 extends CharacterBody3D
 ## Slice 6 villager: walks around HIS OWN home area in Myanmar dress,
-## and TALKS when the player walks up and presses E. The dialogue is
-## wired end to end: player.gd finds the nearest villager in the
-## "villagers" group and calls talk_to(); the villager faces the
-## player and shows his own Burmese greeting in a Label3D bubble
-## for 4 seconds, then walks on. No quests, no obstacle avoidance
-## yet — stated plainly in README.md. Wander targets are picked
-## around the villager's spawn (home) point, not the world origin,
-## and stay clear of the pagoda platform at (-20, -25).
+## and TALKS. Slice 7 touch-first correction (this is a mobile game):
+## the PRIMARY paths are tapping this villager directly (see
+## _input_event below) or the on-screen Talk button that player.gd
+## shows when in range — both call talk_to(). E is only a desktop
+## debug fallback. talk_to() faces the player and shows his own
+## Burmese greeting in a Label3D bubble for 4 seconds, then walks on.
+## No quests, no obstacle avoidance yet — stated plainly in
+## README.md. Wander targets are picked around the villager's spawn
+## (home) point, not the world origin, and stay clear of the pagoda
+## platform at (-20, -25).
 
 @export var walk_speed: float = 1.6
 @export var wander_radius: float = 12.0
@@ -85,3 +87,20 @@ func _physics_process(delta: float) -> void:
 	velocity.x = dir.x * walk_speed
 	velocity.z = dir.z * walk_speed
 	move_and_slide()
+
+## Slice 7 direct tap: tapping this villager on a touch screen (or
+## clicking on desktop, where mouse input is emulated as touch)
+## talks to the player, with no keyboard involved. Works because
+## this CharacterBody3D has a CollisionShape3D child and
+## input_ray_pickable defaults to true.
+func _input_event(_camera: Camera3D, event: InputEvent, _position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
+	var tapped := false
+	if event is InputEventScreenTouch and event.pressed:
+		tapped = true
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		tapped = true
+	if not tapped:
+		return
+	var player := get_node_or_null("../Player")
+	if player != null:
+		talk_to(player.global_position)

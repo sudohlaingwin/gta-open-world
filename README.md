@@ -270,3 +270,35 @@ Slice 6 beats it on the same spec item, in Muse's own tree:
   cow riding, helicopter, Android APK, whole-country map, PUBG
   graphics still missing; NOT run in Godot (no binary on this VM),
   no APK claimed.
+
+## Slice 7 — review of opponent 0773481 ("Slice 8: auto-wiring HUD, E interaction, home wandering, villager variety")
+
+Credited, because this is the opponent's strongest reply yet — it genuinely closes three defects Slice 6 listed:
+- E dialogue is now WIRED: `player.gd` checks KEY_E every physics frame and calls `interact()`, which finds the nearest villager in the "villagers" group and calls `talk_to()` — and the villager script now defines `talk_to()` (renamed from the never-called `talk_to_player()`). The TALKING state stops movement, faces the player, and shows the bubble for 4.5 s. Dead dialogue is fixed.
+- Home-based wandering is real: `spawn_position` is recorded in `_ready()` and targets are picked within radius 12 of it, not the world origin.
+- The longyi-colour export + material-override code path is valid (`VisualMesh/Longyi` exists in the villager scene).
+
+Defects that remain, with file evidence:
+- `mobile_touch_ui.gd` is STILL dead code: the only reference to it in the whole tree is COLLAB.md prose — no scene instantiates it, and this commit changed no `.tscn` file, so its new "auto-wire" `_ready()` (look for the parent's "Player" node) can never run. Worse, it now extends Node3D while its children are Buttons/Controls (`$ActionButtons/InteractBtn`, `$VirtualJoystick`, `$PromptLabel`) that exist in no scene — Controls under a Node3D do not render as a touch HUD without a viewport, and those `@onready` paths would fail if the node were ever instantiated. "Auto-wiring Mobile Touch HUD" is a headline, not a live HUD.
+- Variety is exports-only: `world.tscn` Villager1/2/3 carry NO property overrides, so all three still spawn with the default maroon longyi, the default greeting, and the default name. The `villager_name` export is also never displayed anywhere.
+- `show_prompt()` / `hide_prompt()` are defined but never called by anything.
+- E has no edge detection: `Input.is_key_pressed(KEY_E)` runs `interact()` every physics frame while E is held (~60x/second), so the dialogue timer resets continuously and mount/vehicle interact re-fires while held.
+- Standing defects NOT fixed by this commit (files untouched): mount sprint still reads the undefined "sprint" action (`mount_controller.gd:49`, no sprint action in `project.godot`); airplane throttle still auto-rises (`aircraft_controller.gd:41`, `throttle + delta * 0.4`, no throttle-down) and `stall_speed` is still never read; `vehicle_controller` still has zero references anywhere.
+
+## Slice 7 — Muse beats it (on top of 32c4868, all Slice 6 features kept)
+
+### TOUCH-FIRST dialogue — owner correction, stated plainly
+The owner is right: this is a MOBILE game, not a PC game. Slice 6's dialogue was keyboard-first (walk up, press E) — that was a mobile-design miss, and Slice 7 corrects it. TOUCH is now the primary path, in the real scene, not in a dead script:
+- Walk within 3.5 m of a villager and a real on-screen **Talk button** ("စကားပြော") appears at the bottom-right of the screen — it is a Button node in `main.tscn` under `JoystickLayer`, hidden by default, shown only in range, hidden again while driving. Tapping it calls the nearest villager's `talk_to()` and the Burmese greeting bubble appears.
+- OR tap the villager directly: `npc.gd` implements `_input_event()` (touch tap, plus mouse click on desktop where mouse is emulated as touch), so tapping a villager talks with no keyboard involved at all.
+- E is kept ONLY as an optional desktop-debug fallback (still edge-detected, so it cannot spam like the opponent's held-E). The README, the code headers, and the COLLAB post all present TOUCH as primary.
+- This is also where Muse's touch UI beats the opponent's Slice 8 headline: Muse's Talk button is in the shipped scene and wired; the opponent's "auto-wiring HUD" is in no scene at all.
+
+### Rideable cow — the owner-spec item
+The cow is no longer scenery: walk within 4 m and Enter/Space mounts it (the vehicle picker now also picks the NEAREST vehicle within 4 m, not the first name in list order — Slice 6 could pick a farther vehicle over a nearer one). Ride with WASD/arrows or the touch joystick (the driver's `touch_vector` is read, like the motorcycle), walk 3.0, trot 4.5 with Shift (physical key, no undefined action), Enter/Space dismounts beside the cow. No walk animation yet — stated plainly, not faked.
+
+### Camera follows the ridden vehicle (latent fix, all vehicles)
+Previously the camera stayed at the spot where you mounted, so a driven vehicle could drive out of view — the camera target was always the Player node, which freezes while driving. Slice 7 retargets `FollowCamera` to the ridden vehicle on mount (car, cart, motorcycle, airplane, cow) and back to the player on dismount. This fixes the same latent issue for every vehicle, not just the cow.
+
+- `main.tscn` load_steps correctly stays 36 — the TalkButton node adds no resource.
+- Still honest gaps: no quests, no villager obstacle avoidance, no cow walk animation, helicopter, Android APK, whole-country map, PUBG graphics still missing; NOT run in Godot (no binary on this VM), no APK claimed.

@@ -28,6 +28,9 @@ func start_driving(p: Node) -> void:
 	driver = p
 	is_flying = true
 	throttle = 0.0
+	var cam := get_node_or_null("../FollowCamera")
+	if cam != null:
+		cam.set("target", get_path())
 
 func _physics_process(delta: float) -> void:
 	if not is_flying or driver == null:
@@ -75,4 +78,7 @@ func _exit_aircraft() -> void:
 	is_flying = false
 	throttle = 0.0
 	p.global_position = global_position + Vector3(3.0, 0.5, 0.0)
+	var cam := get_node_or_null("../FollowCamera")
+	if cam != null:
+		cam.set("target", p.get_path())
 	p.leave_vehicle()
