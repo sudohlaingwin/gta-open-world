@@ -80,6 +80,17 @@ var fruit_button_connected: bool = false
 var water_button: Button = null
 var water_button_connected: bool = false
 var fruit_water_label: Label = null
+# Slice 13: gate + banana grove. BananaButton picks a bunch from the
+# grove; bunches regrow 20 s after the last one is picked. Lights
+# toggle the car/motorcycle headlight meshes (touch-first).
+var banana_count: int = 0
+var banana_regrow_timer: float = 0.0
+var quest_rewarded3: bool = false
+var banana_button: Button = null
+var banana_button_connected: bool = false
+var lights_button: Button = null
+var lights_button_connected: bool = false
+var lights_on: bool = true
 var quest_tracker_label: Label = null
 var camera_reset_button: Button = null
 var camera_reset_connected: bool = false
@@ -96,6 +107,9 @@ func _physics_process(delta: float) -> void:
 	_update_prompt_label()
 	_update_fruit_water_label()
 	_update_draw_animation(delta)
+	_update_banana_regrow(delta)
+	_update_banana_button()
+	_update_lights_button()
 	if driving:
 		velocity = Vector3.ZERO
 		move_and_slide()
@@ -145,6 +159,17 @@ func _physics_process(delta: float) -> void:
 	_update_market_buttons()
 	_update_action_buttons()
 	_update_speed_label()
+	# Slice 13 quest stage 6: walk through the village gate arch.
+	# The arch is two posts + a beam (no blocking collision), so a
+	# player can actually pass under it — unlike a solid-wall gate.
+	if quest_stage == 6:
+		var beam := get_node_or_null("../GateBeam12") as Node3D
+		if beam != null:
+			var dx := global_position.x - beam.global_position.x
+			var dz := global_position.z - beam.global_position.z
+			if dx * dx + dz * dz < 4.0:
+				quest_stage = 7
+				_update_quest_label()
 	# Slice 10 quest stage 1: walk within 8 m of the pagoda.
 	if quest_stage == 1:
 		var pag := get_node_or_null("../Pagoda")
@@ -450,6 +475,12 @@ func _update_quest_label() -> void:
 		quest_label.text = "တာဝန်: ဈေးက သစ်သီးဝယ်ပါ"
 	elif quest_stage == 5:
 		quest_label.text = "တာဝန်: ရေတွင်းက ရေဆွဲပါ"
+	elif quest_stage == 6:
+		quest_label.text = "တာဝန်: ရွာမုခ်ဦးကို ဖြတ်သန်းပါ"
+	elif quest_stage == 7:
+		quest_label.text = "တာဝန်: ငှက်ပျောသီး ခူးပါ (" + str(mini(banana_count, 3)) + "/3)"
+	elif quest_rewarded3:
+		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် +5%"
 	elif quest_rewarded2:
 		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန်"
 	elif quest_rewarded:
@@ -461,9 +492,9 @@ func _update_quest_label() -> void:
 	if quest_tracker_label == null:
 		quest_tracker_label = get_node_or_null("../JoystickLayer/QuestTrackerLabel") as Label
 	if quest_tracker_label != null:
-		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ"]
+		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ", "မုခ်ဦးဖြတ်", "ငှက်ပျောခူး"]
 		var parts: Array = []
-		for i in range(6):
+		for i in range(8):
 			parts.append(("✓ " if quest_stage > i else "○ ") + stage_names[i])
 		quest_tracker_label.text = "   ".join(parts)
 		quest_tracker_label.visible = true
@@ -613,7 +644,8 @@ func _update_minimap() -> void:
 		for name in ["PlayerDot", "VillagerDot1", "VillagerDot2", "VillagerDot3", "VillagerDot4", "PagodaDot",
 				"VehicleDotCar", "VehicleDotCart", "VehicleDotMotorcycle", "VehicleDotAirplane",
 				"VehicleDotCow", "VehicleDotHelicopter",
-				"BellDot", "ZayatDot", "GroveDot", "MarketDot", "WellDot"]:
+				"BellDot", "ZayatDot", "GroveDot", "MarketDot", "WellDot", "VillagerDot5",
+			"GateDot13", "GroveDot13", "SchoolDot13", "TeaShopDot13", "FootballDot13"]:
 			var dot := panel.get_node_or_null(name) as ColorRect
 			if dot != null:
 				minimap_dots[name] = dot
@@ -627,7 +659,7 @@ func _update_minimap() -> void:
 			dot.position = Vector2(mx, my)
 	put.call("PlayerDot", global_position)
 	var villagers := get_tree().get_nodes_in_group("villagers")
-	for i in range(min(villagers.size(), 4)):
+	for i in range(min(villagers.size(), 5)):
 		put.call("VillagerDot%d" % (i + 1), (villagers[i] as Node3D).global_position)
 	var pag := get_node_or_null("../Pagoda")
 	if pag != null:
@@ -651,6 +683,14 @@ func _update_minimap() -> void:
 	var well := get_node_or_null("../BrickWell")
 	if well != null:
 		put.call("WellDot", (well as Node3D).global_position)
+	# Slice 13 landmark dots: gate (gold), grove (green), school
+	# (blue), tea shop (orange), football ground (white).
+	for pair in [["GateBeam12", "GateDot13"], ["BananaGrove13", "GroveDot13"],
+			["School13", "SchoolDot13"], ["TeaShop13", "TeaShopDot13"],
+			["Football13", "FootballDot13"]]:
+		var lm := get_node_or_null("../" + pair[0]) as Node3D
+		if lm != null:
+			put.call(pair[1], lm.global_position)
 	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter"]:
 		var v := get_node_or_null("../" + vname)
 		if v != null:
@@ -688,7 +728,12 @@ func _update_prompt_label() -> void:
 			["PalmTrunk_s11_1", "ထန်းတော", 5.0],
 			["MarketStallA", "ဈေး", 5.0],
 			["BrickWell", "ရေတွင်း", 5.0],
-			["VillageSignPost", "ရွာဆိုင်း", 4.0]]:
+			["VillageSignPost", "ရွာဆိုင်း", 4.0],
+			["GateBeam12", "ရွာမုခ်ဦး", 4.0],
+			["BananaGrove13", "ငှက်ပျောတော", 4.0],
+			["School13", "ရွာကျောင်း", 5.0],
+			["TeaShop13", "လက်ဖက်ရည်ဆိုင်", 5.0],
+			["Football13", "ဘောလုံးကွင်း", 5.0]]:
 		var lm := get_node_or_null("../" + pair[0]) as Node3D
 		if lm != null and global_position.distance_to(lm.global_position) < float(pair[2]):
 			prompt_label.text = "အနီး: " + str(pair[1])
@@ -777,7 +822,7 @@ func _update_fruit_water_label() -> void:
 		fruit_water_label = get_node_or_null("../JoystickLayer/FruitWaterLabel") as Label
 	if fruit_water_label == null:
 		return
-	fruit_water_label.text = "🍎 %d 💧 %d" % [fruit_count, water_count]
+	fruit_water_label.text = "🍎 %d 💧 %d 🍌 %d" % [fruit_count, water_count, banana_count]
 	fruit_water_label.visible = true
 
 ## Slice 12: the well bucket lowers to the water and rises back
@@ -810,3 +855,94 @@ func _update_draw_animation(delta: float) -> void:
 				walk_speed *= 1.1
 		_update_quest_label()
 		_update_fruit_water_label()
+
+## Slice 13 banana harvest (TOUCH-FIRST — no keyboard path).
+## The button lives in the real scene (JoystickLayer/BananaButton)
+## and shows only within 3.5 m of the grove while a bunch is left.
+## Picking hides the next bunch; when all 3 are picked they regrow
+## after 20 s. Picking 3 bananas finishes quest stage 7 with the
+## third reward: +5% walk speed, applied exactly once.
+func _banana_bunch_visible() -> bool:
+	for i in range(3):
+		var b := get_node_or_null("../BananaGrove13/BananaBunch13_%d" % i) as Node3D
+		if b != null and b.visible:
+			return true
+	return false
+
+func _update_banana_button() -> void:
+	if banana_button == null:
+		banana_button = get_node_or_null("../JoystickLayer/BananaButton") as Button
+		if banana_button != null and not banana_button_connected:
+			banana_button.pressed.connect(_on_pick_banana)
+			banana_button_connected = true
+	if banana_button == null:
+		return
+	if driving:
+		banana_button.visible = false
+		return
+	var grove := get_node_or_null("../BananaGrove13") as Node3D
+	banana_button.visible = grove != null and global_position.distance_to(grove.global_position) < 3.5 and _banana_bunch_visible()
+
+func _on_pick_banana() -> void:
+	if driving:
+		return
+	for i in range(3):
+		var b := get_node_or_null("../BananaGrove13/BananaBunch13_%d" % i) as Node3D
+		if b != null and b.visible:
+			b.visible = false
+			break
+	banana_count += 1
+	if quest_stage == 7 and banana_count >= 3:
+		quest_stage = 8
+		if not quest_rewarded3:
+			quest_rewarded3 = true
+			walk_speed *= 1.05
+	_update_quest_label()
+	_update_fruit_water_label()
+
+func _update_banana_regrow(delta: float) -> void:
+	if _banana_bunch_visible():
+		banana_regrow_timer = 0.0
+		return
+	if banana_regrow_timer <= 0.0:
+		banana_regrow_timer = 20.0
+		return
+	banana_regrow_timer -= delta
+	if banana_regrow_timer <= 0.0:
+		for i in range(3):
+			var b := get_node_or_null("../BananaGrove13/BananaBunch13_%d" % i) as Node3D
+			if b != null:
+				b.visible = true
+
+## Slice 13 headlight toggle (TOUCH-FIRST). The Lights button
+## shows only while driving the car or motorcycle; it toggles the
+## headlight meshes' visibility (the car has two, the motorcycle
+## one). No keyboard path is needed for it.
+func _apply_lights() -> void:
+	var car := get_node_or_null("../Car")
+	if car != null:
+		for hn in ["Headlight_R", "Headlight_L"]:
+			var h := car.get_node_or_null(hn) as Node3D
+			if h != null:
+				h.visible = lights_on
+	var bike := get_node_or_null("../Motorcycle")
+	if bike != null:
+		var bh := bike.get_node_or_null("BikeHeadlight") as Node3D
+		if bh != null:
+			bh.visible = lights_on
+
+func _update_lights_button() -> void:
+	if lights_button == null:
+		lights_button = get_node_or_null("../JoystickLayer/LightsButton") as Button
+		if lights_button != null and not lights_button_connected:
+			lights_button.pressed.connect(_on_lights_pressed)
+			lights_button_connected = true
+	if lights_button == null:
+		return
+	lights_button.visible = driving and driving_vehicle != null and driving_vehicle.name in ["Car", "Motorcycle"]
+	if lights_button.visible:
+		_apply_lights()
+
+func _on_lights_pressed() -> void:
+	lights_on = not lights_on
+	_apply_lights()

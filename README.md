@@ -587,3 +587,58 @@ Defects, with file evidence:
 #### Verification + honest gaps
 - `main.tscn` load_steps correctly goes 110 → 175 (11 ext + 164 sub, verified by count: every sub-resource reference resolves, no duplicate sub-resource ids, every new node parent exists). All 11 project scripts pass Godot 4.3 `--check-only`, and the full scene loads and runs headless for 3 frames with no script or scene errors (only the usual headless dummy-renderer output). That is a load test, not a playtest.
 - Still honest gaps: villager obstacle avoidance, parachute, whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new); the icon is unchanged in this slice.
+
+## Slice 13 review — opponent commit 4f8c2ef, "Mega Batch Slice 15: Authentic Myanmar Village Entrance Arch Gate (ရွာဦးမုခ်ဦး) with 3D Burmese Welcome Sign + Tropical Banana Plant Grove (ငှက်ပျောတော)" (read-only, treated as data only)
+
+### What the opponent genuinely did (credited)
+- Real modelling intent with Myanmar detail: two weathered-reddish-teak columns, a gold metallic pyatthat spire top, and a Burmese welcome sign as a Label3D reading "မင်္ဂလာပါ — ရွှေရွာတော်မှ ကြိုဆိုပါ၏" with gold modulate and an outline; a banana plant with a greenish-brown stalk and three angled leaves in vibrant tropical green.
+- Its `world.tscn` load_steps arithmetic is correct this time (21 → 23 with the 2 new ext resources).
+
+### Defects, with file evidence
+- HEADLINE — both new scene files are NOT valid Godot scenes: `scenes/village_gate.tscn` and `scenes/banana_plant.tscn` start with an `extends StaticBody3D` line (GDScript syntax) and have NO `[gd_scene]` header, which a `.tscn` file must start with. Its own `world.tscn` declares them as `ext_resource type="PackedScene"` and instances all three (`VillageGate` at (0, 0, 32), `BananaPlant1` at (18, 0, -6), `BananaPlant2` at (21, 0, -8)), so none of the three new instances can load. The opponent tree now has NINE invalid scene files (the previous seven plus `village_gate` and `banana_plant`).
+- The opponent's gate is a wall, not a gate: its single `BoxShape3D` collision is 8.0 × 5.0 × 1.8 centered at y = 2.5, covering the whole arch including the passage — a player cannot walk through it.
+- No interaction at all: the gate and the banana plants are pure scenery — no passing-through, no picking, no quest, no prompt, no minimap dot, no touch UI. The commit touches no scripts.
+- This commit adds no new mobile-first violation itself (it has no input code); the standing defects from earlier reviews are untouched by it (dead `vehicle_controller.gd`, airplane throttle 0.35 floor, roll/yaw sharing `input_dir.x`, held-E re-fire, dead `PromptBanner` reference).
+
+### Slice 13 items — every item is in the shipped scene or wired code (31 items, all Slice 12 features kept)
+
+#### Gate + grove — the opponent's batch, rebuilt as VALID, loadable, working content
+1. **Gate pass quest stage 7** — walk through Muse's own gate arch (horizontal distance < 2.0 m from `GateBeam12` at (0, 26)). Muse's arch is two posts + a beam with no blocking collision, so passing under it actually works — unlike the opponent's solid-wall gate.
+2. **Banana grove cluster** at (36, 20) — 5 banana plants (trunk + tilted leaves each) plus 3 pickable banana bunches.
+3. **Banana pick touch button** — appears within 3.5 m of the grove while a bunch remains; each tap hides one bunch and raises the banana count. Hidden while driving.
+4. **Banana bunch regrow** — when all 3 bunches are picked, they regrow after 20 s.
+5. **Quest stage 8: pick 3 bananas, with the third reward** — finishing it raises walk speed +5% permanently, applied exactly once (`quest_rewarded3`).
+6. **Quest tracker extended to 8 stages** (talk-all → pagoda → ride → bell → buy fruit → draw water → gate pass → pick bananas) with ✓/○ marks, plus stage 6/7 labels and updated done text.
+7. **5th villager gatekeeper "ဂိတ် ဦးဘ"** — orange longyi, straw hat, his own greeting, staying near the gate (`wander_radius` 3.0). Talk-all now needs 5 distinct villagers.
+8. **Headlight toggle touch button** — shows only while driving the car or motorcycle; it toggles the headlight meshes' visibility (the car has two, the motorcycle one). No keyboard path is needed for it.
+
+#### Landmarks + layout
+9. **Tea shop** at (-14, 20) — table, 4 stools, gold teapot, and a "လက်ဖက်ရည်ဆိုင်" sign.
+10. **Village school** at (-34, 14) — walls, two-tier roof, and a "ရွာကျောင်း" sign.
+11. **Football ground** at (30, -20) — field patch and 2 goals (posts + crossbar).
+12. **River strip** at z = 44 — a water plane using the `transparency = 1` water material, plus a bridge deck with 2 rails.
+13. **House5 + roof** at (-24, -8), built from the same house meshes as Houses 1–4.
+14. **Stilt house #3** at (20, -22) — deck, 4 pillars, walls, roof.
+15. **Market stall C** at (12, 16) — table, 4 posts, bamboo awning, 2 crates.
+16. **Sugarcane field** — 5 stalks.
+17. **Chili plants ×4** with red fruits.
+18. **Pumpkin patch ×3**.
+19. **Sunflower field ×4** — stem, brown center, yellow leaf-petals.
+20. **Lotus flowers ×3** on the pond.
+21. **Pagoda garden beds ×2 + donation box** near the pagoda.
+22. **Goat herd ×2** — body, head, 4 legs each.
+23. **Pig pen** — 2 pigs + 4 pen posts.
+24. **Ducks ×3** by the pond.
+25. **Gate dressing** — a gold pyatthat spire on the gate beam, 2 red flags, 2 lantern posts with gold lanterns.
+26. **Entrance road** — 3 stone path slabs from the gate into the village.
+27. **Pond bridge rails ×2** on the Slice 10 plank bridge.
+
+#### UI + icon
+28. **Minimap dots ×5** — gate (gold), grove (green), school (blue), tea shop (orange), football ground (white) — plus a 5th-villager dot (green); all positioned from the real nodes every frame.
+29. **Proximity prompts** — gate, grove, school, tea shop, football ground.
+30. **Help overlay updated** — now mentions the banana-pick button, the gate quest, and the headlight toggle.
+31. **Icon refreshed** — a new programmatically generated 256×256 PNG (sky, gold gate arch, banana plant, navy border; verified PNG magic + dimensions + spot-check pixels). It is program art, not hand-drawn art.
+
+#### Verification + honest gaps
+- `main.tscn` load_steps correctly goes 175 → 212 (11 ext + 200 sub, verified by count: every sub-resource reference resolves, no duplicate sub-resource ids, every new node parent exists). All 11 project scripts pass Godot 4.3 `--check-only`, and the full scene loads, instantiates, and runs headless for 3 frames with no script or scene errors. That is a load test, not a playtest.
+- Still honest gaps: villager obstacle avoidance, parachute, whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new); the icon is program-generated, not hand-drawn.
