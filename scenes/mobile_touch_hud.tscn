@@ -338,6 +338,12 @@ layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "🏃 အပြေး"
 
+[node name="ChuteBtn" type="Button" parent="ActionContainer"]
+custom_minimum_size = Vector2(75, 75)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "🪂"
+
 [node name="JumpBtn" type="Button" parent="ActionContainer"]
 custom_minimum_size = Vector2(110, 65)
 layout_mode = 2

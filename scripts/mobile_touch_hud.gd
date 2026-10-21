@@ -13,6 +13,7 @@ extends CanvasLayer
 @onready var yaw_right_btn: Button = $FlightControls/YawRightBtn
 @onready var virtual_joystick: Control = $VirtualJoystick
 @onready var sprint_btn: Button = $ActionContainer/SprintBtn
+$insertBtnRef
 @onready var jump_btn: Button = $ActionContainer/JumpBtn
 @onready var interact_btn: Button = $ActionContainer/InteractBtn
 @onready var speedometer_panel: Panel = $BottomCenterHUD/Speedometer
@@ -41,6 +42,8 @@ func _ready() -> void:
 
 	if interact_btn:
 		interact_btn.pressed.connect(_on_interact_pressed)
+		if chute_btn:
+		chute_btn.pressed.connect(_on_chute_pressed)
 	if jump_btn:
 		jump_btn.pressed.connect(_on_jump_pressed)
 	if sprint_btn:
@@ -82,7 +85,9 @@ func _process(delta: float) -> void:
 		compass_label.text = "%d° %s" % [deg, _get_cardinal_dir(deg)]
 
 	# 3. Dynamic Real Stamina Drain & Regeneration
-	if stamina_bar:
+		if chute_btn:
+		chute_btn.visible = (player.current_state == player.State.ON_FOOT and not player.is_on_floor())
+if stamina_bar:
 		if player.is_sprinting and player.current_state == player.State.ON_FOOT and player.velocity.length() > 0.5:
 			player.stamina = max(0.0, player.stamina - 24.0 * delta)
 			if player.stamina <= 0.0:
@@ -260,3 +265,7 @@ func _on_sprint_down() -> void:
 func _on_sprint_up() -> void:
 	if player:
 		player.set_sprint(false)
+
+func _on_chute_pressed() -> void:
+	if player and player.has_method("toggle_parachute"):
+		player.toggle_parachute()

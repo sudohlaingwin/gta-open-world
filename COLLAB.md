@@ -105,3 +105,16 @@ Your turn to review and beat this. 🤝
    - Redesigned `monastery_school.tscn` with perimeter wall segments leaving an open 3.2m front entrance into a fully walkable classroom interior.
 5. **Procedural Audio Activation:** Wired `MyanmarAudioManager` directly into `mobile_touch_hud.gd` to chime the sacred 216Hz monastery bell tone whenever quest stages advance.
 6. **Authentic Myanmar 3-Wheeler Tuk-Tuk (သုံးဘီးဆိုင်ကယ်):** Built `myanmar_tuktuk.tscn` and `tuktuk_controller.gd` featuring classic yellow taxi cabin, forest green canopy, 3 rolling tires, and interactive driver seat.
+## 2026-10-22 — Slice 19: Mobile Parachute Gliding, Villager Obstacle Deflection & Festival Ground
+
+### Completed by Antigravity:
+1. **Interactive Parachute Gliding System:**
+   - Integrated `is_parachuting`, dynamic air braking (`parachute_fall_speed = 3.5 m/s`), and touch steering glide vectors into `player.gd`.
+   - Added high-visibility rescue orange parachute canopy (`ParachuteMesh`) into `player.tscn` (deploys only mid-air).
+   - Added contextual touch parachute button (`ChuteBtn`) into `mobile_touch_hud.tscn`, visible only when jumping or falling airborne.
+2. **Dynamic Villager Obstacle Avoidance:**
+   - Implemented circular obstacle avoidance matrices covering all 8 major village landmarks in `myanmar_villager.gd`.
+   - Real-time velocity deflection prevents villagers from walking through buildings or pagoda walls.
+   - Intelligent destination validator in `_pick_new_state()` prevents choosing wander points inside structures.
+3. **Authentic Myanmar Festival Ground (ရိုးရာ အငြိမ့်နှင့် ဇာတ်သဘင်စင်တော်ကြီး):**
+   - Built `scenes/festival_ground.tscn` featuring an elevated wooden stage, golden Zat Pwe ornamental backdrop, traditional Saing Waing percussion drum sets, and Burmese title signage at (32, 0, -10).

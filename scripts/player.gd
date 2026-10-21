@@ -20,6 +20,9 @@ var nearby_aircraft: Node3D = null
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_sprinting: bool = false
+var is_parachuting: bool = false
+@export var parachute_fall_speed: float = 3.5
+@export var parachute_glide_speed: float = 8.0
 var touch_input_vector: Vector2 = Vector2.ZERO
 var touch_yaw: float = 0.0
 
@@ -35,7 +38,19 @@ func _physics_process(delta: float) -> void:
 		return
 
 	if not is_on_floor():
-		velocity.y -= gravity * delta
+				if is_parachuting:
+			velocity.y = move_toward(velocity.y, -parachute_fall_speed, 10.0 * delta)
+			var forward = -camera_pivot.global_transform.basis.z
+			forward.y = 0.0
+			forward = forward.normalized()
+			var right = camera_pivot.global_transform.basis.x
+			right.y = 0.0
+			right = right.normalized()
+			var glide_dir = (forward * -touch_input_vector.y + right * touch_input_vector.x).normalized()
+			velocity.x = glide_dir.x * parachute_glide_speed
+			velocity.z = glide_dir.z * parachute_glide_speed
+		else:
+			velocity.y -= gravity * delta
 
 	# Keyboard interaction fallback
 	if Input.is_key_pressed(KEY_E):
@@ -148,3 +163,17 @@ func jump() -> void:
 
 func set_sprint(sprint: bool) -> void:
 	is_sprinting = sprint
+
+func toggle_parachute() -> void:
+	if current_state == State.ON_FOOT and not is_on_floor():
+		is_parachuting = not is_parachuting
+		var chute_mesh = visual_mesh.get_node_or_null("ParachuteMesh")
+		if chute_mesh:
+			chute_mesh.visible = is_parachuting
+
+func _check_landing() -> void:
+	if is_on_floor() and is_parachuting:
+		is_parachuting = false
+		var chute_mesh = visual_mesh.get_node_or_null("ParachuteMesh")
+		if chute_mesh:
+			chute_mesh.visible = false
