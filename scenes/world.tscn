@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" path="res://scenes/mobile_touch_hud.tscn" id="8_hud_scn"]
 [ext_resource type="PackedScene" path="res://scenes/helicopter.tscn" id="9_heli_scn"]
 [ext_resource type="PackedScene" path="res://scenes/myanmar_house.tscn" id="10_house_scn"]
+[ext_resource type="PackedScene" path="res://scenes/monastery_bell.tscn" id="11_bell_scn"]
+[ext_resource type="PackedScene" path="res://scenes/toddy_palm.tscn" id="12_palm_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -72,9 +74,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 15)
 [node name="Helicopter" parent="." instance=ExtResource("9_heli_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 18)
 
-# Cultural Landmarks: Golden Pagoda
+# Cultural Landmarks: Golden Pagoda & Monastery Bell
 [node name="GoldenPagoda" parent="." instance=ExtResource("6_pagoda_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -35)
+
+[node name="MonasteryBell" parent="." instance=ExtResource("11_bell_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -32)
 
 # Village Houses
 [node name="VillageHouse1" parent="." instance=ExtResource("10_house_scn")]
@@ -82,6 +87,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -10)
 
 [node name="VillageHouse2" parent="." instance=ExtResource("10_house_scn")]
 transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, -14, 0, -14)
+
+# Authentic Myanmar Toddy Palm Trees (ကျေးလက်ထန်းတော)
+[node name="ToddyPalm1" parent="." instance=ExtResource("12_palm_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 6)
+
+[node name="ToddyPalm2" parent="." instance=ExtResource("12_palm_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 10)
+
+[node name="ToddyPalm3" parent="." instance=ExtResource("12_palm_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, 24)
 
 # Interactive Myanmar Villagers
 [node name="Villager1" parent="." instance=ExtResource("7_villager_scn")]

@@ -1,0 +1,60 @@
+extends StaticBody3D
+
+# --- Traditional Myanmar Monastic Kyone Bell (ကြေးစည်နှင့် ခေါင်းလောင်းတော် 3D Model) ---
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_bell"]
+height = 2.4
+radius = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pillar"]
+top_radius = 0.08
+bottom_radius = 0.1
+height = 3.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_timber"]
+albedo_color = Color(0.38, 0.22, 0.12, 1) # Teak beam
+
+[sub_resource type="BoxMesh" id="BoxMesh_beam"]
+size = Vector3(2.2, 0.18, 0.18)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_kyone"]
+top_radius = 0.4
+bottom_radius = 0.75
+height = 1.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bronze"]
+albedo_color = Color(0.80, 0.60, 0.25, 1) # Authentic Myanmar Cast Bronze
+metallic = 0.88
+roughness = 0.25
+
+[node name="MonasteryBell" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+shape = SubResource("CylinderShape3D_bell")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+# Left Post
+[node name="PillarL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 1.6, 0)
+mesh = SubResource("CylinderMesh_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+# Right Post
+[node name="PillarR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1.6, 0)
+mesh = SubResource("CylinderMesh_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+# Cross Beam
+[node name="Beam" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
+mesh = SubResource("BoxMesh_beam")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+# Bronze Bell
+[node name="BronzeBell" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
+mesh = SubResource("CylinderMesh_kyone")
+surface_material_override/0 = SubResource("StandardMaterial3D_bronze")
