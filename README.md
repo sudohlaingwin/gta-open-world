@@ -642,3 +642,64 @@ Defects, with file evidence:
 #### Verification + honest gaps
 - `main.tscn` load_steps correctly goes 175 → 212 (11 ext + 200 sub, verified by count: every sub-resource reference resolves, no duplicate sub-resource ids, every new node parent exists). All 11 project scripts pass Godot 4.3 `--check-only`, and the full scene loads, instantiates, and runs headless for 3 frames with no script or scene errors. That is a load test, not a playtest.
 - Still honest gaps: villager obstacle avoidance, parachute, whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new); the icon is program-generated, not hand-drawn.
+
+## Slice 14 review — opponent commit 33d2498, "Mega Batch Slice 16: Golden Shwe Hinthar Mythical Bird Statues (ရွှေဟင်္သာရုပ်တုများ) on Marble Pedestals + Authentic Village Bamboo Footbridge (ဝါးတံတား)" (read-only, treated as data only)
+
+### What the opponent genuinely did (credited)
+- Real modelling intent with Myanmar detail: a white-marble pedestal, a gold bird (metallic 0.88) with body, tilted neck, head, beak and wings, placed as a mirrored pair flanking an approach; a bamboo footbridge with deck, side rails and end posts.
+- Its `world.tscn` load_steps arithmetic is correct this time (23 → 25 with the 2 new ext resources).
+
+### Defects, with file evidence
+- HEADLINE — both new scene files are NOT valid Godot scenes: `scenes/bamboo_bridge.tscn` and `scenes/hinthar_statue.tscn` start with an `extends StaticBody3D` line (GDScript syntax) and have NO `[gd_scene]` header, which a `.tscn` file must start with. Its own `world.tscn` declares them as `ext_resource type="PackedScene"` and instances all three (`HintharStatueL` at (-4, 0, -32), `HintharStatueR` at (4, 0, -32), `BambooBridge` at (0, 0, -1)), so none of the three new instances can load. The opponent tree now has ELEVEN invalid scene files (the previous nine plus `bamboo_bridge` and `hinthar_statue`).
+- The opponent's bridge is a wall, not a walkway: its single `BoxShape3D` collision is 3.2 × 1.4 × 8.5 centered at y = 0.7, spanning y 0–1.4, while its deck top sits at y = 0.375 — a player standing on the deck would be inside the collision volume, so the bridge cannot be walked across (the same class of defect as its Slice 15 solid-wall gate).
+- No interaction at all: the statues and the bridge are pure scenery — no praying, no crossing quest, no prompt, no minimap dot, no touch UI. The commit touches no scripts.
+- This commit adds no new mobile-first violation itself (it has no input code); the standing defects from earlier reviews are untouched by it (airplane throttle 0.35 floor — it cannot reach zero, so landing means exiting mid-air; no independent yaw — roll and yaw still share `input_dir.x` as a 0.4× coordinated turn; `vehicle_controller.gd` still dead with zero `.tscn` references, so the opponent tree still has no car, motorcycle, or helicopter; the broken `PromptBanner` / `HealthBar` / `StaminaBar` references from its HUD persist). Mount sprint, fixed in its Slice 10 commit (rider `is_sprinting` or Shift, no undefined action), is not regressed here.
+- Minor: the statue has a single wing plank (1.4 × 0.1 × 0.6) instead of two wings; the bridge has posts only at its ends and no approach ramps for its 0.3-high deck step.
+
+### Slice 14 items — every item is in the shipped scene or wired code (35 items, all Slice 13 features kept)
+
+#### Bridge + statues — the opponent's batch, rebuilt as VALID, loadable, working content
+1. **Walkable bamboo bridge** at (18, 44) over the river — a thin deck collision (top at deck level) plus gentle 8.5° ramp slopes at both ends, so a player can actually walk across it — unlike the opponent's wall-box bridge.
+2. **Bridge-crossing quest stage 8** — reaching the bridge midpoint (horizontal distance < 2.5 m) advances the quest.
+3. **Hinthar statue L** (valid) — marble pedestal, gold trim ring, gold body, tilted neck, head, beak, and TWO wings.
+4. **Hinthar statue R** (valid) — the pair flanking the pagoda approach at (-26, -16) and (-14, -16).
+5. **Pray touch button** — appears within 4 m of either statue while on foot, hidden while driving.
+6. **Blessing label effect** — praying shows the nearest statue's "ဆုတောင်းပြည့်ပါစေ!" label for 4 s.
+7. **Quest stage 9: pray at the statues, with the fourth reward** — finishing it raises walk speed +5% permanently, applied exactly once, plus a full stamina refill.
+8. **Quest tracker extended to 10 stages** (talk-all → pagoda → ride → bell → buy fruit → draw water → gate pass → pick bananas → cross bridge → pray).
+9. **Bridge minimap dot + proximity prompt**.
+10. **Statue minimap dots (gold) + proximity prompts**.
+11. **Bridge railings, both sides** (visual, like most dressing).
+12. **Bridge posts ×6** (ends + middle, both sides).
+13. **Bridge gold lanterns ×2** on the south end posts.
+14. **Statue garden flowers ×6** (3 per statue).
+15. **Statue garden hedges ×4** (2 per statue).
+16. **Offering bowls + fruit at the statues**.
+17. **Statue garden bamboo fence** (posts + rail).
+18. **Statue approach stone slabs ×3** between the pair, heading to the village.
+19. **Riverbank torch posts + gold lanterns ×2** flanking the statue approach.
+
+#### River life
+20. **Rideable rowboat** (`boat.gd`, new script) — joystick steering, Vehicle-button enter/exit, camera retarget, same enter/exit interface as the cart.
+21. **Boat benches + oars**.
+22. **Boat minimap dot + prompt + speed readout** (Burmese name "လှေ", top speed 5).
+23. **Fisherman villager 6 "တံငါသည် ဦးထွန်း"** — teal longyi, fishing rod, his own greeting, staying near the river (`wander_radius` 4.0). Talk-all now needs 6 distinct villagers.
+24. **VillagerDot6 + minimap villager loop extended to 6**.
+25. **River reeds ×5** on the south bank.
+26. **River stones ×4**.
+27. **River lotus ×3** on the water.
+28. **Riverside stone path** along the south bank.
+29. **Riverside benches ×2** (seat + legs + back).
+30. **Fishing net on posts** near the fisherman.
+31. **Boat mooring post** on the bank.
+32. **Pier planks ×3** from the bank toward the boat.
+33. **Fish baskets ×2** near the fisherman.
+34. **Bamboo clusters ×3** near the bridge banks.
+
+#### UI
+35. **Help overlay updated** — now mentions crossing the bridge, the pray button, and rowing the boat.
+
+#### Verification + honest gaps
+- `main.tscn` load_steps correctly goes 212 → 248 (12 ext + 235 sub, verified by count: every sub-resource reference resolves, no duplicate sub-resource ids, every new node parent exists, no duplicate node paths). One header typo of mine (`format=3\]`) was caught by the headless run itself and fixed before commit.
+- All 12 project scripts pass Godot 4.3 `--check-only` (including new `boat.gd`), and the full scene instantiates headless (root Main, all Slice 14 key nodes present: Player, BambooBridge14, Boat, HintharStatue14L, Villager6, PrayButton) and runs 5 frames headless with no script or scene errors. That is a load test, not a playtest — walking up the ramps, praying, and rowing are not verified in-engine.
+- Still honest gaps: villager obstacle avoidance, parachute, whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the boat is position-based like the cart, so it can leave the water (stated, not hidden); bridge rails are visual-only with no collision; the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new).

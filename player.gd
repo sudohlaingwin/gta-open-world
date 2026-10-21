@@ -94,6 +94,12 @@ var lights_on: bool = true
 var quest_tracker_label: Label = null
 var camera_reset_button: Button = null
 var camera_reset_connected: bool = false
+# Slice 14: hinthar prayer. The Pray button lives in the real scene
+# (JoystickLayer/PrayButton); the blessing label shows 4 s.
+var pray_button: Button = null
+var pray_button_connected: bool = false
+var blessing_timer: float = 0.0
+var quest_rewarded4: bool = false
 
 func _ready() -> void:
 	pass
@@ -109,6 +115,8 @@ func _physics_process(delta: float) -> void:
 	_update_draw_animation(delta)
 	_update_banana_regrow(delta)
 	_update_banana_button()
+	_update_pray_button()
+	_update_blessing(delta)
 	_update_lights_button()
 	if driving:
 		velocity = Vector3.ZERO
@@ -169,6 +177,17 @@ func _physics_process(delta: float) -> void:
 			var dz := global_position.z - beam.global_position.z
 			if dx * dx + dz * dz < 4.0:
 				quest_stage = 7
+				_update_quest_label()
+	# Slice 14 quest stage 8: cross the bamboo footbridge over the
+	# river. The bridge midpoint is its root node; horizontal
+	# distance < 2.5 m counts, so deck height never blocks it.
+	if quest_stage == 8:
+		var br := get_node_or_null("../BambooBridge14") as Node3D
+		if br != null:
+			var bdx := global_position.x - br.global_position.x
+			var bdz := global_position.z - br.global_position.z
+			if bdx * bdx + bdz * bdz < 6.25:
+				quest_stage = 9
 				_update_quest_label()
 	# Slice 10 quest stage 1: walk within 8 m of the pagoda.
 	if quest_stage == 1:
@@ -388,9 +407,9 @@ func _update_speed_label() -> void:
 			speed_bar.visible = false
 		return
 	var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
-		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်"}
+		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ"}
 	var vmax := {"Car": 14.0, "Cart": 6.0, "Motorcycle": 18.0,
-		"Airplane": 50.0, "Cow": 4.5, "Helicopter": 12.0}
+		"Airplane": 50.0, "Cow": 4.5, "Helicopter": 12.0, "Boat": 5.0}
 	var vname: String = str(names.get(driving_vehicle.name, driving_vehicle.name))
 	var spd := 0.0
 	if driving_vehicle.get("speed") != null:
@@ -479,6 +498,12 @@ func _update_quest_label() -> void:
 		quest_label.text = "တာဝန်: ရွာမုခ်ဦးကို ဖြတ်သန်းပါ"
 	elif quest_stage == 7:
 		quest_label.text = "တာဝန်: ငှက်ပျောသီး ခူးပါ (" + str(mini(banana_count, 3)) + "/3)"
+	elif quest_stage == 8:
+		quest_label.text = "တာဝန်: ဝါးတံတားကို ဖြတ်ပါ"
+	elif quest_stage == 9:
+		quest_label.text = "တာဝန်: ဟင်္သာရုပ်တုမှာ ဆုတောင်းပါ"
+	elif quest_rewarded4:
+		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် +5% + ဆုတောင်း"
 	elif quest_rewarded3:
 		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် +5%"
 	elif quest_rewarded2:
@@ -492,9 +517,9 @@ func _update_quest_label() -> void:
 	if quest_tracker_label == null:
 		quest_tracker_label = get_node_or_null("../JoystickLayer/QuestTrackerLabel") as Label
 	if quest_tracker_label != null:
-		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ", "မုခ်ဦးဖြတ်", "ငှက်ပျောခူး"]
+		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ", "မုခ်ဦးဖြတ်", "ငှက်ပျောခူး", "ဝါးတံတားဖြတ်", "ဟင်္သာဆုတောင်း"]
 		var parts: Array = []
-		for i in range(8):
+		for i in range(10):
 			parts.append(("✓ " if quest_stage > i else "○ ") + stage_names[i])
 		quest_tracker_label.text = "   ".join(parts)
 		quest_tracker_label.visible = true
@@ -509,7 +534,7 @@ func _on_vehicle_button_pressed() -> void:
 func _nearest_vehicle() -> Node:
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -538,7 +563,7 @@ func _try_enter_vehicle() -> void:
 	# list order, which could pick a farther vehicle over a nearer one).
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -645,7 +670,8 @@ func _update_minimap() -> void:
 				"VehicleDotCar", "VehicleDotCart", "VehicleDotMotorcycle", "VehicleDotAirplane",
 				"VehicleDotCow", "VehicleDotHelicopter",
 				"BellDot", "ZayatDot", "GroveDot", "MarketDot", "WellDot", "VillagerDot5",
-			"GateDot13", "GroveDot13", "SchoolDot13", "TeaShopDot13", "FootballDot13"]:
+			"GateDot13", "GroveDot13", "SchoolDot13", "TeaShopDot13", "FootballDot13",
+			"VillagerDot6", "VehicleDotBoat", "HintharDot14L", "HintharDot14R", "BridgeDot14"]:
 			var dot := panel.get_node_or_null(name) as ColorRect
 			if dot != null:
 				minimap_dots[name] = dot
@@ -659,7 +685,7 @@ func _update_minimap() -> void:
 			dot.position = Vector2(mx, my)
 	put.call("PlayerDot", global_position)
 	var villagers := get_tree().get_nodes_in_group("villagers")
-	for i in range(min(villagers.size(), 5)):
+	for i in range(min(villagers.size(), 6)):
 		put.call("VillagerDot%d" % (i + 1), (villagers[i] as Node3D).global_position)
 	var pag := get_node_or_null("../Pagoda")
 	if pag != null:
@@ -691,10 +717,21 @@ func _update_minimap() -> void:
 		var lm := get_node_or_null("../" + pair[0]) as Node3D
 		if lm != null:
 			put.call(pair[1], lm.global_position)
-	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter"]:
+	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Helicopter", "Boat"]:
 		var v := get_node_or_null("../" + vname)
 		if v != null:
 			put.call("VehicleDot" + vname, (v as Node3D).global_position)
+	# Slice 14 landmark dots: bamboo bridge (bamboo brown) and the
+	# two golden hinthar statues (gold).
+	var br14 := get_node_or_null("../BambooBridge14")
+	if br14 != null:
+		put.call("BridgeDot14", (br14 as Node3D).global_position)
+	var hsL := get_node_or_null("../HintharStatue14L")
+	if hsL != null:
+		put.call("HintharDot14L", (hsL as Node3D).global_position)
+	var hsR := get_node_or_null("../HintharStatue14R")
+	if hsR != null:
+		put.call("HintharDot14R", (hsR as Node3D).global_position)
 
 ## Slice 10 nearby prompt: what is close enough to use, on foot.
 func _update_prompt_label() -> void:
@@ -716,7 +753,7 @@ func _update_prompt_label() -> void:
 	var veh := _nearest_vehicle()
 	if veh != null:
 		var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
-			"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်"}
+			"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ"}
 		prompt_label.text = "အနီး: " + names.get(veh.name, veh.name) + " — စီးမည်"
 		prompt_label.visible = true
 		return
@@ -733,7 +770,10 @@ func _update_prompt_label() -> void:
 			["BananaGrove13", "ငှက်ပျောတော", 4.0],
 			["School13", "ရွာကျောင်း", 5.0],
 			["TeaShop13", "လက်ဖက်ရည်ဆိုင်", 5.0],
-			["Football13", "ဘောလုံးကွင်း", 5.0]]:
+			["Football13", "ဘောလုံးကွင်း", 5.0],
+			["BambooBridge14", "ဝါးတံတား", 4.0],
+			["HintharStatue14L", "ဟင်္သာရုပ်တု", 4.0],
+			["HintharStatue14R", "ဟင်္သာရုပ်တု", 4.0]]:
 		var lm := get_node_or_null("../" + pair[0]) as Node3D
 		if lm != null and global_position.distance_to(lm.global_position) < float(pair[2]):
 			prompt_label.text = "အနီး: " + str(pair[1])
@@ -946,3 +986,64 @@ func _update_lights_button() -> void:
 func _on_lights_pressed() -> void:
 	lights_on = not lights_on
 	_apply_lights()
+
+## Slice 14 pray interaction (TOUCH-FIRST — this is a mobile game).
+## The Pray button lives in the real scene (JoystickLayer/PrayButton)
+## and shows only within 4 m of a hinthar statue while on foot.
+## Tapping it shows the nearest statue's blessing label for 4 s;
+## on quest stage 9 it completes the chain with the fourth reward
+## (+5% walk speed, applied exactly once, plus a full stamina refill).
+func _nearest_statue() -> Node:
+	var best: Node = null
+	var best_dist: float = 4.0
+	for sname in ["HintharStatue14L", "HintharStatue14R"]:
+		var s := get_node_or_null("../" + sname) as Node3D
+		if s != null:
+			var d := global_position.distance_to(s.global_position)
+			if d < best_dist:
+				best_dist = d
+				best = s
+	return best
+
+func _update_pray_button() -> void:
+	if pray_button == null:
+		pray_button = get_node_or_null("../JoystickLayer/PrayButton") as Button
+		if pray_button != null and not pray_button_connected:
+			pray_button.pressed.connect(_on_pray)
+			pray_button_connected = true
+	if pray_button == null:
+		return
+	if driving:
+		pray_button.visible = false
+		return
+	pray_button.visible = _nearest_statue() != null
+
+func _on_pray() -> void:
+	if driving:
+		return
+	var s := _nearest_statue()
+	if s == null:
+		return
+	var bl := s.get_node_or_null("BlessingLabel") as Label3D
+	if bl != null:
+		bl.visible = true
+	blessing_timer = 4.0
+	if quest_stage == 9:
+		quest_stage = 10
+		if not quest_rewarded4:
+			quest_rewarded4 = true
+			walk_speed *= 1.05
+			stamina = 100.0
+		_update_quest_label()
+
+func _update_blessing(delta: float) -> void:
+	if blessing_timer <= 0.0:
+		return
+	blessing_timer -= delta
+	if blessing_timer <= 0.0:
+		for sname in ["HintharStatue14L", "HintharStatue14R"]:
+			var s := get_node_or_null("../" + sname)
+			if s != null:
+				var bl := s.get_node_or_null("BlessingLabel") as Label3D
+				if bl != null:
+					bl.visible = false
