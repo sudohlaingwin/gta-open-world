@@ -1,28 +1,185 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/mobile_touch_hud.gd" id="1_hud"]
 [ext_resource type="Script" path="res://scripts/virtual_joystick.gd" id="2_joy"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_minimap"]
+bg_color = Color(0.08, 0.12, 0.18, 0.8)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.84, 0, 0.8)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_speedo"]
+bg_color = Color(0.05, 0.08, 0.12, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.8, 1.0, 0.8)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color = Color(0.12, 0.18, 0.25, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.84, 0, 0.6)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_joy_base"]
+bg_color = Color(1, 1, 1, 0.08)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+
 [node name="MobileTouchHUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
 
+# 1. Top-Left MiniMap & Compass & Health HUD
+[node name="TopLeftHUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 30.0
+offset_top = 25.0
+offset_right = 230.0
+offset_bottom = 185.0
+
+[node name="MiniMap" type="Panel" parent="TopLeftHUD"]
+layout_mode = 0
+offset_right = 140.0
+offset_bottom = 140.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_minimap")
+
+[node name="CenterCross" type="ColorRect" parent="TopLeftHUD/MiniMap"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.84, 0, 1)
+
+[node name="PlayerIcon" type="ColorRect" parent="TopLeftHUD/MiniMap"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -8.0
+offset_right = 4.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(4, 8)
+color = Color(0.2, 0.8, 1, 1)
+
+[node name="CompassLabel" type="Label" parent="TopLeftHUD"]
+layout_mode = 0
+offset_top = 146.0
+offset_right = 140.0
+offset_bottom = 170.0
+text = "0° N"
+horizontal_alignment = 1
+
+# 2. Bottom-Center Vehicle Speedometer
+[node name="BottomCenterHUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_top = -120.0
+offset_right = 110.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Speedometer" type="Panel" parent="BottomCenterHUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_speedo")
+
+[node name="SpeedLabel" type="Label" parent="BottomCenterHUD/Speedometer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -26.0
+offset_right = 80.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 26
+text = "0 KM/H"
+horizontal_alignment = 1
+
+[node name="VehicleTypeLabel" type="Label" parent="BottomCenterHUD/Speedometer"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -32.0
+offset_right = 100.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 13
+text = "🚗 VEHICLE"
+horizontal_alignment = 1
+
+# 3. Virtual Analog Joystick
 [node name="VirtualJoystick" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 60.0
-offset_top = -220.0
+offset_top = -230.0
 offset_right = 260.0
-offset_bottom = -20.0
+offset_bottom = -30.0
 grow_vertical = 0
 script = ExtResource("2_joy")
 
-[node name="Base" type="ColorRect" parent="VirtualJoystick"]
+[node name="Base" type="Panel" parent="VirtualJoystick"]
 layout_mode = 0
 offset_right = 160.0
 offset_bottom = 160.0
-color = Color(1, 1, 1, 0.15)
+theme_override_styles/panel = SubResource("StyleBoxFlat_joy_base")
 
 [node name="Handle" type="ColorRect" parent="VirtualJoystick/Base"]
 layout_mode = 0
@@ -30,16 +187,17 @@ offset_left = 48.0
 offset_top = 48.0
 offset_right = 112.0
 offset_bottom = 112.0
-color = Color(1, 0.84, 0, 0.5)
+color = Color(1, 0.84, 0, 0.6)
 
+# 4. Action Buttons Container
 [node name="ActionContainer" type="HBoxContainer" parent="."]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -460.0
-offset_top = -100.0
+offset_left = -520.0
+offset_top = -110.0
 offset_right = -30.0
 offset_bottom = -30.0
 grow_horizontal = 0
@@ -47,29 +205,19 @@ grow_vertical = 0
 theme_override_constants/separation = 16
 
 [node name="SprintBtn" type="Button" parent="ActionContainer"]
-custom_minimum_size = Vector2(100, 60)
+custom_minimum_size = Vector2(110, 65)
 layout_mode = 2
-text = "အပြေး (Sprint)"
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "🏃 အပြေး"
 
 [node name="JumpBtn" type="Button" parent="ActionContainer"]
-custom_minimum_size = Vector2(100, 60)
+custom_minimum_size = Vector2(110, 65)
 layout_mode = 2
-text = "ခုန် (Jump)"
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "🦘 ခုန်"
 
 [node name="InteractBtn" type="Button" parent="ActionContainer"]
-custom_minimum_size = Vector2(140, 60)
+custom_minimum_size = Vector2(180, 65)
 layout_mode = 2
-text = "လုပ်ဆောင် (Action)"
-
-[node name="PromptBanner" type="Label" parent="."]
-visible = false
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -200.0
-offset_top = 40.0
-offset_right = 200.0
-offset_bottom = 80.0
-grow_horizontal = 2
-text = "အနီးရှိ ရွာသား သို့မဟုတ် ယာဉ်ကို ထိတွေ့ပါ"
-horizontal_alignment = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "⚡ လုပ်ဆောင်"
