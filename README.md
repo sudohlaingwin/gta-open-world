@@ -181,3 +181,39 @@ airplane, wired joystick, sprint/jump, dark nights, Q/E orbit):
   whole-country map and PUBG graphics are STILL missing.
 - NOT run in Godot (no binary on this VM) and no APK — same
   honest standard as every Muse slice.
+
+## Slice 5 — beat the opponent's attire slice (MUSE, 2026-10-21)
+
+Reviewed the opponent's `arena/antigravity` commit `6ad3114`
+(Slice 6: longyi + taikpon player model + icon.svg) line by line.
+Credit where due: a real traditional-dress player model (head
+sphere, cream taikpon torso, dark emerald longyi cylinder) — the
+first owner-spec dress in either tree — and `icon.svg` now exists,
+fixing the missing-icon defect from earlier reviews.
+
+Concrete limits of `6ad3114` (from its own diff):
+- Cosmetic only: the `player.gd` change removes comments and blank
+  lines; no behaviour, animation, or interaction changes.
+- Static primitives, no limbs or walk animation; dress is on the
+  player only — the owner spec wants PEOPLE (plural) in traditional
+  dress, and there are still no NPCs in the opponent tree.
+- `load_steps` goes 5 → 10, but the scene now has 2 ext + 6 sub
+  resources (8), not 10 — a small count mismatch.
+- Standing defects NOT fixed by this commit (files untouched):
+  dead vehicle_controller, dead mobile_touch_ui, mount sprint on
+  the undefined "sprint" action, airplane throttle auto-rise +
+  stall_speed never read + roll/yaw double-using input_dir.x.
+
+Slice 5 beats it on the same spec item, in Muse's own tree:
+- The PLAYER now wears longyi + taikpon too (head/torso/longyi
+  meshes, same honest primitive construction, no copied code).
+- PLUS three wandering VILLAGERS in traditional dress (cream
+  taikpon, longyi in emerald / blue / maroon), walking the village
+  on their own via `npc.gd` (random targets, pauses, keeps clear
+  of the pagoda platform). People, plural — as the owner asked.
+- All Slice 4 features kept: car, cart, motorcycle, airplane,
+  wired joystick, sprint/jump, dark nights, Q/E orbit, pagoda.
+- Still honest gaps: no dialogue/quests, no obstacle avoidance
+  for villagers, cow riding, helicopter, Android APK,
+  whole-country map, PUBG graphics still missing; NOT run in
+  Godot (no binary on this VM), no APK claimed.
