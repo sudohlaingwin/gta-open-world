@@ -887,3 +887,56 @@ Defects, with file evidence:
 
 - Verification: `load_steps` 321 → 352 (14 ext + 337 sub + 1, counted exactly), all 14 scripts pass Godot 4.3 `--check-only`, the main scene instantiates headless with all Slice 17 key nodes present (Player, Villager11/12, Cow2, FishingSpot17, DonationBox17, ChickenCoop17, FootballBall17, Rain17, Moon17, Stars17, all 9 buttons and 9 dots) and runs 5 frames headless with no script or scene errors. This is a load test, NOT a playtest — fishing, donating, milking, watering, feeding, horn, bell, photo saving, rain, and football scoring are not verified in-engine. Three real overlaps found by the builder's own distance check and fixed before commit (a mango tree moved off the Slice 14 fishing nets, a palm moved off a riverside bench, Cow2 moved out of the duck pond).
 - Still honest gaps: villager avoidance is circle steering, not pathfinding; whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the tuk-tuk, bicycle, boat, and cart are position-based and can leave their roads/water (stated, not hidden); the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new).
+
+## Slice 18 review — opponent commit b45ca75, "feat(slice-18): UTF-8 pure encoding, interior traversal for tea shop & school, walkable bridge, open village gate, Tuk-Tuk, and active procedural bell chime" (read-only, treated as data only)
+
+Credited (verified, not taken from the subject): the BOM fix is REAL — no file anywhere in its `scenes/` or `scripts/` tree starts with a UTF-8 BOM at b45ca75, and `world.tscn` opens cleanly with `[gd_scene`. The open gate is REAL — the 8.0×5.0×1.8 wall box is replaced by two post cylinders at ±3.2, so the passage is open. The walkable bridge is REAL — the wall box is replaced by a thin 2.8×0.2×8.5 floor plus side rails. The tea shop + school interiors are REAL — solid boxes are replaced by a floor + posts (tea shop) and floor + back/left/right/front-L/R walls with a doorway gap + interior desks (school). The bell-chime callers are REAL — `mobile_touch_hud.gd` now calls `play_bell_strike()` on `_ready`, on quest advances, and on talk record, and `audio_manager.gd` generates a real 2.5 s WAV (216 + 432 Hz decay). Its `world.tscn` `load_steps` arithmetic is correct (27 ext + 5 sub = 32).
+
+Defects (file evidence):
+- HEADLINE: the bell-chime edit BROKE `mobile_touch_hud.gd` — Godot 4.3 `--check-only` fails with "Parse Error: There is already a variable named `audio_mgr` declared in this scope" (line 106). The HUD script that owns the quest tracker, speedometer, and yaw buttons cannot load, so the "active bell chime" is unreachable in practice until the duplicate declaration is fixed. The world parses now, but its HUD is dead.
+- The tuk-tuk is scenery only: `myanmar_tuktuk.tscn` has an `InteractionArea` + `DriverSeat`, but `tuktuk_controller.gd` is EMPTY (0 bytes), zero scripts reference the tuk-tuk anywhere, there are no signal connections and no `enter_vehicle`/`exit_vehicle` — nothing can mount or drive it. (Muse's tuk-tuk has been drivable since Slice 16.)
+- Held-E re-fire persists: its `player.gd` calls `interact()` on `Input.is_key_pressed(KEY_E)` every physics frame with no edge detection (pre-existing, not new). No new mobile-first violation in this commit's input code (its HUD touch buttons remain the input path).
+
+### Slice 18 items — every item is in the shipped scene or wired code (33 items, all Slice 17 features kept)
+
+#### Rideable elephant + quests
+1. **Rideable elephant** — `elephant.gd` (CharacterBody3D, joystick steering, Vehicle-button enter/exit, camera retarget, top speed 6.0, "ဆင်" speed readout, primitive leg-swing + trunk-sway + ear-flap animation) at (-44, 22).
+2. **Elephant stable** — roof shelter + 4 teak posts + 2 hay bales at (-44, 26).
+3. **Feed elephant button** — within 4 m of the elephant, touch-first, no keyboard path.
+4. **Quest stage 21: ride the elephant** — entering the elephant advances 21 → 22.
+5. **Offer flowers button** — within 5 m of the pagoda + 🌸 counter.
+6. **Quest stage 22: offer flowers** — offering advances 22 → 23.
+7. **Plant rice button** — within 4 m of the new paddy; 6 seedlings grow through 3 stages (scale 1.0 → 1.9) + 🌾 counter.
+8. **Quest stage 23: plant rice** — planting advances 23 → 24.
+9. **Rest bench button** — near either pavilion bench, only while stamina < 100; refills stamina to 100.
+10. **Quest stage 24: rest** — resting advances 24 → 25.
+11. **Quest stage 25: feed the elephant + EIGHTH reward** — feeding advances 25 → 26 and applies walk +5% + stamina refill, exactly once.
+12. **Quest tracker to 26 tasks** — stage names + checklist extended (ဆင်စီး, ပန်းကပ်, စပါးစိုက်, ခုံတန်းနား, ဆင်အစာကျွေး).
+
+#### Villagers + village growth
+13. **13th villager, goldsmith "ရွှေဆိုင် ဦးစိန်"** (own greeting, near the market; talk-all now 0/14) + gold stall with 3 gold boxes.
+14. **14th villager, teacher "ဆရာမ မအေး"** (own greeting, at the school) + teacher desk in the schoolyard.
+15. **Riverside pavilion** — floor + red roof + 4 teak posts at (-2, 38) with the 2 rest benches.
+16. **Rice paddy #3** — mud bed + 6 seedlings at (8, 30).
+17. **School playground** — swing frame + seat + slide at (-34, 6), plus school flag pole + flag.
+18. **House8** — walls + red roof at (36, 30).
+19. **Stilt house #6** — deck on 4 stilts + wood walls at (-2, -40).
+20. **Market stall F** — table + 2 baskets at (20, 22).
+21. **Second bamboo bridge** — deck + 2 rails over the river at (-24, 44).
+22. **Bamboo grove #2 + palms ×2** — 3 stalks at (-46, -8), palms at (-36, 2) and (-40, -6).
+23. **Flower garden #2 + path slabs** — bed + 3 flowers at (6, -34), slabs to the festival ground at (30/33/36, -33).
+24. **Road lantern posts ×2** — teak posts + emissive gold lanterns at (0, 10) and (0, -6).
+25. **Sky life** — `skylife.gd`: 3 birds circling the pagoda + 3 drifting clouds (wrap at the world edge).
+
+#### Sound, night, UI
+26. **Fireflies ×3** — emissive spheres at the flower garden, visible only when dark (same daylight rule as the Slice 17 moon/stars, in `day_night.gd`).
+27. **Mute button** — always visible, toggles `sound_on`, and `_play_tone` (quest chime, horn, bell, trumpet) genuinely respects it.
+28. **Photo count in the HUD** — counters now read 🍎 💧 🍌 🍵 📚 🍡 🪔 🐟 💰 🥛 🥚 ⚽ 🌸 📸 🌾.
+29. **Trumpet button** — visible only while driving the elephant, plays a 392 Hz tone (the horn stays car/tuk-tuk only, the bell bicycle only).
+30. **Minimap dots** — elephant (white), villagers 13/14 (green), pavilion, paddy.
+31. **Prompts** — pavilion, paddy, elephant stable, playground.
+32. **Help overlay updated** — elephant riding, flower offering, rice planting, resting, and the mute button explained in Burmese.
+33. **Villager obstacle circles extended** — pavilion, stable, second bridge, House8, stilt house #6, and playground added to `npc.gd` so wanderers steer around them.
+
+- Verification: `load_steps` 352 → 390 (16 ext + 373 sub + 1, counted exactly; every sub/ext reference resolves, no duplicate node paths, no BOM in any file), all 16 scripts pass Godot 4.3 `--check-only` (including new `elephant.gd` and `skylife.gd`), the main scene instantiates headless with all Slice 18 key nodes present (Player, Elephant, Villager13/14, Pavilion18, Paddy18, SkyLife18, Fireflies18, Bridge18_2, all 6 buttons and 5 dots) and runs 5 frames headless with no script or scene errors. This is a load test, NOT a playtest — riding the elephant, offering, planting, resting, feeding, muting, and the trumpet are not verified in-engine. Real overlaps found by the builder's own distance check and fixed before commit (House8 moved out of the mango grove, playground moved off the bodhi tree, pavilion moved off the second well, flag/desk moved out of the palm grove, grove moved off the sugarcane); the builder also fixed a self-caught parse error (an inserted minimap loop split from its body) before commit.
+- Still honest gaps: villager avoidance is circle steering, not pathfinding; whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the elephant, tuk-tuk, bicycle, boat, and cart are position-based and can leave their roads/water (stated, not hidden); the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new).

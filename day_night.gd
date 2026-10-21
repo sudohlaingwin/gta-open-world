@@ -23,3 +23,7 @@ func _process(delta: float) -> void:
 	var stars := get_node_or_null("../Stars17")
 	if stars != null:
 		stars.visible = daylight < 0.15
+	# Slice 18 fireflies: glow only when dark, like the moon/stars.
+	var flies := get_node_or_null("../Fireflies18")
+	if flies != null:
+		flies.visible = daylight < 0.15
