@@ -940,3 +940,58 @@ Defects (file evidence):
 
 - Verification: `load_steps` 352 → 390 (16 ext + 373 sub + 1, counted exactly; every sub/ext reference resolves, no duplicate node paths, no BOM in any file), all 16 scripts pass Godot 4.3 `--check-only` (including new `elephant.gd` and `skylife.gd`), the main scene instantiates headless with all Slice 18 key nodes present (Player, Elephant, Villager13/14, Pavilion18, Paddy18, SkyLife18, Fireflies18, Bridge18_2, all 6 buttons and 5 dots) and runs 5 frames headless with no script or scene errors. This is a load test, NOT a playtest — riding the elephant, offering, planting, resting, feeding, muting, and the trumpet are not verified in-engine. Real overlaps found by the builder's own distance check and fixed before commit (House8 moved out of the mango grove, playground moved off the bodhi tree, pavilion moved off the second well, flag/desk moved out of the palm grove, grove moved off the sugarcane); the builder also fixed a self-caught parse error (an inserted minimap loop split from its body) before commit.
 - Still honest gaps: villager avoidance is circle steering, not pathfinding; whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the elephant, tuk-tuk, bicycle, boat, and cart are position-based and can leave their roads/water (stated, not hidden); the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new).
+
+## Slice 19 review — opponent commit 91c1754, "feat(slice-19): mobile parachute gliding system, villager obstacle avoidance steering, and authentic Myanmar festival stage ground" (read-only, treated as data only)
+
+Credited (verified line by line, not taken from the subject): the parachute code is genuinely written — `player.gd` has `toggle_parachute()` (ON_FOOT + airborne only), fall speed capped at 3.5, glide speed 8.0 steered by the touch joystick, a `ParachuteMesh` node in `player.tscn`, and a `ChuteBtn` node in the HUD scene, plus `_check_landing()` to stow on landing. The villager avoidance code is genuinely written — an `OBSTACLE_CIRCLES` constant plus next-step proximity check with perpendicular push-away deflection (the same circle-steering approach Muse shipped in Slice 17). The festival ground scene is valid (`[gd_scene]` header, 8 nodes) and instanced in `world.tscn` at (32, 0, -10), and `world.tscn` `load_steps` arithmetic is correct (32 → 33). The BOM fix from its Slice 18 holds — no touched file starts with a BOM.
+
+Defects (file evidence, all verified with the real Godot 4.3 binary):
+- HEADLINE: THREE of its scripts fail Godot 4.3 `--check-only`, so none of this slice's features load at all. (1) `scripts/mobile_touch_hud.gd`: "Parse Error: Unexpected "$" in class body" — a literal `$insertBtnRef` placeholder was left at class scope (line 15/16), so the HUD that owns the quest tracker, speedometer, yaw buttons, and the new chute button cannot load. (2) `scripts/player.gd` line 41: "Parse Error: Unindent doesn't match the previous indentation level" — the parachute block is indented 4 tabs where 2 belong, and its `else:` does not match. (3) `scripts/myanmar_villager.gd` line 45: "Parse Error: Only identifier, attribute access, and subscription access can be used as assignment target" — the avoidance code itself does not parse. The Slice 18 duplicate-`audio_mgr` defect is gone, but it was replaced by three new parse errors.
+- Latent defects in the same HUD file (code-reading; Godot stops at the first error): `chute_btn` is referenced in `_ready` and `_process` but never declared; `func _update_quest_text()` is missing its colon; one line reads `audio_mgr.play_bell_strike() -> void:` — a return annotation pasted onto a call. These fail next once the `$insertBtnRef` line is removed.
+- The tuk-tuk is STILL scenery only: `tuktuk_controller.gd` is still 0 bytes, nothing references it. (Muse's tuk-tuk has been drivable since Slice 16.)
+- Held-E re-fire persists: its `player.gd` calls `interact()` on `Input.is_key_pressed(KEY_E)` every physics frame with no edge detection (pre-existing, not new). No new mobile-first violation in this commit's input code (its HUD buttons remain the input path).
+- The festival ground is scenery only in this commit: no interaction, quest, prompt, or touch UI touches it. And `_check_landing()` is defined but never called anywhere in its scripts, so even a parsed player would never stow the canopy on landing.
+- Note for the record: Muse already shipped a parachute (auto-deploy, Slice 16) and villager obstacle avoidance (Slice 17) — the opponent's Slice 19 catches up to those two features in text, but neither version parses.
+
+### Slice 19 items — every item is in the shipped scene or wired code (31 items, all Slice 18 features kept)
+
+#### Rideable horse + quests
+1. **Rideable horse** — `horse.gd` (CharacterBody3D, joystick steering, Vehicle-button enter/exit, camera retarget, top speed 9.0, "မြင်း" speed readout) at (-38, -30).
+2. **Horse gallop animation** — four legs swing in diagonal pairs at gallop pace, mane and tail stream while moving, everything eases to neutral at rest (primitive, not a skinned rig).
+3. **Horse dressing** — brown body/head/legs, dark mane + tail, red saddle blanket.
+4. **Horse pen** — 4 pen posts + hay bale around the horse.
+5. **Horse whistle button** — 660 Hz tone while driving the horse only (like the Slice 18 trumpet for the elephant; gated by the mute button).
+6. **Quest stage 26: ride the horse** — entering the horse advances the chain.
+7. **Buy gold button + 🪙 counter** — within 4 m of the gold stall, touch-first, hidden while driving.
+8. **Gold stall** — table + 3 gold boxes + awning + 2 posts, beside goldsmith villager 13.
+9. **Quest stage 27: buy gold** — the first gold purchase advances the chain.
+10. **Lesson button + 📖 counter** — within 4 m of the Slice 18 teacher's desk (no duplicate desk built — the lesson reuses the desk that already stands in the schoolyard), touch-first, hidden while driving.
+11. **Quest stage 28: attend the lesson** — the first lesson advances the chain.
+12. **Feed horse button + 🐴 counter** — within 4 m of the horse, touch-first, hidden while driving.
+13. **Quest stage 29: feed the horse** — the first feeding advances the chain.
+14. **Lakeside hut** — walls + roof + lamp post + gold lantern on the river bank at (44, 38).
+15. **Quest stage 30: visit the lakeside hut** — walking within 5 m advances the chain.
+16. **NINTH reward** — walk +5% and stamina refill, applied exactly once when the hut visit completes the chain.
+17. **Quest tracker to 31 tasks** — horse, gold, lesson, horse-feed, and hut stages added to the live checklist.
+
+#### Villagers + village growth
+18. **15th villager, boatman "လှေသမား ဦးကျော်"** — teal longyi, own greeting about river crossings, near the boat mooring (talk-all now 0/16).
+19. **16th villager, flower seller "ပန်းသည် မခင်"** — red dress, own greeting about fresh flower bunches, near the lakeside hut.
+20. **Bamboo workshop** — 4 posts + roof + 3 bamboo poles at (-20, 38).
+21. **Tea plantation** — 2 rows × 3 bushes at (-44, -4).
+22. **Clay kiln** — stove + chimney + fire box beside potter villager 12.
+23. **Fishing hut** — walls + roof on the river bank at (39, 42).
+24. **Road slabs ×3** — path pieces along the river bank.
+25. **Butterflies ×3** — ambient butterflies near the flower beds, flapping wings + gentle bob in `skylife.gd` (rotation only, no fake flight model).
+
+#### UI + icon + avoidance
+26. **Minimap dots** — horse (white), villagers 15/16 (green), lakeside hut, gold stall (gold), workshop (brown).
+27. **Proximity prompts** — lakeside hut, gold stall, workshop, kiln, fishing hut, tea plantation, teacher's desk.
+28. **Help overlay updated** — horse riding, gold buying, lesson, horse feeding, and the whistle explained in Burmese.
+29. **HUD counters extended** — now 🍎 💧 🍌 🍵 📚 🍡 🪔 🐟 💰 🥛 🥚 ⚽ 🌸 📸 🌾 🪙 📖 🐴.
+30. **Villager obstacle circles extended** — horse pen, lakeside hut, gold stall, workshop, kiln, fishing hut, and tea plantation added to `npc.gd` so wanderers steer around them.
+31. **Icon refreshed** — new programmatic 256×256 PNG (navy + gold pagoda + green palm + gold sun + brown horse, verified magic + dimensions — program art, not hand-drawn).
+- All Slice 18 features kept (not counted as a new item): elephant, pavilion, paddy, playground, mute, trumpet, fireflies, sky life, and every earlier interaction.
+
+- Verification: `load_steps` 390 → 399 (17 ext + 381 sub + 1, counted exactly; every sub/ext reference resolves, no BOM in any file), all 17 scripts pass Godot 4.3 `--check-only` (including new `horse.gd`), the main scene instantiates headless with all Slice 19 key nodes present (Player, Horse, HorsePen19, LakesideHut19, GoldStall19, TeacherDesk18, Workshop19, Kiln19, FishingHut19, TeaPlant19, RoadSlab19A, Villager15/16, Butterfly19A, all 4 buttons and 6 dots) and runs 5 frames headless with no script or scene errors. This is a load test, NOT a playtest — riding the horse, buying gold, attending the lesson, feeding the horse, and the hut visit are not verified in-engine. Real overlaps found by the builder's own distance check and fixed before commit (school desk/board were sitting exactly on a Slice 11 palm trunk — the lesson now reuses the Slice 18 teacher's desk instead of duplicating it; workshop moved off the pier/benches; fishing hut moved off a coconut palm's roofline; tea plantation moved off the bamboo grove; road slab moved off a riverside bench); the builder also self-caught and fixed a scene-parent bug before commit (butterfly wings parented to a root-level path that did not exist — now parented to `SkyLife18/Butterfly19A` etc.).
+- Still honest gaps: villager avoidance is circle steering, not pathfinding; whole-country map, PUBG graphics; graphics here are flat colours + primitive meshes, not an engine upgrade; the horse, elephant, tuk-tuk, bicycle, boat, and cart are position-based and can leave their roads/water (stated, not hidden); the APK on Drive is the Slice 10 build and was NOT rebuilt in this slice (per instruction — do not claim APK work as new).
