@@ -1,6 +1,4 @@
-extends StaticBody3D
-
-# --- Authentic Myanmar Bamboo Bridge (ဝါးတံတား 3D Model) ---
+﻿[gd_scene load_steps=6 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bridge"]
 size = Vector3(3.2, 1.4, 8.5)

@@ -1,45 +1,39 @@
-extends CanvasLayer
+﻿extends CanvasLayer
 
-# --- AAA Myanmar GTA Mobile HUD (Full 40+ Feature Suite) ---
+# --- High-Fidelity Mobile Touch Gaming HUD & Flight Deck ---
 
-@onready var action_container: HBoxContainer = $ActionContainer
-@onready var interact_btn: Button = $ActionContainer/InteractBtn
-@onready var jump_btn: Button = $ActionContainer/JumpBtn
-@onready var sprint_btn: Button = $ActionContainer/SprintBtn
-
-# Real-time Radar & Compass
-@onready var minimap_panel: Panel = $TopLeftHUD/MiniMap
+@onready var minimap: Panel = $TopLeftHUD/MiniMap
 @onready var player_icon: ColorRect = $TopLeftHUD/MiniMap/PlayerIcon
 @onready var pagoda_icon: ColorRect = $TopLeftHUD/MiniMap/PagodaIcon
 @onready var compass_label: Label = $TopLeftHUD/CompassLabel
-@onready var quest_banner: Label = $TopCenterHUD/QuestBanner
-
-# Real-time Stamina
 @onready var stamina_bar: ProgressBar = $TopLeftHUD/StaminaBar
-
-# Vehicle Speedometer
+@onready var quest_banner: Label = $TopCenterHUD/QuestBanner
+@onready var flight_controls: Control = $FlightControls
+@onready var yaw_left_btn: Button = $FlightControls/YawLeftBtn
+@onready var yaw_right_btn: Button = $FlightControls/YawRightBtn
+@onready var virtual_joystick: Control = $VirtualJoystick
+@onready var sprint_btn: Button = $ActionContainer/SprintBtn
+@onready var jump_btn: Button = $ActionContainer/JumpBtn
+@onready var interact_btn: Button = $ActionContainer/InteractBtn
 @onready var speedometer_panel: Panel = $BottomCenterHUD/Speedometer
 @onready var speed_label: Label = $BottomCenterHUD/Speedometer/SpeedLabel
 @onready var vehicle_type_label: Label = $BottomCenterHUD/Speedometer/VehicleTypeLabel
 @onready var throttle_bar: ProgressBar = $BottomCenterHUD/Speedometer/ThrottleBar
-
-# Flight Yaw Touch Controls
-@onready var flight_controls: Control = $FlightControls
-@onready var yaw_left_btn: Button = $FlightControls/YawLeftBtn
-@onready var yaw_right_btn: Button = $FlightControls/YawRightBtn
-
-@onready var virtual_joystick: Control = $VirtualJoystick
 @onready var prompt_banner: Label = $PromptBanner
 
 var player: CharacterBody3D = null
-var quest_stage: int = 1 # 1: Talk, 2: Visit Pagoda, 3: Ride, 4: Complete
+var quest_stage: int = 1 # 1: Talk, 2: Visit Pagoda, 3: Ring Bell, 4: Tea Shop, 5: Ride Mount/Car/Bike/Plane, 6: Complete
 var villagers_talked_count: int = 0
 var pagoda_node: Node3D = null
+var bell_node: Node3D = null
+var teashop_node: Node3D = null
 
 func _ready() -> void:
 	layer = 15
 	player = get_tree().get_first_node_in_group("player") as CharacterBody3D
 	pagoda_node = get_parent().get_node_or_null("GoldenPagoda")
+	bell_node = get_parent().get_node_or_null("MonasteryBell")
+	teashop_node = get_parent().get_node_or_null("MyanmarTeaShop")
 	
 	if virtual_joystick and virtual_joystick.has_signal("joystick_moved"):
 		virtual_joystick.joystick_moved.connect(_on_joystick_moved)
@@ -96,12 +90,20 @@ func _process(delta: float) -> void:
 
 	# 4. Quest Progression Checking
 	if quest_stage == 2 and pagoda_node:
-		if player.global_position.distance_to(pagoda_node.global_position) < 12.0:
+		if player.global_position.distance_to(pagoda_node.global_position) < 14.0:
 			quest_stage = 3
 			_update_quest_text()
-	elif quest_stage == 3:
-		if player.current_state != player.State.ON_FOOT:
+	elif quest_stage == 3 and bell_node:
+		if player.global_position.distance_to(bell_node.global_position) < 8.0:
 			quest_stage = 4
+			_update_quest_text()
+	elif quest_stage == 4 and teashop_node:
+		if player.global_position.distance_to(teashop_node.global_position) < 10.0:
+			quest_stage = 5
+			_update_quest_text()
+	elif quest_stage == 5:
+		if player.current_state != player.State.ON_FOOT:
+			quest_stage = 6
 			_update_quest_text()
 
 	# 5. Speedometer & Flight Controls Toggle
@@ -127,8 +129,12 @@ func _process(delta: float) -> void:
 				mode_text = "🐂 လှည်း/နွား (MOUNT)"
 				if throttle_bar: throttle_bar.visible = false
 			elif player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
-				speed_kmh = player.active_vehicle.linear_velocity.length() * 3.6
-				mode_text = "🚗 ကား/ဆိုင်ကယ် (VEHICLE)"
+				if player.active_vehicle is VehicleBody3D:
+					speed_kmh = player.active_vehicle.linear_velocity.length() * 3.6
+					mode_text = "🚗 ကား (VILLAGE CAR)"
+				else:
+					speed_kmh = player.active_vehicle.velocity.length() * 3.6
+					mode_text = "🏍️ ဆိုင်ကယ် (MOTORCYCLE)"
 				if throttle_bar: throttle_bar.visible = false
 				
 			speed_label.text = "%d KM/H" % int(speed_kmh)
@@ -143,7 +149,7 @@ func _process(delta: float) -> void:
 				interact_btn.text = "🚪 ဆင်းမည် (Dismount)"
 				_show_prompt("နွားလှည်းပေါ်မှ ဆင်းရန် နှိပ်ပါ")
 			player.State.DRIVING_VEHICLE:
-				interact_btn.text = "🚪 ဆင်းမည် (Exit Car)"
+				interact_btn.text = "🚪 ဆင်းမည် (Exit Vehicle)"
 				_show_prompt("ယာဉ်ပေါ်မှ ဆင်းရန် နှိပ်ပါ")
 			player.State.FLYING_AIRCRAFT:
 				interact_btn.text = "🚪 ဆင်းမည် (Exit Plane)"
@@ -183,9 +189,13 @@ func _update_quest_text() -> void:
 		2:
 			quest_banner.text = "📜 တာဝန် ၂: ရွာဦးရွှေစေတီတော်သို့ သွားရောက်ဖူးမြော်ပါ 🏛️"
 		3:
-			quest_banner.text = "📜 တာဝန် ၃: လှည်း/နွား/လေယာဉ် တစ်မျိုးမျိုးကို တက်စီးပါ 🐂✈️"
+			quest_banner.text = "📜 တာဝန် ၃: ကျောင်းတိုက်ခေါင်းလောင်းတော်သို့ သွားပါ 🔔"
 		4:
-			quest_banner.text = "🎉 တာဝန်အားလုံး ပြီးမြောက်ပါပြီ! ရွာကို လွတ်လပ်စွာ လှည့်လည်နိုင်ပါပြီ ✨"
+			quest_banner.text = "📜 တာဝန် ၄: ရွာလယ်လက်ဖက်ရည်ဆိုင်သို့ သွားရောက်အပန်းဖြေပါ ☕"
+		5:
+			quest_banner.text = "📜 တာဝန် ၅: လှည်း/နွား/ကား/ဆိုင်ကယ်/လေယာဉ် တစ်မျိုးမျိုးကို မောင်းနှင်ပါ 🐂🚗✈️"
+		6:
+			quest_banner.text = "🎉 တာဝန်အားလုံး အောင်မြင်စွာပြီးမြောက်ပါပြီ! ရွာကို လွတ်လပ်စွာ လှည့်လည်နိုင်ပါပြီ ✨"
 
 func _show_prompt(text: String) -> void:
 	if prompt_banner:

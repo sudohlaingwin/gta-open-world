@@ -1,6 +1,4 @@
-extends StaticBody3D
-
-# --- Authentic Myanmar Village Market Stall / Zay Sai (ကျေးလက် ဈေးဆိုင်ခုံ 3D Model) ---
+﻿[gd_scene load_steps=10 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_stall"]
 size = Vector3(4.5, 3.2, 3.2)

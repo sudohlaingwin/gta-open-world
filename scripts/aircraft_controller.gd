@@ -1,4 +1,4 @@
-extends CharacterBody3D
+﻿extends CharacterBody3D
 
 # --- Realistic Airplane Flight Dynamics & Airspace System ---
 
@@ -6,7 +6,7 @@ extends CharacterBody3D
 @export var lift_coefficient: float = 1.4
 @export var pitch_speed: float = 1.6
 @export var roll_speed: float = 2.2
-@export var yaw_speed: float = 0.9
+@export var yaw_speed: float = 1.4
 @export var stall_speed: float = 9.0
 
 var current_pilot: Node3D = null
@@ -36,30 +36,38 @@ func _physics_process(delta: float) -> void:
 	if current_pilot.get("touch_input_vector") != null and current_pilot.touch_input_vector != Vector2.ZERO:
 		input_dir = current_pilot.touch_input_vector
 
-	# Explicit Pilot Throttle Management (Sprint increases throttle, normal holds cruise)
+	# Throttle Management (Sprint increases throttle, normal allows deceleration to 0 for landing)
 	if current_pilot.get("is_sprinting") == true:
-		throttle = clamp(throttle + delta * 0.5, 0.0, 1.0)
-	else:
-		throttle = clamp(throttle - delta * 0.15, 0.35, 1.0) # Stable cruise throttle
+		throttle = clamp(throttle + delta * 0.4, 0.0, 1.0)
+	elif input_dir.y > 0.5:
+		throttle = clamp(throttle - delta * 0.35, 0.0, 1.0) # Down on stick brakes/decelerates to 0 for landing
 
 	var forward = -global_transform.basis.z
 	var forward_speed = velocity.dot(forward)
 
-	# Dedicated Decoupled Controls:
+	# Decoupled Flight Controls:
 	# Y axis -> Pitch (Nose Up/Down)
-	# X axis -> Bank Roll, with aerodynamic natural Yaw turning
+	# X axis -> Roll Bank
 	rotate_object_local(Vector3.RIGHT, -input_dir.y * pitch_speed * delta)
 	rotate_object_local(Vector3.FORWARD, -input_dir.x * roll_speed * delta)
-	rotate_y(-input_dir.x * yaw_speed * delta * 0.4) # Coordinated turn
+	
+	# Dedicated Independent Yaw from Pilot Touch Yaw
+	var explicit_yaw: float = 0.0
+	if current_pilot.get("touch_yaw") != null:
+		explicit_yaw = current_pilot.touch_yaw
+	if abs(explicit_yaw) > 0.05:
+		rotate_y(-explicit_yaw * yaw_speed * delta)
+	else:
+		rotate_y(-input_dir.x * (yaw_speed * 0.3) * delta) # Slight coordinated rudder bias
 
-	# Aerodynamic Stall Physics Calculation
+	# Aerodynamic Stall & Lift Calculation
 	var thrust = forward * (throttle * max_thrust)
 	var lift: Vector3
 	if forward_speed < stall_speed:
-		# Airflow separation stall: Lift drops sharply and nose falls
-		var stall_factor = clamp(forward_speed / stall_speed, 0.1, 1.0)
+		var stall_factor = clamp(forward_speed / stall_speed, 0.0, 1.0)
 		lift = Vector3.UP * (forward_speed * lift_coefficient * stall_factor)
-		rotate_object_local(Vector3.RIGHT, deg_to_rad(15.0 * delta)) # Natural stall nose drop
+		if forward_speed > 2.0:
+			rotate_object_local(Vector3.RIGHT, deg_to_rad(12.0 * delta)) # Stall nose drop
 	else:
 		lift = Vector3.UP * (forward_speed * lift_coefficient)
 

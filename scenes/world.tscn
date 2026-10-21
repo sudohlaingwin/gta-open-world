@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3]
+﻿[gd_scene load_steps=29 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
@@ -22,6 +22,8 @@
 [ext_resource type="PackedScene" path="res://scenes/bamboo_bridge.tscn" id="20_bridge_scn"]
 [ext_resource type="PackedScene" path="res://scenes/myanmar_teashop.tscn" id="21_teashop_scn"]
 [ext_resource type="PackedScene" path="res://scenes/monastery_school.tscn" id="22_school_scn"]
+[ext_resource type="PackedScene" path="res://scenes/village_car.tscn" id="23_car_scn"]
+[ext_resource type="PackedScene" path="res://scenes/myanmar_motorcycle.tscn" id="24_bike_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -173,5 +175,13 @@ villager_name = "ဒေါ်အေးကြည်"
 dialogue_text = "ပျော်ရွှင်စရာ နေ့ရက်လေး ဖြစ်ပါစေနော်!"
 longyi_color = Color(0.15, 0.25, 0.6, 1)
 
+# Authentic Drivable Myanmar Vehicles
+[node name="VillageCar" parent="." instance=ExtResource("23_car_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0.2, 5)
+
+[node name="MyanmarMotorcycle" parent="." instance=ExtResource("24_bike_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.2, 7)
+
 # Live Mobile HUD
 [node name="MobileTouchHUD" parent="." instance=ExtResource("8_hud_scn")]
+

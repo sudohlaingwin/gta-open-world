@@ -1,6 +1,4 @@
-extends StaticBody3D
-
-# --- Traditional Myanmar Village Drinking Water Pot Stand (ရေချမ်းစင် 3D Model) ---
+﻿[gd_scene load_steps=6 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pot"]
 size = Vector3(1.6, 1.8, 1.0)

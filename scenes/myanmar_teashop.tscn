@@ -1,6 +1,4 @@
-extends StaticBody3D
-
-# --- Authentic Myanmar Village Traditional Tea Shop (လက်ဖက်ရည်ဆိုင် 3D Model) ---
+﻿[gd_scene load_steps=14 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_teashop"]
 size = Vector3(7.5, 3.6, 6.0)

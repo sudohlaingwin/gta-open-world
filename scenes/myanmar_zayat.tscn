@@ -1,6 +1,4 @@
-extends StaticBody3D
-
-# --- Authentic Myanmar Village Teak Pavilion / Zayat (ရိုးရာ ဇရပ် 3D Model) ---
+﻿[gd_scene load_steps=8 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_zayat"]
 size = Vector3(9.0, 4.8, 7.0)
