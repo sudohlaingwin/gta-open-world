@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
@@ -16,6 +16,8 @@
 [ext_resource type="PackedScene" path="res://scenes/water_pot_stand.tscn" id="14_pot_scn"]
 [ext_resource type="PackedScene" path="res://scenes/market_stall.tscn" id="15_stall_scn"]
 [ext_resource type="PackedScene" path="res://scenes/village_well.tscn" id="16_well_scn"]
+[ext_resource type="PackedScene" path="res://scenes/village_gate.tscn" id="17_gate_scn"]
+[ext_resource type="PackedScene" path="res://scenes/banana_plant.tscn" id="18_banana_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -64,6 +66,10 @@ mesh = SubResource("PlaneMesh_ground")
 [node name="Player" parent="." instance=ExtResource("1_player_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
+# Village Entrance Arch / Gate (ရွာဦးမုခ်ဦး)
+[node name="VillageGate" parent="." instance=ExtResource("17_gate_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 32)
+
 # Mounts & Traditional Vehicles
 [node name="RideableCow" parent="." instance=ExtResource("3_cow_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
@@ -107,6 +113,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -10)
 
 [node name="VillageHouse2" parent="." instance=ExtResource("10_house_scn")]
 transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, -14, 0, -14)
+
+# Tropical Banana Plants (ငှက်ပျောတော)
+[node name="BananaPlant1" parent="." instance=ExtResource("18_banana_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -6)
+
+[node name="BananaPlant2" parent="." instance=ExtResource("18_banana_scn")]
+transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, 21, 0, -8)
 
 # Authentic Myanmar Toddy Palm Trees (ကျေးလက်ထန်းတော)
 [node name="ToddyPalm1" parent="." instance=ExtResource("12_palm_scn")]
