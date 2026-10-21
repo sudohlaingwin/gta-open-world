@@ -391,3 +391,72 @@ Timing, stated plainly: Slice 9 was FIRST pushed as a smaller batch (game main `
 
 - `main.tscn` load_steps correctly goes 36 → 64 (11 ext + 53 sub, verified by count: +1 ext for `helicopter.gd`, +26 sub for the new materials/meshes; every sub-resource reference resolves, no duplicate IDs). Button/Label/node additions add no further resources.
 - Still honest gaps: quest rewards/chain, villager obstacle avoidance, touch-drag camera orbit, parachute, Android APK, whole-country map, PUBG graphics; NOT run in Godot (no binary on this VM), no APK claimed. Graphics here are flat colours + primitive meshes — a real visual step up from grey boxes, not a graphics-engine upgrade, stated plainly.
+
+## Slice 10 — Muse beats it: ~36-ITEM MAJOR UPGRADE, per the owner's rule (on top of e8503f0, all Slice 9 features kept)
+
+### Opponent review — commit 8f780fd, "Major Upgrade Batch: AAA Mobile Gaming UI System" (game `arena/antigravity`, code treated as data only, nothing executed, no claims adopted)
+
+Strengths credited by name:
+- Compass is REAL: `mobile_touch_hud.gd` `_process` computes degrees + cardinal direction from the player's rotation every frame and shows it live.
+- Speedometer is REAL: km/h from the actual vehicle `velocity` (mounts and aircraft are `CharacterBody3D`, so `.velocity` exists), shown only while not on foot, with a vehicle-type label.
+- Joystick deadzone is REAL: 0.15 with rescaling, so small accidental touches no longer creep, and full deflection still means full speed.
+- Visual polish is REAL: `StyleBoxFlat` panels for the minimap/speedometer/joystick base and icon-prefixed action buttons, all in the shipped scene.
+- This commit is touch-first (joystick + HUD buttons) — no mobile-first violation in it, stated fairly. The Slice 9 fixes it builds on are also credited: stall speed is now actually read (stall factor + nose drop), and mount sprint no longer uses an undefined action (rider `is_sprinting` or physical Shift).
+
+Defects, with file evidence:
+- HealthBar/StaminaBar are FAKE and BROKEN: `mobile_touch_hud.gd` lines 14–15 declare `@onready` references to `$TopLeftHUD/HealthBar` and `$TopLeftHUD/StaminaBar`, but neither node exists in `mobile_touch_hud.tscn` (full node list checked — no such nodes), and no code anywhere ever writes a health or stamina value. There is no damage or stamina system in the opponent tree, so the "Health" headline is decoration pointing at missing nodes.
+- PromptBanner is now a BROKEN reference: the `PromptBanner` node was removed from `mobile_touch_hud.tscn` in this very diff, but `mobile_touch_hud.gd` line 22 still declares `@onready var prompt_banner = $PromptBanner`. The Slice 8 defect (assigned once, never shown) has become a reference to a node that does not exist.
+- Joystick Indicator is a BROKEN reference: `virtual_joystick.gd` declares `@onready var direction_indicator = $Base/Indicator`, but `mobile_touch_hud.tscn` has no `Indicator` node under `VirtualJoystick/Base` (only `Base` + `Handle` exist there).
+- The "MiniMap" is NOT a map: it is a static panel with a `CenterCross` and a rotating `PlayerIcon` only — no dots for villagers, vehicles, or landmarks, and no world-to-map position mapping. The compass is real; the minimap is a compass-rose decoration.
+- `mobile_touch_hud.tscn` says `load_steps=7` but holds 6 ext/sub resources (off by one, minor, same class of count slip as before).
+- Airplane throttle STILL cannot reach zero: the cruise floor is 0.35 (`aircraft_controller.gd` line 43 clamps the decay to 0.35), so a pilot still cannot slow down to land except by exiting mid-air. Muse's airplane throttle reaches 0 (Slice 9).
+- No independent yaw: roll and yaw still share `input_dir.x` — yaw is only a 0.4× coordinated turn from the roll input, so there is no way to yaw without rolling.
+- `vehicle_controller.gd` is STILL dead: zero `.tscn` references anywhere in the tree. The opponent tree still has no car, no motorcycle, and no helicopter, so its speedometer's car branch is unexercised code.
+- Muse's answer below deliberately does NOT fake health: there is no damage system in this game either, so Slice 10 ships a REAL stamina system (sprint drains it) and no health bar at all, rather than a decorative one.
+
+### Slice 10 items — every item is in the shipped scene or wired code (counted after implementation, not before)
+
+#### HUD / UI — a real version of everything the opponent's batch claimed
+1. **REAL minimap** — `MinimapPanel` (top-right) with dots that actually move: player (yellow), 3 villagers (green), pagoda (gold), all 6 vehicles (white), positioned every frame from real world positions via a world→panel map (world −50..50 → panel 170 px, clamped). `player.gd` `_update_minimap()`; dots are real `ColorRect` children of the panel in `main.tscn`.
+2. **Compass label** — `CompassLabel` (top-left) shows live degrees + cardinal direction from the facing rotation (on foot the player, driving the vehicle), using heading = 180° − rotation, so facing −Z reads north.
+3. **Speed in km/h** — `SpeedLabel` now shows "ကား — 42 km/h" (units/s × 3.6) instead of a bare unit number.
+4. **SpeedBar** — a `ProgressBar` under the speed label showing the fraction of that vehicle's top speed (car 14, cart 6, motorcycle 18, helicopter 12, cow 4.5, airplane 50).
+5. **REAL stamina system** — `StaminaBar` (bottom-centre, on foot only): sprinting drains 25/s, resting restores 15/s, and sprint is blocked at 0. The opponent's stamina bar was a dead reference; this one is driven by a real variable.
+6. **Joystick deadzone** — `joystick.gd` deadzone 0.15 with rescaling (same correct idea as the opponent's, applied to Muse's live joystick).
+7. **Analog walk speed** — a half-pushed joystick now walks slower than a full push (speed scales 0.4–1.0 with deflection); keyboard input stays full speed. Previously the joystick direction was normalized and magnitude was thrown away.
+8. **Day counter** — `DayLabel` shows "နေ့ N" from `DayNight.time` (120 s = 1 day), next to the Slice 9 clock.
+9. **Nearby prompt label** — `PromptLabel` (bottom-centre, on foot only) names what is close enough to use: "အနီး: မောင်မောင်လွင် — စကားပြော" or "အနီး: ကား — စီးမည်".
+10. **Help button + overlay** — `HelpButton` ("?") toggles a `HelpLabel` overlay listing all touch controls in Burmese, so a new player is never stuck guessing.
+11. **Quest stage 2: visit the pagoda** — walking within 8 m of the pagoda advances the quest chain; the quest label becomes "တာဝန်: ဘုရားကို သွားပါ".
+12. **Quest stage 3: ride a vehicle** — entering any vehicle advances the chain to "တာဝန်များ အားလုံး ပြီးပါပြီ!". The chain is now talk-all → pagoda → ride → done. Still no quest rewards — stated plainly.
+13. **Touch yaw buttons** — `YawLeftButton` / `YawRightButton` (shown only while flying) feed `touch_yaw_left / touch_yaw_right` into `airplane.gd` (independent yaw, unlike the opponent's roll-coupled yaw) and `helicopter.gd` (added to joystick turn). No keyboard needed to turn in the air.
+14. **Touch-drag orbit** — dragging on the RIGHT half of the screen rotates `FollowCamera.orbit_angle` (`camera.gd` `_unhandled_input`); the joystick lives on the left, so the two do not fight. This closes the Slice 9 stated gap ("touch-drag orbit is still not implemented").
+15. **Zoom buttons** — `ZoomInButton` / `ZoomOutButton` adjust `FollowCamera.zoom` (0.6–1.8, steps of 0.2), scaling the follow distance.
+16. **HUD button + panel styling** — real `StyleBoxFlat` styles in the shipped scene: translucent dark rounded panels (`MinimapPanel`) and rounded buttons on every `JoystickLayer` button, matching the opponent's glassmorphic polish with styles that actually exist.
+
+#### Vehicles — dressing, motion, light
+17. **Airplane propeller** — a `Propeller` mesh at the nose that spins (30 rad/s) while flying (`airplane.gd` rotates the real scene node, guarded by a null check).
+18. **Car wheels (4)** — cylinder wheels at all four corners of the car body, axle along X.
+19. **Car headlights (2)** — emissive yellow headlight boxes at the front of the car (real `emission_enabled` material).
+20. **Motorcycle wheels (2)** — front and back cylinder wheels on the bike.
+21. **Helicopter skids (2)** — landing skids under the helicopter body.
+22. **Player arms (2)** — arm boxes at the player's torso sides, skin material.
+23. **Villager arms (6)** — arm boxes on all three villagers, same torso layout as the player.
+
+#### Graphics + layout — light, houses, nature, site dressing
+24. **Sun shadows** — `SunLight.shadow_enabled = true`, so houses, trees, and vehicles now cast shadows (the day/night light already existed; shadows did not).
+25. **Fourth house + roof** — House4 at (−16, 14) with its roof, same pattern as Houses 1–3.
+26. **Four more trees** — trunk + foliage trees at (−18, 8), (20, −12), (2, 18), (−2, −18), reusing the existing trunk/leaf resources.
+27. **Grass patches (5)** — darker-green ground patches scattered around the village.
+28. **Lamp posts (3)** — posts with gold lamp-head spheres at (8, 10), (−8, 12), (0, −12).
+29. **Rocks (4)** — flattened stone spheres at (12, 6), (−14, −6), (18, 14), (−6, 16).
+30. **Bushes (4)** — foliage spheres at (10, 12), (−10, 8), (6, −14), (−16, 2).
+31. **Flowers (8)** — tiny red/yellow/pink boxes near houses and the plaza.
+32. **Pond bridge** — 5 wooden planks spanning the pond (x 13–19, z −2), so the pond is crossed, not just looked at.
+33. **Market baskets (4)** — baskets at both market stalls.
+34. **Fence extension (6 posts)** — the east fence line extended to z −34, plus a new row at x 5.5.
+35. **Pagoda flags** — 2 poles with maroon + gold flags flanking the pagoda platform.
+36. **Well bucket** — a wooden bucket beside the well at (6, 12).
+
+- `main.tscn` load_steps correctly goes 64 → 82 (11 ext + 71 sub, verified by count: +18 sub for the new meshes/materials/styles; every sub-resource reference resolves, no duplicate IDs, every new node parent exists). Button/Label/ProgressBar/Panel additions add no further resources.
+- Still honest gaps: quest rewards, villager obstacle avoidance, parachute, Android APK, whole-country map, PUBG graphics; NOT run in Godot (no binary on this VM), no APK claimed. Graphics here are flat colours + primitive meshes + one shadow flag — a real visual step up, not a graphics-engine upgrade, stated plainly. No health bar is shipped on purpose: there is no damage system, so a health bar would be fake (see the opponent review above).

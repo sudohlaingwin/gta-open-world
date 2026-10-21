@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3]
+[gd_scene load_steps=82 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Script" path="res://car.gd" id="1_car"]
@@ -222,6 +222,79 @@ radius = 6.5
 height = 3.5
 radius = 3.0
 
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
+top_radius = 0.35
+bottom_radius = 0.35
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tire"]
+albedo_color = Color(0.1, 0.1, 0.1, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_prop"]
+size = Vector3(0.15, 1.8, 0.15)
+
+[sub_resource type="BoxMesh" id="BoxMesh_skid"]
+size = Vector3(0.15, 0.15, 2.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_arm"]
+size = Vector3(0.15, 0.55, 0.15)
+
+[sub_resource type="BoxMesh" id="BoxMesh_headlight"]
+size = Vector3(0.3, 0.2, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_headlight"]
+albedo_color = Color(1, 0.9, 0.4, 1)
+emission_enabled = true
+emission = Color(1, 0.9, 0.4, 1)
+emission_energy_multiplier = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_flower"]
+size = Vector3(0.25, 0.25, 0.25)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flower_red"]
+albedo_color = Color(0.9, 0.15, 0.25, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flower_yellow"]
+albedo_color = Color(0.95, 0.85, 0.15, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flower_pink"]
+albedo_color = Color(0.95, 0.55, 0.7, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_grass"]
+size = Vector3(3, 0.06, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_grass2"]
+albedo_color = Color(0.18, 0.48, 0.18, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_basket"]
+size = Vector3(0.6, 0.4, 0.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_flag"]
+size = Vector3(1.2, 0.7, 0.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_plank"]
+size = Vector3(1.3, 0.15, 2.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_panel"]
+bg_color = Color(0.05, 0.05, 0.1, 0.55)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_left = 10
+corner_radius_bottom_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_button"]
+bg_color = Color(0.15, 0.2, 0.35, 0.75)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_left = 12
+corner_radius_bottom_right = 12
+
 [node name="Main" type="Node3D"]
 
 [node name="DayNight" type="Node3D" parent="."]
@@ -229,6 +302,7 @@ script = ExtResource("1_daynight")
 sun_path = NodePath("SunLight")
 
 [node name="SunLight" type="DirectionalLight3D" parent="DayNight"]
+shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
 
 [node name="GroundBody" type="StaticBody3D" parent="."]
@@ -357,6 +431,7 @@ offset_bottom = 100.0
 color = Color(1, 1, 1, 0.6)
 
 [node name="TalkButton" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
 anchor_left = 0.78
 anchor_top = 0.8
 anchor_right = 0.97
@@ -369,6 +444,7 @@ visible = false
 text = "စကားပြော"
 
 [node name="SprintButton" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
 anchor_left = 0.6
 anchor_top = 0.8
 anchor_right = 0.74
@@ -380,6 +456,7 @@ offset_bottom = 0.0
 text = "အပြေး"
 
 [node name="JumpButton" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
 anchor_left = 0.6
 anchor_top = 0.68
 anchor_right = 0.74
@@ -391,6 +468,7 @@ offset_bottom = 0.0
 text = "ခုန်"
 
 [node name="VehicleButton" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
 anchor_left = 0.78
 anchor_top = 0.68
 anchor_right = 0.97
@@ -403,6 +481,7 @@ visible = false
 text = "စီးမည်"
 
 [node name="ThrottleUpButton" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
 anchor_left = 0.78
 anchor_top = 0.56
 anchor_right = 0.97
@@ -415,6 +494,7 @@ visible = false
 text = "အရှိန် +"
 
 [node name="ThrottleDownButton" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
 anchor_left = 0.6
 anchor_top = 0.56
 anchor_right = 0.74
@@ -463,6 +543,7 @@ horizontal_alignment = 2
 text = "အချိန် 06:00"
 
 [node name="OrbitButton" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
 anchor_left = 0.02
 anchor_top = 0.09
 anchor_right = 0.14
@@ -850,3 +931,611 @@ billboard = 1
 text = "!"
 font_size = 36
 visible = false
+
+[node name="House4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 2, 14)
+mesh = SubResource("BoxMesh_car")
+surface_material_override/0 = SubResource("StandardMaterial3D_house1")
+
+[node name="Roof4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 2.6, 14)
+mesh = SubResource("BoxMesh_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_roof")
+
+[node name="TreeTrunk_s10_-18_8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.25, 8)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_s10_-18_8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 3.2, 8)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_s10_20_-12" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1.25, -12)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_s10_20_-12" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 3.2, -12)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_s10_2_18" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.25, 18)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_s10_2_18" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3.2, 18)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_s10_-2_-18" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.25, -18)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_s10_-2_-18" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3.2, -18)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="Grass_s10_4_10" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.03, 10)
+mesh = SubResource("BoxMesh_grass")
+surface_material_override/0 = SubResource("StandardMaterial3D_grass2")
+
+[node name="Grass_s10_-4_14" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.03, 14)
+mesh = SubResource("BoxMesh_grass")
+surface_material_override/0 = SubResource("StandardMaterial3D_grass2")
+
+[node name="Grass_s10_12_-10" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.03, -10)
+mesh = SubResource("BoxMesh_grass")
+surface_material_override/0 = SubResource("StandardMaterial3D_grass2")
+
+[node name="Grass_s10_-16_-2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.03, -2)
+mesh = SubResource("BoxMesh_grass")
+surface_material_override/0 = SubResource("StandardMaterial3D_grass2")
+
+[node name="Grass_s10_0_20" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 20)
+mesh = SubResource("BoxMesh_grass")
+surface_material_override/0 = SubResource("StandardMaterial3D_grass2")
+
+[node name="LampPost_s10_8_10" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 4.5, 0, 0, 0, 0.5, 8, 1.575, 10)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="LampHead_s10_8_10" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 3.3, 10)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="LampPost_s10_-8_12" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 4.5, 0, 0, 0, 0.5, -8, 1.575, 12)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="LampHead_s10_-8_12" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 3.3, 12)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="LampPost_s10_0_-12" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 4.5, 0, 0, 0, 0.5, 0, 1.575, -12)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="LampHead_s10_0_-12" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.3, -12)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="Rock_s10_0" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.6, 0, 0, 0, 0.7, 0, 0, 0, 1.3, 12, 0.35, 6)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="Rock_s10_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.3, 0, 0, 0, 0.6, 0, 0, 0, 1.5, -14, 0.35, -6)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="Rock_s10_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.8, 0, 0, 0, 0.8, 0, 0, 0, 1.2, 18, 0.35, 14)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="Rock_s10_3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.2, 0, 0, 0, 0.6, 0, 0, 0, 1.1, -6, 0.35, 16)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="Bush_s10_0" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.3, 0, 0, 0, 0.9, 0, 0, 0, 1.3, 10, 0.45, 12)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="Bush_s10_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.3, 0, 0, 0, 0.9, 0, 0, 0, 1.3, -10, 0.45, 8)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="Bush_s10_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.3, 0, 0, 0, 0.9, 0, 0, 0, 1.3, 6, 0.45, -14)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="Bush_s10_3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.3, 0, 0, 0, 0.9, 0, 0, 0, 1.3, -16, 0.45, 2)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="Flower_s10_0" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.15, -6)
+mesh = SubResource("BoxMesh_flower")
+surface_material_override/0 = SubResource("StandardMaterial3D_flower_red")
+
+[node name="Flower_s10_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.15, -9)
+mesh = SubResource("BoxMesh_flower")
+surface_material_override/0 = SubResource("StandardMaterial3D_flower_yellow")
+
+[node name="Flower_s10_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.15, -8)
+mesh = SubResource("BoxMesh_flower")
+surface_material_override/0 = SubResource("StandardMaterial3D_flower_pink")
+
+[node name="Flower_s10_3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.15, -12)
+mesh = SubResource("BoxMesh_flower")
+surface_material_override/0 = SubResource("StandardMaterial3D_flower_red")
+
+[node name="Flower_s10_4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.15, 12)
+mesh = SubResource("BoxMesh_flower")
+surface_material_override/0 = SubResource("StandardMaterial3D_flower_yellow")
+
+[node name="Flower_s10_5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.15, 8)
+mesh = SubResource("BoxMesh_flower")
+surface_material_override/0 = SubResource("StandardMaterial3D_flower_pink")
+
+[node name="Flower_s10_6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.15, 4)
+mesh = SubResource("BoxMesh_flower")
+surface_material_override/0 = SubResource("StandardMaterial3D_flower_red")
+
+[node name="Flower_s10_7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.15, -4)
+mesh = SubResource("BoxMesh_flower")
+surface_material_override/0 = SubResource("StandardMaterial3D_flower_yellow")
+
+[node name="BridgePlank_s10_0" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0.25, -2)
+mesh = SubResource("BoxMesh_plank")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="BridgePlank_s10_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5, 0.25, -2)
+mesh = SubResource("BoxMesh_plank")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="BridgePlank_s10_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.25, -2)
+mesh = SubResource("BoxMesh_plank")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="BridgePlank_s10_3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.5, 0.25, -2)
+mesh = SubResource("BoxMesh_plank")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="BridgePlank_s10_4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 0.25, -2)
+mesh = SubResource("BoxMesh_plank")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="Basket_s10_0" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.9, 2)
+mesh = SubResource("BoxMesh_basket")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="Basket_s10_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.9, 2.6)
+mesh = SubResource("BoxMesh_basket")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="Basket_s10_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.9, 6)
+mesh = SubResource("BoxMesh_basket")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="Basket_s10_3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.9, 6.6)
+mesh = SubResource("BoxMesh_basket")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FencePost_s10_0" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.35, -26)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FencePost_s10_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.35, -30)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FencePost_s10_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.35, -34)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FencePost_s10_3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0.35, -2)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FencePost_s10_4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0.35, -6)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FencePost_s10_5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0.35, -10)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="FlagPole_s10_west" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 5.0, 0, 0, 0, 0.5, -29, 1.75, -25)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="FlagPole_s10_east" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 5.0, 0, 0, 0, 0.5, -11, 1.75, -25)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="Flag_s10_west" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.4, 3.0, -25)
+mesh = SubResource("BoxMesh_flag")
+surface_material_override/0 = SubResource("StandardMaterial3D_longyi_maroon")
+
+[node name="Flag_s10_east" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 3.0, -25)
+mesh = SubResource("BoxMesh_flag")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="WellBucket_s10" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9, 0.9, 12)
+mesh = SubResource("BoxMesh_basket")
+surface_material_override/0 = SubResource("StandardMaterial3D_cart_wood")
+
+[node name="WheelCar_p1_p13" type="MeshInstance3D" parent="Car"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 1.0, -0.55, 1.3)
+mesh = SubResource("CylinderMesh_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_tire")
+
+[node name="WheelCar_m1_p13" type="MeshInstance3D" parent="Car"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, -1.0, -0.55, 1.3)
+mesh = SubResource("CylinderMesh_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_tire")
+
+[node name="WheelCar_p1_m13" type="MeshInstance3D" parent="Car"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 1.0, -0.55, -1.3)
+mesh = SubResource("CylinderMesh_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_tire")
+
+[node name="WheelCar_m1_m13" type="MeshInstance3D" parent="Car"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, -1.0, -0.55, -1.3)
+mesh = SubResource("CylinderMesh_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_tire")
+
+[node name="Headlight_R" type="MeshInstance3D" parent="Car"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.1, -2.05)
+mesh = SubResource("BoxMesh_headlight")
+surface_material_override/0 = SubResource("StandardMaterial3D_headlight")
+
+[node name="Headlight_L" type="MeshInstance3D" parent="Car"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.1, -2.05)
+mesh = SubResource("BoxMesh_headlight")
+surface_material_override/0 = SubResource("StandardMaterial3D_headlight")
+
+[node name="WheelBike_B" type="MeshInstance3D" parent="Motorcycle"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, -0.55, 0.7)
+mesh = SubResource("CylinderMesh_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_tire")
+
+[node name="WheelBike_F" type="MeshInstance3D" parent="Motorcycle"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, -0.55, -0.7)
+mesh = SubResource("CylinderMesh_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_tire")
+
+[node name="Propeller" type="MeshInstance3D" parent="Airplane"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.1)
+mesh = SubResource("BoxMesh_prop")
+surface_material_override/0 = SubResource("StandardMaterial3D_rotor")
+
+[node name="Skid_R" type="MeshInstance3D" parent="Helicopter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, -0.7, 0)
+mesh = SubResource("BoxMesh_skid")
+surface_material_override/0 = SubResource("StandardMaterial3D_rotor")
+
+[node name="Skid_L" type="MeshInstance3D" parent="Helicopter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, -0.7, 0)
+mesh = SubResource("BoxMesh_skid")
+surface_material_override/0 = SubResource("StandardMaterial3D_rotor")
+
+[node name="Arm_R" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Arm_L" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Arm_R" type="MeshInstance3D" parent="Villager1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Arm_L" type="MeshInstance3D" parent="Villager1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Arm_R" type="MeshInstance3D" parent="Villager2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Arm_L" type="MeshInstance3D" parent="Villager2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Arm_R" type="MeshInstance3D" parent="Villager3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Arm_L" type="MeshInstance3D" parent="Villager3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.15, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="MinimapPanel" type="Panel" parent="JoystickLayer"]
+anchor_left = 0.84
+anchor_top = 0.09
+anchor_right = 0.98
+anchor_bottom = 0.34
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
+
+[node name="PlayerDot" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(1, 0.85, 0.1, 1)
+
+[node name="VillagerDot1" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.8, 0.3, 1)
+
+[node name="VillagerDot2" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.8, 0.3, 1)
+
+[node name="VillagerDot3" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.8, 0.3, 1)
+
+[node name="PagodaDot" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(1, 0.75, 0.1, 1)
+
+[node name="VehicleDotCar" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.9, 0.9, 0.9, 1)
+
+[node name="VehicleDotCart" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.9, 0.9, 0.9, 1)
+
+[node name="VehicleDotMotorcycle" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.9, 0.9, 0.9, 1)
+
+[node name="VehicleDotAirplane" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.9, 0.9, 0.9, 1)
+
+[node name="VehicleDotCow" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.9, 0.9, 0.9, 1)
+
+[node name="VehicleDotHelicopter" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.9, 0.9, 0.9, 1)
+
+[node name="CompassLabel" type="Label" parent="JoystickLayer"]
+anchor_left = 0.02
+anchor_top = 0.09
+anchor_right = 0.25
+anchor_bottom = 0.14
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+text = "0° N"
+
+[node name="DayLabel" type="Label" parent="JoystickLayer"]
+anchor_left = 0.60
+anchor_top = 0.02
+anchor_right = 0.76
+anchor_bottom = 0.07
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+horizontal_alignment = 1
+text = "နေ့ 1"
+
+[node name="StaminaBar" type="ProgressBar" parent="JoystickLayer"]
+anchor_left = 0.25
+anchor_top = 0.90
+anchor_right = 0.45
+anchor_bottom = 0.94
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+min_value = 0.0
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="SpeedBar" type="ProgressBar" parent="JoystickLayer"]
+anchor_left = 0.02
+anchor_top = 0.075
+anchor_right = 0.25
+anchor_bottom = 0.105
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+min_value = 0.0
+max_value = 100.0
+value = 0.0
+visible = false
+show_percentage = false
+
+[node name="PromptLabel" type="Label" parent="JoystickLayer"]
+anchor_left = 0.30
+anchor_top = 0.82
+anchor_right = 0.70
+anchor_bottom = 0.87
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+horizontal_alignment = 1
+visible = false
+text = ""
+
+[node name="HelpButton" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.02
+anchor_top = 0.20
+anchor_right = 0.09
+anchor_bottom = 0.26
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+text = "?"
+
+[node name="HelpLabel" type="Label" parent="JoystickLayer"]
+anchor_left = 0.20
+anchor_top = 0.25
+anchor_right = 0.80
+anchor_bottom = 0.70
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "ထိန်းချုပ်နည်း: ဘယ်ဘက် joystick နဲ့ လမ်း လျှောက် / ကား မောင်း။ အပြေး ခလုတ် ဖိထား = ပြေး။ ခုန် = ခုန်။ ရွာသားနား ရောက်ရင် စကားပြော ခလုတ် ပေါ်မယ်။ ယာဉ်နား ရောက်ရင် စီးမည် ခလုတ် ပေါ်မယ်။ လေယာဉ် / ရဟတ်ယာဉ် မောင်းရင် အရှိန် + / - နဲ့ ယိမ်း ခလုတ်တွေ သုံးပါ။ ကင်မရာ ခလုတ် = ကင်မရာ လှည့်၊ ညာဘက်ခြမ်း ပွတ်ဆွဲရင်လည်း လှည့်ပါတယ်။"
+
+[node name="YawLeftButton" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.60
+anchor_top = 0.44
+anchor_right = 0.68
+anchor_bottom = 0.54
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "ယိမ်း <"
+
+[node name="YawRightButton" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.70
+anchor_top = 0.44
+anchor_right = 0.78
+anchor_bottom = 0.54
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
+text = "> ယိမ်း"
+
+[node name="ZoomInButton" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.02
+anchor_top = 0.27
+anchor_right = 0.09
+anchor_bottom = 0.33
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+text = "Zoom +"
+
+[node name="ZoomOutButton" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.02
+anchor_top = 0.34
+anchor_right = 0.09
+anchor_bottom = 0.40
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+text = "Zoom -"
+

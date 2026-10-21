@@ -55,6 +55,11 @@ func _physics_process(delta: float) -> void:
 	if driver.get("touch_vector") != null and driver.touch_vector != Vector2.ZERO:
 		turn = driver.touch_vector.x
 		fwd = -driver.touch_vector.y
+	# Slice 10: touch yaw buttons add to the joystick turn input.
+	if driver.get("touch_yaw_right") == true:
+		turn += 1.0
+	if driver.get("touch_yaw_left") == true:
+		turn -= 1.0
 	speed += fwd * accel * delta
 	speed = clamp(speed, -max_speed * 0.4, max_speed)
 	if fwd == 0.0:

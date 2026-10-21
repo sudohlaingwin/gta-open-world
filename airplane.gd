@@ -29,6 +29,7 @@ extends CharacterBody3D
 var driver: Node = null
 var is_flying: bool = false
 var throttle: float = 0.0
+var propeller_node: Node = null
 
 func start_driving(p: Node) -> void:
 	driver = p
@@ -63,6 +64,18 @@ func _physics_process(delta: float) -> void:
 	rotate_object_local(Vector3.FORWARD, -roll_in * roll_speed * delta)
 	# Coordinated yaw from roll: a joystick-only pilot can turn.
 	rotate_y(-roll_in * yaw_speed * 0.5 * delta)
+	# Slice 10: touch yaw buttons (primary on a phone) + spinning
+	# propeller mesh (Propeller node in main.tscn, nose at -Z).
+	var yaw_btn := 0.0
+	if driver.get("touch_yaw_right") == true:
+		yaw_btn += 1.0
+	if driver.get("touch_yaw_left") == true:
+		yaw_btn -= 1.0
+	rotate_y(-yaw_btn * yaw_speed * delta)
+	if propeller_node == null:
+		propeller_node = get_node_or_null("Propeller")
+	if propeller_node != null:
+		(propeller_node as Node3D).rotation.z += 30.0 * delta
 	if Input.is_physical_key_pressed(KEY_Q):
 		rotate_y(0.8 * delta)
 	if Input.is_physical_key_pressed(KEY_E):
