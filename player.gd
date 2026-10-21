@@ -3,6 +3,9 @@ extends CharacterBody3D
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Sprint: hold Shift. Jump: J key (on floor only).
 ## Enter/exit vehicle: Enter/Space (ui_accept) near a vehicle.
+## Talk to a villager: walk within 3.5 m and press E (physical key,
+## no custom input action needed) — calls the nearest villager's
+## talk_to(), which faces the player and shows its greeting bubble.
 
 @export var walk_speed: float = 5.0
 @export var sprint_multiplier: float = 1.6
@@ -11,6 +14,7 @@ extends CharacterBody3D
 var driving: bool = false
 var driving_vehicle: Node = null
 var touch_vector: Vector2 = Vector2.ZERO
+var e_was_pressed: bool = false
 
 func _ready() -> void:
 	pass
@@ -45,6 +49,21 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	if Input.is_action_just_pressed("ui_accept"):
 		_try_enter_vehicle()
+	var e_now := Input.is_physical_key_pressed(KEY_E)
+	if e_now and not e_was_pressed:
+		_try_talk()
+	e_was_pressed = e_now
+
+func _try_talk() -> void:
+	var best: Node = null
+	var best_dist: float = 3.5
+	for villager in get_tree().get_nodes_in_group("villagers"):
+		var d := global_position.distance_to(villager.global_position)
+		if d < best_dist:
+			best_dist = d
+			best = villager
+	if best != null and best.has_method("talk_to"):
+		best.call("talk_to", global_position)
 
 func _try_enter_vehicle() -> void:
 	for name in ["Car", "Cart", "Motorcycle", "Airplane"]:

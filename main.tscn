@@ -283,9 +283,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.2, 0)
 mesh = SubResource("SphereMesh_pag_hti")
 surface_material_override/0 = SubResource("StandardMaterial3D_gold")
 
-[node name="Villager1" type="CharacterBody3D" parent="."]
+[node name="Villager1" type="CharacterBody3D" parent="." groups=["villagers"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, -10)
 script = ExtResource("1_npc")
+dialogue_text = "မင်္ဂလာပါ! ရွာထဲ လည်ပတ်တာ ပျော်ရွှင်ပါစေ။"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager1"]
 shape = SubResource("CapsuleShape3D_player")
@@ -304,9 +305,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
 mesh = SubResource("CylinderMesh_longyi")
 surface_material_override/0 = SubResource("StandardMaterial3D_longyi")
 
-[node name="Villager2" type="CharacterBody3D" parent="."]
+[node name="DialogueLabel" type="Label3D" parent="Villager1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+billboard = 1
+text = "မင်္ဂလာပါ! ရွာထဲ လည်ပတ်တာ ပျော်ရွှင်ပါစေ။"
+font_size = 28
+visible = false
+
+[node name="Villager2" type="CharacterBody3D" parent="." groups=["villagers"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1, 8)
 script = ExtResource("1_npc")
+dialogue_text = "မင်္ဂလာပါ ခင်ဗျာ! ဒီနေ့ ရာသီဥတု သိပ်ကောင်းတာပဲ။"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager2"]
 shape = SubResource("CapsuleShape3D_player")
@@ -325,9 +334,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
 mesh = SubResource("CylinderMesh_longyi")
 surface_material_override/0 = SubResource("StandardMaterial3D_longyi_blue")
 
-[node name="Villager3" type="CharacterBody3D" parent="."]
+[node name="DialogueLabel" type="Label3D" parent="Villager2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+billboard = 1
+text = "မင်္ဂလာပါ ခင်ဗျာ! ဒီနေ့ ရာသီဥတု သိပ်ကောင်းတာပဲ။"
+font_size = 28
+visible = false
+
+[node name="Villager3" type="CharacterBody3D" parent="." groups=["villagers"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -15)
 script = ExtResource("1_npc")
+dialogue_text = "မင်္ဂလာပါ! ဘုရားကို သွားချင်ရင် အဲဒီဘက် သွားပါ။"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager3"]
 shape = SubResource("CapsuleShape3D_player")
@@ -345,3 +362,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_taikpon")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
 mesh = SubResource("CylinderMesh_longyi")
 surface_material_override/0 = SubResource("StandardMaterial3D_longyi_maroon")
+
+[node name="DialogueLabel" type="Label3D" parent="Villager3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+billboard = 1
+text = "မင်္ဂလာပါ! ဘုရားကို သွားချင်ရင် အဲဒီဘက် သွားပါ။"
+font_size = 28
+visible = false

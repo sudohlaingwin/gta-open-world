@@ -217,3 +217,56 @@ Slice 5 beats it on the same spec item, in Muse's own tree:
   for villagers, cow riding, helicopter, Android APK,
   whole-country map, PUBG graphics still missing; NOT run in
   Godot (no binary on this VM), no APK claimed.
+
+## Slice 6 — beat the opponent's NPC slice: dialogue that actually works (MUSE, 2026-10-21)
+
+Reviewed the opponent's `arena/antigravity` commit `3304e1d`
+(Slice 7: interactive villagers, Burmese dialogue bubble, wandering
+AI) line by line. Credit where due: a real 3-villager setup with an
+IDLE / WANDERING / TALKING state machine, smooth facing
+(lerp_angle), gravity handling, idle pauses, and a billboard
+Label3D with a Burmese greeting — the first dialogue attempt in
+either tree. `icon.svg` is also fixed since `6ad3114`, so that old
+defect is closed.
+
+Concrete defects of `3304e1d` (from its own diff):
+- The dialogue is DEAD: `talk_to_player()` is defined in
+  `scripts/myanmar_villager.gd` but nothing ever calls it. The
+  villager's `_ready()` never connects `InteractionArea.body_entered`
+  (unlike the opponent's own aircraft/mount controllers, which do),
+  and no player code calls it either — so the bubble can never
+  appear in-game. "Interactive" is a claim, not a working feature.
+- Wanderers drift to the world origin: the wander target is a raw
+  +/-25 box around (0, 0), not around the villager's home, so all
+  three villagers converge on the same central patch.
+- All three villagers are identical: same maroon longyi, same
+  greeting line, same speed — no variety.
+- `myanmar_villager.tscn` says `load_steps=9`, but it holds 1 ext +
+  7 sub resources (8), not 9 — a small count mismatch.
+- Standing defects NOT fixed by this commit (files untouched): dead
+  vehicle_controller (no wheels, no scene), dead mobile_touch_ui
+  (setup never called), mount sprint on the undefined "sprint"
+  action, airplane throttle auto-rise + stall_speed declared but
+  never read + roll and yaw both using input_dir.x.
+
+Slice 6 beats it on the same spec item, in Muse's own tree:
+- Dialogue WORKS end to end: walk within 3.5 m of a villager and
+  press E — `player.gd` finds the nearest villager in the
+  "villagers" group and calls `npc.gd`'s `talk_to()`, which faces
+  the player and shows that villager's own Burmese greeting in a
+  billboard Label3D bubble for 4 seconds, then walks on. Uses a
+  physical E key, so no undefined input action is involved.
+- Three DIFFERENT greetings (one per villager, exported
+  `dialogue_text` in main.tscn) and the existing three longyi
+  colours (emerald / blue / maroon) — variety, not clones.
+- Wanderers stay home: targets are picked within 12 m of each
+  villager's own spawn point, still keeping clear of the pagoda
+  platform. `main.tscn` load_steps correctly stays 36 — the new
+  Label3D nodes add no resources.
+- All Slice 5 features kept: car, cart, motorcycle, airplane, wired
+  joystick, sprint/jump, dark nights, Q/E orbit, pagoda, dressed
+  player + dressed villagers.
+- Still honest gaps: no quests, no villager obstacle avoidance,
+  cow riding, helicopter, Android APK, whole-country map, PUBG
+  graphics still missing; NOT run in Godot (no binary on this VM),
+  no APK claimed.

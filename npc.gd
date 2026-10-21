@@ -1,31 +1,70 @@
 extends CharacterBody3D
-## Slice 5 villager: walks around the village in Myanmar dress.
-## No dialogue, no quests, no obstacle avoidance yet — stated
-## plainly in README.md. Picks a random point, walks to it, pauses,
-## repeats. Stays clear of the pagoda platform at (-20, -25).
+## Slice 6 villager: walks around HIS OWN home area in Myanmar dress,
+## and TALKS when the player walks up and presses E. The dialogue is
+## wired end to end: player.gd finds the nearest villager in the
+## "villagers" group and calls talk_to(); the villager faces the
+## player and shows his own Burmese greeting in a Label3D bubble
+## for 4 seconds, then walks on. No quests, no obstacle avoidance
+## yet — stated plainly in README.md. Wander targets are picked
+## around the villager's spawn (home) point, not the world origin,
+## and stay clear of the pagoda platform at (-20, -25).
 
 @export var walk_speed: float = 1.6
-@export var bound: float = 30.0
+@export var wander_radius: float = 12.0
+@export var talk_seconds: float = 4.0
+@export var dialogue_text: String = "မင်္ဂလာပါ!"
 
+var home: Vector3 = Vector3.ZERO
 var target: Vector3 = Vector3.ZERO
 var pause_left: float = 0.0
+var talking_left: float = 0.0
 
 func _ready() -> void:
+	home = global_position
+	_hide_label()
 	_pick_target()
+
+func _hide_label() -> void:
+	var label := get_node_or_null("DialogueLabel") as Label3D
+	if label != null:
+		label.visible = false
+
+## Called by player.gd when the player presses E near this villager.
+func talk_to(player_pos: Vector3) -> void:
+	var to_player := player_pos - global_position
+	to_player.y = 0.0
+	if to_player.length() > 0.01:
+		rotation.y = atan2(to_player.x, to_player.z)
+	talking_left = talk_seconds
+	var label := get_node_or_null("DialogueLabel") as Label3D
+	if label != null:
+		label.text = dialogue_text
+		label.visible = true
 
 func _pick_target() -> void:
 	for _i in range(8):
-		var t := Vector3(randf_range(-bound, bound), 0.0, randf_range(-bound, bound))
+		var t := Vector3(
+			home.x + randf_range(-wander_radius, wander_radius),
+			0.0,
+			home.z + randf_range(-wander_radius, wander_radius))
 		if Vector2(t.x, t.z).distance_to(Vector2(-20.0, -25.0)) > 13.0:
 			target = t
 			return
-	target = Vector3(0.0, 0.0, 0.0)
+	target = home
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= 20.0 * delta
 	else:
 		velocity.y = 0.0
+	if talking_left > 0.0:
+		talking_left -= delta
+		velocity.x = 0.0
+		velocity.z = 0.0
+		if talking_left <= 0.0:
+			_hide_label()
+		move_and_slide()
+		return
 	if pause_left > 0.0:
 		pause_left -= delta
 		velocity.x = 0.0
