@@ -33,7 +33,7 @@ func _physics_process(delta: float) -> void:
 		# Process rider driving inputs
 		var input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 		
-		# If rider has touch input
+		# Read touch joystick vector directly from rider
 		if current_rider.get("touch_input_vector") != null and current_rider.touch_input_vector != Vector2.ZERO:
 			input_dir = current_rider.touch_input_vector
 
@@ -46,7 +46,10 @@ func _physics_process(delta: float) -> void:
 		forward.y = 0.0
 		forward = forward.normalized()
 
-		var speed = trot_speed if Input.is_action_pressed("sprint") else walk_speed
+		# Sprint check via rider's is_sprinting state or physical Shift key (no undefined action)
+		var is_sprinting = (current_rider.get("is_sprinting") == true) or Input.is_key_pressed(KEY_SHIFT)
+		var speed = trot_speed if is_sprinting else walk_speed
+		
 		if input_dir.y < -0.1: # Forward
 			velocity.x = forward.x * speed
 			velocity.z = forward.z * speed
@@ -59,7 +62,6 @@ func _physics_process(delta: float) -> void:
 
 		move_and_slide()
 	else:
-		# Natural deceleration when no rider
 		velocity.x = move_toward(velocity.x, 0, 2.0)
 		velocity.z = move_toward(velocity.z, 0, 2.0)
 		move_and_slide()
@@ -69,8 +71,6 @@ func mount(rider: Node3D) -> void:
 		return
 	is_mounted = true
 	current_rider = rider
-	
-	# Attach rider to saddle position
 	rider.reparent(saddle_point)
 	rider.position = Vector3.ZERO
 	rider.rotation = Vector3.ZERO
@@ -81,12 +81,9 @@ func mount(rider: Node3D) -> void:
 func dismount() -> void:
 	if not is_mounted or not current_rider:
 		return
-	
 	var rider = current_rider
 	is_mounted = false
 	current_rider = null
-	
-	# Detach rider back to world space beside mount
 	var dismount_pos = global_position + (global_transform.basis.x * 1.5)
 	rider.reparent(get_parent())
 	rider.global_position = dismount_pos
