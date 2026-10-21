@@ -1,7 +1,6 @@
 extends CharacterBody3D
 
-# --- Authentic Myanmar Longyi Character Controller (မြန်မာဝတ်စုံ ဇာတ်ကောင်) ---
-
+# --- Character Stats ---
 @export var speed: float = 6.0
 @export var sprint_speed: float = 10.0
 @export var jump_velocity: float = 4.8
@@ -35,6 +34,11 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
+	# Keyboard interaction fallback (Press E to talk or interact)
+	if Input.is_key_pressed(KEY_E):
+		interact()
+
+	# Direction input
 	var input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if touch_input_vector != Vector2.ZERO:
 		input_dir = touch_input_vector
@@ -48,7 +52,7 @@ func _physics_process(delta: float) -> void:
 	right = right.normalized()
 
 	var direction: Vector3 = (right * input_dir.x + forward * -input_dir.y).normalized()
-	var current_speed: float = sprint_speed if is_sprinting else speed
+	var current_speed: float = sprint_speed if (is_sprinting or Input.is_key_pressed(KEY_SHIFT)) else speed
 
 	if direction.length() > 0.05:
 		velocity.x = direction.x * current_speed
@@ -74,6 +78,23 @@ func interact() -> void:
 		nearby_mount.mount(self)
 	elif nearby_vehicle:
 		nearby_vehicle.enter_vehicle(self)
+	else:
+		# Check for nearest villager to talk
+		var nearest_villager = _get_nearest_villager(4.0)
+		if nearest_villager and nearest_villager.has_method("talk_to"):
+			nearest_villager.talk_to(global_position)
+
+func _get_nearest_villager(max_dist: float) -> Node3D:
+	var villagers = get_tree().get_nodes_in_group("villagers")
+	var nearest: Node3D = null
+	var min_d = max_dist
+	for v in villagers:
+		if v is Node3D:
+			var d = global_position.distance_to(v.global_position)
+			if d < min_d:
+				min_d = d
+				nearest = v
+	return nearest
 
 func set_mounted_state(mounted: bool, mount_node: Node3D) -> void:
 	if mounted:
