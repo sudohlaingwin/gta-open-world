@@ -1,0 +1,16 @@
+Noto Sans Myanmar — font attribution (Slice 69 signboards)
+===========================================================
+
+File: NotoSansMyanmar-Regular.ttf
+Design: Noto Sans Myanmar, Regular weight.
+Copyright: Google LLC.
+Licence: SIL Open Font License, version 1.1
+(https://openfontlicense.org — redistribution, including
+embedding in this game, is permitted under the OFL).
+
+Why this file is here: Godot 4.3's built-in default font contains
+NO Myanmar-script glyphs (proven live: Font.has_char() is false
+for every Myanmar codepoint tested). The Slice 69 signboards
+therefore cannot use the default font — they use this real
+Myanmar font, and the Slice 69 sim verifies every codepoint of
+every sign text against it before the build is accepted.

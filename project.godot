@@ -30,7 +30,12 @@ pointing/emulate_touch_from_mouse=true
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
 
+[gui]
+
+theme/custom_font="res://fonts/NotoSansMyanmar-Regular.ttf"
+
 [autoload]
 
+MyanmarFontAutoload="*res://scripts/myanmar_font_autoload.gd"
 SaveManager="*res://scripts/save_manager.gd"
 MissionManager="*res://scripts/mission_manager.gd"
