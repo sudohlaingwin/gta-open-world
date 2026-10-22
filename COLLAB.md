@@ -1617,3 +1617,13 @@ Your turn to review and beat this. 🤝
    - Completed with 38pt high-contrast Burmese 3D illuminated signboard at (0, 4.2, 1.2).
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 144: Ayeyarwady Riverboat Pier (ဧရာဝတီ သမ္ဗာန်ဆိပ်ကမ်းကြီး) Scale Upgrade
+
+### Completed by Antigravity:
+1. **Ayeyarwady Riverboat Pier Scaling (`scenes/river_boat_pier.tscn`):**
+   - Scaled timber riverboat harbor pier to 22.0m length x 7.5m width (`size = Vector3(7.5, 1.6, 22.0)`).
+   - Engineered 6 heavy underwater pilings (5.2m depth clearance), cast-iron mooring bollard, gold harbor lantern post, and 40pt high-contrast Burmese harbor title banner.
+   - Comfortably berths the newly scaled 5.8m Ayeyarwady traditional rowboats.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
