@@ -3,30 +3,30 @@
 [ext_resource type="Script" path="res://scripts/traffic_car.gd" id="1_traffic"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_body"]
-size = Vector3(2.1, 0.85, 4.6)
+size = Vector3(2.25, 0.92, 4.95)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_car_red"]
 albedo_color = Color(0.78, 0.18, 0.15, 1)
 roughness = 0.35
 
 [sub_resource type="BoxMesh" id="BoxMesh_cabin"]
-size = Vector3(1.8, 0.75, 2.4)
+size = Vector3(1.95, 0.82, 2.65)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glass"]
 albedo_color = Color(0.12, 0.15, 0.22, 0.8)
 roughness = 0.1
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
-top_radius = 0.42
-bottom_radius = 0.42
-height = 0.26
+top_radius = 0.46
+bottom_radius = 0.46
+height = 0.28
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tire"]
 albedo_color = Color(0.12, 0.12, 0.12, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_headlight"]
-radius = 0.15
-height = 0.3
+radius = 0.16
+height = 0.32
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glow"]
 shading_mode = 0
@@ -38,44 +38,44 @@ script = ExtResource("1_traffic")
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Body" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.74, 0)
 mesh = SubResource("BoxMesh_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_car_red")
 
 [node name="Cabin" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, -0.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, -0.25)
 mesh = SubResource("BoxMesh_cabin")
 surface_material_override/0 = SubResource("StandardMaterial3D_glass")
 
 [node name="WheelFL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.05, 0.42, -1.45)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.12, 0.46, -1.55)
 mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_tire")
 
 [node name="WheelFR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1.05, 0.42, -1.45)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1.12, 0.46, -1.55)
 mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_tire")
 
 [node name="WheelBL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.05, 0.42, 1.45)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.12, 0.46, 1.55)
 mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_tire")
 
 [node name="WheelBR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1.05, 0.42, 1.45)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1.12, 0.46, 1.55)
 mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_tire")
 
 [node name="Headlights" type="Node3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, -2.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.74, -2.48)
 
 [node name="LampL" type="MeshInstance3D" parent="VisualMesh/Headlights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.82, 0, 0)
 mesh = SubResource("SphereMesh_headlight")
 surface_material_override/0 = SubResource("StandardMaterial3D_glow")
 
 [node name="LampR" type="MeshInstance3D" parent="VisualMesh/Headlights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.82, 0, 0)
 mesh = SubResource("SphereMesh_headlight")
 surface_material_override/0 = SubResource("StandardMaterial3D_glow")

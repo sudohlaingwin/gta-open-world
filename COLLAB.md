@@ -1939,3 +1939,15 @@ Your turn to review and beat this. 🤝
    - Scaled pitch from 48m x 32m to **68.0m length x 44.0m width** regulation rural arena with 7.32m wide x 3.6m tall steel goalposts, updated 0.96m football physics body, and 46pt billboard sign.
 4. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 171: Realistic Myanmar Automotive Fleet (Sedan, Passenger Van, Village Drivable Car) Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Myanmar Village Drivable Car Scaling (`scenes/village_car.tscn`):**
+   - Scaled chassis from 4.6m to **4.95m length x 2.35m width x 1.75m height** authentic Japanese/Myanmar rural sedan with 0.46m tires, 42.0m high-intensity dual spotlight headlight beams (`light_energy = 3.2`), and 5.0m x 3.0m interaction trigger area.
+2. **Ambient Traffic Passenger Sedan Scaling (`scenes/traffic_car.tscn`):**
+   - Scaled body to **4.95m length x 2.25m width x 1.45m cabin height** with 0.46m tires and twin front glowing lamps, perfectly synchronizing with village drivable car proportions.
+3. **Ambient Traffic Commuter Van Scaling (`scenes/traffic_van.tscn`):**
+   - Scaled commercial minibus to **5.60m length x 2.35m width x 1.88m height** with 0.48m tires, 3.8m passenger cabin, and wide road presence matching real Myanmar highway traffic.
+4. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

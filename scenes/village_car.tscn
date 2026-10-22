@@ -3,10 +3,10 @@
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_car"]
-size = Vector3(2.3, 1.7, 4.8)
+size = Vector3(2.35, 1.75, 4.95)
 
 [sub_resource type="BoxMesh" id="BoxMesh_body"]
-size = Vector3(2.2, 0.95, 4.6)
+size = Vector3(2.3, 0.98, 4.9)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_car_paint"]
 albedo_color = Color(0.12, 0.45, 0.78, 1)
@@ -14,14 +14,14 @@ metallic = 0.65
 roughness = 0.25
 
 [sub_resource type="BoxMesh" id="BoxMesh_cabin"]
-size = Vector3(1.85, 0.85, 2.6)
+size = Vector3(1.95, 0.88, 2.7)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cabin_glass"]
 albedo_color = Color(0.1, 0.15, 0.2, 0.8)
 roughness = 0.1
 
 [sub_resource type="BoxMesh" id="BoxMesh_headlight"]
-size = Vector3(0.35, 0.22, 0.12)
+size = Vector3(0.38, 0.24, 0.14)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_headlight"]
 albedo_color = Color(1.0, 0.98, 0.85, 1)
@@ -36,73 +36,73 @@ emission = Color(0.95, 0.15, 0.15, 1)
 emission_energy_multiplier = 2.4
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
-top_radius = 0.44
-bottom_radius = 0.44
-height = 0.3
+top_radius = 0.46
+bottom_radius = 0.46
+height = 0.32
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tire"]
 albedo_color = Color(0.15, 0.15, 0.15, 1)
 roughness = 0.9
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
-size = Vector3(4.6, 2.8, 6.2)
+size = Vector3(5.0, 3.0, 6.6)
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.98, 0)
 shape = SubResource("BoxShape3D_car")
 
 [node name="BodyMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0)
 mesh = SubResource("BoxMesh_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_car_paint")
 
 [node name="CabinMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, -0.35)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.35)
 mesh = SubResource("BoxMesh_cabin")
 surface_material_override/0 = SubResource("StandardMaterial3D_cabin_glass")
 
 [node name="HeadlightL" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.78, 0.75, -2.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.82, 0.78, -2.45)
 mesh = SubResource("BoxMesh_headlight")
 surface_material_override/0 = SubResource("StandardMaterial3D_headlight")
 
 [node name="HeadlightR" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.78, 0.75, -2.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.82, 0.78, -2.45)
 mesh = SubResource("BoxMesh_headlight")
 surface_material_override/0 = SubResource("StandardMaterial3D_headlight")
 
 [node name="HeadlightBeamL" type="SpotLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.78, 0.75, -2.35)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.82, 0.78, -2.5)
 light_color = Color(1, 0.96, 0.88, 1)
-light_energy = 2.8
-spot_range = 35.0
-spot_angle = 40.0
+light_energy = 3.2
+spot_range = 42.0
+spot_angle = 42.0
 
 [node name="HeadlightBeamR" type="SpotLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.78, 0.75, -2.35)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.82, 0.78, -2.5)
 light_color = Color(1, 0.96, 0.88, 1)
-light_energy = 2.8
-spot_range = 35.0
-spot_angle = 40.0
+light_energy = 3.2
+spot_range = 42.0
+spot_angle = 42.0
 
 [node name="TaillightL" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.78, 0.75, 2.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.82, 0.78, 2.45)
 mesh = SubResource("BoxMesh_headlight")
 surface_material_override/0 = SubResource("StandardMaterial3D_taillight")
 
 [node name="TaillightR" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.78, 0.75, 2.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.82, 0.78, 2.45)
 mesh = SubResource("BoxMesh_headlight")
 surface_material_override/0 = SubResource("StandardMaterial3D_taillight")
 
 [node name="WheelFrontLeft" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0.44, -1.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 0.46, -1.6)
 use_as_steering = true
-wheel_radius = 0.44
-wheel_rest_length = 0.16
+wheel_radius = 0.46
+wheel_rest_length = 0.18
 suspension_stiffness = 32.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WheelFrontLeft"]
@@ -111,10 +111,10 @@ mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_tire")
 
 [node name="WheelFrontRight" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0.44, -1.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15, 0.46, -1.6)
 use_as_steering = true
-wheel_radius = 0.44
-wheel_rest_length = 0.16
+wheel_radius = 0.46
+wheel_rest_length = 0.18
 suspension_stiffness = 32.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WheelFrontRight"]
@@ -123,10 +123,10 @@ mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_tire")
 
 [node name="WheelBackLeft" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0.44, 1.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 0.46, 1.6)
 use_as_traction = true
-wheel_radius = 0.44
-wheel_rest_length = 0.16
+wheel_radius = 0.46
+wheel_rest_length = 0.18
 suspension_stiffness = 32.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WheelBackLeft"]
@@ -135,10 +135,10 @@ mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_tire")
 
 [node name="WheelBackRight" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0.44, 1.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15, 0.46, 1.6)
 use_as_traction = true
-wheel_radius = 0.44
-wheel_rest_length = 0.16
+wheel_radius = 0.46
+wheel_rest_length = 0.18
 suspension_stiffness = 32.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WheelBackRight"]
@@ -147,11 +147,11 @@ mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_tire")
 
 [node name="DriverSeat" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.48, 0.95, -0.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.98, -0.25)
 
 [node name="InteractionArea" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.98, 0)
 shape = SubResource("BoxShape3D_interact")
 

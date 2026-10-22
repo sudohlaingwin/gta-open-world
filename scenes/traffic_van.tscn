@@ -3,30 +3,30 @@
 [ext_resource type="Script" path="res://scripts/traffic_car.gd" id="1_traffic"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_body"]
-size = Vector3(2.2, 1.35, 5.2)
+size = Vector3(2.35, 1.45, 5.6)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_van_white"]
 albedo_color = Color(0.92, 0.92, 0.94, 1)
 roughness = 0.3
 
 [sub_resource type="BoxMesh" id="BoxMesh_cabin"]
-size = Vector3(2.05, 1.15, 3.4)
+size = Vector3(2.2, 1.25, 3.8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glass"]
 albedo_color = Color(0.12, 0.15, 0.22, 0.8)
 roughness = 0.1
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
-top_radius = 0.46
-bottom_radius = 0.46
-height = 0.28
+top_radius = 0.48
+bottom_radius = 0.48
+height = 0.3
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tire"]
 albedo_color = Color(0.12, 0.12, 0.12, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_headlight"]
-radius = 0.18
-height = 0.35
+radius = 0.19
+height = 0.38
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glow"]
 shading_mode = 0
@@ -39,44 +39,44 @@ speed = 5.0
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Body" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.92, 0)
 mesh = SubResource("BoxMesh_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_van_white")
 
 [node name="Cabin" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.88, 0.3)
 mesh = SubResource("BoxMesh_cabin")
 surface_material_override/0 = SubResource("StandardMaterial3D_glass")
 
 [node name="WheelFL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.1, 0.46, -1.65)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.18, 0.48, -1.8)
 mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_tire")
 
 [node name="WheelFR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1.1, 0.46, -1.65)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1.18, 0.48, -1.8)
 mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_tire")
 
 [node name="WheelBL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.1, 0.46, 1.65)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.18, 0.48, 1.8)
 mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_tire")
 
 [node name="WheelBR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1.1, 0.46, 1.65)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1.18, 0.48, 1.8)
 mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_tire")
 
 [node name="Headlights" type="Node3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, -2.6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.92, -2.8)
 
 [node name="LampL" type="MeshInstance3D" parent="VisualMesh/Headlights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.78, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.84, 0, 0)
 mesh = SubResource("SphereMesh_headlight")
 surface_material_override/0 = SubResource("StandardMaterial3D_glow")
 
 [node name="LampR" type="MeshInstance3D" parent="VisualMesh/Headlights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.78, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.84, 0, 0)
 mesh = SubResource("SphereMesh_headlight")
 surface_material_override/0 = SubResource("StandardMaterial3D_glow")
