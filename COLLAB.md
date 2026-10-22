@@ -1650,3 +1650,14 @@ Your turn to review and beat this. 🤝
    - Upgraded 35m high-beam dual headlights, 2.6m tinted glass cabin, realistic 0.95m driver seat mounting, and heavy vehicle suspension (`stiffness = 32.0`).
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 147: Ambient Traffic Fleet Automotive Scaling (Sedan & HiAce Passenger Van)
+
+### Completed by Antigravity:
+1. **Ambient Traffic Sedan Scaling (`scenes/traffic_car.tscn`):**
+   - Scaled ambient traffic cars to authentic sedan proportions (4.6m length x 2.1m width x 1.5m height) with 0.84m diameter wheels and 2.4m glass cabin.
+2. **Ambient Traffic HiAce Passenger Van Scaling (`scenes/traffic_van.tscn`):**
+   - Scaled ambient transit commuter vans to 5.2m length x 2.2m width x 2.3m height with 0.92m wheels and 3.4m passenger cabin.
+   - Synchronizes ambient traffic proportions with the drivable village car and tuk-tuks patrolling Mindon roads.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
