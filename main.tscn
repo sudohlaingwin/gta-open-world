@@ -1,4 +1,4 @@
-[gd_scene load_steps=402 format=3]
+[gd_scene load_steps=415 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Script" path="res://car.gd" id="1_car"]
@@ -1345,6 +1345,44 @@ corner_radius_top_right = 0
 corner_radius_bottom_left = 0
 corner_radius_bottom_right = 0
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_camblock_0"]
+size = Vector3(2.6, 2.8, 4.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_camblock_1"]
+size = Vector3(2.6, 2.8, 4.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_camblock_2"]
+size = Vector3(2.6, 2.8, 4.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_camblock_3"]
+size = Vector3(2.6, 2.8, 4.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_camblock_4"]
+size = Vector3(2.6, 2.8, 4.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_camblock_5"]
+size = Vector3(6.2, 3.0, 5.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_camblock_6"]
+size = Vector3(5.2, 3.2, 4.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_camblock_7"]
+size = Vector3(5.2, 3.2, 4.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_camblock_8"]
+size = Vector3(8.2, 3.2, 6.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_camblock_9"]
+size = Vector3(2.6, 3.0, 4.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_camblock_10"]
+size = Vector3(2.6, 3.0, 4.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_camblock_11"]
+size = Vector3(4.8, 3.8, 3.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_camblock_12"]
+size = Vector3(2.4, 2.0, 3.6)
 [node name="Main" type="Node3D"]
 
 [node name="DayNight" type="Node3D" parent="."]
@@ -9182,3 +9220,107 @@ visible = false
 
 [node name="TrafficManager" type="Node3D" parent="."]
 script = ExtResource("1_traffic_manager")
+
+[node name="House1CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.4, -8)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="House1CamBlock"]
+shape = SubResource("BoxShape3D_camblock_0")
+
+[node name="House2CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1.4, -10)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="House2CamBlock"]
+shape = SubResource("BoxShape3D_camblock_1")
+
+[node name="House3CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.4, 10)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="House3CamBlock"]
+shape = SubResource("BoxShape3D_camblock_2")
+
+[node name="House4CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 1.4, 14)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="House4CamBlock"]
+shape = SubResource("BoxShape3D_camblock_3")
+
+[node name="House5CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 1.4, -8)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="House5CamBlock"]
+shape = SubResource("BoxShape3D_camblock_4")
+
+[node name="House6CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 1.5, 30)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="House6CamBlock"]
+shape = SubResource("BoxShape3D_camblock_5")
+
+[node name="House7CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 1.5, 30)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="House7CamBlock"]
+shape = SubResource("BoxShape3D_camblock_6")
+
+[node name="House8CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 1.5, 30)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="House8CamBlock"]
+shape = SubResource("BoxShape3D_camblock_7")
+
+[node name="SchoolCamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 1.6, 14)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="SchoolCamBlock"]
+shape = SubResource("BoxShape3D_camblock_8")
+
+[node name="Stilt5CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 1.5, -16)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="Stilt5CamBlock"]
+shape = SubResource("BoxShape3D_camblock_9")
+
+[node name="Stilt6CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -22)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="Stilt6CamBlock"]
+shape = SubResource("BoxShape3D_camblock_10")
+
+[node name="Stilt13CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1.9, -22)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="Stilt13CamBlock"]
+shape = SubResource("BoxShape3D_camblock_11")
+
+[node name="LakesideHutCamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 1.0, 38)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="LakesideHutCamBlock"]
+shape = SubResource("BoxShape3D_camblock_12")
