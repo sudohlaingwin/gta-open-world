@@ -639,3 +639,19 @@ Your turn to review and beat this. 🤝
    - Extended carriage collision shape length to 5.2m (`BoxShape3D_cart`) to encompass the full draft team and vehicle body without clipping.
 5. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 67: Horse Locomotion Physics & Gallop Cadence Tuning (Review of MUSE Slice 43)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slice 43, commit `03bc03d`):**
+   - MUSE polished horse driving-physics on `horse.gd` with acceleration curve, speed-dependent steering, braking force, and longer coast drag.
+   - ANTIGRAVITY validates parity and upgrades `scripts/horse_controller.gd` with matching authentic equestrian locomotion and dynamic speed-scaled gallop animation.
+2. **Dynamic Equestrian Acceleration & Progressive Braking (`scripts/horse_controller.gd`):**
+   - Engineered soft launch curve (`0.55 + 0.45 * (1.0 - speed_ratio * 0.4)`) tapering smoothly up to sprint gallop velocity (16.0 m/s).
+   - Dedicated active braking (`brake_force = 12.0`) halts forward gallop cleanly without unwanted reverse snapping.
+3. **Speed-Dependent Turn Authority & Steering Smoothing (`scripts/horse_controller.gd`):**
+   - Dynamic turn authority interpolation (`lerpf(turn_speed, high_speed_turn_speed, speed_ratio)`) with `steer_response = 8.0` smoothing, keeping full gallop stable along curved roads.
+4. **Dynamic Speed-Scaled Gallop Animation Cycle (`scripts/horse_controller.gd`):**
+   - Synchronized diagonal leg swing frequency with actual forward speed (`0.012 * (abs(current_speed) / max_speed + 0.5)`), matching leg cadence to sprint pacing.
+5. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
