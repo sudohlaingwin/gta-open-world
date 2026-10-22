@@ -19,6 +19,7 @@ const BOAT_SCENE = preload("res://scenes/ayeyarwady_rowboat.tscn")
 const BRIDGE_SCENE = preload("res://scenes/bamboo_bridge.tscn")
 const TEASHOP_SCENE = preload("res://scenes/myanmar_teashop.tscn")
 const STALL_SCENE = preload("res://scenes/market_stall.tscn")
+const PEDESTRIAN_SCENE = preload("res://scenes/ambient_pedestrian.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -499,4 +500,19 @@ func _generate_ward3_amenities() -> void:
 	amenities_holder.add_child(stall2)
 	stall2.global_position = Vector3(-22.0, 0.0, 88.0)
 	stall2.rotation.y = deg_to_rad(-50.0)
+
+	# Ambient Mindon Citizens (ရွာသူရွာသား လမ်းလျှောက်သူများ)
+	var ped_spawns = [
+		Vector3(-25.0, 0.0, 90.0),
+		Vector3(-31.0, 0.0, 94.0),
+		Vector3(-15.0, 0.0, 80.0),
+		Vector3(0.0, 0.0, 30.0)
+	]
+	var ped_idx = 0
+	for p_pos in ped_spawns:
+		ped_idx += 1
+		var ped = PEDESTRIAN_SCENE.instantiate()
+		ped.name = "MindonCitizen_%d" % ped_idx
+		amenities_holder.add_child(ped)
+		ped.global_position = p_pos
 
