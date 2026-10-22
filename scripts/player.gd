@@ -127,9 +127,7 @@ func _physics_process(delta: float) -> void:
 			var step_interval = 0.28 if is_sprinting else 0.45
 			if footstep_timer <= 0.0:
 				footstep_timer = step_interval
-				var audio_mgr = get_node_or_null("/root/World/MyanmarAudioManager")
-				if not audio_mgr:
-					audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
+				var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
 				if audio_mgr and audio_mgr.has_method("play_footstep"):
 					audio_mgr.play_footstep()
 	elif not is_parachuting:

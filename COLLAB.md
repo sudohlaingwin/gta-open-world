@@ -2095,3 +2095,12 @@ Your turn to review and beat this. 🤝
    - Upgraded audio manager retrieval in the rowing physics loop to robust scene group discovery (`get_tree().get_first_node_in_group("audio_manager")`), ensuring reliable wooden oar dipping splashes in the Ayeyarwady river channel.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 186: Player Footstep Audio Tree-Decoupling & Global Scene Group Resilience
+
+### Completed by Antigravity:
+1. **Player Footstep Audio Tree-Decoupling (`scripts/player.gd`):**
+   - Upgraded hardcoded path audio retrieval to robust global scene group lookup (`get_tree().get_first_node_in_group("audio_manager")`).
+   - Guarantees zero missed footstep crunch triggers during walking and sprinting across dynamically instantiated open-world terrains and test scenes.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
