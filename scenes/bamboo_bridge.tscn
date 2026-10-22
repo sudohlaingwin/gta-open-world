@@ -1,76 +1,76 @@
 [gd_scene load_steps=8 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
-size = Vector3(4.8, 0.4, 24.0)
+size = Vector3(5.2, 0.45, 36.0)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rail_l"]
-size = Vector3(0.35, 1.8, 24.0)
+size = Vector3(0.4, 1.8, 36.0)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rail_r"]
-size = Vector3(0.35, 1.8, 24.0)
+size = Vector3(0.4, 1.8, 36.0)
 
 [sub_resource type="BoxMesh" id="BoxMesh_deck"]
-size = Vector3(4.6, 0.25, 23.5)
+size = Vector3(5.0, 0.3, 35.8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo"]
 albedo_color = Color(0.70, 0.58, 0.35, 1)
 roughness = 0.8
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_post"]
-top_radius = 0.16
-bottom_radius = 0.2
-height = 3.6
+top_radius = 0.18
+bottom_radius = 0.24
+height = 4.2
 
 [sub_resource type="BoxMesh" id="BoxMesh_rail"]
-size = Vector3(0.16, 0.16, 23.5)
+size = Vector3(0.2, 0.2, 35.8)
 
 [node name="BambooBridge" type="StaticBody3D"]
 
 [node name="FloorCollision" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
 shape = SubResource("BoxShape3D_floor")
 
 [node name="LeftRailCollision" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3, 1.0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.1, 0)
 shape = SubResource("BoxShape3D_rail_l")
 
 [node name="RightRailCollision" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 1.0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.1, 0)
 shape = SubResource("BoxShape3D_rail_r")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Deck" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, 0)
 mesh = SubResource("BoxMesh_deck")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
 
 [node name="RailL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3, 1.0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.1, 0)
 mesh = SubResource("BoxMesh_rail")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
 
 [node name="RailR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 1.0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.1, 0)
 mesh = SubResource("BoxMesh_rail")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
 
 [node name="PostL1" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3, 0.65, -9.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.8, -14.5)
 mesh = SubResource("CylinderMesh_post")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
 
 [node name="PostL2" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3, 0.65, 9.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.8, 14.5)
 mesh = SubResource("CylinderMesh_post")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
 
 [node name="PostR1" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 0.65, -9.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.8, -14.5)
 mesh = SubResource("CylinderMesh_post")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
 
 [node name="PostR2" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 0.65, 9.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.8, 14.5)
 mesh = SubResource("CylinderMesh_post")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
