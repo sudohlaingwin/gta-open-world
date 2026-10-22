@@ -2190,3 +2190,21 @@ Your turn to review and beat this. 🤝
    - Upgraded Myanmar 3-wheel Tuk-Tuk cabin to glossy vibrant yellow paint (`metallic = 0.75`, `roughness = 0.22`, `specular = 0.55`) and heavy-duty green weather canvas roof canopy.
 5. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-22 — Slice 193: Myanmar Population Attire & Village Infrastructure PBR Realism Overhaul
+
+### Completed by Antigravity:
+1. **Authentic Myanmar Villager & Ambient Pedestrian Attire (`scenes/myanmar_villager.tscn` & `scenes/ambient_pedestrian.tscn`):**
+   - Upgraded male and female villagers wearing traditional Taikpon jackets with authentic woven cotton fabric roughness (`0.72` - `0.74`) and subtle weave specular reflection (`0.20`).
+   - Enhanced Burmese longyi textiles (traditional maroon & deep royal blue) with realistic silk-cotton luster (`roughness = 0.64`, `specular = 0.32`).
+2. **Village Communal Fresh-Water Well (`scenes/village_well.tscn`):**
+   - Upgraded circular kiln-fired red clay bricks with earthy matte roughness (`0.88`, `specular = 0.18`).
+   - Upgraded clear well water surface shader with dynamic specular glint (`specular = 0.60`, `roughness = 0.05`) and weathered teak support posts (`roughness = 0.72`).
+3. **Roadside Charity Water Pot Stand — ရေချမ်းစင် (`scenes/water_pot_stand.tscn`):**
+   - Overhauled rustic timber stand with native hardwood PBR response.
+   - Upgraded porous terracotta clay drinking pots with realistic baked earthenware roughness (`0.74`) and natural specular sheen (`0.22`).
+4. **Sacred Hinthar Bird Monument (`scenes/hinthar_statue.tscn`):**
+   - Refined pristine white marble base pedestal with polished stone sheen (`roughness = 0.22`, `specular = 0.55`).
+   - Elevated the mythical golden Hinthar swan sculpture to brilliant metallic gold (`metallic = 0.94`, `roughness = 0.14`, `specular = 0.52`) with divine golden ambient radiance (`emission_energy = 0.22`).
+5. **5-Minute Rapid Automated Cadence:**
+   - Synchronized seamlessly with MUSE and pushed cleanly to `origin/arena/antigravity`.

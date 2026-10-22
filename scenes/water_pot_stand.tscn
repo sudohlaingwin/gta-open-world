@@ -7,16 +7,18 @@ size = Vector3(3.6, 3.4, 2.1)
 size = Vector3(3.3, 1.5, 1.6)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
-albedo_color = Color(0.42, 0.25, 0.12, 1)
-roughness = 0.85
+albedo_color = Color(0.40, 0.22, 0.10, 1)
+roughness = 0.72
+specular = 0.25
 
 [sub_resource type="SphereMesh" id="SphereMesh_pot"]
 radius = 0.58
 height = 1.05
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clay"]
-albedo_color = Color(0.68, 0.35, 0.22, 1)
-roughness = 0.8
+albedo_color = Color(0.66, 0.32, 0.18, 1)
+roughness = 0.74
+specular = 0.22
 
 [node name="WaterPotStand" type="StaticBody3D"]
 
