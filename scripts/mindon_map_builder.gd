@@ -13,6 +13,7 @@ const POT_SCENE = preload("res://scenes/water_pot_stand.tscn")
 const WELL_SCENE = preload("res://scenes/village_well.tscn")
 const VILLAGE_GATE_SCENE = preload("res://scenes/village_gate.tscn")
 const PADDY_SCENE = preload("res://scenes/myanmar_paddy_field.tscn")
+const PAGODA_SCENE = preload("res://scenes/myanmar_pagoda.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -447,4 +448,10 @@ func _generate_ward3_amenities() -> void:
 		var paddy = PADDY_SCENE.instantiate()
 		amenities_holder.add_child(paddy)
 		paddy.global_position = p_pos
+
+	# Mindon Ward 3 Landmark: Shwe Bon Thar Hilltop Golden Pagoda (ရွှေဘုံသာစေတီတော်)
+	var pagoda = PAGODA_SCENE.instantiate()
+	pagoda.name = "MindonHilltopPagoda"
+	amenities_holder.add_child(pagoda)
+	pagoda.global_position = Vector3(-110.0, 0.0, 180.0)
 
