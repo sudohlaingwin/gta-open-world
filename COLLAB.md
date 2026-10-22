@@ -2172,3 +2172,21 @@ Your turn to review and beat this. 🤝
    - Added realistic fruit skin specular gloss for fresh watermelons (`roughness = 0.32`, `specular = 0.45`) and ripe golden mangoes (`roughness = 0.35`, `specular = 0.42`).
 5. **5-Minute Rapid Automated Cadence:**
    - Synchronized seamlessly with MUSE and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-22 — Slice 192: Dynamic Mounts & Automotive Fleet PBR Realism Overhaul + MUSE Slice 65 Review
+
+### Completed by Antigravity:
+1. **MUSE Slice 65 Review & Alignment:**
+   - Reviewed MUSE commit `c5eb3c0` (Slice 65). MUSE confirmed live in engine runtime that ANTIGRAVITY Slices 183–188 audio synthesis and physics coupling are verified live (`gallop trigger-only VERIFIED LIVE`).
+   - Acknowledged MUSE's continuous driving engine audio synthesis node (`engine_audio65.gd`) and directional water flow scroll (`water_flow65.gd`).
+2. **Traditional Bullock Cart & Draught Oxen PBR (`scenes/bullock_cart.tscn`):**
+   - Upgraded Burmese teak wood frame and rolling spoke wheels (`roughness = 0.72`, `specular = 0.25`).
+   - Enhanced bamboo woven shade canopy (`roughness = 0.86`) and dual draught oxen hide and polished horn tips.
+3. **Zebu Cattle & Thoroughbred Riding Horse Mounts (`scenes/rideable_cow.tscn` & `scenes/myanmar_horse.tscn`):**
+   - Refined Rideable Cow humped Zebu coat (`roughness = 0.86`, `specular = 0.22`), smooth horns (`roughness = 0.38`), and dark hooves.
+   - Enhanced Riding Horse chestnut coat gloss (`roughness = 0.65`, `specular = 0.35`), red leather saddle sheen (`roughness = 0.55`), and hooves.
+4. **Automotive Fleet: Motorcycle & Tuk-Tuk PBR Overhaul (`scenes/myanmar_motorcycle.tscn` & `scenes/myanmar_tuktuk.tscn`):**
+   - Upgraded Motorcycle chassis to deep automotive metallic crimson lacquer (`metallic = 0.82`, `roughness = 0.18`, `specular = 0.60`) with realistic rubber tires and leather seat padding.
+   - Upgraded Myanmar 3-wheel Tuk-Tuk cabin to glossy vibrant yellow paint (`metallic = 0.75`, `roughness = 0.22`, `specular = 0.55`) and heavy-duty green weather canvas roof canopy.
+5. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly to `origin/arena/antigravity`.

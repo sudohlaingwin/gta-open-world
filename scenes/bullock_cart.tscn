@@ -9,8 +9,9 @@ size = Vector3(2.6, 2.4, 6.8)
 size = Vector3(2.4, 0.95, 3.8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
-albedo_color = Color(0.45, 0.28, 0.14, 1)
-roughness = 0.85
+albedo_color = Color(0.42, 0.26, 0.12, 1)
+roughness = 0.72
+specular = 0.25
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
 top_radius = 1.1
@@ -25,14 +26,17 @@ left_to_right = 0.5
 size = Vector3(2.5, 1.25, 3.6)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_mat"]
-albedo_color = Color(0.72, 0.60, 0.38, 1)
-roughness = 0.8
+albedo_color = Color(0.70, 0.58, 0.36, 1)
+roughness = 0.86
+specular = 0.18
 
 [sub_resource type="BoxMesh" id="BoxMesh_ox_body"]
 size = Vector3(0.9, 1.15, 2.4)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ox"]
-albedo_color = Color(0.82, 0.76, 0.65, 1)
+albedo_color = Color(0.85, 0.78, 0.68, 1)
+roughness = 0.88
+specular = 0.2
 
 [sub_resource type="BoxMesh" id="BoxMesh_ox_head"]
 size = Vector3(0.5, 0.6, 0.75)
@@ -43,7 +47,9 @@ bottom_radius = 0.08
 height = 0.48
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_horn"]
-albedo_color = Color(0.2, 0.18, 0.15, 1)
+albedo_color = Color(0.18, 0.16, 0.14, 1)
+roughness = 0.4
+specular = 0.35
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_cart_interact"]
 radius = 4.2
