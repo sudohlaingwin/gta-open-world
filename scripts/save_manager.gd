@@ -27,6 +27,17 @@ func _ready() -> void:
 	has_save = FileAccess.file_exists(SAVE_PATH)
 	load_settings()
 
+func _atomic_write(path: String, text: String) -> bool:
+	var tmp_path := path + ".tmp"
+	var file = FileAccess.open(tmp_path, FileAccess.WRITE)
+	if file == null:
+		return false
+	file.store_string(text)
+	file.close()
+	if DirAccess.rename_absolute(tmp_path, path) != OK:
+		return false
+	return true
+
 func save_game(player_pos: Vector3, quest_stage: int, villagers_count: int, stamina: float) -> bool:
 	var data = {
 		"version": 1,
@@ -40,12 +51,9 @@ func save_game(player_pos: Vector3, quest_stage: int, villagers_count: int, stam
 		"longyi_color": var_to_str(longyi_color),
 		"timestamp": Time.get_unix_time_from_system()
 	}
-	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
-	if not file:
-		return false
 	var json_str = JSON.stringify(data)
-	file.store_string(json_str)
-	file.close()
+	if not _atomic_write(SAVE_PATH, json_str):
+		return false
 	has_save = true
 	save_data = data
 	return true
@@ -108,12 +116,7 @@ func save_settings() -> bool:
 		"motorcycle_paint_html": motorcycle_paint_html,
 		"tuktuk_paint_html": tuktuk_paint_html
 	}
-	var file = FileAccess.open(SETTINGS_PATH, FileAccess.WRITE)
-	if not file:
-		return false
-	file.store_string(JSON.stringify(d))
-	file.close()
-	return true
+	return _atomic_write(SETTINGS_PATH, JSON.stringify(d))
 
 func reset_settings() -> void:
 	muted = false
