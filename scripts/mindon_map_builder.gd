@@ -11,6 +11,8 @@ const BANANA_SCENE = preload("res://scenes/banana_plant.tscn")
 const ZAYAT_SCENE = preload("res://scenes/myanmar_zayat.tscn")
 const POT_SCENE = preload("res://scenes/water_pot_stand.tscn")
 const WELL_SCENE = preload("res://scenes/village_well.tscn")
+const VILLAGE_GATE_SCENE = preload("res://scenes/village_gate.tscn")
+const PADDY_SCENE = preload("res://scenes/myanmar_paddy_field.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -428,4 +430,21 @@ func _generate_ward3_amenities() -> void:
 	var zayat = ZAYAT_SCENE.instantiate()
 	amenities_holder.add_child(zayat)
 	zayat.global_position = Vector3(-75.0, 0.0, 155.0)
+
+	# Mindon Ward 3 Village Entrance Gate (ရွာဝင်မုခ်ဦး) across hospital access road
+	var gate = VILLAGE_GATE_SCENE.instantiate()
+	amenities_holder.add_child(gate)
+	gate.global_position = Vector3(-12.0, 0.0, 78.0)
+	gate.rotation.y = deg_to_rad(90.0)
+
+	# Lush rural paddy fields along eastern and southern perimeter of Mindon stream
+	var paddy_positions = [
+		Vector3(45.0, 0.0, 85.0),
+		Vector3(75.0, 0.0, 110.0),
+		Vector3(-95.0, 0.0, 60.0)
+	]
+	for p_pos in paddy_positions:
+		var paddy = PADDY_SCENE.instantiate()
+		amenities_holder.add_child(paddy)
+		paddy.global_position = p_pos
 
