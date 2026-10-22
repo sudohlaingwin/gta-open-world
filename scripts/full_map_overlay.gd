@@ -18,12 +18,60 @@ var beacon_node: Node3D = null
 # GIS mapping scale: 1 world unit (meter) = 0.55 canvas pixels
 const MAP_SCALE: float = 0.55
 
+var geo_data: Dictionary = {}
+
 func _ready() -> void:
 	if close_btn:
 		close_btn.pressed.connect(func(): visible = false; get_tree().paused = false)
 	beacon_node = get_tree().get_first_node_in_group("waypoint_beacon")
 	if not beacon_node:
 		beacon_node = get_parent().get_parent().get_node_or_null("WaypointBeacon")
+
+	_load_geo_data()
+	if map_canvas:
+		map_canvas.draw.connect(_on_map_canvas_draw)
+
+func _load_geo_data() -> void:
+	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
+	if file:
+		var text = file.get_as_text()
+		file.close()
+		var json = JSON.new()
+		if json.parse(text) == OK and json.data is Dictionary:
+			geo_data = json.data
+
+func _on_map_canvas_draw() -> void:
+	if not map_canvas:
+		return
+	var center = map_canvas.size * 0.5
+
+	# 1. Draw Mindon Stream (မင်းတုန်းချောင်း) vectors
+	var rivers = geo_data.get("rivers", [])
+	for r in rivers:
+		var pts = r.get("pts", [])
+		for i in range(pts.size() - 1):
+			var p1 = center + Vector2(pts[i]["x"], pts[i]["z"]) * MAP_SCALE
+			var p2 = center + Vector2(pts[i + 1]["x"], pts[i + 1]["z"]) * MAP_SCALE
+			map_canvas.draw_line(p1, p2, Color(0.18, 0.52, 0.92, 0.85), 6.0)
+
+	# 2. Draw Real Mindon Ward 3 Road network
+	var roads = geo_data.get("roads", [])
+	for rd in roads:
+		var pts = rd.get("pts", [])
+		var r_type = str(rd.get("type", "residential"))
+		var road_color = Color(0.85, 0.78, 0.35, 0.9) if r_type == "unclassified" else Color(0.55, 0.55, 0.58, 0.8)
+		var road_w = 4.0 if r_type == "unclassified" else 2.5
+		for i in range(pts.size() - 1):
+			var p1 = center + Vector2(pts[i]["x"], pts[i]["z"]) * MAP_SCALE
+			var p2 = center + Vector2(pts[i + 1]["x"], pts[i + 1]["z"]) * MAP_SCALE
+			map_canvas.draw_line(p1, p2, road_color, road_w)
+
+	# 3. Draw Waypoint Beacon destination line if active
+	if beacon_node and beacon_node.visible and player:
+		var p_canvas = center + Vector2(player.global_position.x, player.global_position.z) * MAP_SCALE
+		var b_canvas = center + Vector2(beacon_node.global_position.x, beacon_node.global_position.z) * MAP_SCALE
+		map_canvas.draw_dashed_line(p_canvas, b_canvas, Color(0.95, 0.85, 0.15, 0.8), 2.0, 6.0)
+		map_canvas.draw_circle(b_canvas, 6.0, Color(0.95, 0.25, 0.15, 0.9))
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
@@ -46,10 +94,14 @@ func _set_waypoint_at_screen_pos(screen_pos: Vector2) -> void:
 		if beacon_node:
 			beacon_node.global_position = Vector3(world_x, 0.0, world_z)
 			beacon_node.visible = true
+			if map_canvas:
+				map_canvas.queue_redraw()
 
 func _process(_delta: float) -> void:
 	if not visible or not map_canvas:
 		return
+
+	map_canvas.queue_redraw()
 
 	if not player:
 		player = get_tree().get_first_node_in_group("player") as CharacterBody3D
