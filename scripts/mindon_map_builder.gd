@@ -610,7 +610,7 @@ func _generate_ward3_amenities() -> void:
 	var bell = BELL_SCENE.instantiate()
 	bell.name = "MindonPagodaBell"
 	amenities_holder.add_child(bell)
-	bell.global_position = Vector3(-98.0, 8.0, 178.0)
+	bell.global_position = Vector3(-98.0, 14.0, 178.0)
 	bell.rotation.y = deg_to_rad(-30.0)
 
 	# Mindon Ward 3 Monastic Education Monastery School (ဘုန်းတော်ကြီးသင်ပညာရေးကျောင်း)
