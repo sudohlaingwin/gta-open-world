@@ -434,3 +434,62 @@ func play_boat_row_splash() -> void:
 	stream.data = data
 	boat_splash_player.stream = stream
 	boat_splash_player.play()
+
+var aircraft_engine_player: AudioStreamPlayer
+var helicopter_rotor_player: AudioStreamPlayer
+
+func play_airplane_engine(throttle: float = 1.0) -> void:
+	if is_muted: return
+	if not aircraft_engine_player:
+		aircraft_engine_player = AudioStreamPlayer.new()
+		aircraft_engine_player.name = "AirplaneEngineAudio"
+		aircraft_engine_player.volume_db = -6.0
+		add_child(aircraft_engine_player)
+	if aircraft_engine_player.playing:
+		return
+	var sample_hz = 22050
+	var duration = 0.6
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	var base_freq = 120.0 + clampf(throttle, 0.0, 1.5) * 80.0
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var roar = (sin(t * base_freq * TAU) * 0.5 + sin(t * base_freq * 2.0 * TAU) * 0.3 + sin(t * base_freq * 3.5 * TAU) * 0.2)
+		var int_sample = int(clamp(roar, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	aircraft_engine_player.stream = stream
+	aircraft_engine_player.play()
+
+func play_helicopter_rotor(rpm_factor: float = 1.0) -> void:
+	if is_muted: return
+	if not helicopter_rotor_player:
+		helicopter_rotor_player = AudioStreamPlayer.new()
+		helicopter_rotor_player.name = "HelicopterRotorAudio"
+		helicopter_rotor_player.volume_db = -5.0
+		add_child(helicopter_rotor_player)
+	if helicopter_rotor_player.playing:
+		return
+	var sample_hz = 22050
+	var duration = 0.5
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	var blade_freq = 24.0 * clampf(rpm_factor, 0.2, 1.4)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var thud = pow(abs(sin(t * blade_freq * TAU)), 6.0)
+		var whoosh = sin(t * 180.0 * TAU) * 0.35 + sin(t * 90.0 * TAU) * 0.45
+		var val = whoosh * (0.3 + thud * 0.7)
+		var int_sample = int(clamp(val, -1.0, 1.0) * 25000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	helicopter_rotor_player.stream = stream
+	helicopter_rotor_player.play()

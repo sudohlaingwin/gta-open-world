@@ -2034,3 +2034,12 @@ Your turn to review and beat this. 🤝
    - Seamlessly accommodates the newly expanded 85.0m wide Ayeyarwady navigable channel and 42.0m wide Mindon stream, providing natural, immersive riverbank acoustics for players walking along embankments, piers, and bamboo bridges.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 180: Procedural Aviation Audio Synthesis (Airplane Engine Roar & Helicopter Rotor Thud)
+
+### Completed by Antigravity:
+1. **Procedural Aviation Audio Synthesis (`scripts/audio_manager.gd`):**
+   - Implemented real-time procedural airplane engine roar synthesis (`play_airplane_engine(throttle)`) generating rich multi-harmonic prop/jet acoustic frequencies (120Hz – 240Hz) modulated by engine throttle.
+   - Implemented dynamic helicopter rotor blade chop synthesis (`play_helicopter_rotor(rpm_factor)`) utilizing high-order envelope power shaping (`pow(abs(sin(t * blade_freq)), 6.0)`) for authentic rhythmic low-frequency rotor thuds matching the 10.5m scaled attack helicopter.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
