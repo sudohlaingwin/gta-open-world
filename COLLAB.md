@@ -1751,3 +1751,13 @@ Your turn to review and beat this. 🤝
    - Enhanced woven bamboo produce baskets (1.4m diameter) filled with ripe watermelons and mangoes, 12m night lantern radius, and high-visibility 40pt signboard.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 155: Grand Tea Shop Pavilion (Shwe Mingalar Laphet Yay Saing) Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Grand Tea Shop Pavilion (Shwe Mingalar Laphet Yay Saing) Scaling (`scenes/myanmar_teashop.tscn`):**
+   - Scaled village social hub from 10.2m x 8.0m to 14.8m length x 11.5m width x 7.6m height (`size = Vector3(14.8, 0.5, 11.5)`).
+   - Upgraded 4 heavy corner teak pillars to 6.2m height (`radius = 0.32m`), 16.0m thatch roof, and 2.7m diameter round social tea tables.
+   - Enhanced Myanmar tin tea flasks (0.72m height), ceramic teapots, eclair/samosa snack platters, colorful plastic stools, 16m warm ambient night lantern, and 48pt Burmese signboard with 36pt menu board.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
