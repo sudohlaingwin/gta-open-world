@@ -1761,3 +1761,13 @@ Your turn to review and beat this. 🤝
    - Enhanced Myanmar tin tea flasks (0.72m height), ceramic teapots, eclair/samosa snack platters, colorful plastic stools, 16m warm ambient night lantern, and 48pt Burmese signboard with 36pt menu board.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 156: Monastic School Complex (Phone Gyi Kyaung) Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Monastic School Complex (Phone Gyi Kyaung) Scaling (`scenes/monastery_school.tscn`):**
+   - Scaled monastery primary school hall from 16.5m x 12.0m to grand 22.0m length x 16.0m width x 9.4m height monastic pavilion (`size = Vector3(22.0, 0.6, 16.0)`).
+   - Upgraded perimeter teak walls to 5.8m height, tiered monastery roofs to 23.5m length, and student teak study desks to 2.4m length.
+   - Enhanced sacred golden Buddha altar (4.8m x 2.6m teak altar with 2.0m golden Buddha statue and 14m golden altar illumination), woven prayer mats (1.8m x 1.4m), and 46pt high-contrast Burmese school signboard.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
