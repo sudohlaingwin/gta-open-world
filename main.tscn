@@ -1,4 +1,4 @@
-[gd_scene load_steps=401 format=3]
+[gd_scene load_steps=402 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Script" path="res://car.gd" id="1_car"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://skylife.gd" id="1_skylife18"]
 [ext_resource type="Script" path="res://horse.gd" id="1_horse19"]
 [ext_resource type="PackedScene" path="res://scenes/ui/settings_panel.tscn" id="21_settings_panel"]
+[ext_resource type="Script" path="res://traffic_manager.gd" id="1_traffic_manager"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
 size = Vector3(100, 1, 100)
@@ -9175,3 +9176,6 @@ text = ""
 
 [node name="SettingsPanel" parent="JoystickLayer/PausePanel21" instance=ExtResource("21_settings_panel")]
 visible = false
+
+[node name="TrafficManager" type="Node3D" parent="."]
+script = ExtResource("1_traffic_manager")
