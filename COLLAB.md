@@ -2005,3 +2005,14 @@ Your turn to review and beat this. 🤝
    - Scaled glazed medical ward windows to **2.2m width x 1.8m height**, upgraded hospital signboard to **36pt typography**, and boosted nocturnal porch floodlight to **24.0m illumination range** (`light_energy = 2.6`).
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 177: Mindon Stream River Channel (42m) & Shwe Bon Thar Pagoda Hill (14m Elevation) Overhaul
+
+### Completed by Antigravity:
+1. **Mindon Stream Real-World GIS Channel Scaling (`scripts/mindon_map_builder.gd`):**
+   - Scaled procedural river segments from 24.0m to **42.0m river width** (`water_box = Vector3(42.0, 0.45, dist)`), providing ample clearance for the 36m bamboo bridge spans and water traffic.
+2. **Shwe Bon Thar Pagoda Hill Mound & Ascending Stairway Scaling (`scripts/mindon_map_builder.gd`):**
+   - Scaled terraced hilltop mound from 8.0m to **14.0m majestic elevation** with 42.0m base radius (`top_radius = 28.0m, bottom_radius = 42.0m, height = 14.0m`).
+   - Scaled ceremonial stone stairway ramp to **6.2m width x 22.0m length** (`BoxShape3D = Vector3(6.2, 0.8, 22.0)` at 32° ascent angle), elevating the Mindon Grand Pagoda to 14.0m altitude overlooking the entire township valley.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

@@ -418,10 +418,10 @@ func _generate_mindon_rivers(rivers: Array) -> void:
 			if dist < 1.0 or dist > 600.0:
 				continue
 
-			var river_width: float = 24.0
+			var river_width: float = 42.0
 			var mesh_inst = MeshInstance3D.new()
 			var water_box = BoxMesh.new()
-			water_box.size = Vector3(river_width, 0.35, dist)
+			water_box.size = Vector3(river_width, 0.45, dist)
 			mesh_inst.mesh = water_box
 			mesh_inst.set_surface_override_material(0, river_mat)
 
@@ -467,33 +467,33 @@ func _generate_ward3_amenities() -> void:
 		paddy.global_position = p_pos
 
 	# Mindon Ward 3 Landmark: Shwe Bon Thar Hilltop Golden Pagoda (ရွှေဘုံသာစေတီတော်)
-	# Terraced hill elevation mound with stone stair ramp ascending 8 meters above valley
+	# Terraced hill elevation mound with stone stair ramp ascending 14 meters above valley
 	var hill = StaticBody3D.new()
 	hill.name = "PagodaHillMound"
 	var hill_col = CollisionShape3D.new()
 	var hill_cshape = CylinderShape3D.new()
-	hill_cshape.height = 8.0
-	hill_cshape.radius = 20.0
+	hill_cshape.height = 14.0
+	hill_cshape.radius = 32.0
 	hill_col.shape = hill_cshape
-	hill_col.position = Vector3(0.0, 4.0, 0.0)
+	hill_col.position = Vector3(0.0, 7.0, 0.0)
 	hill.add_child(hill_col)
 
 	# Stone stairway ascent ramp collider
 	var stair_col = CollisionShape3D.new()
 	var stair_box = BoxShape3D.new()
-	stair_box.size = Vector3(3.4, 0.6, 12.0)
+	stair_box.size = Vector3(6.2, 0.8, 22.0)
 	stair_col.shape = stair_box
-	stair_col.position = Vector3(0.0, 3.8, -14.0)
-	stair_col.rotation.x = deg_to_rad(33.0)
+	stair_col.position = Vector3(0.0, 6.8, -24.0)
+	stair_col.rotation.x = deg_to_rad(32.0)
 	hill.add_child(stair_col)
 
 	var hill_mesh = MeshInstance3D.new()
 	var hill_cmesh = CylinderMesh.new()
-	hill_cmesh.top_radius = 16.0
-	hill_cmesh.bottom_radius = 24.0
-	hill_cmesh.height = 8.0
+	hill_cmesh.top_radius = 28.0
+	hill_cmesh.bottom_radius = 42.0
+	hill_cmesh.height = 14.0
 	hill_mesh.mesh = hill_cmesh
-	hill_mesh.position = Vector3(0.0, 4.0, 0.0)
+	hill_mesh.position = Vector3(0.0, 7.0, 0.0)
 	var hill_mat = StandardMaterial3D.new()
 	hill_mat.albedo_color = Color(0.32, 0.44, 0.22, 1.0)
 	hill_mat.roughness = 0.95
@@ -503,10 +503,10 @@ func _generate_ward3_amenities() -> void:
 	# Stone stairway ascent ramp
 	var stair = MeshInstance3D.new()
 	var stair_mesh = BoxMesh.new()
-	stair_mesh.size = Vector3(3.2, 0.5, 12.0)
+	stair_mesh.size = Vector3(6.0, 0.6, 22.0)
 	stair.mesh = stair_mesh
-	stair.position = Vector3(0.0, 3.8, -14.0)
-	stair.rotation.x = deg_to_rad(33.0)
+	stair.position = Vector3(0.0, 6.8, -24.0)
+	stair.rotation.x = deg_to_rad(32.0)
 	var stair_mat = StandardMaterial3D.new()
 	stair_mat.albedo_color = Color(0.72, 0.70, 0.65, 1.0)
 	stair.set_surface_override_material(0, stair_mat)
@@ -518,7 +518,7 @@ func _generate_ward3_amenities() -> void:
 	var pagoda = PAGODA_SCENE.instantiate()
 	pagoda.name = "MindonHilltopPagoda"
 	amenities_holder.add_child(pagoda)
-	pagoda.global_position = Vector3(-110.0, 8.0, 180.0)
+	pagoda.global_position = Vector3(-110.0, 14.0, 180.0)
 
 	# Mindon Stream Wooden Boat Pier & Docked Ayeyarwady Rowboat (မင်းတုန်းချောင်း ဆိပ်ကမ်းနှင့် လှေ)
 	var pier = PIER_SCENE.instantiate()
