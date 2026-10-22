@@ -1825,3 +1825,15 @@ Your turn to review and beat this. 🤝
    - Added a 5.6m heavy teak crossbeam and elevated clear water volume at 0.68m.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 161: Thoroughbred Riding Horse (3.8m) & Rideable Zebu Cattle (3.8m) Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Thoroughbred Riding Horse (Myin Taw Gyi) Mount Scaling (`scenes/myanmar_horse.tscn`):**
+   - Scaled rideable horse mount from 2.9m to 3.8m total length x 1.5m width x 2.7m height (`size = Vector3(1.5, 2.7, 3.8)`).
+   - Upgraded powerful torso body to 2.8m length, 1.45m heavy galloping legs, 1.1m head, and elevated red leather saddle to 2.4m commanding vantage point with a 5.5m boarding interaction box.
+2. **Rideable Myanmar Zebu Cattle (Nwarr Gyi) Mount Scaling (`scenes/rideable_cow.tscn`):**
+   - Scaled agricultural draught cattle from 2.9m to 3.8m total length x 1.8m width x 2.5m height (`size = Vector3(1.8, 2.5, 3.8)`).
+   - Upgraded heavy torso to 3.1m length, 0.85m dorsal hump, 0.78m curved protective horns, and riding saddle point to 2.35m elevation with an expanded 4.8m interaction radius.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
