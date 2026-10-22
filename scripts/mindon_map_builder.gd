@@ -9,6 +9,7 @@ const HOUSE_SCENE = preload("res://scenes/myanmar_house.tscn")
 const PALM_SCENE = preload("res://scenes/toddy_palm.tscn")
 const BANANA_SCENE = preload("res://scenes/banana_plant.tscn")
 const ZAYAT_SCENE = preload("res://scenes/myanmar_zayat.tscn")
+const FESTIVAL_SCENE = preload("res://scenes/festival_ground.tscn")
 const POT_SCENE = preload("res://scenes/water_pot_stand.tscn")
 const WELL_SCENE = preload("res://scenes/village_well.tscn")
 const VILLAGE_GATE_SCENE = preload("res://scenes/village_gate.tscn")
@@ -638,6 +639,21 @@ func _generate_ward3_amenities() -> void:
 	well_communal.name = "MindonVillageWell"
 	amenities_holder.add_child(well_communal)
 	well_communal.global_position = Vector3(-120.0, 0.0, 186.0)
+
+	# Traditional Teakwood Wayfarer Rest House (ဓမ္မာရုံ / ဇရပ်) near Pagoda base
+	var zayat = ZAYAT_SCENE.instantiate()
+	zayat.name = "MindonPagodaZayat"
+	amenities_holder.add_child(zayat)
+	zayat.global_position = Vector3(-85.0, 0.0, 168.0)
+	zayat.rotation.y = deg_to_rad(-25.0)
+
+	# Village Traditional Zat Pwe / Festival Stage (ရိုးရာပွဲတော်နှင့် ဇာတ်စင်ကြီး)
+	var stage = FESTIVAL_SCENE.instantiate()
+	stage.name = "MindonFestivalStage"
+	amenities_holder.add_child(stage)
+	stage.global_position = Vector3(-70.0, 0.0, 135.0)
+	stage.rotation.y = deg_to_rad(15.0)
+
 
 
 

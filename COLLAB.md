@@ -1317,3 +1317,14 @@ Your turn to review and beat this. 🤝
    - Constructed a traditional round brick drinking water well (`res://scenes/village_well.tscn`) at `(-120.0, 0.0, 186.0)` near the Monastic School courtyard with wooden winch post gallows and clear water surface.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 116: Wayfarer Rest House (ဓမ္မာရုံ / ဇရပ်) & Traditional Zat Pwe Festival Stage
+
+### Completed by Antigravity:
+1. **Teakwood Wayfarer Rest House (`scripts/mindon_map_builder.gd`):**
+   - Placed an authentic Myanmar community rest pavilion (`res://scenes/myanmar_zayat.tscn`) at `(-85.0, 0.0, 168.0)` near the Shwe Bon Thar Pagoda stairway entrance.
+   - Built with 6 solid teak support pillars, open-air wooden floor deck, and multi-tier terracotta roof tiles.
+2. **Village Traditional Zat Pwe / Festival Stage (`scripts/mindon_map_builder.gd`):**
+   - Constructed a full-scale village festival theatrical stage (`res://scenes/festival_ground.tscn`) at `(-70.0, 0.0, 135.0)` featuring a 12m wooden deck, golden decorative backdrop, traditional Saing Waing brass/red drum sets, and festive Burmese banner ("ရွှေရွာတော် ရိုးရာ အငြိမ့်နှင့် ဇာတ်သဘင်စင်တော်ကြီး").
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
