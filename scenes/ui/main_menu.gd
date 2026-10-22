@@ -8,14 +8,19 @@ extends Control
 ## Slice 30 adds Character (wired exactly like Settings): it shows
 ## the outfit panel, whose choices persist in SaveManager settings
 ## and apply to the player at world spawn.
+## Slice 35 adds Vehicle the same way: it shows the paint panel,
+## whose choices persist in SaveManager settings and apply to the
+## player vehicles at world spawn.
 
 var continue_button: Button = null
 var new_game_button: Button = null
 var settings_button: Button = null
 var character_button: Button = null
+var vehicle_button: Button = null
 var no_save_label: Label = null
 var settings_panel: Node = null
 var character_panel: Node = null
+var vehicle_panel: Node = null
 
 
 func _ready() -> void:
@@ -31,9 +36,13 @@ func _ready() -> void:
 	character_button = get_node_or_null("CharacterButton") as Button
 	if character_button != null:
 		character_button.pressed.connect(_on_character_pressed)
+	vehicle_button = get_node_or_null("VehicleButton") as Button
+	if vehicle_button != null:
+		vehicle_button.pressed.connect(_on_vehicle_pressed)
 	no_save_label = get_node_or_null("NoSaveLabel") as Label
 	settings_panel = get_node_or_null("SettingsPanel")
 	character_panel = get_node_or_null("CharacterPanel")
+	vehicle_panel = get_node_or_null("VehiclePanel")
 	_refresh_continue()
 
 
@@ -89,3 +98,13 @@ func _on_character_pressed() -> void:
 	character_panel.visible = true
 	if character_panel.has_method("refresh"):
 		character_panel.call("refresh")
+
+
+func _on_vehicle_pressed() -> void:
+	if vehicle_panel == null:
+		vehicle_panel = get_node_or_null("VehiclePanel")
+	if vehicle_panel == null:
+		return
+	vehicle_panel.visible = true
+	if vehicle_panel.has_method("refresh"):
+		vehicle_panel.call("refresh")

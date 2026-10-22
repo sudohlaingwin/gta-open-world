@@ -220,6 +220,7 @@ var save_status_label: Label = null
 var pause_settings_panel: Node = null
 var pending_talked_names: Array = []
 var pending_growth_applied: bool = false
+var vehicle_paints_applied: bool = false
 var last_saved_stage: int = -1
 
 func _ready() -> void:
@@ -232,6 +233,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_apply_deferred_load()
+	if not vehicle_paints_applied:
+		_apply_vehicle_paints()
 	_update_pause_ui()
 	_autosave_on_stage_change()
 	_update_clock_label()
@@ -1855,6 +1858,43 @@ func _apply_outfit() -> void:
 	var hat = get_node_or_null("PlayerHat") as MeshInstance3D
 	if hat != null:
 		hat.visible = bool(sm.get("hat_visible"))
+
+
+## Slice 35 vehicle paints: apply the saved Vehicle-screen choices at
+## world spawn, one DUPLICATED body material per vehicle (the Slice 30
+## pattern). Duplication matters here too: the motorcycle body shares
+## the scene's teal paint material with the Bicycle frame, so recoloring
+## the shared material in place would repaint the bicycle as well —
+## the duplicate keeps the bicycle (and every other node) untouched.
+## Runs on the first physics frame, when every scene node is in the
+## tree; if any body mesh is missing it retries next frame instead of
+## silently skipping a vehicle. Applied on world load, not live:
+## changing a paint in the menu shows up the next time the world loads.
+func _apply_vehicle_paints() -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	var bodies: Array = [
+		["../Car/MeshInstance3D", "car_paint_html"],
+		["../Motorcycle/MeshInstance3D", "motorcycle_paint_html"],
+		["../TukTuk/TukBody", "tuktuk_paint_html"],
+	]
+	for entry in bodies:
+		var mesh = get_node_or_null(str(entry[0])) as MeshInstance3D
+		if mesh == null:
+			return
+		var html = str(sm.get(str(entry[1])))
+		if not Color.html_is_valid(html):
+			continue
+		var base = mesh.get_surface_override_material(0)
+		if base == null:
+			continue
+		var mat = base.duplicate() as StandardMaterial3D
+		if mat == null:
+			continue
+		mat.albedo_color = Color(html)
+		mesh.set_surface_override_material(0, mat)
+	vehicle_paints_applied = true
 
 
 ## Slice 32 HUD size: scales every touch HUD control around its own

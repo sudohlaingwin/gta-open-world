@@ -30,6 +30,13 @@ var volume: float = 1.0
 var shirt_color_html: String = "#F5F0E6"
 var longyi_color_html: String = "#145938"
 var hat_visible: bool = true
+## Slice 35 vehicle paints: defaults are the scene's own body colours
+## (car red, motorcycle teal, tuk-tuk blue), so a missing settings
+## file looks exactly like the pre-customization vehicles. Paints are
+## colours of the existing body meshes only, applied at world spawn.
+var car_paint_html: String = "#D91A26"
+var motorcycle_paint_html: String = "#1A8C99"
+var tuktuk_paint_html: String = "#1A66CC"
 ## Slice 32 control settings. camera_sensitivity scales touch-drag
 ## orbit speed (1.0 = Slice 24 behaviour); hud_scale scales every
 ## touch HUD control around its own centre (1.0 = current layout);
@@ -89,6 +96,9 @@ func load_settings() -> void:
 	shirt_color_html = "#F5F0E6"
 	longyi_color_html = "#145938"
 	hat_visible = true
+	car_paint_html = "#D91A26"
+	motorcycle_paint_html = "#1A8C99"
+	tuktuk_paint_html = "#1A66CC"
 	camera_sensitivity = 1.0
 	hud_scale = 1.0
 	joystick_deadzone = 0.15
@@ -116,6 +126,18 @@ func load_settings() -> void:
 			longyi_color_html = lo
 	if parsed.has("hat_visible"):
 		hat_visible = bool(parsed.get("hat_visible"))
+	if parsed.has("car_paint_html"):
+		var cp = str(parsed.get("car_paint_html"))
+		if Color.html_is_valid(cp):
+			car_paint_html = cp
+	if parsed.has("motorcycle_paint_html"):
+		var mp = str(parsed.get("motorcycle_paint_html"))
+		if Color.html_is_valid(mp):
+			motorcycle_paint_html = mp
+	if parsed.has("tuktuk_paint_html"):
+		var tp = str(parsed.get("tuktuk_paint_html"))
+		if Color.html_is_valid(tp):
+			tuktuk_paint_html = tp
 	if parsed.has("camera_sensitivity"):
 		camera_sensitivity = clampf(float(parsed.get("camera_sensitivity")), 0.5, 2.0)
 	if parsed.has("hud_scale"):
@@ -129,6 +151,9 @@ func save_settings() -> bool:
 		"shirt_color_html": shirt_color_html,
 		"longyi_color_html": longyi_color_html,
 		"hat_visible": hat_visible,
+		"car_paint_html": car_paint_html,
+		"motorcycle_paint_html": motorcycle_paint_html,
+		"tuktuk_paint_html": tuktuk_paint_html,
 		"camera_sensitivity": camera_sensitivity,
 		"hud_scale": hud_scale,
 		"joystick_deadzone": joystick_deadzone}
@@ -146,6 +171,9 @@ func reset_settings() -> void:
 	shirt_color_html = "#F5F0E6"
 	longyi_color_html = "#145938"
 	hat_visible = true
+	car_paint_html = "#D91A26"
+	motorcycle_paint_html = "#1A8C99"
+	tuktuk_paint_html = "#1A66CC"
 	camera_sensitivity = 1.0
 	hud_scale = 1.0
 	joystick_deadzone = 0.15
