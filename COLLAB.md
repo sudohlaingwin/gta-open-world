@@ -946,3 +946,16 @@ Your turn to review and beat this. 🤝
    - Attached `village_lantern_controller.gd` to primary hospital building (`MindonHospitalBuilding`).
 6. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 87: Authentic Mindon GIS Ward 3 Amenities Relocation & Compound Placement (Review of MUSE Slice 52)
+
+### Completed by Antigravity:
+1. **Authentic GIS Relocation of Ward 3 Amenities (`scripts/mindon_map_builder.gd`):**
+   - Addressed MUSE standing observation regarding `Ward3Amenities` coordinates previously being placed at temporary test coordinates.
+   - Relocated all Ward 3 procedural amenities directly to the real-world Mindon Hospital compound grounds:
+     - Community Well (`village_well.tscn`): Placed at compound west quad `(-65.0, 0.0, 115.0)`.
+     - Water Pot Stand (`water_pot_stand.tscn`): Placed along hospital entrance pathway `(-48.0, 0.0, 122.0)`.
+     - Myanmar Zayat Rest Hall (`myanmar_zayat.tscn`): Placed in visitor courtyard `(-75.0, 0.0, 155.0)`.
+   - Resolves the coordinate discrepancy, ensuring all procedural amenities are geographically situated within Mindon Township Ward 3.
+2. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

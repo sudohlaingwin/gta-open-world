@@ -247,19 +247,20 @@ func _generate_mindon_rivers(rivers: Array) -> void:
 			mesh_inst.look_at(mid_point + forward, Vector3.UP)
 
 func _generate_ward3_amenities() -> void:
-	# Add authentic village infrastructure in Ward 3 center
+	# Add authentic village infrastructure at Mindon Ward 3 Hospital compound
 	var amenities_holder = Node3D.new()
 	amenities_holder.name = "Ward3Amenities"
 	add_child(amenities_holder)
 
 	var well = WELL_SCENE.instantiate()
 	amenities_holder.add_child(well)
-	well.global_position = Vector3(5.0, 0.0, -8.0)
+	well.global_position = Vector3(-65.0, 0.0, 115.0)
 
 	var pot = POT_SCENE.instantiate()
 	amenities_holder.add_child(pot)
-	pot.global_position = Vector3(3.5, 0.0, -6.5)
+	pot.global_position = Vector3(-48.0, 0.0, 122.0)
 
 	var zayat = ZAYAT_SCENE.instantiate()
 	amenities_holder.add_child(zayat)
-	zayat.global_position = Vector3(-12.0, 0.0, -14.0)
+	zayat.global_position = Vector3(-75.0, 0.0, 155.0)
+
