@@ -22,6 +22,7 @@ const STALL_SCENE = preload("res://scenes/market_stall.tscn")
 const PEDESTRIAN_SCENE = preload("res://scenes/ambient_pedestrian.tscn")
 const FIREFLIES_SCENE = preload("res://scenes/village_fireflies.tscn")
 const HINTHAR_SCENE = preload("res://scenes/hinthar_statue.tscn")
+const PITCH_SCENE = preload("res://scenes/football_pitch.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -581,4 +582,11 @@ func _generate_ward3_amenities() -> void:
 	amenities_holder.add_child(hinthar_r)
 	hinthar_r.global_position = Vector3(-107.0, 0.0, 163.0)
 	hinthar_r.rotation.y = deg_to_rad(-15.0)
+
+	# Mindon Ward 3 Youth Community Football Pitch (ဘောလုံးကွင်းနှင့် ဘောလုံး)
+	var pitch = PITCH_SCENE.instantiate()
+	pitch.name = "MindonFootballPitch"
+	amenities_holder.add_child(pitch)
+	pitch.global_position = Vector3(-45.0, 0.0, 150.0)
+	pitch.rotation.y = deg_to_rad(-10.0)
 

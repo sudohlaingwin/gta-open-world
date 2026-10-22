@@ -1247,3 +1247,15 @@ Your turn to review and beat this. 🤝
    - Infuses sacred Mon/Burmese mythical architectural heritage at the stairway portal leading up to the 8-meter hill ridge.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 110: Mindon Ward 3 Youth Community Football Pitch & Interactive Physics Ball
+
+### Completed by Antigravity:
+1. **Community Football Pitch & Goalposts (`scripts/mindon_map_builder.gd`):**
+   - Constructed a full-sized rural community football pitch (`res://scenes/football_pitch.tscn`) in the open field south of the hospital grounds (`global_position = Vector3(-45.0, 0.0, 150.0)`, rotation `-10 deg`).
+   - Features 32m x 22m mowed turf boundary, dual white steel goalposts with crossbars, and solid outfield ground physics.
+2. **Interactive Physics Soccer Ball (`scenes/football_pitch.tscn` & `scripts/football_pitch.gd`):**
+   - Features an active rigid physics soccer ball that players, vehicles, and mounts can kick, dribble, and shoot across the field into goal nets.
+   - Provides vibrant recreational gameplay matching authentic Myanmar youth village culture.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
