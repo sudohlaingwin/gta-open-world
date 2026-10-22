@@ -46,7 +46,6 @@ var orbit_button_connected: bool = false
 # Slice 10 HUD + quest state. All nodes live in the real scene
 # (JoystickLayer) and are found lazily, like the Slice 7/8 buttons.
 var stamina: float = 100.0
-var quest_stage: int = 0  # 0 talk-all, 1 visit pagoda, 2 ride, 3 done
 var touch_yaw_left: bool = false
 var touch_yaw_right: bool = false
 var minimap_dots: Dictionary = {}
@@ -68,13 +67,9 @@ var zoom_out_button: Button = null
 var zoom_out_connected: bool = false
 # Slice 11: bell quest + reward + tracker + camera reset.
 var bell_label_timer: float = 0.0
-var quest_rewarded: bool = false
 # Slice 12: market + well. Fruit/water are bought/drawn with on-screen
 # buttons only (touch-first; no keyboard path exists for them).
-var fruit_count: int = 0
-var water_count: int = 0
 var draw_timer: float = 0.0
-var quest_rewarded2: bool = false
 var fruit_button: Button = null
 var fruit_button_connected: bool = false
 var water_button: Button = null
@@ -83,9 +78,7 @@ var fruit_water_label: Label = null
 # Slice 13: gate + banana grove. BananaButton picks a bunch from the
 # grove; bunches regrow 20 s after the last one is picked. Lights
 # toggle the car/motorcycle headlight meshes (touch-first).
-var banana_count: int = 0
 var banana_regrow_timer: float = 0.0
-var quest_rewarded3: bool = false
 var banana_button: Button = null
 var banana_button_connected: bool = false
 var lights_button: Button = null
@@ -107,21 +100,11 @@ var lantern_button_connected: bool = false
 var snack_button: Button = null
 var snack_button_connected: bool = false
 var drum_timer: float = 0.0
-var snack_count: int = 0
-var lantern_count: int = 0
-var quest_rewarded6: bool = false
 # Slice 17: fishing / donating / milking / watering / feeding, horn,
 # bell, photo, rain, football, seventh reward. All buttons touch-first;
 # the chime is generated in code (AudioStreamWAV sine) and actually
 # played on quest advance — no dormant audio manager.
-var fish_count: int = 0
-var donation_count: int = 0
-var milk_count: int = 0
-var egg_count: int = 0
-var goal_count: int = 0
-var photo_count: int = 0
 var crop_growth: int = 0
-var quest_rewarded7: bool = false
 var ball_vel: Vector2 = Vector2.ZERO
 var rain_on: bool = false
 var chime_player: AudioStreamPlayer = null
@@ -149,11 +132,7 @@ var rain_button_connected: bool = false
 var pray_button: Button = null
 var pray_button_connected: bool = false
 var blessing_timer: float = 0.0
-var quest_rewarded4: bool = false
 # Slice 15: tea shop + school come alive, bicycle, 2 more villagers.
-var tea_count: int = 0
-var book_count: int = 0
-var quest_rewarded5: bool = false
 var tea_button: Button = null
 var tea_button_connected: bool = false
 var book_button: Button = null
@@ -163,11 +142,7 @@ var book_button_connected: bool = false
 # trumpet, eighth reward. All buttons touch-first; no keyboard path
 # exists for any of them (the mute button is a setting, visible
 # on foot and while driving).
-var flower_count: int = 0
-var rice_count: int = 0
 var rice_growth: int = 0
-var elephant_feed: int = 0
-var quest_rewarded8: bool = false
 var sound_on: bool = true
 var offer_button: Button = null
 var offer_button_connected: bool = false
@@ -186,10 +161,6 @@ var feed18_button_connected: bool = false
 # All buttons touch-first; no keyboard path exists for any of them
 # (the whistle shows only while driving the horse, like the Slice 18
 # trumpet shows only while driving the elephant).
-var gold_count: int = 0
-var lesson_count: int = 0
-var horse_feed: int = 0
-var quest_rewarded9: bool = false
 var gold_button: Button = null
 var gold_button_connected: bool = false
 var lesson_button: Button = null
@@ -201,10 +172,6 @@ var whistle_button_connected: bool = false
 
 # Slice 20: night market + guest house + second boat/horse, tenth reward.
 # All buttons touch-first; no keyboard path exists for any of them.
-var noodle_count: int = 0
-var drink_count: int = 0
-var guestbook_count: int = 0
-var quest_rewarded10: bool = false
 var sleep_timer: float = 0.0
 var noodle_button: Button = null
 var noodle_button_connected: bool = false
@@ -241,7 +208,9 @@ var last_saved_stage: int = -1
 
 func _ready() -> void:
 	_apply_pending_load()
-	last_saved_stage = quest_stage
+	var mm = _mm()
+	if mm != null:
+		last_saved_stage = mm.stage
 
 func _physics_process(delta: float) -> void:
 	_apply_deferred_load()
@@ -326,40 +295,35 @@ func _physics_process(delta: float) -> void:
 	# Slice 13 quest stage 6: walk through the village gate arch.
 	# The arch is two posts + a beam (no blocking collision), so a
 	# player can actually pass under it — unlike a solid-wall gate.
-	if quest_stage == 6:
-		var beam := get_node_or_null("../GateBeam12") as Node3D
-		if beam != null:
-			var dx := global_position.x - beam.global_position.x
-			var dz := global_position.z - beam.global_position.z
-			if dx * dx + dz * dz < 4.0:
-				quest_stage = 7
+	var beam := get_node_or_null("../GateBeam12") as Node3D
+	if beam != null:
+		var dx := global_position.x - beam.global_position.x
+		var dz := global_position.z - beam.global_position.z
+		if dx * dx + dz * dz < 4.0:
+			if _mm().advance("pass_gate")["advanced"]:
 				_update_quest_label()
 	# Slice 14 quest stage 8: cross the bamboo footbridge over the
 	# river. The bridge midpoint is its root node; horizontal
 	# distance < 2.5 m counts, so deck height never blocks it.
-	if quest_stage == 8:
-		var br := get_node_or_null("../BambooBridge14") as Node3D
-		if br != null:
-			var bdx := global_position.x - br.global_position.x
-			var bdz := global_position.z - br.global_position.z
-			if bdx * bdx + bdz * bdz < 6.25:
-				quest_stage = 9
+	var br := get_node_or_null("../BambooBridge14") as Node3D
+	if br != null:
+		var bdx := global_position.x - br.global_position.x
+		var bdz := global_position.z - br.global_position.z
+		if bdx * bdx + bdz * bdz < 6.25:
+			if _mm().advance("cross_bridge")["advanced"]:
 				_update_quest_label()
 	# Slice 19 quest stage 30: walk within 5 m of the lakeside hut.
-	if quest_stage == 30:
-		var hut := get_node_or_null("../LakesideHut19") as Node3D
-		if hut != null and global_position.distance_to(hut.global_position) < 5.0:
-			quest_stage = 31
-			if not quest_rewarded9:
-				quest_rewarded9 = true
-				walk_speed *= 1.05
-				stamina = 100.0
+	var hut := get_node_or_null("../LakesideHut19") as Node3D
+	if hut != null and global_position.distance_to(hut.global_position) < 5.0:
+		var res = _mm().advance("visit_hut")
+		if res["reward"] != "":
+			_apply_reward(res["reward"])
+		if res["advanced"]:
 			_update_quest_label()
 	# Slice 10 quest stage 1: walk within 8 m of the pagoda.
-	if quest_stage == 1:
-		var pag := get_node_or_null("../Pagoda")
-		if pag != null and global_position.distance_to(pag.global_position) < 8.0:
-			quest_stage = 2
+	var pag := get_node_or_null("../Pagoda")
+	if pag != null and global_position.distance_to(pag.global_position) < 8.0:
+		if _mm().advance("visit_pagoda")["advanced"]:
 			_update_quest_label()
 	# Slice 11 quest stage 3: walk within 3.5 m of the monastery
 	# bell to ring it. The bell label shows on any ring (with a 4 s
@@ -370,10 +334,10 @@ func _physics_process(delta: float) -> void:
 		var bl := get_node_or_null("../MonasteryBell/BellLabel") as Label3D
 		if bl != null:
 			bl.visible = true
-		if quest_stage == 3:
-			quest_stage = 4
-			if not quest_rewarded:
-				quest_rewarded = true
+		var res = _mm().advance("ring_bell")
+		if res["reward"] != "":
+			_apply_reward(res["reward"])
+		if res["advanced"]:
 			_update_quest_label()
 	if bell_label_timer > 0.0:
 		bell_label_timer -= delta
@@ -649,126 +613,36 @@ func record_talk(villager: Node) -> void:
 ## here once the talk count is complete; stage 1 is promoted by the
 ## pagoda distance check in _physics_process, stage 2 by entering
 ## a vehicle in _try_enter_vehicle.
+## Slice 27: quest label/tracker/chime now render MissionManager state.
+## The texts live in autoload/mission_data.gd (copied byte-for-byte
+## from this function); the talk-all promotion rule lives in the
+## manager. Order preserved: label lookup, promotion, label text,
+## tracker text, then the stage-change chime.
 func _update_quest_label() -> void:
 	if quest_label == null:
 		quest_label = get_node_or_null("../JoystickLayer/QuestLabel") as Label
 	if quest_label == null:
 		return
+	var mm = _mm()
+	if mm == null:
+		return
 	var villagers := get_tree().get_nodes_in_group("villagers")
 	var total := villagers.size()
-	if quest_stage == 0:
-		if total > 0 and talked_ids.size() >= total:
-			quest_stage = 1
-		else:
-			quest_label.text = "တာဝန်: ရွာသားနဲ့ စကားပြောပါ (" + str(talked_ids.size()) + "/" + str(total) + ")"
-			return
-	if quest_stage == 1:
-		quest_label.text = "တာဝန်: ဘုရားကို သွားပါ"
-	elif quest_stage == 2:
-		quest_label.text = "တာဝန်: ယာဉ်တစ်စီး စီးပါ"
-	elif quest_stage == 3:
-		quest_label.text = "တာဝန်: ခေါင်းလောင်းထိုးပါ"
-	elif quest_stage == 4:
-		quest_label.text = "တာဝန်: ဈေးက သစ်သီးဝယ်ပါ"
-	elif quest_stage == 5:
-		quest_label.text = "တာဝန်: ရေတွင်းက ရေဆွဲပါ"
-	elif quest_stage == 6:
-		quest_label.text = "တာဝန်: ရွာမုခ်ဦးကို ဖြတ်သန်းပါ"
-	elif quest_stage == 7:
-		quest_label.text = "တာဝန်: ငှက်ပျောသီး ခူးပါ (" + str(mini(banana_count, 3)) + "/3)"
-	elif quest_stage == 8:
-		quest_label.text = "တာဝန်: ဝါးတံတားကို ဖြတ်ပါ"
-	elif quest_stage == 9:
-		quest_label.text = "တာဝန်: ဟင်္သာရုပ်တုမှာ ဆုတောင်းပါ"
-	elif quest_stage == 10:
-		quest_label.text = "တာဝန်: လက်ဖက်ရည်ဆိုင်မှာ လက်ဖက်ရည်မှာပါ"
-	elif quest_stage == 11:
-		quest_label.text = "တာဝန်: ကျောင်းကို စာအုပ်လှူပါ"
-	elif quest_stage == 12:
-		quest_label.text = "တာဝန်: စက်ဘီးစီးပါ"
-	elif quest_stage == 13:
-		quest_label.text = "တာဝန်: သုံးဘီးစီးပါ"
-	elif quest_stage == 14:
-		quest_label.text = "တာဝန်: လေထီးနဲ့ မြေပြင်ကို ဆင်းပါ"
-	elif quest_stage == 15:
-		quest_label.text = "တာဝန်: ပွဲတော်မှာ ဗုံတီးပါ"
-	elif quest_stage == 16:
-		quest_label.text = "တာဝန်: မြစ်မှာ ငါးဖမ်းပါ"
-	elif quest_stage == 17:
-		quest_label.text = "တာဝန်: ဘုရားမှာ အလှူပေးပါ"
-	elif quest_stage == 18:
-		quest_label.text = "တာဝန်: နွားနို့ ညှစ်ပါ"
-	elif quest_stage == 19:
-		quest_label.text = "တာဝန်: သီးနှံခင်းကို ရေလောင်းပါ"
-	elif quest_stage == 20:
-		quest_label.text = "တာဝန်: ကြက်တွေကို အစာကျွေးပါ"
-	elif quest_stage == 21:
-		quest_label.text = "တာဝန်: ဆင်စီးပါ"
-	elif quest_stage == 22:
-		quest_label.text = "တာဝန်: ဘုရားမှာ ပန်းကပ်ပါ"
-	elif quest_stage == 23:
-		quest_label.text = "တာဝန်: စပါးစိုက်ပါ"
-	elif quest_stage == 24:
-		quest_label.text = "တာဝန်: ခုံတန်းမှာ နားပါ"
-	elif quest_stage == 25:
-		quest_label.text = "တာဝန်: ဆင်ကို အစာကျွေးပါ"
-	elif quest_stage == 26:
-		quest_label.text = "တာဝန်: မြင်းစီးပါ"
-	elif quest_stage == 27:
-		quest_label.text = "တာဝန်: ရွှေဆိုင်မှာ ရွှေဝယ်ပါ"
-	elif quest_stage == 28:
-		quest_label.text = "တာဝန်: ကျောင်းမှာ စာသင်ခန်း တက်ပါ"
-	elif quest_stage == 29:
-		quest_label.text = "တာဝန်: မြင်းကို အစာကျွေးပါ"
-	elif quest_stage == 30:
-		quest_label.text = "တာဝန်: ရေကန်အိမ်ကို သွားပါ"
-	elif quest_stage == 31:
-		quest_label.text = "တာဝန်: ဒုတိယလှေစီးပါ"
-	elif quest_stage == 32:
-		quest_label.text = "တာဝန်: ဒုတိယမြင်းစီးပါ"
-	elif quest_stage == 33:
-		quest_label.text = "တာဝန်: ညဈေးမှာ ခေါက်ဆွဲဝယ်ပါ"
-	elif quest_stage == 34:
-		quest_label.text = "တာဝန်: တည်းခိုခန်းမှာ ဧည့်စာရင်းထိုးပါ"
-	elif quest_stage == 35:
-		quest_label.text = "တာဝန်: တည်းခိုခန်းမှာ အိပ်ပါ"
-	elif quest_rewarded10:
-		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် + အပြေးမြန် +10% + ခုန်အား +10% + ခုန်အား ထပ် +10% + လမ်းလျှောက် ထပ် +5% + လမ်းလျှောက် ထပ် +5% + လမ်းလျှောက် ထပ် +5% + ခုန်အား ထပ် +10%"
-	elif quest_rewarded9:
-		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် + အပြေးမြန် +10% + ခုန်အား +10% + ခုန်အား ထပ် +10% + လမ်းလျှောက် ထပ် +5% + လမ်းလျှောက် ထပ် +5%"
-	elif quest_rewarded8:
-		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် + အပြေးမြန် +10% + ခုန်အား +10% + ခုန်အား ထပ် +10% + လမ်းလျှောက် ထပ် +5%"
-	elif quest_rewarded7:
-		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် + အပြေးမြန် +10% + ခုန်အား +10% + ခုန်အား ထပ် +10%"
-	elif quest_rewarded6:
-		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် + အပြေးမြန် +10% + ခုန်အား +10%"
-	elif quest_rewarded5:
-		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် + အပြေးမြန် +10%"
-	elif quest_rewarded4:
-		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် +5% + ဆုတောင်း"
-	elif quest_rewarded3:
-		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန် +5%"
-	elif quest_rewarded2:
-		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့် + လမ်းလျှောက်မြန်"
-	elif quest_rewarded:
-		quest_label.text = "တာဝန်များ ပြီးပါပြီ! ဆုလာဘ်: အားအမြန်ပြည့်"
-	else:
-		quest_label.text = "တာဝန်များ အားလုံး ပြီးပါပြီ!"
-	# Slice 11 quest tracker: live checklist of the stages.
-	# Slice 12: 6 stages now (market fruit + well water added).
+	mm.promote_talk_all(talked_ids.size(), total)
+	quest_label.text = mm.label_text(talked_ids.size(), total, mm.get_count("banana"))
+	# Preserved old quirk: while stage 0 is incomplete the function
+	# returns here, so the tracker keeps its scene text until stage 1.
+	if mm.stage == 0:
+		return
 	if quest_tracker_label == null:
 		quest_tracker_label = get_node_or_null("../JoystickLayer/QuestTrackerLabel") as Label
 	if quest_tracker_label != null:
-		var stage_names := ["စကားပြော", "ဘုရားဖူး", "ယာဉ်စီး", "ခေါင်းလောင်း", "သစ်သီးဝယ်", "ရေဆွဲ", "မုခ်ဦးဖြတ်", "ငှက်ပျောခူး", "ဝါးတံတားဖြတ်", "ဟင်္သာဆုတောင်း", "လက်ဖက်ရည်မှာစား", "စာအုပ်လှူ", "စက်ဘီးစီး", "သုံးဘီးစီး", "လေထီးဆင်း", "ဗုံတီး", "ငါးဖမ်း", "အလှူပေး", "နို့ညှစ်", "ရေလောင်း", "အစာကျွေး", "ဆင်စီး", "ပန်းကပ်", "စပါးစိုက်", "ခုံတန်းနား", "ဆင်အစာကျွေး", "မြင်းစီး", "ရွှေဝယ်", "စာသင်ခန်း", "မြင်းအစာကျွေး", "ရေကန်အိမ်", "ဒုတိယလှေစီး", "ဒုတိယမြင်းစီး", "ခေါက်ဆွဲဝယ်", "ဧည့်စာရင်းထိုး", "တည်းခိုခန်းအိပ်"]
-		var parts: Array = []
-		for i in range(36):
-			parts.append(("✓ " if quest_stage > i else "○ ") + stage_names[i])
-		quest_tracker_label.text = "   ".join(parts)
+		quest_tracker_label.text = mm.tracker_text()
 		quest_tracker_label.visible = true
 	# Slice 17 quest chime: a short generated tone whenever the stage
 	# actually advances (not on every label refresh).
-	if quest_stage != last_chime_stage:
-		last_chime_stage = quest_stage
+	if mm.stage != last_chime_stage:
+		last_chime_stage = mm.stage
 		_play_tone(660.0, 0.25)
 
 func _on_vehicle_button_pressed() -> void:
@@ -821,33 +695,20 @@ func _try_enter_vehicle() -> void:
 		driving = true
 		driving_vehicle = best
 		visible = false
-		# Slice 10 quest stage 2: riding any vehicle completes it.
-		if quest_stage == 2:
-			quest_stage = 3
+		# Slice 27: ride transitions now fire through the mission table.
+		if _mm().advance("ride_any")["advanced"]:
 			_update_quest_label()
-		# Slice 15 quest stage 12: riding the bicycle finishes the chain.
-		if quest_stage == 12 and best.name == "Bicycle":
-			quest_stage = 13
+		if best.name == "Bicycle" and _mm().advance("ride_bicycle")["advanced"]:
 			_update_quest_label()
-		# Slice 16 quest stage 13: riding the tuk-tuk continues it.
-		if quest_stage == 13 and best.name == "TukTuk":
-			quest_stage = 14
+		if best.name == "TukTuk" and _mm().advance("ride_tuktuk")["advanced"]:
 			_update_quest_label()
-		# Slice 18 quest stage 21: riding the elephant continues it.
-		if quest_stage == 21 and best.name == "Elephant":
-			quest_stage = 22
+		if best.name == "Elephant" and _mm().advance("ride_elephant")["advanced"]:
 			_update_quest_label()
-		# Slice 19 quest stage 26: riding the horse continues it.
-		if quest_stage == 26 and best.name == "Horse":
-			quest_stage = 27
+		if best.name == "Horse" and _mm().advance("ride_horse")["advanced"]:
 			_update_quest_label()
-		# Slice 20 quest stage 31: riding the second boat continues it.
-		if quest_stage == 31 and best.name == "Boat2":
-			quest_stage = 32
+		if best.name == "Boat2" and _mm().advance("ride_boat2")["advanced"]:
 			_update_quest_label()
-		# Slice 20 quest stage 32: riding the second horse continues it.
-		if quest_stage == 32 and best.name == "Horse2":
-			quest_stage = 33
+		if best.name == "Horse2" and _mm().advance("ride_horse2")["advanced"]:
 			_update_quest_label()
 		best.start_driving(self)
 
@@ -884,8 +745,7 @@ func _stow_parachute() -> void:
 			n.visible = false
 	if parachute_label != null:
 		parachute_label.visible = false
-	if quest_stage == 14:
-		quest_stage = 15
+	if _mm().advance("land_parachute")["advanced"]:
 		_update_quest_label()
 
 ## Slice 10 stamina: sprinting drains it, resting restores it, and
@@ -898,7 +758,8 @@ func _update_stamina(delta: float) -> void:
 	# it drains half as fast and restores twice as fast.
 	var drain := 25.0
 	var regen := 15.0
-	if quest_rewarded:
+	var mm = _mm()
+	if mm != null and mm.stamina_blessed():
 		drain = 12.5
 		regen = 30.0
 	if sprinting and velocity.length() > 0.5:
@@ -1220,9 +1081,8 @@ func _update_market_buttons() -> void:
 func _on_buy_fruit() -> void:
 	if driving:
 		return
-	fruit_count += 1
-	if quest_stage == 4:
-		quest_stage = 5
+	_mm().bump("fruit")
+	_mm().advance("buy_fruit")
 	_update_quest_label()
 	_update_fruit_water_label()
 
@@ -1236,15 +1096,12 @@ func _update_fruit_water_label() -> void:
 		fruit_water_label = get_node_or_null("../JoystickLayer/FruitWaterLabel") as Label
 	if fruit_water_label == null:
 		return
-	fruit_water_label.text = "🍎 %d 💧 %d 🍌 %d 🍵 %d 📚 %d 🍡 %d 🪔 %d 🐟 %d 💰 %d 🥛 %d 🥚 %d ⚽ %d 🌸 %d 📸 %d 🌾 %d 🪙 %d 📖 %d 🐴 %d 🍜 %d 🥤 %d 📝 %d" % [fruit_count, water_count, banana_count, tea_count, book_count, snack_count, lantern_count, fish_count, donation_count, milk_count, egg_count, goal_count, flower_count, photo_count, rice_count, gold_count, lesson_count, horse_feed, noodle_count, drink_count, guestbook_count]
+	var mm = _mm()
+	if mm == null:
+		return
+	fruit_water_label.text = mm.counter_text()
 	fruit_water_label.visible = true
 
-## Slice 12: the well bucket lowers to the water and rises back
-## over 1.5 s while drawing. The bucket node lives in the real
-## scene (BrickWell/WellBucket12); guarded lookups, no crash path.
-## When the draw completes the water count rises, and a stage-5
-## quest becomes stage 6 with the second quest reward: +10% walk
-## speed, applied exactly once (quest_rewarded2).
 func _update_draw_animation(delta: float) -> void:
 	if draw_timer <= 0.0:
 		return
@@ -1261,12 +1118,10 @@ func _update_draw_animation(delta: float) -> void:
 		p.y = y
 		bucket.position = p
 	if draw_timer <= 0.0:
-		water_count += 1
-		if quest_stage == 5:
-			quest_stage = 6
-			if not quest_rewarded2:
-				quest_rewarded2 = true
-				walk_speed *= 1.1
+		_mm().bump("water")
+		var res = _mm().advance("draw_water")
+		if res["reward"] != "":
+			_apply_reward(res["reward"])
 		_update_quest_label()
 		_update_fruit_water_label()
 
@@ -1305,12 +1160,11 @@ func _on_pick_banana() -> void:
 		if b != null and b.visible:
 			b.visible = false
 			break
-	banana_count += 1
-	if quest_stage == 7 and banana_count >= 3:
-		quest_stage = 8
-		if not quest_rewarded3:
-			quest_rewarded3 = true
-			walk_speed *= 1.05
+	_mm().bump("banana")
+	if _mm().get_count("banana") >= 3:
+		var res = _mm().advance("pick_bananas")
+		if res["reward"] != "":
+			_apply_reward(res["reward"])
 	_update_quest_label()
 	_update_fruit_water_label()
 
@@ -1407,12 +1261,10 @@ func _on_pray() -> void:
 	if bl != null:
 		bl.visible = true
 	blessing_timer = 4.0
-	if quest_stage == 9:
-		quest_stage = 10
-		if not quest_rewarded4:
-			quest_rewarded4 = true
-			walk_speed *= 1.05
-			stamina = 100.0
+	var res = _mm().advance("pray")
+	if res["reward"] != "":
+		_apply_reward(res["reward"])
+	if res["advanced"]:
 		_update_quest_label()
 
 func _update_blessing(delta: float) -> void:
@@ -1462,21 +1314,18 @@ func _update_tea_book_buttons() -> void:
 func _on_order_tea() -> void:
 	if driving:
 		return
-	tea_count += 1
-	if quest_stage == 10:
-		quest_stage = 11
+	_mm().bump("tea")
+	_mm().advance("order_tea")
 	_update_quest_label()
 	_update_fruit_water_label()
 
 func _on_donate_book() -> void:
 	if driving:
 		return
-	book_count += 1
-	if quest_stage == 11:
-		quest_stage = 12
-		if not quest_rewarded5:
-			quest_rewarded5 = true
-			sprint_multiplier *= 1.1
+	_mm().bump("book")
+	var res = _mm().advance("donate_book")
+	if res["reward"] != "":
+		_apply_reward(res["reward"])
 	_update_quest_label()
 	_update_fruit_water_label()
 
@@ -1545,12 +1394,10 @@ func _on_beat_drum() -> void:
 	if dl != null:
 		dl.visible = true
 	drum_timer = 4.0
-	if quest_stage == 15:
-		quest_stage = 16
-		if not quest_rewarded6:
-			quest_rewarded6 = true
-			walk_speed *= 1.05
-			jump_velocity *= 1.1
+	var res = _mm().advance("beat_drum")
+	if res["reward"] != "":
+		_apply_reward(res["reward"])
+	if res["advanced"]:
 		_update_quest_label()
 
 func _on_light_lantern() -> void:
@@ -1562,13 +1409,13 @@ func _on_light_lantern() -> void:
 	var glow := (l as Node3D).get_node_or_null("LanternGlow") as Node3D
 	if glow != null:
 		glow.visible = true
-	lantern_count += 1
+	_mm().bump("lantern")
 	_update_fruit_water_label()
 
 func _on_buy_snack() -> void:
 	if driving:
 		return
-	snack_count += 1
+	_mm().bump("snack")
 	_update_fruit_water_label()
 
 ## Slice 17: fishing / donating / milking / watering / feeding, horn,
@@ -1676,27 +1523,24 @@ func _update_slice17_buttons() -> void:
 func _on_fish() -> void:
 	if driving:
 		return
-	fish_count += 1
-	if quest_stage == 16:
-		quest_stage = 17
+	_mm().bump("fish")
+	if _mm().advance("fish")["advanced"]:
 		_update_quest_label()
 	_update_fruit_water_label()
 
 func _on_donate() -> void:
 	if driving:
 		return
-	donation_count += 1
-	if quest_stage == 17:
-		quest_stage = 18
+	_mm().bump("donation")
+	if _mm().advance("donate")["advanced"]:
 		_update_quest_label()
 	_update_fruit_water_label()
 
 func _on_milk() -> void:
 	if driving:
 		return
-	milk_count += 1
-	if quest_stage == 18:
-		quest_stage = 19
+	_mm().bump("milk")
+	if _mm().advance("milk")["advanced"]:
 		_update_quest_label()
 	_update_fruit_water_label()
 
@@ -1710,20 +1554,17 @@ func _on_water_crops() -> void:
 			var p := get_node_or_null("../SesameField15/SesamePlant15_%d" % i) as Node3D
 			if p != null:
 				p.scale = Vector3(s, s, s)
-	if quest_stage == 19:
-		quest_stage = 20
+	if _mm().advance("water_crops")["advanced"]:
 		_update_quest_label()
 
 func _on_feed_chickens() -> void:
 	if driving:
 		return
-	egg_count += 1
-	if quest_stage == 20:
-		quest_stage = 21
-		if not quest_rewarded7:
-			quest_rewarded7 = true
-			walk_speed *= 1.05
-			jump_velocity *= 1.1
+	_mm().bump("egg")
+	var res = _mm().advance("feed_chickens")
+	if res["reward"] != "":
+		_apply_reward(res["reward"])
+	if res["advanced"]:
 		_update_quest_label()
 	_update_fruit_water_label()
 
@@ -1737,8 +1578,8 @@ func _on_photo() -> void:
 	if driving:
 		return
 	var img := get_viewport().get_texture().get_image()
-	photo_count += 1
-	img.save_png("user://photo17_%d.png" % photo_count)
+	_mm().bump("photo")
+	img.save_png("user://photo17_%d.png" % _mm().get_count("photo"))
 
 func _on_rain() -> void:
 	rain_on = not rain_on
@@ -1763,7 +1604,7 @@ func _update_football(delta: float) -> void:
 	ball_vel *= maxf(0.0, 1.0 - 2.0 * delta)
 	for g in [Vector2(24.0, -20.0), Vector2(36.0, -20.0)]:
 		if Vector2(ball.global_position.x, ball.global_position.z).distance_to(g) < 2.0:
-			goal_count += 1
+			_mm().bump("goal")
 			ball.global_position = Vector3(30.0, 0.35, -20.0)
 			ball_vel = Vector2.ZERO
 			_update_fruit_water_label()
@@ -1829,16 +1670,15 @@ func _update_slice18_buttons() -> void:
 func _on_offer() -> void:
 	if driving:
 		return
-	flower_count += 1
-	if quest_stage == 22:
-		quest_stage = 23
+	_mm().bump("flower")
+	if _mm().advance("offer_flowers")["advanced"]:
 		_update_quest_label()
 	_update_fruit_water_label()
 
 func _on_plant_rice() -> void:
 	if driving:
 		return
-	rice_count += 1
+	_mm().bump("rice")
 	if rice_growth < 3:
 		rice_growth += 1
 		var s := 1.0 + 0.3 * float(rice_growth)
@@ -1846,8 +1686,7 @@ func _on_plant_rice() -> void:
 			var sd := get_node_or_null("../Paddy18/RiceSeedling18_%d" % i) as Node3D
 			if sd != null:
 				sd.scale = Vector3(s, s, s)
-	if quest_stage == 23:
-		quest_stage = 24
+	if _mm().advance("plant_rice")["advanced"]:
 		_update_quest_label()
 	_update_fruit_water_label()
 
@@ -1855,8 +1694,7 @@ func _on_rest() -> void:
 	if driving:
 		return
 	stamina = 100.0
-	if quest_stage == 24:
-		quest_stage = 25
+	if _mm().advance("rest")["advanced"]:
 		_update_quest_label()
 
 
@@ -1870,6 +1708,31 @@ func _on_mute() -> void:
 
 func _sm():
 	return get_node_or_null("/root/SaveManager")
+
+
+## Slice 27: MissionManager access, mirroring the _sm() pattern.
+## The manager is a required autoload in-game; callers that run
+## before it exists (none in normal play) get null and degrade.
+func _mm():
+	return get_node_or_null("/root/MissionManager")
+
+
+## Slice 27: apply a newly granted reward's incremental effect.
+## This mirrors the old inline `walk_speed *= ...` lines exactly;
+## r1 needs no line here — its stamina blessing is read as a flag.
+## Load-time stats come from _apply_reward_stats instead.
+func _apply_reward(granted: String) -> void:
+	var mm = _mm()
+	if mm == null:
+		return
+	var row = mm.reward_effect(granted)
+	if not (row is Dictionary):
+		return
+	walk_speed *= float(row.get("walk", 1.0))
+	sprint_multiplier *= float(row.get("sprint", 1.0))
+	jump_velocity *= float(row.get("jump", 1.0))
+	if bool(row.get("stamina_refill", false)):
+		stamina = 100.0
 
 
 func _apply_pending_load() -> void:
@@ -1887,45 +1750,20 @@ func _apply_pending_load() -> void:
 			global_position = Vector3(float(pos[0]), float(pos[1]), float(pos[2]))
 	if p is Dictionary and p.has("rot_y"):
 		rotation.y = float(p.get("rot_y"))
-	quest_stage = int(data.get("quest_stage", 0))
+	# Slice 27: mission state (stage, rewards, counters) loads through
+	# the manager from the SAME save keys the old code read, so a
+	# Slice 26 save maps onto the new manager unchanged.
+	var mm = _mm()
+	if mm != null:
+		var rewards_data = data.get("rewards", {})
+		var counters_data = data.get("counters", {})
+		if not (rewards_data is Dictionary):
+			rewards_data = {}
+		if not (counters_data is Dictionary):
+			counters_data = {}
+		mm.load_state(int(data.get("quest_stage", 0)), rewards_data, counters_data)
 	if data.has("stamina"):
 		stamina = clampf(float(data.get("stamina")), 0.0, 100.0)
-	var rewards = data.get("rewards", {})
-	if rewards is Dictionary:
-		quest_rewarded = bool(rewards.get("r1", false))
-		quest_rewarded2 = bool(rewards.get("r2", false))
-		quest_rewarded3 = bool(rewards.get("r3", false))
-		quest_rewarded4 = bool(rewards.get("r4", false))
-		quest_rewarded5 = bool(rewards.get("r5", false))
-		quest_rewarded6 = bool(rewards.get("r6", false))
-		quest_rewarded7 = bool(rewards.get("r7", false))
-		quest_rewarded8 = bool(rewards.get("r8", false))
-		quest_rewarded9 = bool(rewards.get("r9", false))
-		quest_rewarded10 = bool(rewards.get("r10", false))
-	var counters = data.get("counters", {})
-	if counters is Dictionary:
-		fruit_count = int(counters.get("fruit", 0))
-		water_count = int(counters.get("water", 0))
-		banana_count = int(counters.get("banana", 0))
-		snack_count = int(counters.get("snack", 0))
-		lantern_count = int(counters.get("lantern", 0))
-		fish_count = int(counters.get("fish", 0))
-		donation_count = int(counters.get("donation", 0))
-		milk_count = int(counters.get("milk", 0))
-		egg_count = int(counters.get("egg", 0))
-		goal_count = int(counters.get("goal", 0))
-		photo_count = int(counters.get("photo", 0))
-		tea_count = int(counters.get("tea", 0))
-		book_count = int(counters.get("book", 0))
-		flower_count = int(counters.get("flower", 0))
-		rice_count = int(counters.get("rice", 0))
-		gold_count = int(counters.get("gold", 0))
-		lesson_count = int(counters.get("lesson", 0))
-		horse_feed = int(counters.get("horse_feed", 0))
-		elephant_feed = int(counters.get("elephant_feed", 0))
-		noodle_count = int(counters.get("noodle", 0))
-		drink_count = int(counters.get("drink", 0))
-		guestbook_count = int(counters.get("guestbook", 0))
 	var growth = data.get("growth", {})
 	if growth is Dictionary:
 		crop_growth = int(growth.get("crop", 0))
@@ -1935,37 +1773,22 @@ func _apply_pending_load() -> void:
 		if names is Array:
 			pending_talked_names = names.duplicate()
 	_apply_reward_stats()
-	last_chime_stage = quest_stage
+	if mm != null:
+		last_chime_stage = mm.stage
 	_update_quest_label()
 	_update_fruit_water_label()
-
 
 func _apply_reward_stats() -> void:
 	walk_speed = 5.0
 	sprint_multiplier = 1.6
 	jump_velocity = 5.0
-	if quest_rewarded2:
-		walk_speed *= 1.1
-	if quest_rewarded3:
-		walk_speed *= 1.05
-	if quest_rewarded4:
-		walk_speed *= 1.05
-	if quest_rewarded5:
-		sprint_multiplier *= 1.1
-	if quest_rewarded6:
-		walk_speed *= 1.05
-		jump_velocity *= 1.1
-	if quest_rewarded7:
-		walk_speed *= 1.05
-		jump_velocity *= 1.1
-	if quest_rewarded8:
-		walk_speed *= 1.05
-	if quest_rewarded9:
-		walk_speed *= 1.05
-	if quest_rewarded10:
-		walk_speed *= 1.05
-		jump_velocity *= 1.10
-
+	var mm = _mm()
+	if mm == null:
+		return
+	var m = mm.stats_multipliers()
+	walk_speed *= float(m["walk"])
+	sprint_multiplier *= float(m["sprint"])
+	jump_velocity *= float(m["jump"])
 
 func _apply_deferred_load() -> void:
 	if pending_growth_applied:
@@ -1998,11 +1821,13 @@ func _autosave_on_stage_change() -> void:
 	var sm = _sm()
 	if sm == null:
 		return
-	if quest_stage == last_saved_stage:
+	var mm = _mm()
+	if mm == null:
 		return
-	last_saved_stage = quest_stage
+	if mm.stage == last_saved_stage:
+		return
+	last_saved_stage = mm.stage
 	sm.call("save_game", collect_save_data())
-
 
 func collect_save_data() -> Dictionary:
 	var sm = _sm()
@@ -2015,17 +1840,26 @@ func collect_save_data() -> Dictionary:
 	for v in get_tree().get_nodes_in_group("villagers"):
 		if talked_ids.has(v.get_instance_id()):
 			talked_names.append(v.name)
+	# Slice 27: mission keys come from the manager; the key names are
+	# unchanged ("quest_stage", "rewards" r1..r10, "counters").
+	var mm = _mm()
+	var stage_now := 0
+	var rewards_now := {}
+	var counters_now := {}
+	if mm != null:
+		stage_now = mm.stage
+		rewards_now = mm.rewards_dict()
+		counters_now = mm.counters_dict()
 	return {
 		"player": {"pos": [global_position.x, global_position.y, global_position.z], "rot_y": rotation.y},
-		"quest_stage": quest_stage,
+		"quest_stage": stage_now,
 		"talked_names": talked_names,
 		"stamina": stamina,
-		"rewards": {"r1": quest_rewarded, "r2": quest_rewarded2, "r3": quest_rewarded3, "r4": quest_rewarded4, "r5": quest_rewarded5, "r6": quest_rewarded6, "r7": quest_rewarded7, "r8": quest_rewarded8, "r9": quest_rewarded9, "r10": quest_rewarded10},
-		"counters": {"fruit": fruit_count, "water": water_count, "banana": banana_count, "snack": snack_count, "lantern": lantern_count, "fish": fish_count, "donation": donation_count, "milk": milk_count, "egg": egg_count, "goal": goal_count, "photo": photo_count, "tea": tea_count, "book": book_count, "flower": flower_count, "rice": rice_count, "gold": gold_count, "lesson": lesson_count, "horse_feed": horse_feed, "elephant_feed": elephant_feed, "noodle": noodle_count, "drink": drink_count, "guestbook": guestbook_count},
+		"rewards": rewards_now,
+		"counters": counters_now,
 		"growth": {"crop": crop_growth, "rice": rice_growth},
 		"settings": {"muted": muted_now, "volume": volume_now},
 	}
-
 
 func _update_pause_ui() -> void:
 	if pause_button == null:
@@ -2124,13 +1958,11 @@ func _on_trumpet() -> void:
 func _on_feed_elephant() -> void:
 	if driving:
 		return
-	elephant_feed += 1
-	if quest_stage == 25:
-		quest_stage = 26
-		if not quest_rewarded8:
-			quest_rewarded8 = true
-			walk_speed *= 1.05
-			stamina = 100.0
+	_mm().bump("elephant_feed")
+	var res = _mm().advance("feed_elephant")
+	if res["reward"] != "":
+		_apply_reward(res["reward"])
+	if res["advanced"]:
 		_update_quest_label()
 	_update_fruit_water_label()
 
@@ -2174,27 +2006,24 @@ func _update_slice19_buttons() -> void:
 func _on_buy_gold() -> void:
 	if driving:
 		return
-	gold_count += 1
-	if quest_stage == 27:
-		quest_stage = 28
+	_mm().bump("gold")
+	if _mm().advance("buy_gold")["advanced"]:
 		_update_quest_label()
 	_update_fruit_water_label()
 
 func _on_lesson() -> void:
 	if driving:
 		return
-	lesson_count += 1
-	if quest_stage == 28:
-		quest_stage = 29
+	_mm().bump("lesson")
+	if _mm().advance("lesson")["advanced"]:
 		_update_quest_label()
 	_update_fruit_water_label()
 
 func _on_feed_horse() -> void:
 	if driving:
 		return
-	horse_feed += 1
-	if quest_stage == 29:
-		quest_stage = 30
+	_mm().bump("horse_feed")
+	if _mm().advance("feed_horse")["advanced"]:
 		_update_quest_label()
 	_update_fruit_water_label()
 
@@ -2237,26 +2066,24 @@ func _update_slice20_buttons() -> void:
 func _on_buy_noodles() -> void:
 	if driving:
 		return
-	noodle_count += 1
+	_mm().bump("noodle")
 	_play_tone(520.0, 0.3)
-	if quest_stage == 33:
-		quest_stage = 34
+	if _mm().advance("buy_noodles")["advanced"]:
 		_update_quest_label()
 	_update_fruit_water_label()
 
 func _on_buy_drink() -> void:
 	if driving:
 		return
-	drink_count += 1
+	_mm().bump("drink")
 	_play_tone(520.0, 0.3)
 	_update_fruit_water_label()
 
 func _on_guestbook() -> void:
 	if driving:
 		return
-	guestbook_count += 1
-	if quest_stage == 34:
-		quest_stage = 35
+	_mm().bump("guestbook")
+	if _mm().advance("guestbook")["advanced"]:
 		_update_quest_label()
 	_update_fruit_water_label()
 
@@ -2269,10 +2096,8 @@ func _on_sleep() -> void:
 	if sl != null:
 		sl.visible = true
 	_play_tone(330.0, 0.5)
-	if quest_stage == 35:
-		quest_stage = 36
-		if not quest_rewarded10:
-			quest_rewarded10 = true
-			walk_speed *= 1.05
-			jump_velocity *= 1.10
+	var res = _mm().advance("sleep")
+	if res["reward"] != "":
+		_apply_reward(res["reward"])
+	if res["advanced"]:
 		_update_quest_label()

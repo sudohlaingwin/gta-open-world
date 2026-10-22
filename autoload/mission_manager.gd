@@ -1,0 +1,131 @@
+extends Node
+## Slice 27 mission framework: the quest chain owned as DATA + state.
+## MissionManager is an autoload (like SaveManager) and is the single
+## source of truth for: current stage, the 10 reward flags, and the
+## 22 interaction counters. player.gd keeps only the world side —
+## positions, buttons, growth scales, stamina, talked instance ids —
+## and calls advance()/bump() when things happen in the world.
+## Behaviour is identical to the Slice 10-20 chain: same 36 stages in
+## the same order, same rewards in the same order, same save keys
+## ("quest_stage", "rewards" r1..r10, "counters"), same label and
+## tracker texts (see mission_data.gd, copied byte-for-byte).
+## Counters live here so save/load round-trips through one place;
+## crop/rice GROWTH stays in player.gd (it drives plant scales, not
+## mission state). Free roam is untouched: missions never gate
+## movement, driving, or dialogue — advance() only fires when the
+## world already did the thing, and out-of-order triggers are no-ops.
+
+const Data := preload("res://autoload/mission_data.gd")
+
+var stage: int = 0
+var rewards: Dictionary = {}
+var counters: Dictionary = {}
+
+
+func _init() -> void:
+	for rid in Data.REWARD_ORDER:
+		rewards[rid] = false
+	for key in Data.COUNTER_KEYS:
+		counters[key] = 0
+
+
+## Fire a world trigger. Advances ONLY when the current stage matches
+## the trigger's from-stage (out-of-order calls are silent no-ops,
+## exactly like the old `if quest_stage == X` guards). Returns
+## {"advanced": bool, "reward": String} — reward is "" unless the
+## transition newly granted one (a flag already set never re-applies).
+func advance(trigger: String) -> Dictionary:
+	var row = Data.TRIGGERS.get(trigger, null)
+	if not (row is Dictionary):
+		return {"advanced": false, "reward": ""}
+	if stage != int(row.get("from", -1)):
+		return {"advanced": false, "reward": ""}
+	stage = int(row.get("to", stage))
+	var rid := String(row.get("reward", ""))
+	if rid != "" and not bool(rewards.get(rid, false)):
+		rewards[rid] = true
+		return {"advanced": true, "reward": rid}
+	return {"advanced": true, "reward": ""}
+
+
+## Talk-all promotion: stage 0 becomes 1 once every villager has been
+## talked to. Called from the quest-label refresh, exactly where the
+## old code promoted (inside _update_quest_label, not on talk).
+func promote_talk_all(talked: int, total: int) -> bool:
+	if stage == 0 and total > 0 and talked >= total:
+		stage = 1
+		return true
+	return false
+
+
+func label_text(talked: int, total: int, banana: int) -> String:
+	return Data.label_for(stage, rewards, talked, total, banana)
+
+
+func tracker_text() -> String:
+	return Data.tracker_for(stage)
+
+
+## HUD counter line, in the exact old order and emoji order.
+## (elephant_feed is saved but was never displayed — preserved.)
+func counter_text() -> String:
+	return "🍎 %d 💧 %d 🍌 %d 🍵 %d 📚 %d 🍡 %d 🪔 %d 🐟 %d 💰 %d 🥛 %d 🥚 %d ⚽ %d 🌸 %d 📸 %d 🌾 %d 🪙 %d 📖 %d 🐴 %d 🍜 %d 🥤 %d 📝 %d" % [counters.get("fruit", 0), counters.get("water", 0), counters.get("banana", 0), counters.get("tea", 0), counters.get("book", 0), counters.get("snack", 0), counters.get("lantern", 0), counters.get("fish", 0), counters.get("donation", 0), counters.get("milk", 0), counters.get("egg", 0), counters.get("goal", 0), counters.get("flower", 0), counters.get("photo", 0), counters.get("rice", 0), counters.get("gold", 0), counters.get("lesson", 0), counters.get("horse_feed", 0), counters.get("noodle", 0), counters.get("drink", 0), counters.get("guestbook", 0)]
+
+
+func bump(key: String) -> void:
+	if counters.has(key):
+		counters[key] = int(counters.get(key, 0)) + 1
+
+
+func get_count(key: String) -> int:
+	return int(counters.get(key, 0))
+
+
+## Multipliers from the reward flags, in r2..r10 order (r1 is
+## stamina-only and is read as a flag by the stamina code).
+## Matches the old _apply_reward_stats arithmetic exactly.
+func stats_multipliers() -> Dictionary:
+	var walk := 1.0
+	var sprint := 1.0
+	var jump := 1.0
+	for rid in Data.REWARD_ORDER:
+		if rid == "r1":
+			continue
+		if bool(rewards.get(rid, false)):
+			var row = Data.REWARDS.get(rid, {})
+			walk *= float(row.get("walk", 1.0))
+			sprint *= float(row.get("sprint", 1.0))
+			jump *= float(row.get("jump", 1.0))
+	return {"walk": walk, "sprint": sprint, "jump": jump}
+
+
+func stamina_blessed() -> bool:
+	return bool(rewards.get("r1", false))
+
+
+## Incremental effect of one newly granted reward (walk/sprint/jump
+## multipliers + stamina refill flag). r1 returns all-ones: its
+## stamina blessing is a flag read, not a stat change.
+func reward_effect(rid: String) -> Dictionary:
+	var row = Data.REWARDS.get(rid, null)
+	if not (row is Dictionary):
+		return {}
+	return row.duplicate()
+
+
+func rewards_dict() -> Dictionary:
+	return rewards.duplicate()
+
+
+func counters_dict() -> Dictionary:
+	return counters.duplicate()
+
+
+## Load mission state from a save dictionary (old saves use the same
+## keys, so a Slice 26 save maps onto this manager unchanged).
+func load_state(stage_value: int, rewards_data: Dictionary, counters_data: Dictionary) -> void:
+	stage = stage_value
+	for rid in Data.REWARD_ORDER:
+		rewards[rid] = bool(rewards_data.get(rid, false))
+	for key in Data.COUNTER_KEYS:
+		counters[key] = int(counters_data.get(key, 0))

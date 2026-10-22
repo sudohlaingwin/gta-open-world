@@ -23,3 +23,4 @@ pointing/emulate_touch_from_mouse=true
 [autoload]
 
 SaveManager="*res://autoload/save_manager.gd"
+MissionManager="*res://autoload/mission_manager.gd"
