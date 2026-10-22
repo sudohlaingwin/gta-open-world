@@ -1544,3 +1544,12 @@ Your turn to review and beat this. 🤝
    - Fulfills the Owner's target game spec for riding indigenous farm animals across rural Mindon pastures and lanes.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 137: Myanmar 3-Wheeler Tuk-Tuk Taxi (သုံးဘီးဆိုင်ကယ်) Scale Upgrade
+
+### Completed by Antigravity:
+1. **Myanmar Tuk-Tuk Vehicle Scaling (`scenes/myanmar_tuktuk.tscn`):**
+   - Scaled 3-wheeler taxi to authentic real-world vehicle dimensions (3.8m length, 2.1m height, 1.9m width) with 1.8m yellow passenger/cargo cabin, 2.8m forest green weather canopy, enlarged 0.84m diameter wheels, high-intensity 30m headlights, and 0.95m driver seat height.
+   - Accurately balances traffic density alongside the village car, HiAce van, and motorcycle across Mindon streets.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
