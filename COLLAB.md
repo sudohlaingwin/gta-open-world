@@ -608,3 +608,19 @@ Your turn to review and beat this. 🤝
    - Added dual rear corner taillights (`TaillightL` and `TaillightR`) with red glow.
 4. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 65: Bullock Cart & Mount Driving Physics Calibration (Review of MUSE Slice 42)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slice 42, commit `f4117e5`):**
+   - MUSE polished cart driving-physics on `cart.gd` with acceleration curve, speed-dependent steering, progressive braking, and longer coast drag.
+   - ANTIGRAVITY validates parity and upgrades `scripts/mount_controller.gd` with matching authentic locomotion physics for both Bullock Cart and Rideable Animals (Cow/Horse/Elephant).
+2. **Dynamic Acceleration Curves & Progressive Pull (`scripts/mount_controller.gd`):**
+   - Engineered soft launch acceleration tapering at top speed (`0.6 + 0.4 * (1.0 - speed_ratio * 0.4)`), preventing sudden twitching or unnatural jerk upon starting movement.
+3. **Speed-Dependent Steering & No-Snap Smoothing (`scripts/mount_controller.gd`):**
+   - Implemented dynamic turn rate interpolation (`lerpf(turn_speed, high_speed_turn_speed, speed_ratio)`): agile at slow speeds for tight village maneuvering, stable at full gallop/trot.
+4. **Dedicated Braking & Momentum Coasting (`scripts/mount_controller.gd`):**
+   - Real active braking (`brake_force = 8.0`) engages when pulling backward during forward momentum without snapping into reverse gear.
+   - Preserved rolling momentum with subtle coast drag (`coast_drag = 1.4`), enabling natural kinetic glide when releasing touch controls.
+5. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

@@ -7,12 +7,17 @@ enum MountType { COW, BULLOCK_CART, HORSE }
 
 @export var walk_speed: float = 3.6
 @export var trot_speed: float = 6.4
-@export var turn_speed: float = 2.8
+@export var turn_speed: float = 2.4
+@export var high_speed_turn_speed: float = 1.2
+@export var accel: float = 4.5
+@export var brake_force: float = 8.0
+@export var coast_drag: float = 1.4
 
 var current_rider: Node3D = null
 var is_mounted: bool = false
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var smoothed_turn: float = 0.0
+var current_drive_speed: float = 0.0
 
 @onready var saddle_point: Marker3D = $SaddlePoint
 @onready var visual_mesh: Node3D = $VisualMesh
@@ -52,33 +57,37 @@ func _physics_process(delta: float) -> void:
 		if current_rider.get("touch_input_vector") != null and current_rider.touch_input_vector != Vector2.ZERO:
 			input_dir = current_rider.touch_input_vector
 
-		# Smooth steering rotation
-		var target_turn = -input_dir.x * turn_speed
+		# Sprint check via rider's is_sprinting state or physical Shift key
+		var is_sprinting = (current_rider.get("is_sprinting") == true) or Input.is_key_pressed(KEY_SHIFT)
+		var max_s = trot_speed if is_sprinting else walk_speed
+		var speed_ratio = clampf(abs(current_drive_speed) / max_s, 0.0, 1.0)
+
+		# Speed-Dependent Steering (Agile when slow/pivoting, stable at full stride)
+		var active_turn = lerpf(turn_speed, high_speed_turn_speed, speed_ratio)
+		var target_turn = -input_dir.x * active_turn
 		smoothed_turn = move_toward(smoothed_turn, target_turn, 8.0 * delta)
 		rotate_y(smoothed_turn * delta)
 
-		# Forward / Backward movement
+		# Forward / Backward movement with progressive curve & real brake
 		var forward = -global_transform.basis.z
 		forward.y = 0.0
 		forward = forward.normalized()
 
-		# Sprint check via rider's is_sprinting state or physical Shift key
-		var is_sprinting = (current_rider.get("is_sprinting") == true) or Input.is_key_pressed(KEY_SHIFT)
-		var speed = trot_speed if is_sprinting else walk_speed
-		
-		var move_speed: float = 0.0
-		if input_dir.y < -0.1: # Forward
-			move_speed = speed * (-input_dir.y)
-			velocity.x = forward.x * move_speed
-			velocity.z = forward.z * move_speed
-		elif input_dir.y > 0.1: # Backward / Reverse
-			move_speed = -speed * 0.45 * input_dir.y
-			velocity.x = forward.x * move_speed
-			velocity.z = forward.z * move_speed
-		else:
-			velocity.x = move_toward(velocity.x, 0.0, speed * 2.0 * delta)
-			velocity.z = move_toward(velocity.z, 0.0, speed * 2.0 * delta)
+		if input_dir.y < -0.1: # Forward Throttle
+			var curve = 0.6 + 0.4 * (1.0 - speed_ratio * 0.4)
+			var target_v = max_s * (-input_dir.y)
+			current_drive_speed = move_toward(current_drive_speed, target_v, accel * curve * delta)
+		elif input_dir.y > 0.1: # Reverse input or active brake
+			if current_drive_speed > 0.3: # Active brake while moving forward
+				current_drive_speed = move_toward(current_drive_speed, 0.0, brake_force * input_dir.y * delta)
+			else: # Reverse gear engages only from standstill
+				var target_rev = -max_s * 0.4 * input_dir.y
+				current_drive_speed = move_toward(current_drive_speed, target_rev, accel * 0.6 * delta)
+		else: # Gentle coasting drag (momentum preservation)
+			current_drive_speed = move_toward(current_drive_speed, 0.0, coast_drag * delta)
 
+		velocity.x = forward.x * current_drive_speed
+		velocity.z = forward.z * current_drive_speed
 		move_and_slide()
 
 		# 1. Wheels rotation on ground speed (for bullock carts)
@@ -107,6 +116,8 @@ func mount(rider: Node3D) -> void:
 		return
 	is_mounted = true
 	current_rider = rider
+	current_drive_speed = 0.0
+	smoothed_turn = 0.0
 	rider.reparent(saddle_point)
 	rider.position = Vector3.ZERO
 	rider.rotation = Vector3.ZERO
@@ -120,6 +131,8 @@ func dismount() -> void:
 	var rider = current_rider
 	is_mounted = false
 	current_rider = null
+	current_drive_speed = 0.0
+	smoothed_turn = 0.0
 	var dismount_pos = global_position + (global_transform.basis.x * 1.5)
 	rider.reparent(get_parent())
 	rider.global_position = dismount_pos
