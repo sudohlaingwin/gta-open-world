@@ -1122,3 +1122,13 @@ Your turn to review and beat this. 🤝
    - Enriches the open-world countryside backdrop with vivid tropical green terraces, breaking up flat terrain emptiness and matching real-world Magway Region riverbank agriculture.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 99: Mindon Stream Water PBR Overhaul — Dual-Flow Micro-Ripples, Crest Foam & High-Specular Sun Glitter
+
+### Completed by Antigravity:
+1. **Realistic Mindon Stream Water PBR Shader (`scripts/water_river.gdshader`):**
+   - Implemented dual-directional animated procedural flow UVs (`uv_flow1` and `uv_flow2`) generating dynamic micro-ripples across the river surface.
+   - Added procedural foam crest highlights (`foam = clamp((ripple1 + ripple2 - 0.9) * 2.0, 0.0, 0.4)`) simulating river water churning over rocks and riverbeds.
+   - Elevated specular sun glints (`SPECULAR = 0.95`, `METALLIC = 0.2`) reflecting intense tropical Myanmar sunlight during daytime and starlight/moonlight at night.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

@@ -21,9 +21,16 @@ void vertex() {
 }
 
 void fragment() {
-	ALBEDO = mix(shallow_color.rgb, deep_color.rgb, 0.5);
+	vec2 uv_flow1 = UV * 6.0 + vec2(TIME * 0.12, TIME * 0.08);
+	vec2 uv_flow2 = UV * 10.0 - vec2(TIME * 0.09, -TIME * 0.14);
+	float ripple1 = sin(uv_flow1.x * 6.28) * cos(uv_flow1.y * 6.28);
+	float ripple2 = sin(uv_flow2.x * 6.28) * cos(uv_flow2.y * 6.28);
+	float foam = clamp((ripple1 + ripple2 - 0.9) * 2.0, 0.0, 0.4);
+
+	vec3 water_col = mix(shallow_color.rgb, deep_color.rgb, 0.55);
+	ALBEDO = mix(water_col, vec3(0.92, 0.96, 0.98), foam);
 	ALPHA = shallow_color.a;
 	ROUGHNESS = roughness_val;
-	METALLIC = 0.15;
-	SPECULAR = 0.8;
+	METALLIC = 0.2;
+	SPECULAR = 0.95;
 }
