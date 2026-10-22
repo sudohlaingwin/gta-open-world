@@ -76,6 +76,7 @@ func refresh() -> void:
 		graphics_option.add_item("💎 အလွန်မြင့် (Ultra HDR)", 3)
 		var gq = sm.get("graphics_quality")
 		graphics_option.selected = 0 if gq == "smooth" else (2 if gq == "hd" else (3 if gq == "ultra" else 1))
+		apply_graphics_settings(str(gq))
 	if mute_check and sm.get("muted") != null:
 		mute_check.button_pressed = bool(sm.muted)
 	if vibrate_check and sm.get("vibration_enabled") != null:
@@ -127,39 +128,75 @@ func _on_graphics_selected(index: int) -> void:
 		var modes = ["smooth", "balanced", "hd", "ultra"]
 		sm.graphics_quality = modes[clamp(index, 0, 3)]
 		sm.save_settings()
-		var vp_rid = get_viewport().get_viewport_rid()
-		var env_node = get_tree().get_first_node_in_group("world_env") as WorldEnvironment
-		if not env_node:
-			env_node = get_node_or_null("/root/World/WorldEnvironment") as WorldEnvironment
-		var env = env_node.environment if env_node else null
-		
-		if sm.graphics_quality == "smooth":
-			RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_DISABLED)
-			if env:
-				env.ssao_enabled = false
-				env.ssr_enabled = false
-				env.glow_bloom = 0.1
-		elif sm.graphics_quality == "balanced":
-			RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_2X)
-			if env:
-				env.ssao_enabled = true
-				env.ssao_radius = 2.0
-				env.ssr_enabled = false
-				env.glow_bloom = 0.18
-		elif sm.graphics_quality == "hd":
-			RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_2X)
-			if env:
-				env.ssao_enabled = true
-				env.ssao_radius = 3.2
-				env.ssr_enabled = true
-				env.glow_bloom = 0.22
-		elif sm.graphics_quality == "ultra":
-			RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_4X)
-			if env:
-				env.ssao_enabled = true
-				env.ssao_radius = 4.0
-				env.ssr_enabled = true
-				env.glow_bloom = 0.28
+		apply_graphics_settings(sm.graphics_quality)
+
+func apply_graphics_settings(quality: String) -> void:
+	var vp_rid = get_viewport().get_viewport_rid()
+	var env_node = get_tree().get_first_node_in_group("world_env") as WorldEnvironment
+	if not env_node:
+		env_node = get_node_or_null("/root/World/WorldEnvironment") as WorldEnvironment
+	var env = env_node.environment if env_node else null
+	
+	# Lever 1: Directional Sun Shadows & Lever 4: Shadow Filtering
+	var sun = get_tree().root.find_child("SunLight", true, false) as DirectionalLight3D
+	
+	if quality == "smooth":
+		# Low / Smooth: 60 FPS mobile performance priority
+		RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_DISABLED)
+		RenderingServer.viewport_set_scaling_3d_scale(vp_rid, 0.75)
+		if sun:
+			sun.shadow_enabled = false
+		if env:
+			env.ssao_enabled = false
+			env.ssr_enabled = false
+			env.ssil_enabled = false
+			env.glow_bloom = 0.08
+			env.volumetric_fog_enabled = false
+	elif quality == "balanced":
+		# Balanced: Default solid mobile fidelity
+		RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_2X)
+		RenderingServer.viewport_set_scaling_3d_scale(vp_rid, 0.88)
+		if sun:
+			sun.shadow_enabled = true
+			sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
+		if env:
+			env.ssao_enabled = true
+			env.ssao_radius = 2.0
+			env.ssao_intensity = 1.5
+			env.ssr_enabled = false
+			env.ssil_enabled = false
+			env.glow_bloom = 0.16
+			env.volumetric_fog_enabled = false
+	elif quality == "hd":
+		# HD: PUBG Mobile high-tier visual fidelity
+		RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_2X)
+		RenderingServer.viewport_set_scaling_3d_scale(vp_rid, 1.0)
+		if sun:
+			sun.shadow_enabled = true
+			sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS
+		if env:
+			env.ssao_enabled = true
+			env.ssao_radius = 3.2
+			env.ssao_intensity = 2.4
+			env.ssr_enabled = true
+			env.ssil_enabled = true
+			env.glow_bloom = 0.22
+			env.volumetric_fog_enabled = true
+	elif quality == "ultra":
+		# Ultra HDR: vivo V60 flagship showcase
+		RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_4X)
+		RenderingServer.viewport_set_scaling_3d_scale(vp_rid, 1.0)
+		if sun:
+			sun.shadow_enabled = true
+			sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS
+		if env:
+			env.ssao_enabled = true
+			env.ssao_radius = 4.0
+			env.ssao_intensity = 3.0
+			env.ssr_enabled = true
+			env.ssil_enabled = true
+			env.glow_bloom = 0.28
+			env.volumetric_fog_enabled = true
 
 func _on_vibrate_toggled(pressed: bool) -> void:
 	var sm = _sm()

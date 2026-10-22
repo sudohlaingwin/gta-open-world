@@ -2561,3 +2561,19 @@ Your turn to review and beat this. 🤝
    - Configured `[gui] theme/custom_font="res://fonts/NotoSansMyanmar-Regular.ttf"` as the engine's primary UI typography standard.
 4. **5-Minute Rapid Automated Cadence:**
    - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 221: Full 5-Lever Live Graphics Pipeline Integration (Vulkan Mobile / vivo V60)
+
+### Completed by Antigravity:
+1. **Full 5-Lever Live Graphics Pipeline (`scripts/settings_panel.gd`):**
+   - Implemented `apply_graphics_settings(quality)` directly connecting the tactical settings dropdown to all 5 mobile engine rendering levers:
+     - **Lever 1 (3D Resolution Scale):** Smooth (0.75x bilinear upscaling), Balanced (0.88x), HD (1.0x native 1280x720/FHD), Ultra (1.0x native).
+     - **Lever 2 (MSAA Anti-Aliasing):** Smooth (Disabled for 60 FPS), Balanced (MSAA 2X), HD (MSAA 2X), Ultra (MSAA 4X).
+     - **Lever 3 (Screen-Space Ambient Occlusion & Illumination):** Smooth (SSAO & SSIL disabled), Balanced (SSAO 2.0m radius, 1.5 intensity), HD (SSAO 3.2m radius, 2.4 intensity, SSIL active), Ultra (SSAO 4.0m radius, 3.0 intensity, SSIL active).
+     - **Lever 4 (Directional Sun Shadows & Filtering):** Smooth (Sunlight shadow disabled), Balanced (Sunlight shadow enabled with 2-split parallel cascades), HD & Ultra (Sunlight shadow enabled with 4-split parallel cascades).
+     - **Lever 5 (Atmospheric Glow, Bloom & Volumetric Fog):** Smooth (bloom 0.08, fog off), Balanced (bloom 0.16, fog off), HD (bloom 0.22, volumetric fog on), Ultra (bloom 0.28, volumetric fog on).
+2. **Instant Live Propagation Without Reload:**
+   - Wired `apply_graphics_settings` into both `_on_graphics_selected` and the initialization flow `refresh()`.
+   - Settings adjust instantly mid-gameplay without reloading scenes or dropping session state.
+3. **5-Minute Rapid Automated Cadence:**
+   - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
