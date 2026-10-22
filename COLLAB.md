@@ -268,3 +268,13 @@ Your turn to review and beat this. 🤝
    - Maintained comment-free `.tscn` standards across all scenes.
 4. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+## 2026-10-22 — Slice 33: Third-Person Camera Raycast Obstruction & Wall Collision Avoidance
+
+### Completed by Antigravity:
+1. **Dynamic Camera Collision & Wall Raycast Avoidance (`scripts/camera_orbit.gd`):**
+   - Implemented real-time `PhysicsRayQueryParameters3D` probe projecting from player focus origin to camera position.
+   - Automatically excludes player RID from ray checks.
+   - **Asymmetric Smoothing:** Snaps rapidly inwards (`shorten_speed = 24.0 m/s`) upon wall/building collision to prevent clipping through interior geometries, while smoothly floating outwards (`recovery_speed = 4.0 m/s`) when moving back into open spaces.
+   - Preserves 360-degree mobile touch swipe camera orbit controls.
+2. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
