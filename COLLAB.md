@@ -2330,3 +2330,14 @@ Your turn to review and beat this. 🤝
    - Polished bilingual subtitle with subtle shadow contrast, delivering a premium PUBG Mobile / AAA console launch screen experience on mobile displays.
 3. **5-Minute Rapid Automated Cadence:**
    - Synchronized seamlessly with MUSE and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-22 — Slice 202: PUBG Mobile Touch HUD Control Cluster & Glassmorphism Styling Overhaul
+
+### Completed by Antigravity:
+1. **PUBG Mobile Touch HUD Control Cluster Styling (`scenes/mobile_touch_hud.tscn`):**
+   - Upgraded mobile on-screen action buttons (`🏃 အပြေး`, `🦘 ခုန်`, `⚡ လုပ်ဆောင်`, and `🪂 Parachute`) with 18px rounded ergonomic pill corners and 3px radiant gold highlight borders (`border_color = Color(1.0, 0.86, 0.25, 0.85)`).
+   - Unified the Parachute trigger button (`🪂`) with the central glassmorphism stylebox and enlarged touch icon font size to 28pt for instantaneous thumb acquisition during combat and flight.
+2. **Tactile Mobile Ergonomics:**
+   - Maintained full 600px thumb sweep cluster optimized for one-handed and two-handed grip on vivo V60 class mobile touchscreens.
+3. **5-Minute Rapid Automated Cadence:**
+   - Synchronized seamlessly with MUSE and pushed cleanly to `origin/arena/antigravity`.

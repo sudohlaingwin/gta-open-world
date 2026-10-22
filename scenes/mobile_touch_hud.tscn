@@ -94,16 +94,16 @@ corner_radius_bottom_right = 80
 corner_radius_bottom_left = 80
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
-bg_color = Color(0.12, 0.18, 0.25, 0.85)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 0.84, 0, 0.6)
-corner_radius_top_left = 14
-corner_radius_top_right = 14
-corner_radius_bottom_right = 14
-corner_radius_bottom_left = 14
+bg_color = Color(0.08, 0.14, 0.22, 0.88)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1.0, 0.86, 0.25, 0.85)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause"]
 bg_color = Color(0.08, 0.1, 0.14, 0.95)
@@ -460,7 +460,8 @@ text = "🏃 အပြေး"
 [node name="ChuteBtn" type="Button" parent="ActionContainer"]
 custom_minimum_size = Vector2(85, 85)
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "🪂"
 
 [node name="JumpBtn" type="Button" parent="ActionContainer"]
