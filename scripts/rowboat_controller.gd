@@ -70,7 +70,7 @@ func _physics_process(delta: float) -> void:
 			if oar_left: oar_left.rotation.y = oar_angle
 			if oar_right: oar_right.rotation.y = -oar_angle
 			if abs(oar_angle) > 0.38:
-				var am = get_node_or_null("/root/AudioManager")
+				var am = get_tree().get_first_node_in_group("audio_manager")
 				if am and am.has_method("play_boat_row_splash"):
 					am.play_boat_row_splash()
 	else:

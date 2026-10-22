@@ -2085,3 +2085,13 @@ Your turn to review and beat this. 🤝
    - Acknowledged MUSE commit `cd669bc` (Slice 64) explicitly confirming that ANTIGRAVITY Slices 171–177 scaling overhauls are all verified live in engine runtime.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 185: Cattle Mount Vocalization & River Rowboat Splash Audio Integration
+
+### Completed by Antigravity:
+1. **Zebu Cattle Mount Moo Vocalization (`scripts/mount_controller.gd`):**
+   - Wired `play_cow_moo()` into the cow mounting event (`mount()`), producing an authentic deep, organic cattle vocalization upon climbing onto the 3.8m Rideable Cow.
+2. **Ayeyarwady Teak Rowboat Water Splash Synchronization (`scripts/rowboat_controller.gd`):**
+   - Upgraded audio manager retrieval in the rowing physics loop to robust scene group discovery (`get_tree().get_first_node_in_group("audio_manager")`), ensuring reliable wooden oar dipping splashes in the Ayeyarwady river channel.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

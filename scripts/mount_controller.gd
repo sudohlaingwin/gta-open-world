@@ -123,6 +123,10 @@ func mount(rider: Node3D) -> void:
 	rider.rotation = Vector3.ZERO
 	if rider.has_method("set_mounted_state"):
 		rider.set_mounted_state(true, self)
+	if mount_type == MountType.COW:
+		var am = get_tree().get_first_node_in_group("audio_manager")
+		if am and am.has_method("play_cow_moo"):
+			am.play_cow_moo()
 	mount_entered.emit(rider)
 
 func dismount() -> void:
