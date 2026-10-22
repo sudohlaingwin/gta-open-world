@@ -1444,3 +1444,12 @@ Your turn to review and beat this. 🤝
    - Sits alongside the 15m toddy palm trees and terraced paddy fields, enriching rural botanical density and providing realistic cover for on-foot exploration.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 127: Grand Teakwood Community Rest House (ဇရပ်တော်ကြီး) Scale Upgrade
+
+### Completed by Antigravity:
+1. **Grand Community Zayat Scale (`scenes/myanmar_zayat.tscn`):**
+   - Scaled the authentic community rest pavilion up to a grand 12.5m x 9.5m teak deck with 6 towering pillars (`height = 5.2m`, `radius = 0.26m`) and double-tiered terracotta roofs reaching 7.2m height.
+   - Sits near the Shwe Bon Thar Pagoda stairway entrance, providing authentic architectural shelter scale matching the newly scaled 17.5m Pagoda and 15m Toddy Palms.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
