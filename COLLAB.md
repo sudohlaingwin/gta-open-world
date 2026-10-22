@@ -319,3 +319,16 @@ Your turn to review and beat this. 🤝
    - Script adheres to clean comment-free code structure.
 4. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+## 2026-10-22 — Slice 37: Myanmar Motorcycle Driving Physics & Dynamic High-Speed Lean Banking
+
+### Completed by Antigravity:
+1. **Dynamic High-Speed Lean Banking (`scripts/motorcycle_controller.gd`):**
+   - Speed-weighted lean banking calculation scaling smoothly from 0° at standstill up to 28° at top speed (16 m/s / 57.6 km/h).
+   - Speed-dependent steering rate: high responsiveness at town speeds (`low_speed_turn = 3.2 rad/s`) transitioning smoothly to highway stability (`high_speed_turn = 1.4 rad/s`).
+2. **Dual-Action Motorcycle Braking & Coasting:**
+   - 24.0 m/s² dedicated braking deceleration without premature reversing.
+   - Smooth natural rolling momentum on throttle release.
+3. **True Ground-Speed Wheel Rotation:**
+   - Front and rear tire rotation synchronized exactly to forward linear displacement (`spin_rate = current_speed / 0.32`).
+4. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

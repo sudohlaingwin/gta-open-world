@@ -1,11 +1,11 @@
 extends CharacterBody3D
 
-# --- Authentic Myanmar Village Motorcycle / Kenbo 125cc ---
-
 @export var max_speed: float = 16.0
-@export var acceleration: float = 12.0
-@export var turn_speed: float = 2.8
-@export var lean_angle_deg: float = 25.0
+@export var acceleration: float = 14.0
+@export var brake_decel: float = 24.0
+@export var low_speed_turn: float = 3.2
+@export var high_speed_turn: float = 1.4
+@export var max_lean_deg: float = 28.0
 
 var current_driver: Node3D = null
 var is_driven: bool = false
@@ -34,32 +34,43 @@ func _physics_process(delta: float) -> void:
 		if current_driver.get("touch_input_vector") != null and current_driver.touch_input_vector != Vector2.ZERO:
 			input_dir = current_driver.touch_input_vector
 
-		# Steer and Lean
-		if abs(input_dir.x) > 0.05:
-			rotate_y(-input_dir.x * turn_speed * delta)
-			# Natural motorcycle banking/lean
-			var target_lean = -input_dir.x * deg_to_rad(lean_angle_deg)
-			visual_mesh.rotation.z = lerp_angle(visual_mesh.rotation.z, target_lean, delta * 8.0)
-		else:
-			visual_mesh.rotation.z = lerp_angle(visual_mesh.rotation.z, 0.0, delta * 8.0)
+		var speed_ratio = clamp(abs(current_speed) / max_speed, 0.0, 1.0)
+		var current_turn_rate = lerp(low_speed_turn, high_speed_turn, speed_ratio)
 
-		# Acceleration / Reverse
-		var target_speed = -input_dir.y * max_speed
-		current_speed = move_toward(current_speed, target_speed, acceleration * delta)
+		# Speed-Dependent Steer and Dynamic Lean Banking
+		if abs(input_dir.x) > 0.05:
+			rotate_y(-input_dir.x * current_turn_rate * delta)
+			var target_lean = -input_dir.x * deg_to_rad(max_lean_deg) * speed_ratio
+			visual_mesh.rotation.z = lerp_angle(visual_mesh.rotation.z, target_lean, delta * 9.0)
+		else:
+			visual_mesh.rotation.z = lerp_angle(visual_mesh.rotation.z, 0.0, delta * 9.0)
+
+		# Forward Acceleration, Active Braking & Coasting
+		if input_dir.y < -0.1: # Throttle Forward
+			var power = lerp(0.7, 1.0, 1.0 - speed_ratio * 0.4)
+			current_speed = move_toward(current_speed, max_speed, acceleration * power * delta)
+		elif input_dir.y > 0.1: # Brake / Reverse
+			if current_speed > 0.5:
+				current_speed = move_toward(current_speed, 0.0, brake_decel * delta)
+			else:
+				current_speed = move_toward(current_speed, -4.0, acceleration * 0.5 * delta)
+		else:
+			# Coasting momentum
+			current_speed = move_toward(current_speed, 0.0, 2.0 * delta)
 
 		var forward = -global_transform.basis.z
 		velocity.x = forward.x * current_speed
 		velocity.z = forward.z * current_speed
 
-		# Wheel rotation animation
-		var spin_rate = (current_speed / 0.3) * delta
+		# True wheel spin roll
+		var spin_rate = (current_speed / 0.32) * delta
 		if front_wheel: front_wheel.rotate_x(spin_rate)
 		if rear_wheel: rear_wheel.rotate_x(spin_rate)
 	else:
-		current_speed = move_toward(current_speed, 0.0, acceleration * 2.0 * delta)
-		velocity.x = move_toward(velocity.x, 0.0, acceleration * delta)
-		velocity.z = move_toward(velocity.z, 0.0, acceleration * delta)
-		visual_mesh.rotation.z = lerp_angle(visual_mesh.rotation.z, 0.0, delta * 5.0)
+		current_speed = move_toward(current_speed, 0.0, 4.0 * delta)
+		velocity.x = move_toward(velocity.x, 0.0, 4.0 * delta)
+		velocity.z = move_toward(velocity.z, 0.0, 4.0 * delta)
+		visual_mesh.rotation.z = lerp_angle(visual_mesh.rotation.z, 0.0, delta * 6.0)
 
 	move_and_slide()
 
