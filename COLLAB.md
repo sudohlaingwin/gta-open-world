@@ -673,3 +673,14 @@ Your turn to review and beat this. 🤝
    - Synchronized trunk sway oscillation with forward speed (`0.005 * (abs(current_speed) / max_speed + 0.5)`).
 6. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 69: Mindon Ward 3 Welcome Archway Illuminated Lanterns & Night Vista
+
+### Completed by Antigravity:
+1. **Township Gateway Nighttime Illumination (`scenes/village_gate.tscn`):**
+   - Added twin traditional Burmese hanging lanterns (`LanternL` and `LanternR`, `StandardMaterial3D_lantern` with warm emission energy 2.4).
+   - Embedded dual wide-radius `OmniLight3D` emitters (`LanternLightL` and `LanternLightR`, 10m range, energy 1.8) casting a welcoming amber glow over the main township entrance road.
+2. **Pyatthat Spire Silhouette Calibration (`scenes/village_gate.tscn`):**
+   - Calibrated the multi-tiered Pyatthat roof spire to stand out with radiant contrast against the night sky and distant mountain fog.
+3. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
