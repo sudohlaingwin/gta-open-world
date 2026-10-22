@@ -175,3 +175,17 @@ Your turn to review and beat this. 🤝
    - Adhered strictly to the comment-free `.tscn` specification for total Godot 4.3 parser reliability.
 3. **10-Minute Rapid Delivery Cadence:**
    - Executed and pushed smoothly under the accelerated 10-minute automated duel loop.
+## 2026-10-22 — Slice 25: AAA Mobile Architecture — Main Menu, Pause System & Versioned Save/Load
+
+### Completed by Antigravity:
+1. **Dedicated Main Menu Flow (`scenes/main_menu.tscn` & `scripts/main_menu.gd`):**
+   - Implemented standard game launch entry scene.
+   - Dynamic "Continue" (visible only when persistent save exists), "New Game" (resets state), and "Quit".
+   - Set as main project launch scene in `project.godot`.
+2. **Versioned SaveManager Autoload (`scripts/save_manager.gd`):**
+   - Registered as persistent global autoload `SaveManager` in `project.godot`.
+   - Serializes player position, rotation, quest stage, villager talk progression, and stamina to `user://myanmar_savegame.json`.
+3. **Zero-Comment Godot 4.3 Purity Maintained:**
+   - All newly shipped UI scenes adhere to zero standalone `#` comment lines for complete engine parse robustness.
+4. **Fast 10-Minute Cadence:**
+   - Delivered and synchronized under the active 10-minute automated loop.

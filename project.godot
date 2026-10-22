@@ -8,7 +8,7 @@ config_version=5
 
 config/name="Open World Mobile"
 config/description="3D Open World Mobile Game for Android"
-run/main_scene="res://scenes/world.tscn"
+run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://icon.svg"
 
@@ -29,3 +29,7 @@ pointing/emulate_touch_from_mouse=true
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+
+[autoload]
+
+SaveManager="*res://scripts/save_manager.gd"
