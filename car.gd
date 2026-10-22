@@ -42,6 +42,80 @@ var driver: Node = null
 var speed: float = 0.0
 var steer_smooth: float = 0.0
 var wheels: Array = []
+## Slice 55 driving-assistance modes (audit item 9). The @export
+## values above are the Balanced mode exactly (Slice 26 polish);
+## Arcade (0) and Realistic (2) only scale them at drive time,
+## read live from SaveManager.driving_mode, so a change made in
+## the pause Settings screen applies the moment play resumes
+## with no re-enter and no restart. Top speed, the acceleration
+## curve and the reverse cap are identical in all three modes.
+## Arcade: brake x1.5 (shorter stop), coast x0.6 (gentler,
+## longer roll), steering response x1.25 (more settled),
+## high-speed turn rate x1.3 (still responds at top speed),
+## turn scrub x0.5 (turns bleed less speed).
+## Realistic: brake x0.75 (longer stop), coast x1.5 (heavier
+## drag, shorter roll), steering response x0.75 (heavier),
+## high-speed turn rate x0.7 (tighter at speed), scrub x1.5.
+var _sm_cached: Node = null
+
+
+func _driving_mode() -> int:
+	if _sm_cached != null and is_instance_valid(_sm_cached):
+		return clampi(int(_sm_cached.get("driving_mode")), 0, 2)
+	_sm_cached = get_node_or_null("/root/SaveManager")
+	if _sm_cached == null:
+		return 1
+	return clampi(int(_sm_cached.get("driving_mode")), 0, 2)
+
+
+func _mode_brake() -> float:
+	match _driving_mode():
+		0:
+			return brake_force * 1.5
+		2:
+			return brake_force * 0.75
+		_:
+			return brake_force
+
+
+func _mode_coast() -> float:
+	match _driving_mode():
+		0:
+			return coast_drag * 0.6
+		2:
+			return coast_drag * 1.5
+		_:
+			return coast_drag
+
+
+func _mode_steer_response() -> float:
+	match _driving_mode():
+		0:
+			return steer_response * 1.25
+		2:
+			return steer_response * 0.75
+		_:
+			return steer_response
+
+
+func _mode_high_turn() -> float:
+	match _driving_mode():
+		0:
+			return high_speed_turn_rate * 1.3
+		2:
+			return high_speed_turn_rate * 0.7
+		_:
+			return high_speed_turn_rate
+
+
+func _mode_scrub() -> float:
+	match _driving_mode():
+		0:
+			return turn_scrub * 0.5
+		2:
+			return turn_scrub * 1.5
+		_:
+			return turn_scrub
 
 func _ready() -> void:
 	for wname in ["WheelCar_p1_p13", "WheelCar_m1_p13", "WheelCar_p1_m13", "WheelCar_m1_m13"]:
@@ -85,24 +159,24 @@ func _physics_process(delta: float) -> void:
 		if speed > 0.5:
 			# Real brake: stronger than acceleration, and it never
 			# rolls the car backwards by itself.
-			speed = maxf(0.0, speed - brake_force * (-fwd) * delta)
+			speed = maxf(0.0, speed - _mode_brake() * (-fwd) * delta)
 		else:
 			# Near-stop: reverse engages, capped below.
 			speed += fwd * accel * _accel_curve(ratio) * delta
 	else:
 		# Coasting: gentle rolling drag, longer than the old
 		# accel*0.5 stop, so the car keeps its momentum.
-		speed = move_toward(speed, 0.0, coast_drag * delta)
+		speed = move_toward(speed, 0.0, _mode_coast() * delta)
 	speed = clamp(speed, -max_speed * reverse_speed_ratio, max_speed)
 	# Steering smoothing: the wheel turns toward the input instead
 	# of snapping to it (weight feel, no twitch on small inputs).
-	steer_smooth = move_toward(steer_smooth, steer, steer_response * delta)
+	steer_smooth = move_toward(steer_smooth, steer, _mode_steer_response() * delta)
 	# Speed-dependent steering: agile at low speed, stable at top
 	# speed (the old constant rate was equally twitchy everywhere).
-	var turn := lerpf(turn_rate, high_speed_turn_rate, ratio)
+	var turn := lerpf(turn_rate, _mode_high_turn(), ratio)
 	# Turn scrub: a hard turn at speed bleeds a little speed.
 	if absf(steer_smooth) > 0.5 and ratio > 0.5:
-		speed = move_toward(speed, 0.0, turn_scrub * absf(steer_smooth) * ratio * delta)
+		speed = move_toward(speed, 0.0, _mode_scrub() * absf(steer_smooth) * ratio * delta)
 	rotation.y -= steer_smooth * turn * delta * (1.0 if speed >= 0.0 else -1.0)
 	var forward := Vector3(-sin(rotation.y), 0.0, -cos(rotation.y))
 	velocity = forward * speed

@@ -19,6 +19,13 @@ extends Panel
 ## a change made in the pause Settings screen takes effect the
 ## moment play resumes. HUD size applies on world load and on
 ## pause-resume (player.gd re-applies it in _on_resume_pressed).
+## Slice 55 driving-assistance mode: a cycle button (Arcade ->
+## Balanced -> Realistic -> Arcade) that writes
+## SaveManager.driving_mode and saves immediately. The road
+## vehicles read the mode live every physics frame, so a change
+## made in the pause Settings screen applies the moment play
+## resumes, with no re-enter and no restart. Reset restores
+## Balanced (the pre-Slice-55 behaviour exactly) via refresh().
 
 var mute_check: CheckButton = null
 var volume_slider: HSlider = null
@@ -31,6 +38,8 @@ var deadzone_slider: HSlider = null
 var deadzone_label: Label = null
 var quality_check: CheckButton = null
 var fps_check: CheckButton = null
+var drive_label: Label = null
+var drive_button: Button = null
 var reset_button: Button = null
 var back_button: Button = null
 
@@ -61,6 +70,10 @@ func _ready() -> void:
 	fps_check = get_node_or_null("FpsCheck") as CheckButton
 	if fps_check != null:
 		fps_check.toggled.connect(_on_fps_toggled)
+	drive_label = get_node_or_null("DriveLabel") as Label
+	drive_button = get_node_or_null("DriveButton") as Button
+	if drive_button != null:
+		drive_button.pressed.connect(_on_drive_pressed)
 	reset_button = get_node_or_null("ResetButton") as Button
 	if reset_button != null:
 		reset_button.pressed.connect(_on_reset_pressed)
@@ -100,6 +113,8 @@ func refresh() -> void:
 		quality_check.button_pressed = int(sm.get("graphics_quality")) == 1
 	if fps_check != null:
 		fps_check.button_pressed = bool(sm.get("fps_visible"))
+	if drive_button != null:
+		drive_button.text = _drive_mode_text(int(sm.get("driving_mode")))
 
 
 ## Audit item 4: apply the quality setting to the live world, if one
@@ -180,6 +195,27 @@ func _on_deadzone_changed(value: float) -> void:
 	sm.call("save_settings")
 	if deadzone_label != null:
 		deadzone_label.text = "Joystick အသေဇုန်: %d%%" % int(round(value))
+
+
+func _drive_mode_text(mode: int) -> String:
+	match clampi(mode, 0, 2):
+		0:
+			return "မောင်းနှင်မှုပုံစံ: လွယ်ကူ (Arcade)"
+		2:
+			return "မောင်းနှင်မှုပုံစံ: လက်တွေ့ (Realistic)"
+		_:
+			return "မောင်းနှင်မှုပုံစံ: ပုံမှန် (Balanced)"
+
+
+func _on_drive_pressed() -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	var next_mode = (int(sm.get("driving_mode")) + 1) % 3
+	sm.set("driving_mode", next_mode)
+	sm.call("save_settings")
+	if drive_button != null:
+		drive_button.text = _drive_mode_text(next_mode)
 
 
 func _on_reset_pressed() -> void:

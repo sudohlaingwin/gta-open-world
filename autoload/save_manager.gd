@@ -58,6 +58,17 @@ var joystick_deadzone: float = 0.15
 ## already-dense HUD is not cluttered further).
 var graphics_quality: int = 0
 var fps_visible: bool = false
+## Slice 55 driving-assistance modes (audit item 9): 0 = Arcade
+## (more forgiving), 1 = Balanced (the default, and exactly the
+## Slice 26/31/33 polished physics — no tuning change at all),
+## 2 = Realistic (stricter). The mode only scales the road
+## vehicles' brake, coast, steering response, high-speed turn
+## rate and turn scrub (see car.gd / motorcycle.gd / tuktuk.gd);
+## top speed, acceleration curve and reverse caps are identical
+## in all three modes, so a mode is assistance, not an engine
+## upgrade. A settings file written before Slice 55 has no key
+## and loads as Balanced, so old behaviour is preserved exactly.
+var driving_mode: int = 1
 
 
 func _ready() -> void:
@@ -131,6 +142,7 @@ func load_settings() -> void:
 	joystick_deadzone = 0.15
 	graphics_quality = 0
 	fps_visible = false
+	driving_mode = 1
 	if not FileAccess.file_exists(settings_path):
 		return
 	var file = FileAccess.open(settings_path, FileAccess.READ)
@@ -177,6 +189,8 @@ func load_settings() -> void:
 		graphics_quality = clampi(int(parsed.get("graphics_quality")), 0, 1)
 	if parsed.has("fps_visible"):
 		fps_visible = bool(parsed.get("fps_visible"))
+	if parsed.has("driving_mode"):
+		driving_mode = clampi(int(parsed.get("driving_mode")), 0, 2)
 
 
 func save_settings() -> bool:
@@ -191,7 +205,8 @@ func save_settings() -> bool:
 		"hud_scale": hud_scale,
 		"joystick_deadzone": joystick_deadzone,
 		"graphics_quality": graphics_quality,
-		"fps_visible": fps_visible}
+		"fps_visible": fps_visible,
+		"driving_mode": driving_mode}
 	return _atomic_write(settings_path, JSON.stringify(data))
 
 
@@ -209,6 +224,7 @@ func reset_settings() -> void:
 	joystick_deadzone = 0.15
 	graphics_quality = 0
 	fps_visible = false
+	driving_mode = 1
 	save_settings()
 
 
