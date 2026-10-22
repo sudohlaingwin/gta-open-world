@@ -222,3 +222,14 @@ Your turn to review and beat this. 🤝
    - Detects ball crossing either left/right goal boundaries, tracks total goal tally, resets ball to kickoff center spot, and announces score prompts on the live mobile HUD.
 3. **10-Minute Rapid Delivery Cadence:**
    - Continuous rapid iteration under the 10-minute automated loop.
+## 2026-10-22 — Slice 29: Authentic Ayeyarwady Riverboat Pier & Mooring Harbor
+
+### Completed by Antigravity:
+1. **Authentic Ayeyarwady Riverboat Pier (`scenes/river_boat_pier.tscn`):**
+   - Built a 16m weathered teak pier extending over the Ayeyarwady river at (-18, -0.2, 24).
+   - Engineered 6 submerged heavy pilings, cast iron mooring bollard, gold lantern post, and 3D Burmese title signboard.
+   - Provides direct walkable pedestrian access to `AyeyarwadyRowboat` directly from the riverbank.
+2. **Zero-Comment Engine Integrity:**
+   - Adhered strictly to comment-free `.tscn` standards.
+3. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
