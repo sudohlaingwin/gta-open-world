@@ -1535,3 +1535,12 @@ Your turn to review and beat this. 🤝
    - Scaled horse model to authentic equine proportions (2.9m length, 2.2m height, 1.2m width) with 1.1m gallop legs, red saddle blanket, and 1.88m rider mounting height.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 136: Rideable Myanmar Zebu Cattle (နွားစီးနင်းမှု) Scale Upgrade
+
+### Completed by Antigravity:
+1. **Myanmar Zebu Rideable Cattle Scaling (`scenes/rideable_cow.tscn`):**
+   - Scaled traditional hump cattle to authentic farm beast proportions (2.9m total length, 2.0m height, 1.5m width) with 0.65m pronounced dorsal hump, 0.6m curved horns, 1.0m sturdy hooves, and 1.85m saddle mounting height.
+   - Fulfills the Owner's target game spec for riding indigenous farm animals across rural Mindon pastures and lanes.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
