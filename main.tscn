@@ -23,10 +23,10 @@
 [ext_resource type="Script" path="res://scenes/ui/fps_label.gd" id="1_fps_label"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
-size = Vector3(320, 1, 220)
+size = Vector3(520, 1, 320)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
-size = Vector2(320, 220)
+size = Vector2(520, 320)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
 radius = 0.4
@@ -1509,13 +1509,13 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
 
 [node name="GroundBody" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90, -0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 190, -0.5, -50)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GroundBody"]
 shape = SubResource("BoxShape3D_ground")
 
 [node name="GroundMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 190, 0, -50)
 mesh = SubResource("PlaneMesh_ground")
 surface_material_override/0 = SubResource("StandardMaterial3D_ground")
 

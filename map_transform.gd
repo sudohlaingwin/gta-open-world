@@ -45,14 +45,14 @@ class_name MapTransform
 extends RefCounted
 
 ## Fallback bounds: the actual ground rect from main.tscn
-## (GroundMesh PlaneMesh 320x220 at (90, 0, 0) -> x -70..250,
-## z -110..110). Used only if configure_from_ground never runs;
+## (GroundMesh PlaneMesh 520x320 at (190, 0, -50) -> x -70..450,
+## z -210..110). Used only if configure_from_ground never runs;
 ## in the live game it always runs at world spawn (player._ready)
 ## and again whenever the world map opens, so the scene is the
 ## single source of truth and this fallback is never consulted.
 static var min_x: float = -70.0
-static var max_x: float = 250.0
-static var min_z: float = -110.0
+static var max_x: float = 450.0
+static var min_z: float = -210.0
 static var max_z: float = 110.0
 static var configured: bool = false
 

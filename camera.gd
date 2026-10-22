@@ -21,6 +21,32 @@ extends Camera3D
 # fight). Q/E remain desktop fallbacks only.
 var zoom: float = 1.0
 
+# Slice 62 TPP/FPP views (owner order 2026-10-23 00:11): the standard
+# third-person view stays the default (Slice 61 zoom removal stands —
+# no zoom buttons); cycle_view() toggles to a first-person view
+# from inside a driven road vehicle (driver-seat eye height) or, on
+# the bullock cart, to a cart-top forward view over the road ahead.
+# view_mode resets to TPP the moment the player is not driving, so
+# a stale FPP can never strand the camera. V is a desktop fallback
+# only; the touch-first control is the View button in the More
+# stack (created by chill_world62.dress()).
+var view_mode: int = 0
+var _v_held: bool = false
+
+func cycle_view() -> void:
+	var parent := get_parent()
+	var player: Node = null
+	if parent != null:
+		player = parent.get_node_or_null("Player")
+	if player == null or player.get("driving_vehicle") == null:
+		view_mode = 0
+		return
+	var vname := str(player.get("driving_vehicle").name)
+	if vname == "Cart":
+		view_mode = 2 if view_mode != 2 else 0
+	else:
+		view_mode = 1 if view_mode != 1 else 0
+
 # Collision-avoidance tuning. EYE_HEIGHT puts the ray origin at
 # the player's head instead of their feet, so low walls the player
 # stands behind still shorten the camera. MIN_DIST keeps the
@@ -120,6 +146,37 @@ func _process(delta: float) -> void:
 		orbit_angle += 0.02
 	if Input.is_physical_key_pressed(KEY_E):
 		orbit_angle -= 0.02
+	var v_pressed := Input.is_physical_key_pressed(KEY_V)
+	if v_pressed and not _v_held:
+		cycle_view()
+	_v_held = v_pressed
+	# Slice 62 FPP / cart-top views: the camera rides the driven
+	# vehicle instead of orbiting the player. Forward is -basis.z,
+	# the shared car/cart convention (see car.gd / cart.gd); the
+	# collision-avoidance raycast is skipped here because the eye
+	# sits inside the vehicle on purpose, and clipping through the
+	# vehicle body is the view itself, not an obstruction.
+	var parent := get_parent()
+	var player: Node = null
+	if parent != null:
+		player = parent.get_node_or_null("Player")
+	var veh: Node = null
+	if player != null and player.get("driving_vehicle") != null:
+		veh = player.get("driving_vehicle")
+	if veh == null:
+		view_mode = 0
+	if view_mode != 0 and veh is Node3D:
+		var v3 := veh as Node3D
+		var fwd := -v3.global_transform.basis.z
+		fwd.y = 0.0
+		if fwd.length() < 0.001:
+			fwd = Vector3(0.0, 0.0, -1.0)
+		fwd = fwd.normalized()
+		var eye_h := 2.0 if view_mode == 2 else 1.5
+		var pos := v3.global_position + fwd * 0.3 + Vector3(0.0, eye_h, 0.0)
+		global_position = pos
+		look_at(pos + fwd, Vector3.UP)
+		return
 	var desired := 10.0  # Slice 61 addendum: fixed standard view (zoom locked at 1.0).
 	if cur_dist < 0.0:
 		cur_dist = desired

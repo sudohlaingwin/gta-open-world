@@ -7,6 +7,7 @@ const Dress59Script = preload("res://district_dress59.gd")
 const Style61Script = preload("res://style61.gd")
 const HudPolish60Script = preload("res://hud_polish60.gd")
 const HudFix61bScript = preload("res://hud_fix61b.gd")
+const Chill62Script = preload("res://chill_world62.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -154,8 +155,8 @@ const GUIDE_ARRIVED_RADIUS: float = 5.0
 # capsule CENTRE 0.5 m inside the edge so the body never hangs off
 # the plane; the edge label tells the player why they stopped.
 const WORLD_MIN_X: float = -69.5
-const WORLD_MAX_X: float = 249.5
-const WORLD_MIN_Z: float = -109.5
+const WORLD_MAX_X: float = 449.5
+const WORLD_MIN_Z: float = -209.5
 const WORLD_MAX_Z: float = 109.5
 # Last ground position where the player stood freely (on the floor
 # with no slide collision). Stuck recovery returns here. Runtime
@@ -392,6 +393,9 @@ func _ready() -> void:
 	# Slice 59 Mindon district + outskirts + vehicle dressing.
 	# Runs after Slice 58; runtime-only, no scene touched.
 	Dress59Script.dress(get_parent())
+	# Slice 62 big chill world (east expansion + living nature +
+	# seasons + FPP/cart-top views). Runs after Slice 59; runtime-only.
+	Chill62Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing

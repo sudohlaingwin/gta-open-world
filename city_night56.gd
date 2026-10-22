@@ -42,7 +42,7 @@ func _process(delta: float) -> void:
 		elif nm.begins_with("Cloud56"):
 			var c := child as Node3D
 			c.position.x += delta * 1.0
-			if c.position.x > 250.0:
+			if c.position.x > 450.0:
 				c.position.x = -70.0
 	var fw := world.get_node_or_null("Fireworks56") as Node3D
 	if fw != null:

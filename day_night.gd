@@ -27,6 +27,23 @@ func _sun_color_for_daylight(day: float) -> Color:
 		return Color(1.0, 0.75, 0.45).lerp(Color(1.0, 1.0, 1.0), t)
 	return Color(0.45, 0.55, 0.85)
 
+## Slice 62 seasons: the sun + sky tint by Myanmar season (summer
+## warm-golden, rainy cool-dim, winter pale-clear). Energy is
+## untouched, so the Slice 61 night floor (0.35) and the <0.15 dark
+## rule hold in every season; ground/leaf tints + rain live in
+## chill_controller62.gd. Falls back to summer without SaveManager.
+func _season_mul() -> Color:
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm == null or sm.get("season62") == null:
+		return Color(1.0, 0.96, 0.86, 1.0)
+	match clampi(int(sm.get("season62")), 0, 2):
+		1:
+			return Color(0.88, 0.93, 1.0, 1.0)
+		2:
+			return Color(0.96, 0.97, 1.0, 1.0)
+		_:
+			return Color(1.0, 0.96, 0.86, 1.0)
+
 func _sky_top_for_daylight(day: float) -> Color:
 	var noon := Color(0.30, 0.58, 0.95, 1.0)
 	var sunset := Color(0.42, 0.32, 0.62, 1.0)
@@ -62,7 +79,9 @@ func _process(delta: float) -> void:
 	# dark rule used by moon/stars/fireflies/headlights still holds.
 	var dl := sun as DirectionalLight3D
 	if dl != null:
-		dl.light_color = _sun_color_for_daylight(day)
+		var base_c := _sun_color_for_daylight(day)
+		var smul := _season_mul()
+		dl.light_color = Color(base_c.r * smul.r, base_c.g * smul.g, base_c.b * smul.b, 1.0)
 	# Slice 56 sky: gradient sky colours follow the same daylight
 	# value (noon blue, low-sun pink/orange sunset, night dark).
 	# The WorldEnvironment56 node is created at runtime by
@@ -71,8 +90,11 @@ func _process(delta: float) -> void:
 	if env56 != null and env56.environment != null and env56.environment.sky != null:
 		var smat := env56.environment.sky.sky_material as ProceduralSkyMaterial
 		if smat != null:
-			smat.sky_top_color = _sky_top_for_daylight(day)
-			smat.sky_horizon_color = _sky_horizon_for_daylight(day)
+			var skul := _season_mul()
+			var top := _sky_top_for_daylight(day)
+			var hor := _sky_horizon_for_daylight(day)
+			smat.sky_top_color = Color(top.r * skul.r, top.g * skul.g, top.b * skul.b, 1.0)
+			smat.sky_horizon_color = Color(hor.r * skul.r, hor.g * skul.g, hor.b * skul.b, 1.0)
 			smat.ground_bottom_color = Color(0.02, 0.03, 0.12, 1.0) if day < 0.15 else Color(0.25, 0.35, 0.25, 1.0)
 			smat.ground_horizon_color = Color(0.07, 0.07, 0.18, 1.0) if day < 0.15 else Color(0.55, 0.60, 0.55, 1.0)
 	# Night window lights: one shared emissive material on every
