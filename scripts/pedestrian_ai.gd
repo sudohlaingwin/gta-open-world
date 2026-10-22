@@ -33,20 +33,35 @@ func _physics_process(delta: float) -> void:
 			_pick_new_target()
 		else:
 			var move_dir = diff.normalized()
-			velocity.x = move_dir.x * walk_speed
-			velocity.z = move_dir.z * walk_speed
 			
-			var target_rot = atan2(move_dir.x, move_dir.z)
-			visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, target_rot, 5.0 * delta)
-			
-			# Walk leg swing
-			var swing = sin(Time.get_ticks_msec() * 0.008) * 0.35
-			if leg_l: leg_l.rotation.x = swing
-			if leg_r: leg_r.rotation.x = -swing
+			# Physics Ray obstacle probe to prevent walking into buildings / walls
+			var space_state = get_world_3d().direct_space_state
+			var ray_query = PhysicsRayQueryParameters3D.create(global_position + Vector3(0, 0.6, 0), global_position + Vector3(0, 0.6, 0) + move_dir * 1.5)
+			ray_query.exclude = [get_rid()]
+			var hit = space_state.intersect_ray(ray_query)
+			if not hit.is_empty():
+				# Obstacle ahead: reroute immediately
+				_pick_new_target()
+				wait_timer = 0.5
+			else:
+				velocity.x = move_dir.x * walk_speed
+				velocity.z = move_dir.z * walk_speed
+				
+				var target_rot = atan2(move_dir.x, move_dir.z)
+				visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, target_rot, 5.0 * delta)
+				
+				# Walk leg swing
+				var swing = sin(Time.get_ticks_msec() * 0.008) * 0.35
+				if leg_l: leg_l.rotation.x = swing
+				if leg_r: leg_r.rotation.x = -swing
 
 	move_and_slide()
 
 func _pick_new_target() -> void:
 	var angle = randf() * TAU
 	var dist = randf_range(4.0, route_radius)
-	target_pos = global_position + Vector3(cos(angle) * dist, 0, sin(angle) * dist)
+	var candidate = global_position + Vector3(cos(angle) * dist, 0, sin(angle) * dist)
+	# Avoid walking directly into deep river water (y < -0.5)
+	if candidate.x > 0.0 and candidate.x < 30.0 and candidate.z > 0.0 and candidate.z < 60.0:
+		candidate.x = -abs(candidate.x)
+	target_pos = candidate
