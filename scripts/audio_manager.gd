@@ -195,3 +195,57 @@ func play_elephant_trumpet() -> void:
 	stream.data = data
 	elephant_trumpet_player.stream = stream
 	elephant_trumpet_player.play()
+
+var river_stream_player: AudioStreamPlayer
+var birds_stream_player: AudioStreamPlayer
+
+func play_river_flow() -> void:
+	if is_muted: return
+	if not river_stream_player:
+		river_stream_player = AudioStreamPlayer.new()
+		river_stream_player.name = "RiverWaterAudio"
+		river_stream_player.volume_db = -10.0
+		add_child(river_stream_player)
+	var sample_hz = 22050
+	var duration = 2.0
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var brown_noise = (sin(t * 130.0 * TAU) * 0.4 + sin(t * 220.0 * TAU) * 0.3 + sin(t * 310.0 * TAU) * 0.3)
+		var val = brown_noise * (0.8 + 0.2 * sin(t * 3.5))
+		var int_sample = int(clamp(val, -1.0, 1.0) * 16383.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	river_stream_player.stream = stream
+	river_stream_player.play()
+
+func play_tropical_birds() -> void:
+	if is_muted: return
+	if not birds_stream_player:
+		birds_stream_player = AudioStreamPlayer.new()
+		birds_stream_player.name = "TropicalBirdsAudio"
+		birds_stream_player.volume_db = -8.0
+		add_child(birds_stream_player)
+	var sample_hz = 22050
+	var duration = 0.5
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env = exp(-t * 6.0)
+		var freq = 1800.0 + sin(t * 25.0) * 400.0
+		var val = sin(t * freq * TAU) * env * 0.5
+		var int_sample = int(clamp(val, -1.0, 1.0) * 32767.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	birds_stream_player.stream = stream
+	birds_stream_player.play()

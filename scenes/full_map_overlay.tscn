@@ -52,14 +52,29 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -200.0
-offset_top = 16.0
-offset_right = 200.0
-offset_bottom = 54.0
+offset_left = -260.0
+offset_top = 14.0
+offset_right = 260.0
+offset_bottom = 44.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
-theme_override_font_sizes/font_size = 24
-text = "🗺️ ရွာမြေပုံကြီး (Open World Map)"
+theme_override_font_sizes/font_size = 20
+text = "🗺️ မင်းတုန်းမြို့နယ် အမှတ်(၃)ရပ်ကွက် မြေပုံ (Mindon GIS)"
+horizontal_alignment = 1
+
+[node name="CoordsLabel" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -260.0
+offset_top = 44.0
+offset_right = 260.0
+offset_bottom = 66.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 1.0, 1)
+theme_override_font_sizes/font_size = 14
+text = "GPS: 19.351497° N, 94.731889° E | မင်းတုန်းမြို့"
 horizontal_alignment = 1
 
 [node name="CloseBtn" type="Button" parent="Panel"]
@@ -93,6 +108,12 @@ offset_right = 14.0
 offset_bottom = 14.0
 color = Color(0.1, 0.85, 0.95, 1)
 
+[node name="HospitalMarker" type="ColorRect" parent="Panel/MapCanvas"]
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.95, 0.2, 0.2, 1)
+
 [node name="PagodaMarker" type="ColorRect" parent="Panel/MapCanvas"]
 layout_mode = 0
 offset_right = 16.0
@@ -101,12 +122,12 @@ color = Color(1, 0.85, 0.1, 1)
 
 [node name="MarketMarker" type="ColorRect" parent="Panel/MapCanvas"]
 layout_mode = 0
-offset_right = 12.0
-offset_bottom = 12.0
-color = Color(0.9, 0.25, 0.2, 1)
+offset_right = 14.0
+offset_bottom = 14.0
+color = Color(0.9, 0.5, 0.1, 1)
 
-[node name="PierMarker" type="ColorRect" parent="Panel/MapCanvas"]
+[node name="StreamMarker" type="ColorRect" parent="Panel/MapCanvas"]
 layout_mode = 0
-offset_right = 12.0
-offset_bottom = 12.0
-color = Color(0.2, 0.5, 0.9, 1)
+offset_right = 18.0
+offset_bottom = 10.0
+color = Color(0.2, 0.55, 0.95, 1)
