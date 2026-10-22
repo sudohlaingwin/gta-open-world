@@ -10,15 +10,25 @@
 ## Clear removes it. The waypoint also shows on the minimap (player.gd
 ## reads has_waypoint/waypoint) and as a red beacon in the world.
 ## Zoom is button-driven (touch-friendly); drag pans the map.
-## Pause bookkeeping: opening records whether the tree was already
-## paused and closing restores exactly that state (never unpauses
-## unconditionally). The panel uses pause_mode always (set in the scene)
-## so its buttons work while the tree is paused.
+## Slice 49 (audit item 6, re-scoped): the world map no longer owns
+## its own centre/span constants — it uses the SHARED MapTransform
+## (bounds read from the live GroundMesh, same source as the
+## minimap). The Slice 28 formula's VALUES are preserved exactly
+## (same scale, same zoom-about-centre + pan), but its coordinate
+## SPACE is corrected: the old world_to_map returned OVERLAY
+## coordinates (centre included _map_area.position) while the dots
+## are children of _map_area, so every dot rendered displaced by
+## _map_area.position and clipped at the area edge — and taps,
+## which _gui_input delivers AREA-LOCAL, were read back as overlay
+## coordinates, landing ~171 m / ~69 m off at zoom 1. Both paths are
+## area-local now. One deliberate difference from the old tap clamp:
+## taps in the square area's void bands (world z beyond +-110) used
+## to place a beacon up to z +-160, outside the ground plane where
+## the player can never walk; they now clamp to the ground edge.
+## Slice 34 guidance and the beacon use raw world coordinates and
+## are untouched by this change.
 extends Control
 
-const WORLD_HALF: float = 160.0
-const WORLD_SPAN: float = 320.0
-const WORLD_CENTER_X: float = 90.0
 const MIN_ZOOM: float = 0.5
 const MAX_ZOOM: float = 3.0
 const TAP_SLOP_PX: float = 14.0
@@ -182,27 +192,35 @@ func _process(_delta: float) -> void:
 	_update_markers()
 
 
-## Shared transform, documented once: world metres (-50..50 on x/z) map
-## linearly onto the square map area, scaled by zoom and shifted by pan.
-## Same orientation as the minimap (panel x from world x, panel y from
-## world z) so the two maps never disagree.
+## Shared transform, documented once (Slice 49): world metres map
+## through the shared MapTransform onto the map AREA, in AREA-LOCAL
+## coordinates (the dots are children of _map_area, so their
+## positions are read in area space — NOT overlay space). Same
+## orientation as the minimap (panel x from world x, panel y from
+## world z) so the two maps never disagree. Zoom scales about the
+## area centre; pan shifts after zoom. The area is square, so the
+## fit scale is side/320 and the 320x220 world sits centred with
+## void bands top/bottom — the same rendering the Slice 28 square
+## region produced, pixel for pixel.
 func world_to_map(wx: float, wz: float) -> Vector2:
 	if _map_area == null:
 		return Vector2.ZERO
-	var scale := (_map_area.size.x / WORLD_SPAN) * zoom
-	var center := _map_area.position + _map_area.size * 0.5
-	return center + Vector2(wx - WORLD_CENTER_X, wz) * scale + pan
+	var base := MapTransform.world_to_panel(wx, wz, _map_area.size)
+	return _map_area.size * 0.5 + (base - _map_area.size * 0.5) * zoom + pan
 
 
-func map_to_world(screen_pos: Vector2) -> Vector2:
+## Inverse of world_to_map. Takes AREA-LOCAL coordinates — exactly
+## what _gui_input delivers for touches on _map_area (documented
+## Godot behaviour: event positions are relative to the control).
+## Clamped to the ground rect by MapTransform (see the Slice 49
+## header note about the old +-160 z clamp).
+func map_to_world(area_pos: Vector2) -> Vector2:
 	if _map_area == null:
 		return Vector2.ZERO
-	var scale := (_map_area.size.x / WORLD_SPAN) * zoom
-	if scale <= 0.0:
+	if zoom == 0.0:
 		return Vector2.ZERO
-	var center := _map_area.position + _map_area.size * 0.5
-	var w := (screen_pos - center - pan) / scale
-	return Vector2(clampf(w.x + WORLD_CENTER_X, WORLD_CENTER_X - WORLD_HALF, WORLD_CENTER_X + WORLD_HALF), clampf(w.y, -WORLD_HALF, WORLD_HALF))
+	var base := _map_area.size * 0.5 + (area_pos - pan - _map_area.size * 0.5) / zoom
+	return MapTransform.panel_to_world(base.x, base.y, _map_area.size)
 
 
 func _world_root() -> Node:
@@ -242,8 +260,7 @@ func _update_markers() -> void:
 	var player := world.get_node_or_null("Player") as Node3D
 	if player != null and _player_dot != null:
 		var pp := world_to_map(player.global_position.x, player.global_position.z)
-		pp.x = clampf(pp.x, _map_area.position.x, _map_area.position.x + _map_area.size.x - 18.0)
-		pp.y = clampf(pp.y, _map_area.position.y, _map_area.position.y + _map_area.size.y - 18.0)
+		pp = MapTransform.clamp_dot(pp, _map_area.size, _player_dot.size)
 		_player_dot.position = pp
 	if _waypoint_dot != null:
 		_waypoint_dot.visible = has_waypoint
@@ -279,10 +296,23 @@ func _update_beacon(world: Node) -> void:
 
 
 func open_map() -> void:
+	_configure_map_bounds()
 	was_paused = get_tree().paused
 	visible = true
 	get_tree().paused = true
 	_update_markers()
+
+
+## Slice 49: second guarantee that the shared transform reads the
+## live ground plane (the first is player._ready at spawn). The map
+## only ever opens in-game, long after spawn, so this refresh is
+## cheap insurance against any _ready ordering change.
+func _configure_map_bounds() -> void:
+	var world := _world_root()
+	if world != null:
+		var ground := world.get_node_or_null("GroundMesh") as Node3D
+		if ground != null:
+			MapTransform.configure_from_ground(ground)
 
 
 func close_map() -> void:
@@ -301,6 +331,10 @@ func clear_waypoint() -> void:
 	_info_label.text = "လမ်းကြောင်း မရှိသေးပါ"
 
 
+## Slice 49 contract: screen_pos is AREA-LOCAL (what _gui_input
+## delivers for touches on _map_area). The caller passes the touch
+## position unchanged; map_to_world no longer treats it as overlay
+## coordinates, so a tap now lands where the finger actually is.
 func set_waypoint_from_screen(screen_pos: Vector2) -> void:
 	waypoint = map_to_world(screen_pos)
 	has_waypoint = true

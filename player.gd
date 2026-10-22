@@ -49,6 +49,7 @@ var stamina: float = 100.0
 var touch_yaw_left: bool = false
 var touch_yaw_right: bool = false
 var minimap_dots: Dictionary = {}
+var minimap_panel: Control = null
 var compass_label: Label = null
 # Slice 34: waypoint guidance HUD (completes the Slice 28 map waypoint).
 # Nodes live in the real scene (JoystickLayer/GuidePanel34) and are
@@ -246,6 +247,20 @@ func _ready() -> void:
 	_apply_outfit()
 	_apply_hud_scale()
 	apply_graphics_quality()
+	_configure_map_bounds()
+
+
+## Slice 49: the shared map transform reads the live ground plane
+## once at spawn (GroundMesh PlaneMesh 320x220 at (90, 0, 0) in
+## main.tscn), so the minimap, the world map, and the waypoint all
+## derive their bounds from the same scene source. Falls back to
+## the same rect if the node is ever absent (MapTransform keeps its
+## fallback bounds in that case); the world map re-configures on
+## open as a second guarantee.
+func _configure_map_bounds() -> void:
+	var ground := get_node_or_null("../GroundMesh") as Node3D
+	if ground != null:
+		MapTransform.configure_from_ground(ground)
 
 
 ## Audit item 4: graphics quality. Reads SaveManager.graphics_quality
@@ -1185,16 +1200,24 @@ func _update_waypoint_guide() -> void:
 	if guide_dist != null:
 		guide_dist.text = "%d m" % int(dist)
 
-## Slice 10 REAL minimap: dots positioned from real world positions
-## (world spans roughly -50..50 on x/z; the panel is ~170 px, so
-## (w + 50) / 100 * 170 maps world to panel). Unlike a static
-## panel with a rotating icon, these dots actually move: player
-## (yellow), villagers (green), pagoda (gold), vehicles (white).
+## Slice 10 REAL minimap, Slice 49 transform: dots positioned from
+## real world positions through the SHARED MapTransform (bounds read
+## from the live GroundMesh at spawn, not literals). The old Slice 10
+## formula ((w + 70) / 320 * 170, same for x and z) is gone: it
+## applied the X range (-70..250) to Z as well, pinning the whole
+## northern strip (z -110..-70) to the panel's top edge, and its
+## hardcoded 170 px panel size was stale — MinimapPanel is
+## anchor-relative, so its real size comes from the panel itself.
+## Dots are clamped by their own size, so nothing hangs off the
+## panel edge. Unlike a static panel with a rotating icon, these
+## dots actually move: player (yellow), villagers (green), pagoda
+## (gold), vehicles (white).
 func _update_minimap() -> void:
 	if minimap_dots.is_empty():
 		var panel := get_node_or_null("../JoystickLayer/MinimapPanel")
 		if panel == null:
 			return
+		minimap_panel = panel as Control
 		for name in ["PlayerDot", "VillagerDot1", "VillagerDot2", "VillagerDot3", "VillagerDot4", "PagodaDot",
 				"VehicleDotCar", "VehicleDotCart", "VehicleDotMotorcycle", "VehicleDotAirplane",
 				"VehicleDotCow", "VehicleDotHelicopter",
@@ -1212,10 +1235,10 @@ func _update_minimap() -> void:
 			return
 	var put := func(dot_name: String, wpos: Vector3) -> void:
 		var dot: ColorRect = minimap_dots.get(dot_name)
-		if dot != null:
-			var mx := clampf((wpos.x + 70.0) / 320.0 * 170.0, 0.0, 162.0)
-			var my := clampf((wpos.z + 70.0) / 320.0 * 170.0, 0.0, 162.0)
-			dot.position = Vector2(mx, my)
+		if dot != null and minimap_panel != null:
+			dot.position = MapTransform.clamp_dot(
+				MapTransform.world_to_panel(wpos.x, wpos.z, minimap_panel.size),
+				minimap_panel.size, dot.size)
 	put.call("PlayerDot", global_position)
 	var villagers := get_tree().get_nodes_in_group("villagers")
 	for i in range(min(villagers.size(), 10)):
