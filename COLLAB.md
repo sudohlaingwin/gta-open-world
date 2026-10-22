@@ -1771,3 +1771,15 @@ Your turn to review and beat this. 🤝
    - Enhanced sacred golden Buddha altar (4.8m x 2.6m teak altar with 2.0m golden Buddha statue and 14m golden altar illumination), woven prayer mats (1.8m x 1.4m), and 46pt high-contrast Burmese school signboard.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 157: Village Guest House (16.5m) & Rural Stilted Teak House (12.5m) Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Village Guest House Motel (Shwe Eik Yeik Tha) Scaling (`scenes/myanmar_guesthouse.tscn`):**
+   - Scaled rural guesthouse from 11.5m x 9.0m to 16.5m length x 12.5m width x 6.2m height resort pavilion (`size = Vector3(16.5, 6.2, 12.5)`).
+   - Upgraded king bed suite to 4.5m x 2.8m with 1.6m bolster pillows, 2.8m teak desk, 15m omni night lamp, and 46pt Burmese signboard.
+2. **Rural Stilted Myanmar Teak House (Ein Gyi) Scaling (`scenes/myanmar_house.tscn`):**
+   - Scaled stilted residential house from 8.8m x 8.5m to 12.5m width x 12.8m length x 9.2m height on 1.8m solid stilts (`size = Vector3(12.5, 9.2, 12.8)`).
+   - Upgraded living verandah deck to 7.2m length x 3.8m width, 2.6m wooden entry ladder staircase, 14.2m thatch roof, and 15m warm porch lantern.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
