@@ -33,25 +33,21 @@ shape = SubResource("CylinderShape3D_bell")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
-# Left Post
 [node name="PillarL" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 1.6, 0)
 mesh = SubResource("CylinderMesh_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_timber")
 
-# Right Post
 [node name="PillarR" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1.6, 0)
 mesh = SubResource("CylinderMesh_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_timber")
 
-# Cross Beam
 [node name="Beam" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
 mesh = SubResource("BoxMesh_beam")
 surface_material_override/0 = SubResource("StandardMaterial3D_timber")
 
-# Bronze Bell
 [node name="BronzeBell" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
 mesh = SubResource("CylinderMesh_kyone")

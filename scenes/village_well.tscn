@@ -4,7 +4,6 @@
 height = 2.8
 radius = 1.4
 
-# Well Wall (Burmese Red Brick)
 [sub_resource type="CylinderMesh" id="CylinderMesh_wall"]
 top_radius = 1.3
 bottom_radius = 1.35
@@ -14,7 +13,6 @@ height = 0.9
 albedo_color = Color(0.65, 0.28, 0.18, 1) # Red Brick
 roughness = 0.9
 
-# Well Water Surface
 [sub_resource type="CylinderMesh" id="CylinderMesh_water"]
 top_radius = 1.1
 bottom_radius = 1.1
@@ -24,7 +22,6 @@ height = 0.1
 albedo_color = Color(0.1, 0.4, 0.65, 0.85)
 roughness = 0.1
 
-# Well Wooden Pulley Frame
 [sub_resource type="BoxMesh" id="BoxMesh_post"]
 size = Vector3(0.15, 2.4, 0.15)
 
@@ -42,31 +39,26 @@ shape = SubResource("CylinderShape3D_well")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
-# Brick Wall
 [node name="Wall" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
 mesh = SubResource("CylinderMesh_wall")
 surface_material_override/0 = SubResource("StandardMaterial3D_brick")
 
-# Water
 [node name="Water" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 mesh = SubResource("CylinderMesh_water")
 surface_material_override/0 = SubResource("StandardMaterial3D_water")
 
-# Left Post
 [node name="PostL" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 1.2, 0)
 mesh = SubResource("BoxMesh_post")
 surface_material_override/0 = SubResource("StandardMaterial3D_post_wood")
 
-# Right Post
 [node name="PostR" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 1.2, 0)
 mesh = SubResource("BoxMesh_post")
 surface_material_override/0 = SubResource("StandardMaterial3D_post_wood")
 
-# Cross Beam
 [node name="CrossBeam" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 mesh = SubResource("BoxMesh_cross")

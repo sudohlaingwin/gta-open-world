@@ -3,7 +3,6 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_house"]
 size = Vector3(8.0, 5.0, 7.0)
 
-# Posts & Flooring (Teak Pillar Stilt)
 [sub_resource type="BoxMesh" id="BoxMesh_floor"]
 size = Vector3(7.5, 0.4, 6.5)
 
@@ -11,7 +10,6 @@ size = Vector3(7.5, 0.4, 6.5)
 albedo_color = Color(0.35, 0.20, 0.10, 1) # Dark Teak Wood
 roughness = 0.85
 
-# Bamboo Woven Wall (ထရံကာနံရံ)
 [sub_resource type="BoxMesh" id="BoxMesh_walls"]
 size = Vector3(7.2, 2.8, 6.2)
 
@@ -19,7 +17,6 @@ size = Vector3(7.2, 2.8, 6.2)
 albedo_color = Color(0.72, 0.62, 0.42, 1) # Woven Bamboo Mat
 roughness = 0.9
 
-# Thatched Slanted Roof (ဓနိမိုးခေါင်မိုး)
 [sub_resource type="PrismMesh" id="PrismMesh_roof"]
 left_to_right = 0.5
 size = Vector3(8.2, 2.2, 7.2)
@@ -35,19 +32,16 @@ shape = SubResource("BoxShape3D_house")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
-# Floor & Stilt Base
 [node name="Floor" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 mesh = SubResource("BoxMesh_floor")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
-# Bamboo Wall
 [node name="Walls" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
 mesh = SubResource("BoxMesh_walls")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
 
-# Roof
 [node name="Roof" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, 0)
 mesh = SubResource("PrismMesh_roof")

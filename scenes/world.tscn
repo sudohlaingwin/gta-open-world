@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3]
+[gd_scene load_steps=40 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
@@ -33,6 +33,7 @@
 [ext_resource type="Shader" path="res://scripts/water_river.gdshader" id="31_water_shader"]
 [ext_resource type="PackedScene" path="res://scenes/myanmar_paddy_field.tscn" id="32_paddy_scn"]
 [ext_resource type="PackedScene" path="res://scenes/village_fireflies.tscn" id="33_fireflies_scn"]
+[ext_resource type="PackedScene" path="res://scenes/myanmar_guesthouse.tscn" id="34_guesthouse_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -84,29 +85,24 @@ shape = SubResource("BoxShape3D_ground")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain"]
 mesh = SubResource("PlaneMesh_ground")
 
-# Player
 [node name="Player" parent="." instance=ExtResource("1_player_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-# Village Entrance Arch / Gate (ရွာဦးမုခ်ဦး)
 [node name="VillageGate" parent="." instance=ExtResource("17_gate_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 32)
 
-# Mounts & Traditional Vehicles
 [node name="RideableCow" parent="." instance=ExtResource("3_cow_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
 
 [node name="BullockCart" parent="." instance=ExtResource("4_cart_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 4)
 
-# Aircrafts: Airplane & Helicopter
 [node name="Airplane" parent="." instance=ExtResource("5_plane_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 15)
 
 [node name="Helicopter" parent="." instance=ExtResource("9_heli_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 18)
 
-# Cultural Landmarks: Golden Pagoda, Bell & Village Zayat
 [node name="GoldenPagoda" parent="." instance=ExtResource("6_pagoda_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -35)
 
@@ -119,14 +115,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -30)
 [node name="WaterPotStand" parent="." instance=ExtResource("14_pot_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, -26)
 
-# Golden Hinthar Mythical Bird Statues (ရွှေဟင်္သာရုပ်တုများ)
 [node name="HintharStatueL" parent="." instance=ExtResource("19_hinthar_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -32)
 
 [node name="HintharStatueR" parent="." instance=ExtResource("19_hinthar_scn")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 4, 0, -32)
 
-# Village Market Stalls & Brick Well (ကျေးလက်ဈေးနှင့် ရေတွင်း)
 [node name="MarketStall1" parent="." instance=ExtResource("15_stall_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -18)
 
@@ -136,33 +130,27 @@ transform = Transform3D(0.965, 0, -0.258, 0, 1, 0, 0.258, 0, 0.965, 3, 0, -19)
 [node name="VillageWell" parent="." instance=ExtResource("16_well_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -16)
 
-# Traditional Myanmar Tea Shop (လက်ဖက်ရည်ဆိုင်)
 [node name="MyanmarTeaShop" parent="." instance=ExtResource("21_teashop_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -18)
 
-# Rural Monastery School (ဘုန်းတော်ကြီးသင်ကျောင်း)
 [node name="MonasterySchool" parent="." instance=ExtResource("22_school_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, -32)
 
-# Bamboo Footbridge (ဝါးတံတား)
 [node name="BambooBridge" parent="." instance=ExtResource("20_bridge_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
-# Village Houses
 [node name="VillageHouse1" parent="." instance=ExtResource("10_house_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -10)
 
 [node name="VillageHouse2" parent="." instance=ExtResource("10_house_scn")]
 transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, -14, 0, -14)
 
-# Tropical Banana Plants (ငှက်ပျောတော)
 [node name="BananaPlant1" parent="." instance=ExtResource("18_banana_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -6)
 
 [node name="BananaPlant2" parent="." instance=ExtResource("18_banana_scn")]
 transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, 21, 0, -8)
 
-# Authentic Myanmar Toddy Palm Trees (ကျေးလက်ထန်းတော)
 [node name="ToddyPalm1" parent="." instance=ExtResource("12_palm_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 6)
 
@@ -172,7 +160,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 10)
 [node name="ToddyPalm3" parent="." instance=ExtResource("12_palm_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, 24)
 
-# Interactive Myanmar Villagers
 [node name="Villager1" parent="." instance=ExtResource("7_villager_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -8)
 villager_name = "ကိုဘသောင်း"
@@ -191,41 +178,36 @@ villager_name = "ဒေါ်အေးကြည်"
 dialogue_text = "ပျော်ရွှင်စရာ နေ့ရက်လေး ဖြစ်ပါစေနော်!"
 longyi_color = Color(0.15, 0.25, 0.6, 1)
 
-# Authentic Drivable Myanmar Vehicles
 [node name="VillageCar" parent="." instance=ExtResource("23_car_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0.2, 5)
 
 [node name="MyanmarMotorcycle" parent="." instance=ExtResource("24_bike_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.2, 7)
 
-# Authentic Waterway Rowboat
 [node name="AyeyarwadyRowboat" parent="." instance=ExtResource("26_boat_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.4, 28)
 
-# Procedural Audio System
 [node name="MyanmarAudioManager" type="Node" parent="."]
 script = ExtResource("25_audio_mgr")
 
-# Authentic Myanmar Tuk-Tuk
 [node name="MyanmarTukTuk" parent="." instance=ExtResource("27_tuktuk_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0.2, -4)
 
-# Authentic Myanmar Festival & Performance Ground
 [node name="FestivalGround" parent="." instance=ExtResource("28_festival_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -10)
 
-# Authentic Myanmar Mounts (Horse and Royal Elephant)
 [node name="MyanmarHorse" parent="." instance=ExtResource("29_horse_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 12)
 
 [node name="MyanmarElephant" parent="." instance=ExtResource("30_elephant_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 24)
 
-# Ambient Myanmar Village Fireflies & Night Particles
 [node name="VillageFireflies" parent="." instance=ExtResource("33_fireflies_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
-# Live Mobile HUD
+[node name="MyanmarGuestHouse" parent="." instance=ExtResource("34_guesthouse_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, 28)
+
 [node name="MobileTouchHUD" parent="." instance=ExtResource("8_hud_scn")]
 
 

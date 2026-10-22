@@ -27,19 +27,16 @@ shape = SubResource("BoxShape3D_paddy")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
-# Mud Bed
 [node name="MudBed" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 mesh = SubResource("BoxMesh_mud_bed")
 surface_material_override/0 = SubResource("StandardMaterial3D_mud")
 
-# Wind Swaying Green Crops
 [node name="RiceCrops" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("BoxMesh_crops")
 surface_material_override/0 = SubResource("ShaderMaterial_crops")
 
-# Burmese Field Signboard
 [node name="FieldSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 7.2)
 text = "ရွှေဝါမြေ ရိုးရာ စပါးခင်းကြီး"

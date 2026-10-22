@@ -87,7 +87,6 @@ corner_radius_bottom_left = 14
 [node name="MobileTouchHUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
 
-# 1. Top-Left MiniMap & Compass & Stamina
 [node name="TopLeftHUD" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -144,7 +143,6 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_stamina_fill")
 value = 100.0
 show_percentage = false
 
-# 2. Top-Center Quest & Prompt Banners
 [node name="TopCenterHUD" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 5
@@ -185,7 +183,6 @@ text = "အနီးရှိ ရွာသား သို့မဟုတ် ယ
 horizontal_alignment = 1
 vertical_alignment = 1
 
-# 3. Bottom-Center Vehicle Speedometer
 [node name="BottomCenterHUD" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 7
@@ -259,7 +256,6 @@ grow_horizontal = 2
 grow_vertical = 0
 show_percentage = false
 
-# 4. Flight Touch Controls (Yaw Left / Yaw Right)
 [node name="FlightControls" type="Control" parent="."]
 visible = false
 layout_mode = 3
@@ -290,7 +286,6 @@ offset_bottom = 60.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_flight_btn")
 text = "🔁 ညာသို့လှည့် (Yaw Right)"
 
-# 5. Virtual Analog Joystick
 [node name="VirtualJoystick" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 2
@@ -317,7 +312,6 @@ offset_right = 112.0
 offset_bottom = 112.0
 color = Color(1, 0.84, 0, 0.6)
 
-# 6. Action Buttons Container
 [node name="ActionContainer" type="HBoxContainer" parent="."]
 anchors_preset = 3
 anchor_left = 1.0

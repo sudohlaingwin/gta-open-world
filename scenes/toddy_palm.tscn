@@ -28,13 +28,11 @@ shape = SubResource("CylinderShape3D_trunk")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
-# Tall Palm Trunk
 [node name="Trunk" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.0, 0)
 mesh = SubResource("CylinderMesh_trunk")
 surface_material_override/0 = SubResource("StandardMaterial3D_palm_bark")
 
-# Fan-shaped Palm Fronds Crown
 [node name="Crown" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.2, 0)
 mesh = SubResource("SphereMesh_fronds")

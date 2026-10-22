@@ -4,7 +4,6 @@
 height = 3.6
 radius = 1.2
 
-# Trunk
 [sub_resource type="CylinderMesh" id="CylinderMesh_trunk"]
 top_radius = 0.15
 bottom_radius = 0.25
@@ -14,7 +13,6 @@ height = 2.8
 albedo_color = Color(0.40, 0.55, 0.22, 1) # Greenish-brown stalk
 roughness = 0.8
 
-# Wide Banana Leaves (ငှက်ပျောဖက်)
 [sub_resource type="BoxMesh" id="BoxMesh_leaf"]
 size = Vector3(2.4, 0.05, 0.8)
 
@@ -29,25 +27,21 @@ shape = SubResource("CylinderShape3D_banana")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
-# Main Stalk
 [node name="Stalk" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 mesh = SubResource("CylinderMesh_trunk")
 surface_material_override/0 = SubResource("StandardMaterial3D_banana_trunk")
 
-# Leaf 1
 [node name="Leaf1" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(0.866, -0.25, 0.433, 0.5, 0.433, -0.75, 0, 0.866, 0.5, 0.8, 2.7, 0.5)
 mesh = SubResource("BoxMesh_leaf")
 surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
 
-# Leaf 2
 [node name="Leaf2" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(-0.866, -0.25, -0.433, -0.5, 0.433, 0.75, 0, 0.866, -0.5, -0.8, 2.7, -0.5)
 mesh = SubResource("BoxMesh_leaf")
 surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
 
-# Leaf 3
 [node name="Leaf3" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(0.25, -0.25, -0.935, 0, 0.965, -0.258, 0.968, 0.065, 0.241, -0.4, 2.8, 0.8)
 mesh = SubResource("BoxMesh_leaf")

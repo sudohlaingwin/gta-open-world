@@ -1,6 +1,5 @@
 [gd_scene load_steps=9 format=3]
 
-# --- Traditional Myanmar Pagoda (စေတီပုထိုး 3D Landmark Model) ---
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_base1"]
 top_radius = 4.0

@@ -3,7 +3,6 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_zayat"]
 size = Vector3(9.0, 4.8, 7.0)
 
-# 6 Stilt Teak Pillars
 [sub_resource type="CylinderMesh" id="CylinderMesh_pillar"]
 top_radius = 0.14
 bottom_radius = 0.16
@@ -13,11 +12,9 @@ height = 3.6
 albedo_color = Color(0.32, 0.18, 0.08, 1) # Weathered Burmese Teak
 roughness = 0.85
 
-# Open Deck Floor
 [sub_resource type="BoxMesh" id="BoxMesh_deck"]
 size = Vector3(8.5, 0.35, 6.5)
 
-# Tiered Traditional Burmese Pyatthat-style Roof
 [sub_resource type="PrismMesh" id="PrismMesh_lower_roof"]
 left_to_right = 0.5
 size = Vector3(9.2, 1.6, 7.2)
@@ -37,13 +34,11 @@ shape = SubResource("BoxShape3D_zayat")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
-# Floor Deck
 [node name="Deck" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 mesh = SubResource("BoxMesh_deck")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
-# 6 Pillars
 [node name="PillarFL" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 2.2, 2.8)
 mesh = SubResource("CylinderMesh_pillar")
@@ -74,13 +69,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, 2.2, -2.8)
 mesh = SubResource("CylinderMesh_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
-# Tier 1 Roof
 [node name="LowerRoof" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.0, 0)
 mesh = SubResource("PrismMesh_lower_roof")
 surface_material_override/0 = SubResource("StandardMaterial3D_roof_tile")
 
-# Tier 2 Roof
 [node name="UpperRoof" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.9, 0)
 mesh = SubResource("PrismMesh_upper_roof")
