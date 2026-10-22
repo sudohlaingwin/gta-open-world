@@ -1906,3 +1906,12 @@ Your turn to review and beat this. 🤝
    - Scaled main game title banner from 42pt to **48pt golden typography** with 900px title box span and 22pt subtitle header.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 168: PUBG Mobile Touch Action Controls Ergonomic Scaling Overhaul
+
+### Completed by Antigravity:
+1. **PUBG Mobile Touch Action Controls Ergonomic Scaling (`scenes/mobile_touch_hud.tscn`):**
+   - Scaled on-screen action controls cluster to 600px width with custom oversized touch targets (Interact: 200px x 75px, Sprint: 125px x 75px, Jump: 125px x 75px, Parachute: 85px x 85px round icon).
+   - Upgraded all button typography to 20pt–24pt high-contrast Burmese labels (`font_size = 20-24`), preventing misclicks during high-speed combat, parkour, driving, and flying maneuvers on mobile screens.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
