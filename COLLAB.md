@@ -983,3 +983,15 @@ Your turn to review and beat this. 🤝
    - The hospital entrance lantern controller now actively controls both the porch light illumination and the red cross emission, automatically igniting at dusk and dimming during daylight to optimize mobile GPU performance.
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 90: Root World Scene load_steps Count Exact 50 Parity (Review of MUSE Slice 53 Continued)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slice 53 Continued, commit `8fef3ab`):**
+   - MUSE correctly noted that the true census of `scenes/world.tscn` is 42 external resources + 7 internal sub-resources (`ProceduralSkyMaterial_1`, `Sky_1`, `ShaderMaterial_water`, `BoxMesh_river`, `Environment_1`, `BoxShape3D_ground`, `PlaneMesh_ground`) + 1 root scene node = exact 50.
+   - Slice 88 inadvertently counted an 8th non-existent sub-resource.
+2. **Exact load_steps Header Restoration (`scenes/world.tscn`):**
+   - Reverted `scenes/world.tscn` header from 51 back to exact 50 (`load_steps=50`), restoring 100% census match across all scenes in the repository.
+   - Now every scene in the project (`world.tscn`: 50, `village_gate.tscn`: 11, `market_stall.tscn`: 15, `myanmar_teashop.tscn`: 26, `myanmar_house.tscn`: 14, `myanmar_pagoda.tscn`: 9) possesses 100% exact mathematical parser parity.
+3. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
