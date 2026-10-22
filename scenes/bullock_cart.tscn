@@ -3,49 +3,50 @@
 [ext_resource type="Script" path="res://scripts/mount_controller.gd" id="1_cart"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cart"]
-size = Vector3(2.0, 1.6, 5.2)
+size = Vector3(2.6, 2.4, 6.8)
 
 [sub_resource type="BoxMesh" id="BoxMesh_cart_body"]
-size = Vector3(1.8, 0.8, 2.8)
+size = Vector3(2.4, 0.95, 3.8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
 albedo_color = Color(0.45, 0.28, 0.14, 1)
+roughness = 0.85
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
-top_radius = 0.8
-bottom_radius = 0.8
-height = 0.15
+top_radius = 1.1
+bottom_radius = 1.1
+height = 0.18
 
 [sub_resource type="BoxMesh" id="BoxMesh_shaft"]
-size = Vector3(0.12, 0.12, 3.2)
+size = Vector3(0.16, 0.16, 4.4)
 
 [sub_resource type="PrismMesh" id="PrismMesh_canopy"]
 left_to_right = 0.5
-size = Vector3(1.9, 0.8, 2.6)
+size = Vector3(2.5, 1.25, 3.6)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_mat"]
 albedo_color = Color(0.72, 0.60, 0.38, 1)
 roughness = 0.8
 
 [sub_resource type="BoxMesh" id="BoxMesh_ox_body"]
-size = Vector3(0.65, 0.85, 1.6)
+size = Vector3(0.9, 1.15, 2.4)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ox"]
 albedo_color = Color(0.82, 0.76, 0.65, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_ox_head"]
-size = Vector3(0.38, 0.45, 0.55)
+size = Vector3(0.5, 0.6, 0.75)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_ox_horn"]
-top_radius = 0.02
-bottom_radius = 0.06
-height = 0.35
+top_radius = 0.03
+bottom_radius = 0.08
+height = 0.48
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_horn"]
 albedo_color = Color(0.2, 0.18, 0.15, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_cart_interact"]
-radius = 3.2
+radius = 4.2
 
 [node name="BullockCart" type="CharacterBody3D"]
 script = ExtResource("1_cart")
@@ -54,89 +55,89 @@ walk_speed = 3.5
 trot_speed = 6.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 shape = SubResource("BoxShape3D_cart")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="CartBody" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
 mesh = SubResource("BoxMesh_cart_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_wood")
 
 [node name="Canopy" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
 mesh = SubResource("PrismMesh_canopy")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_mat")
 
 [node name="ShaftL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.55, -2.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85, 0.85, -3.2)
 mesh = SubResource("BoxMesh_shaft")
 surface_material_override/0 = SubResource("StandardMaterial3D_wood")
 
 [node name="ShaftR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.55, -2.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 0.85, -3.2)
 mesh = SubResource("BoxMesh_shaft")
 surface_material_override/0 = SubResource("StandardMaterial3D_wood")
 
 [node name="OxLeft" type="Node3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85, 0, -2.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 0, -3.6)
 
 [node name="OxBody" type="MeshInstance3D" parent="VisualMesh/OxLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
 mesh = SubResource("BoxMesh_ox_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_ox")
 
 [node name="OxHead" type="MeshInstance3D" parent="VisualMesh/OxLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, -0.9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, -1.25)
 mesh = SubResource("BoxMesh_ox_head")
 surface_material_override/0 = SubResource("StandardMaterial3D_ox")
 
 [node name="HornL" type="MeshInstance3D" parent="VisualMesh/OxLeft"]
-transform = Transform3D(0.94, -0.34, 0, 0.34, 0.94, 0, 0, 0, 1, -0.22, 1.35, -0.95)
+transform = Transform3D(0.94, -0.34, 0, 0.34, 0.94, 0, 0, 0, 1, -0.3, 1.85, -1.3)
 mesh = SubResource("CylinderMesh_ox_horn")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_horn")
 
 [node name="HornR" type="MeshInstance3D" parent="VisualMesh/OxLeft"]
-transform = Transform3D(0.94, 0.34, 0, -0.34, 0.94, 0, 0, 0, 1, 0.22, 1.35, -0.95)
+transform = Transform3D(0.94, 0.34, 0, -0.34, 0.94, 0, 0, 0, 1, 0.3, 1.85, -1.3)
 mesh = SubResource("CylinderMesh_ox_horn")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_horn")
 
 [node name="OxRight" type="Node3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 0, -2.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15, 0, -3.6)
 
 [node name="OxBody" type="MeshInstance3D" parent="VisualMesh/OxRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
 mesh = SubResource("BoxMesh_ox_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_ox")
 
 [node name="OxHead" type="MeshInstance3D" parent="VisualMesh/OxRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, -0.9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, -1.25)
 mesh = SubResource("BoxMesh_ox_head")
 surface_material_override/0 = SubResource("StandardMaterial3D_ox")
 
 [node name="HornL" type="MeshInstance3D" parent="VisualMesh/OxRight"]
-transform = Transform3D(0.94, -0.34, 0, 0.34, 0.94, 0, 0, 0, 1, -0.22, 1.35, -0.95)
+transform = Transform3D(0.94, -0.34, 0, 0.34, 0.94, 0, 0, 0, 1, -0.3, 1.85, -1.3)
 mesh = SubResource("CylinderMesh_ox_horn")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_horn")
 
 [node name="HornR" type="MeshInstance3D" parent="VisualMesh/OxRight"]
-transform = Transform3D(0.94, 0.34, 0, -0.34, 0.94, 0, 0, 0, 1, 0.22, 1.35, -0.95)
+transform = Transform3D(0.94, 0.34, 0, -0.34, 0.94, 0, 0, 0, 1, 0.3, 1.85, -1.3)
 mesh = SubResource("CylinderMesh_ox_horn")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_horn")
 
 [node name="WheelLeft" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.0, 0.8, 0)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.35, 1.1, 0)
 mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_wood")
 
 [node name="WheelRight" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.0, 0.8, 0)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.35, 1.1, 0)
 mesh = SubResource("CylinderMesh_wheel")
 surface_material_override/0 = SubResource("StandardMaterial3D_wood")
 
 [node name="SaddlePoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, -0.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -0.6)
 
 [node name="InteractionArea" type="Area3D" parent="."]
 

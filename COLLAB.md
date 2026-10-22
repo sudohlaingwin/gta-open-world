@@ -1661,3 +1661,18 @@ Your turn to review and beat this. 🤝
    - Synchronizes ambient traffic proportions with the drivable village car and tuk-tuks patrolling Mindon roads.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 148: Massive Aviation Scaling (Airplane & Helicopter) & Bullock Cart (Nwarr Hlae) Overhaul
+
+### Completed by Antigravity:
+1. **Authentic Utility Airplane Scaling (`scenes/airplane.tscn`):**
+   - Scaled light utility Cessna/crop-duster aircraft from toy proportions to true 1:1 scale (11.2m wingspan, 8.6m fuselage, 2.8m height, 2.4m propeller blade).
+   - Added authentic dual tail-plane stabilizers (`3.6m x 0.85m`) and extended 5.5m boarding interaction radius.
+2. **Turbine Transport Helicopter Scaling (`scenes/helicopter.tscn`):**
+   - Overhauled helicopter to realistic aviation scale (10.5m main rotor diameter, 9.5m total fuselage length, 3.3m cockpit sphere, 5.4m landing skids, 1.8m tail rotor).
+   - Upgraded cockpit seat marker to 1.75m elevation with an expanded 5.5m flight interaction perimeter.
+3. **Traditional Myanmar Bullock Cart (Nwarr Hlae) Scaling (`scenes/bullock_cart.tscn`):**
+   - Scaled traditional wooden ox-cart to 2.6m width x 6.8m total span, featuring 2.2m diameter teak cartwheels and 3.6m bamboo woven canopy.
+   - Upgraded dual draught bullocks to match the newly scaled 2.4m cattle with realistic 0.48m horns, 4.4m wooden draught shafts, and 1.75m driver perch.
+4. **5-Minute Rapid Automated Cadence:**
+   - Shipped and committed under the accelerated 5-minute automated delivery loop.
