@@ -1676,3 +1676,18 @@ Your turn to review and beat this. 🤝
    - Upgraded dual draught bullocks to match the newly scaled 2.4m cattle with realistic 0.48m horns, 4.4m wooden draught shafts, and 1.75m driver perch.
 4. **5-Minute Rapid Automated Cadence:**
    - Shipped and committed under the accelerated 5-minute automated delivery loop.
+
+## 2026-10-22 — Slice 149: Landmark Pagoda, Grand Village Gate & Agricultural Paddy Field Expanse Scaling
+
+### Completed by Antigravity:
+1. **Mindon Grand Pagoda Landmark Scaling (`scenes/myanmar_pagoda.tscn`):**
+   - Scaled landmark pagoda from 17.5m to magnificent 29.6m height with 32.0m wide circular base plinth (`radius = 16.0m`).
+   - Upgraded golden tiered terraces, bell body, spire cone, and 2.5m Hti umbrella with an 80m omni golden illumination radius.
+2. **Village Portal Archway (Village Gate) Scaling (`scenes/village_gate.tscn`):**
+   - Scaled entrance portal to 16.5m crossbeam width and 9.2m solid teak pillars (`radius = 0.65m`).
+   - Crowned with a 10.5m x 3.4m gold-trimmed Pyatthat tiered spire, 16m warm lanterns, and high-visibility 42pt welcome sign.
+3. **Myanmar Paddy Field Agricultural Expanse Scaling (`scenes/myanmar_paddy_field.tscn`):**
+   - Expanded rural paddy field from 18m x 14m to 36.0m length x 28.0m width agricultural plot.
+   - Enhanced mud bedding, 1.1m wind-swaying golden rice crops, and 36pt rural landmark marker.
+4. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
