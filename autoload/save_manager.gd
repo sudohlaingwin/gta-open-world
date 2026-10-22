@@ -3,8 +3,11 @@ extends Node
 ## Save file user://savegame.json holds gameplay progress (position,
 ## quest stage, talked villagers by name, stamina, reward flags,
 ## counters, crop growth, and a settings snapshot for reference).
-## Settings file user://settings.json holds mute + volume only, and is
-## the authority for settings at boot and in the Settings screen.
+## Settings file user://settings.json holds mute + volume + the player
+## outfit (shirt/longyi colours as HTML strings, hat on/off), and is
+## the authority for settings at boot, in the Settings screen, and in
+## the Character screen. Old settings files without the outfit keys
+## load the default outfit, so a Slice 29 settings file keeps working.
 ## Missing, corrupt, or wrong-version files load as "no save" — the
 ## game always falls back to a fresh start, never a crash.
 ## Talked villagers are saved by node NAME, not instance id, because
@@ -19,6 +22,12 @@ var settings_path: String = DEFAULT_SETTINGS_PATH
 var pending_load: Dictionary = {}
 var muted: bool = false
 var volume: float = 1.0
+## Slice 30 outfit: defaults are the scene's own colours (off-white
+## taikpon, dark-green longyi, hat on), so a missing settings file
+## looks exactly like the pre-customization player.
+var shirt_color_html: String = "#F5F0E6"
+var longyi_color_html: String = "#145938"
+var hat_visible: bool = true
 
 
 func _ready() -> void:
@@ -63,6 +72,9 @@ func save_game(data: Dictionary) -> bool:
 func load_settings() -> void:
 	muted = false
 	volume = 1.0
+	shirt_color_html = "#F5F0E6"
+	longyi_color_html = "#145938"
+	hat_visible = true
 	if not FileAccess.file_exists(settings_path):
 		return
 	var file = FileAccess.open(settings_path, FileAccess.READ)
@@ -77,10 +89,23 @@ func load_settings() -> void:
 		muted = bool(parsed.get("muted"))
 	if parsed.has("volume"):
 		volume = clampf(float(parsed.get("volume")), 0.0, 1.0)
+	if parsed.has("shirt_color_html"):
+		var sh = str(parsed.get("shirt_color_html"))
+		if Color.html_is_valid(sh):
+			shirt_color_html = sh
+	if parsed.has("longyi_color_html"):
+		var lo = str(parsed.get("longyi_color_html"))
+		if Color.html_is_valid(lo):
+			longyi_color_html = lo
+	if parsed.has("hat_visible"):
+		hat_visible = bool(parsed.get("hat_visible"))
 
 
 func save_settings() -> bool:
-	var data = {"muted": muted, "volume": volume}
+	var data = {"muted": muted, "volume": volume,
+		"shirt_color_html": shirt_color_html,
+		"longyi_color_html": longyi_color_html,
+		"hat_visible": hat_visible}
 	var file = FileAccess.open(settings_path, FileAccess.WRITE)
 	if file == null:
 		return false
@@ -92,6 +117,9 @@ func save_settings() -> bool:
 func reset_settings() -> void:
 	muted = false
 	volume = 1.0
+	shirt_color_html = "#F5F0E6"
+	longyi_color_html = "#145938"
+	hat_visible = true
 	save_settings()
 
 

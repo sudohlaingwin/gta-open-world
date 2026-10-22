@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scenes/ui/main_menu.gd" id="1_menu_script"]
 [ext_resource type="PackedScene" path="res://scenes/ui/settings_panel.tscn" id="2_settings_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/character_panel.tscn" id="3_character_panel"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_menu_button"]
 bg_color = Color(0.15, 0.2, 0.35, 0.9)
@@ -94,11 +95,23 @@ offset_right = 0.0
 offset_bottom = 0.0
 text = "ဆက်တင်များ"
 
+[node name="CharacterButton" type="Button" parent="."]
+theme_override_styles/normal = SubResource("StyleBoxFlat_menu_button")
+anchor_left = 0.35
+anchor_top = 0.70
+anchor_right = 0.65
+anchor_bottom = 0.78
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+text = "ဇာတ်ကောင်"
+
 [node name="NoSaveLabel" type="Label" parent="."]
 anchor_left = 0.2
-anchor_top = 0.72
+anchor_top = 0.82
 anchor_right = 0.8
-anchor_bottom = 0.78
+anchor_bottom = 0.88
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 0.0
@@ -109,4 +122,7 @@ visible = false
 text = "သိမ်းထားတဲ့ ဂိမ်းမရှိသေးပါ — အသစ်စ ဖြင့် စတင်ပါ"
 
 [node name="SettingsPanel" parent="." instance=ExtResource("2_settings_panel")]
+visible = false
+
+[node name="CharacterPanel" parent="." instance=ExtResource("3_character_panel")]
 visible = false

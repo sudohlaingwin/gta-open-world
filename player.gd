@@ -211,6 +211,7 @@ var last_saved_stage: int = -1
 
 func _ready() -> void:
 	_apply_pending_load()
+	_apply_outfit()
 	var mm = _mm()
 	if mm != null:
 		last_saved_stage = mm.stage
@@ -1739,6 +1740,42 @@ func _on_mute() -> void:
 
 func _sm():
 	return get_node_or_null("/root/SaveManager")
+
+
+## Slice 30 outfit: apply the saved Character-screen choice at spawn.
+## The scene's taikpon/longyi materials are SHARED with all 18
+## villagers, so the player's Torso/Longyi get a DUPLICATED material
+## each (villagers keep the shared originals, untouched). Hat is a
+## visibility toggle only, so no material work is needed for it.
+## Applied on world load, not live: changing the outfit in the menu
+## shows up the next time the world loads.
+func _apply_outfit() -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	var shirt_html = str(sm.get("shirt_color_html"))
+	var longyi_html = str(sm.get("longyi_color_html"))
+	if Color.html_is_valid(shirt_html):
+		_recolor_part("Torso", Color(shirt_html))
+	if Color.html_is_valid(longyi_html):
+		_recolor_part("Longyi", Color(longyi_html))
+	var hat = get_node_or_null("PlayerHat") as MeshInstance3D
+	if hat != null:
+		hat.visible = bool(sm.get("hat_visible"))
+
+
+func _recolor_part(part_name: String, color: Color) -> void:
+	var part = get_node_or_null(part_name) as MeshInstance3D
+	if part == null:
+		return
+	var base = part.get_surface_override_material(0)
+	if base == null:
+		return
+	var mat = base.duplicate() as StandardMaterial3D
+	if mat == null:
+		return
+	mat.albedo_color = color
+	part.set_surface_override_material(0, mat)
 
 
 ## Slice 27: MissionManager access, mirroring the _sm() pattern.

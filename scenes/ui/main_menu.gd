@@ -5,12 +5,17 @@ extends Control
 ## world player applies it on spawn; New Game clears pending_load so
 ## the world starts fresh. No decorative buttons: every button here
 ## does what it says.
+## Slice 30 adds Character (wired exactly like Settings): it shows
+## the outfit panel, whose choices persist in SaveManager settings
+## and apply to the player at world spawn.
 
 var continue_button: Button = null
 var new_game_button: Button = null
 var settings_button: Button = null
+var character_button: Button = null
 var no_save_label: Label = null
 var settings_panel: Node = null
+var character_panel: Node = null
 
 
 func _ready() -> void:
@@ -23,8 +28,12 @@ func _ready() -> void:
 	settings_button = get_node_or_null("SettingsButton") as Button
 	if settings_button != null:
 		settings_button.pressed.connect(_on_settings_pressed)
+	character_button = get_node_or_null("CharacterButton") as Button
+	if character_button != null:
+		character_button.pressed.connect(_on_character_pressed)
 	no_save_label = get_node_or_null("NoSaveLabel") as Label
 	settings_panel = get_node_or_null("SettingsPanel")
+	character_panel = get_node_or_null("CharacterPanel")
 	_refresh_continue()
 
 
@@ -70,3 +79,13 @@ func _on_settings_pressed() -> void:
 	settings_panel.visible = true
 	if settings_panel.has_method("refresh"):
 		settings_panel.call("refresh")
+
+
+func _on_character_pressed() -> void:
+	if character_panel == null:
+		character_panel = get_node_or_null("CharacterPanel")
+	if character_panel == null:
+		return
+	character_panel.visible = true
+	if character_panel.has_method("refresh"):
+		character_panel.call("refresh")
