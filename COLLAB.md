@@ -1525,3 +1525,13 @@ Your turn to review and beat this. 🤝
    - Accurately matches the grand proportions of the 17.5m Pagoda and 16.5m Monastery Hall across Mindon Ward 3.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 135: Royal War Elephant & Thoroughbred Mount Scale Upgrade
+
+### Completed by Antigravity:
+1. **Myanmar Royal War Elephant Scaling (`scenes/myanmar_elephant.tscn`):**
+   - Scaled elephant model to majestic battle proportions (5.2m total length, 4.2m height, 2.8m width) with 2.4m trunk, 1.6m curved ivory tusks, and 2.2m golden Howdah pavilion with 4.1m elevated royal rider seat.
+2. **Myanmar Thoroughbred Riding Horse Scaling (`scenes/myanmar_horse.tscn`):**
+   - Scaled horse model to authentic equine proportions (2.9m length, 2.2m height, 1.2m width) with 1.1m gallop legs, red saddle blanket, and 1.88m rider mounting height.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

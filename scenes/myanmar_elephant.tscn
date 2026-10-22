@@ -3,33 +3,33 @@
 [ext_resource type="Script" path="res://scripts/elephant_controller.gd" id="1_elephant"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_elephant"]
-size = Vector3(2.2, 3.2, 4.0)
+size = Vector3(2.8, 4.2, 5.2)
 
 [sub_resource type="BoxMesh" id="BoxMesh_body"]
-size = Vector3(2.0, 2.2, 3.2)
+size = Vector3(2.6, 2.8, 4.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_elephant_skin"]
 albedo_color = Color(0.38, 0.38, 0.40, 1)
 roughness = 0.9
 
 [sub_resource type="BoxMesh" id="BoxMesh_head"]
-size = Vector3(1.4, 1.4, 1.4)
+size = Vector3(1.8, 1.8, 1.8)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_trunk"]
-top_radius = 0.2
-bottom_radius = 0.1
-height = 1.8
+top_radius = 0.26
+bottom_radius = 0.14
+height = 2.4
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_tusk"]
-top_radius = 0.08
-bottom_radius = 0.02
-height = 1.2
+top_radius = 0.11
+bottom_radius = 0.03
+height = 1.6
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivory"]
 albedo_color = Color(0.95, 0.94, 0.88, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_howdah"]
-size = Vector3(1.6, 0.8, 1.6)
+size = Vector3(2.2, 1.1, 2.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold_howdah"]
 albedo_color = Color(0.9, 0.72, 0.15, 1)
@@ -37,55 +37,56 @@ metallic = 0.6
 roughness = 0.3
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
-size = Vector3(4.0, 3.5, 5.0)
+size = Vector3(5.2, 4.5, 6.2)
 
 [node name="MyanmarElephant" type="CharacterBody3D"]
 script = ExtResource("1_elephant")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
 shape = SubResource("BoxShape3D_elephant")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Body" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
 mesh = SubResource("BoxMesh_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
 
 [node name="Head" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, -1.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, -2.4)
 mesh = SubResource("BoxMesh_head")
 surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
 
 [node name="Trunk" type="Node3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, -2.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, -3.2)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VisualMesh/Trunk"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, -0.8, -0.2)
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, -1.0, -0.3)
 mesh = SubResource("CylinderMesh_trunk")
 surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
 
 [node name="TuskL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, -0.45, 1.6, -2.2)
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, -0.6, 2.1, -2.9)
 mesh = SubResource("CylinderMesh_tusk")
 surface_material_override/0 = SubResource("StandardMaterial3D_ivory")
 
 [node name="TuskR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0.45, 1.6, -2.2)
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0.6, 2.1, -2.9)
 mesh = SubResource("CylinderMesh_tusk")
 surface_material_override/0 = SubResource("StandardMaterial3D_ivory")
 
 [node name="Howdah" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 0)
 mesh = SubResource("BoxMesh_howdah")
 surface_material_override/0 = SubResource("StandardMaterial3D_gold_howdah")
 
 [node name="HowdahSeat" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.1, 0)
 
 [node name="InteractionArea" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
 shape = SubResource("BoxShape3D_interact")
+

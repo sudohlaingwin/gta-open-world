@@ -3,102 +3,103 @@
 [ext_resource type="Script" path="res://scripts/horse_controller.gd" id="1_horse"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_horse"]
-size = Vector3(1.0, 1.8, 2.4)
+size = Vector3(1.2, 2.2, 2.9)
 
 [sub_resource type="BoxMesh" id="BoxMesh_body"]
-size = Vector3(0.8, 0.9, 1.8)
+size = Vector3(1.0, 1.1, 2.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chestnut"]
 albedo_color = Color(0.52, 0.28, 0.15, 1)
 roughness = 0.7
 
 [sub_resource type="BoxMesh" id="BoxMesh_neck"]
-size = Vector3(0.35, 0.8, 0.6)
+size = Vector3(0.42, 1.0, 0.75)
 
 [sub_resource type="BoxMesh" id="BoxMesh_head"]
-size = Vector3(0.32, 0.45, 0.7)
+size = Vector3(0.38, 0.55, 0.85)
 
 [sub_resource type="BoxMesh" id="BoxMesh_leg"]
-size = Vector3(0.18, 0.9, 0.18)
+size = Vector3(0.22, 1.1, 0.22)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hoof"]
 albedo_color = Color(0.15, 0.12, 0.10, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_saddle"]
-size = Vector3(0.84, 0.12, 0.7)
+size = Vector3(1.05, 0.15, 0.85)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_saddle_red"]
 albedo_color = Color(0.8, 0.15, 0.15, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
-size = Vector3(2.8, 2.2, 3.5)
+size = Vector3(3.6, 2.6, 4.2)
 
 [node name="MyanmarHorse" type="CharacterBody3D"]
 script = ExtResource("1_horse")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
 shape = SubResource("BoxShape3D_horse")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Body" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
 mesh = SubResource("BoxMesh_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_chestnut")
 
 [node name="Neck" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.5, -0.8)
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.85, -1.0)
 mesh = SubResource("BoxMesh_neck")
 surface_material_override/0 = SubResource("StandardMaterial3D_chestnut")
 
 [node name="Head" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, -1.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, -1.5)
 mesh = SubResource("BoxMesh_head")
 surface_material_override/0 = SubResource("StandardMaterial3D_chestnut")
 
 [node name="Saddle" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.48, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.82, 0)
 mesh = SubResource("BoxMesh_saddle")
 surface_material_override/0 = SubResource("StandardMaterial3D_saddle_red")
 
 [node name="LegFL" type="Node3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.5, -0.6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.38, 0.6, -0.75)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VisualMesh/LegFL"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
 mesh = SubResource("BoxMesh_leg")
 surface_material_override/0 = SubResource("StandardMaterial3D_hoof")
 
 [node name="LegFR" type="Node3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.5, -0.6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38, 0.6, -0.75)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VisualMesh/LegFR"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
 mesh = SubResource("BoxMesh_leg")
 surface_material_override/0 = SubResource("StandardMaterial3D_hoof")
 
 [node name="LegBL" type="Node3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.5, 0.6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.38, 0.6, 0.75)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VisualMesh/LegBL"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
 mesh = SubResource("BoxMesh_leg")
 surface_material_override/0 = SubResource("StandardMaterial3D_hoof")
 
 [node name="LegBR" type="Node3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.5, 0.6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38, 0.6, 0.75)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VisualMesh/LegBR"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
 mesh = SubResource("BoxMesh_leg")
 surface_material_override/0 = SubResource("StandardMaterial3D_hoof")
 
 [node name="RiderSeat" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.88, 0)
 
 [node name="InteractionArea" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
 shape = SubResource("BoxShape3D_interact")
+
