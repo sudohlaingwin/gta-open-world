@@ -1,4 +1,5 @@
 extends CharacterBody3D
+const DressingScript = preload("res://village_dressing.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -324,6 +325,16 @@ func _ready() -> void:
 	_apply_hud_scale()
 	apply_graphics_quality()
 	_configure_map_bounds()
+	# Slice 53 graphics: village dressing (walls/windows/doors for
+	# the floating house slabs, tree variety, ground/path textures).
+	# Runs at spawn, before the first frame, so nothing pops in.
+	# The whole subtree exists by now (scene instantiation parents
+	# every node before any _ready fires), even though later
+	# siblings have not had _ready yet. Loaded by preload, not
+	# class_name: a new class_name needs a regenerated .godot
+	# global-class cache, and a stale cache breaks this script's
+	# parse in a fresh clone.
+	DressingScript.dress(get_parent())
 
 
 ## Slice 49: the shared map transform reads the live ground plane
@@ -442,7 +453,23 @@ func _physics_process(delta: float) -> void:
 		raw = raw.normalized()
 	var dir := Vector3.ZERO
 	if raw != Vector3.ZERO:
-		dir = raw.normalized()
+		# Slice 53: camera-relative movement. Joystick-up is the
+		# direction the camera looks, not world -Z: after any orbit
+		# the old world-axis mapping read as sideways/backwards on
+		# screen, which is part of "cannot move forward". The camera
+		# sits at player + dir_h * dist with
+		# dir_h = (sin(orbit), 0, cos(orbit)), so view-forward is
+		# (-sin(orbit), 0, -cos(orbit)) and view-right is
+		# (cos(orbit), 0, -sin(orbit)). Falls back to the old
+		# world-axis mapping if no camera is found.
+		var cam := get_node_or_null("../FollowCamera")
+		if cam != null and cam.get("orbit_angle") != null:
+			var o := float(cam.get("orbit_angle"))
+			var fwd := Vector3(-sin(o), 0.0, -cos(o))
+			var rgt := Vector3(cos(o), 0.0, -sin(o))
+			dir = (rgt * raw.x + fwd * (-raw.z)).normalized()
+		else:
+			dir = raw.normalized()
 	var speed := walk_speed
 	if touch_vector != Vector2.ZERO:
 		speed *= 0.4 + 0.6 * clampf(raw.length(), 0.0, 1.0)

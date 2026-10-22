@@ -149,14 +149,14 @@ func _build_ui() -> void:
 	add_child(_close_btn)
 	_zoom_in_btn = Button.new()
 	_zoom_in_btn.name = "ZoomInBtn"
-	_zoom_in_btn.text = "＋"
+	_zoom_in_btn.text = "+"
 	_zoom_in_btn.position = Vector2(182.0, 120.0)
 	_zoom_in_btn.size = Vector2(64.0, 64.0)
 	_zoom_in_btn.pressed.connect(_on_zoom_in)
 	add_child(_zoom_in_btn)
 	_zoom_out_btn = Button.new()
 	_zoom_out_btn.name = "ZoomOutBtn"
-	_zoom_out_btn.text = "－"
+	_zoom_out_btn.text = "-"
 	_zoom_out_btn.position = Vector2(262.0, 120.0)
 	_zoom_out_btn.size = Vector2(64.0, 64.0)
 	_zoom_out_btn.pressed.connect(_on_zoom_out)

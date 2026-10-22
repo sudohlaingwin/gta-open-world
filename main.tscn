@@ -1615,24 +1615,24 @@ target = NodePath("../Player")
 [node name="JoystickLayer" type="CanvasLayer" parent="."]
 
 [node name="Joystick" type="Control" parent="JoystickLayer"]
-offset_left = 30.0
-offset_top = 540.0
-offset_right = 180.0
-offset_bottom = 690.0
+offset_left = 0.0
+offset_top = 400.0
+offset_right = 320.0
+offset_bottom = 720.0
 script = ExtResource("1_joystick")
 player_path = NodePath("../../Player")
 
-[node name="Base" type="ColorRect" parent="JoystickLayer/Joystick"]
-offset_right = 150.0
-offset_bottom = 150.0
-color = Color(1, 1, 1, 0.25)
+[node name="Base" type="TextureRect" parent="JoystickLayer/Joystick"]
+offset_left = 30.0
+offset_top = 140.0
+offset_right = 180.0
+offset_bottom = 290.0
 
-[node name="Handle" type="ColorRect" parent="JoystickLayer/Joystick/Base"]
+[node name="Handle" type="TextureRect" parent="JoystickLayer/Joystick/Base"]
 offset_left = 50.0
 offset_top = 50.0
 offset_right = 100.0
 offset_bottom = 100.0
-color = Color(1, 1, 1, 0.6)
 
 [node name="TalkButton" type="Button" parent="JoystickLayer"]
 theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
@@ -1747,10 +1747,10 @@ horizontal_alignment = 2
 text = "အချိန် 06:00"
 
 [node name="FpsLabel40" type="Label" parent="JoystickLayer"]
-anchor_left = 0.78
-anchor_top = 0.08
-anchor_right = 0.97
-anchor_bottom = 0.12
+anchor_left = 0.02
+anchor_top = 0.50
+anchor_right = 0.25
+anchor_bottom = 0.55
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 0.0
@@ -2616,7 +2616,7 @@ offset_bottom = 8.0
 color = Color(0.9, 0.9, 0.9, 1)
 
 [node name="CompassLabel" type="Label" parent="JoystickLayer"]
-anchor_left = 0.02
+anchor_left = 0.16
 anchor_top = 0.09
 anchor_right = 0.25
 anchor_bottom = 0.14
@@ -2627,9 +2627,9 @@ offset_bottom = 0.0
 text = "0° N"
 
 [node name="DayLabel" type="Label" parent="JoystickLayer"]
-anchor_left = 0.60
+anchor_left = 0.02
 anchor_top = 0.02
-anchor_right = 0.76
+anchor_right = 0.20
 anchor_bottom = 0.07
 offset_left = 0.0
 offset_top = 0.0
@@ -3341,15 +3341,15 @@ surface_material_override/0 = SubResource("StandardMaterial3D_straw")
 
 [node name="CameraResetButton" type="Button" parent="JoystickLayer"]
 theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
-anchor_left = 0.86
+anchor_left = 0.76
 anchor_top = 0.36
-anchor_right = 0.96
+anchor_right = 0.84
 anchor_bottom = 0.42
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 0.0
 offset_bottom = 0.0
-text = "📷"
+text = "ကင်မရာ"
 
 [node name="QuestTrackerLabel" type="Label" parent="JoystickLayer"]
 anchor_left = 0.25
@@ -3934,10 +3934,10 @@ offset_bottom = 0.0
 visible = false
 text = "ရေဆွဲ"
 [node name="FruitWaterLabel" type="Label" parent="JoystickLayer"]
-anchor_left = 0.80
-anchor_top = 0.02
-anchor_right = 0.97
-anchor_bottom = 0.06
+anchor_left = 0.84
+anchor_top = 0.42
+anchor_right = 0.98
+anchor_bottom = 0.47
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 0.0
@@ -7261,7 +7261,7 @@ offset_top = 0.0
 offset_right = 0.0
 offset_bottom = 0.0
 visible = false
-text = "📷"
+text = "ဓာတ်ပုံ"
 
 [node name="RainButton17" type="Button" parent="JoystickLayer"]
 theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")

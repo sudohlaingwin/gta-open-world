@@ -21,6 +21,8 @@ var no_save_label: Label = null
 var settings_panel: Node = null
 var character_panel: Node = null
 var vehicle_panel: Node = null
+var loading_label: Label = null
+var loading: bool = false
 
 
 func _ready() -> void:
@@ -43,7 +45,34 @@ func _ready() -> void:
 	settings_panel = get_node_or_null("SettingsPanel")
 	character_panel = get_node_or_null("CharacterPanel")
 	vehicle_panel = get_node_or_null("VehiclePanel")
+	# Slice 53: loading feedback, created in code (no scene change).
+	# The world scene is heavy (hundreds of nodes, first-load shader
+	# compile on Mali takes seconds), and change_scene_to_file loads
+	# synchronously, so a tap with no immediate feedback reads as a
+	# dead button. Showing this label and yielding two frames lets
+	# it paint BEFORE the load blocks the main thread.
+	loading_label = Label.new()
+	loading_label.name = "LoadingLabel53"
+	loading_label.text = "တင်နေသည်…"
+	loading_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	loading_label.anchor_left = 0.35
+	loading_label.anchor_right = 0.65
+	loading_label.anchor_top = 0.85
+	loading_label.anchor_bottom = 0.92
+	loading_label.visible = false
+	add_child(loading_label)
 	_refresh_continue()
+
+
+func _show_loading() -> void:
+	if loading:
+		return
+	loading = true
+	for b in [continue_button, new_game_button, settings_button, character_button, vehicle_button]:
+		if b != null:
+			b.disabled = true
+	if loading_label != null:
+		loading_label.visible = true
 
 
 func _sm():
@@ -69,11 +98,21 @@ func _on_continue_pressed() -> void:
 	if not (data is Dictionary) or data.is_empty():
 		_refresh_continue()
 		return
+	if loading:
+		return
+	_show_loading()
+	await get_tree().process_frame
+	await get_tree().process_frame
 	sm.set("pending_load", data)
 	get_tree().change_scene_to_file("res://main.tscn")
 
 
 func _on_new_game_pressed() -> void:
+	if loading:
+		return
+	_show_loading()
+	await get_tree().process_frame
+	await get_tree().process_frame
 	var sm = _sm()
 	if sm != null:
 		sm.set("pending_load", {})
