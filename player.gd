@@ -3,6 +3,7 @@ const DressingScript = preload("res://village_dressing.gd")
 const City56Script = preload("res://city_visual56.gd")
 const River57Script = preload("res://river_bridge57.gd")
 const Dress58Script = preload("res://character_dress58.gd")
+const Dress59Script = preload("res://district_dress59.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -361,6 +362,9 @@ func _ready() -> void:
 	# 20:44 ask: 3D-rendered characters in the game). Runs last;
 	# runtime-only, no scene touched.
 	Dress58Script.dress(get_parent())
+	# Slice 59 Mindon district + outskirts + vehicle dressing.
+	# Runs after Slice 58; runtime-only, no scene touched.
+	Dress59Script.dress(get_parent())
 
 
 ## Slice 49: the shared map transform reads the live ground plane
