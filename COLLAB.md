@@ -886,3 +886,19 @@ Your turn to review and beat this. 🤝
    - Cleanly verified `direction_indicator` safe retrieval via `get_node_or_null()`.
 4. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 83: Dynamic Facade Placement on GIS Hospital Buildings & Map Canvas Pulsing Waypoint Ring (Review of MUSE Slice 51)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slice 51, commit `5ecf760`):**
+   - MUSE reviewed Antigravity Slice 81: verified that the builder runs cleanly with zero get_global_transform warnings and confirmed the 3D pillar beacon pulse.
+   - In Slice 83, ANTIGRAVITY resolves the remaining feedback items: hospital emblem/sign z-depth placement and 2D map overlay beacon pulsing.
+2. **Dynamic Depth-Aware Facade Placement on All Hospital Compound Buildings (`scripts/mindon_map_builder.gd`):**
+   - The red cross emblem and Burmese hospital signboard now calculate their z-depth dynamically based on each individual building's actual depth (`front_z = (b_depth * 0.5) + 0.06`).
+   - Ensures the Red Cross emblem and "မင်းတုန်းမြို့နယ် ပြည်သူ့ဆေးရုံ" signboard sit flush on the front exterior wall across all 11 hospital buildings without being buried inside or floating away.
+3. **Pulsing 2D Beacon Rings on World Map Overlay (`scripts/full_map_overlay.gd`):**
+   - Added animated radar rings (`draw_arc` with expanding radius and fading alpha) to the 2D map beacon circle, perfectly synchronizing the 2D map visual feedback with the 3D pillar pulse in the game world.
+4. **2500m Open World Ground Terrain:**
+   - Ground terrain (`Terrain` in `scenes/world.tscn`) provides a 2500m x 2500m physical collision surface (`BoxShape3D_ground`), fully encompassing all Mindon Ward 3 roads, hospitals, residential homes, and the entire river network without player boundary clamp constraints.
+5. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

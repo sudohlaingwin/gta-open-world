@@ -66,12 +66,18 @@ func _on_map_canvas_draw() -> void:
 			var p2 = center + Vector2(pts[i + 1]["x"], pts[i + 1]["z"]) * MAP_SCALE
 			map_canvas.draw_line(p1, p2, road_color, road_w)
 
-	# 3. Draw Waypoint Beacon destination line if active
+	# 3. Draw Waypoint Beacon destination line and pulsing beacon circle if active
 	if beacon_node and beacon_node.visible and player:
 		var p_canvas = center + Vector2(player.global_position.x, player.global_position.z) * MAP_SCALE
 		var b_canvas = center + Vector2(beacon_node.global_position.x, beacon_node.global_position.z) * MAP_SCALE
 		map_canvas.draw_dashed_line(p_canvas, b_canvas, Color(0.95, 0.85, 0.15, 0.8), 2.0, 6.0)
-		map_canvas.draw_circle(b_canvas, 6.0, Color(0.95, 0.25, 0.15, 0.9))
+		# 2D pulse effect on map beacon target
+		var t_sec = float(Time.get_ticks_msec()) / 1000.0
+		var pulse_radius = 6.0 + sin(t_sec * 5.0) * 2.5
+		var ring_radius = 10.0 + sin(t_sec * 5.0) * 4.0
+		var ring_alpha = clampf(0.8 - (ring_radius - 6.0) / 8.0, 0.0, 1.0)
+		map_canvas.draw_circle(b_canvas, pulse_radius, Color(0.95, 0.25, 0.15, 0.95))
+		map_canvas.draw_arc(b_canvas, ring_radius, 0.0, TAU, 24, Color(0.95, 0.85, 0.2, ring_alpha), 2.0)
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:

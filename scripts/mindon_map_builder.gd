@@ -169,12 +169,13 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 			roof_mesh.set_surface_override_material(0, hospital_roof_mat)
 			hosp.add_child(roof_mesh)
 
-			# Red Cross symbol on main hospital entrance
+			# Red Cross symbol on main hospital entrance facade (dynamically calculated for building depth)
+			var front_z = (b_depth * 0.5) + 0.06
 			var cross_v = MeshInstance3D.new()
 			var cv_mesh = BoxMesh.new()
 			cv_mesh.size = Vector3(0.3, 1.2, 0.08)
 			cross_v.mesh = cv_mesh
-			cross_v.position = Vector3(0.0, 2.8, 5.05)
+			cross_v.position = Vector3(0.0, 2.8, front_z)
 			cross_v.set_surface_override_material(0, cross_mat)
 			hosp.add_child(cross_v)
 
@@ -182,7 +183,7 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 			var ch_mesh = BoxMesh.new()
 			ch_mesh.size = Vector3(1.0, 0.35, 0.08)
 			cross_h.mesh = ch_mesh
-			cross_h.position = Vector3(0.0, 2.8, 5.05)
+			cross_h.position = Vector3(0.0, 2.8, front_z)
 			cross_h.set_surface_override_material(0, cross_mat)
 			hosp.add_child(cross_h)
 
@@ -191,7 +192,7 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 			sign.font_size = 22
 			sign.outline_size = 6
 			sign.modulate = Color(0.15, 0.45, 0.85, 1.0)
-			sign.position = Vector3(0.0, 3.8, 5.1)
+			sign.position = Vector3(0.0, 3.8, front_z + 0.05)
 			hosp.add_child(sign)
 
 			building_holder.add_child(hosp)
