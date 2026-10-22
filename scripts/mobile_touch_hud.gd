@@ -1,26 +1,31 @@
 extends CanvasLayer
 
-# --- High-Fidelity Mobile Touch Gaming HUD & Flight Deck ---
+# --- Mobile Touch HUD & Multi-Vehicle Speedometer System ---
 
-@onready var minimap: Panel = $TopLeftHUD/MiniMap
+@onready var virtual_joystick: Control = $VirtualJoystick
+@onready var interact_btn: Button = $ActionContainer/InteractBtn
+@onready var jump_btn: Button = $ActionContainer/JumpBtn
+@onready var chute_btn: Button = $ActionContainer/ChuteBtn
+@onready var sprint_btn: Button = $ActionContainer/SprintBtn
+@onready var quest_banner: Label = $TopCenterHUD/QuestBanner
 @onready var player_icon: ColorRect = $TopLeftHUD/MiniMap/PlayerIcon
 @onready var pagoda_icon: ColorRect = $TopLeftHUD/MiniMap/PagodaIcon
 @onready var compass_label: Label = $TopLeftHUD/CompassLabel
 @onready var stamina_bar: ProgressBar = $TopLeftHUD/StaminaBar
-@onready var quest_banner: Label = $TopCenterHUD/QuestBanner
 @onready var flight_controls: Control = $FlightControls
 @onready var yaw_left_btn: Button = $FlightControls/YawLeftBtn
 @onready var yaw_right_btn: Button = $FlightControls/YawRightBtn
-@onready var virtual_joystick: Control = $VirtualJoystick
-@onready var sprint_btn: Button = $ActionContainer/SprintBtn
-@onready var chute_btn: Button = $ActionContainer/ChuteBtn
-@onready var jump_btn: Button = $ActionContainer/JumpBtn
-@onready var interact_btn: Button = $ActionContainer/InteractBtn
 @onready var speedometer_panel: Panel = $BottomCenterHUD/Speedometer
 @onready var speed_label: Label = $BottomCenterHUD/Speedometer/SpeedLabel
 @onready var vehicle_type_label: Label = $BottomCenterHUD/Speedometer/VehicleTypeLabel
 @onready var throttle_bar: ProgressBar = $BottomCenterHUD/Speedometer/ThrottleBar
-$insertPauseVars
+@onready var pause_btn: Button = $TopLeftHUD/PauseBtn
+@onready var map_btn: Button = $TopLeftHUD/MapBtn
+@onready var pause_menu: Control = $PauseMenu
+@onready var resume_btn: Button = $PauseMenu/PauseBox/ResumeBtn
+@onready var save_btn: Button = $PauseMenu/PauseBox/SaveBtn
+@onready var quit_to_menu_btn: Button = $PauseMenu/PauseBox/QuitToMenuBtn
+@onready var full_map_overlay: Control = $FullMapOverlay
 @onready var prompt_banner: Label = $PromptBanner
 
 var player: CharacterBody3D = null
@@ -58,7 +63,17 @@ func _ready() -> void:
 		yaw_right_btn.button_down.connect(func(): if player: player.touch_yaw = 1.0)
 		yaw_right_btn.button_up.connect(func(): if player: player.touch_yaw = 0.0)
 
-	$insertPauseWiring
+	if pause_btn:
+		pause_btn.pressed.connect(_on_pause_pressed)
+	if map_btn:
+		map_btn.pressed.connect(_on_map_pressed)
+	if resume_btn:
+		resume_btn.pressed.connect(_on_resume_pressed)
+	if save_btn:
+		save_btn.pressed.connect(_on_save_pressed)
+	if quit_to_menu_btn:
+		quit_to_menu_btn.pressed.connect(_on_quit_to_menu_pressed)
+
 	_update_quest_text()
 
 func _process(delta: float) -> void:
@@ -101,23 +116,19 @@ func _process(delta: float) -> void:
 	if quest_stage == 2 and pagoda_node:
 		if player.global_position.distance_to(pagoda_node.global_position) < 14.0:
 			quest_stage = 3
-			$insertPauseWiring
-	_update_quest_text()
+			_update_quest_text()
 	elif quest_stage == 3 and bell_node:
 		if player.global_position.distance_to(bell_node.global_position) < 8.0:
 			quest_stage = 4
-			$insertPauseWiring
-	_update_quest_text()
+			_update_quest_text()
 	elif quest_stage == 4 and teashop_node:
 		if player.global_position.distance_to(teashop_node.global_position) < 10.0:
 			quest_stage = 5
-			$insertPauseWiring
-	_update_quest_text()
+			_update_quest_text()
 	elif quest_stage == 5:
 		if player.current_state != player.State.ON_FOOT:
 			quest_stage = 6
-			$insertPauseWiring
-	_update_quest_text()
+			_update_quest_text()
 
 	# 6. Speedometer & Flight Controls Toggle
 	if player.current_state == player.State.FLYING_AIRCRAFT:
@@ -191,11 +202,9 @@ func record_villager_talk() -> void:
 	if quest_stage == 1:
 		if villagers_talked_count >= 3:
 			quest_stage = 2
-		$insertPauseWiring
-	_update_quest_text()
+			_update_quest_text()
 
-func $insertPauseWiring
-	_update_quest_text() -> void:
+func _update_quest_text() -> void:
 	if quest_banner:
 		match quest_stage:
 			1:
@@ -261,10 +270,15 @@ func _on_sprint_down() -> void:
 func _on_sprint_up() -> void:
 	if player:
 		player.set_sprint(false)
+
 func _on_pause_pressed() -> void:
 	if pause_menu:
 		pause_menu.visible = true
 		get_tree().paused = true
+
+func _on_map_pressed() -> void:
+	if full_map_overlay:
+		full_map_overlay.visible = !full_map_overlay.visible
 
 func _on_resume_pressed() -> void:
 	if pause_menu:

@@ -4,7 +4,9 @@ extends Control
 
 @onready var continue_btn: Button = $ButtonContainer/ContinueBtn
 @onready var new_game_btn: Button = $ButtonContainer/NewGameBtn
+@onready var outfit_btn: Button = $ButtonContainer/OutfitBtn
 @onready var quit_btn: Button = $ButtonContainer/QuitBtn
+@onready var character_customizer: Control = $CharacterCustomizer
 
 func _ready() -> void:
 	var save_path = "user://myanmar_savegame.json"
@@ -13,8 +15,14 @@ func _ready() -> void:
 		continue_btn.pressed.connect(_on_continue_pressed)
 	if new_game_btn:
 		new_game_btn.pressed.connect(_on_new_game_pressed)
+	if outfit_btn:
+		outfit_btn.pressed.connect(_on_outfit_pressed)
 	if quit_btn:
 		quit_btn.pressed.connect(_on_quit_pressed)
+
+func _on_outfit_pressed() -> void:
+	if character_customizer:
+		character_customizer.visible = true
 
 func _on_continue_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/world.tscn")

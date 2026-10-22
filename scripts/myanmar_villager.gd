@@ -45,7 +45,7 @@ func _ready() -> void:
 	if longyi_mesh:
 		var mat = StandardMaterial3D.new()
 		mat.albedo_color = longyi_color
-		longyi_mesh.surface_material_override/0 = mat
+		longyi_mesh.set_surface_override_material(0, mat)
 		
 	_pick_new_state()
 

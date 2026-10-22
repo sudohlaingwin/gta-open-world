@@ -17,7 +17,7 @@ height = 1.2
 shading_mode = 0
 albedo_color = Color(1.0, 0.85, 0.2, 1.0)
 
-[node name="WaypointBeacon" type="Node3D"]
+[node name="WaypointBeacon" type="Node3D" groups=["waypoint_beacon"]]
 visible = false
 
 [node name="LightPillar" type="MeshInstance3D" parent="."]

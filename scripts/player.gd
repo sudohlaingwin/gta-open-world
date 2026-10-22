@@ -29,9 +29,12 @@ var touch_yaw: float = 0.0
 @onready var visual_mesh: Node3D = $VisualMesh
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 @onready var camera_pivot: Node3D = $CameraPivot
+@onready var torso_mesh: MeshInstance3D = $VisualMesh/Torso
+@onready var longyi_mesh: MeshInstance3D = $VisualMesh/Longyi
 
 func _ready() -> void:
 	add_to_group("player")
+	_apply_saved_outfit()
 
 func _physics_process(delta: float) -> void:
 	if current_state != State.ON_FOOT:
@@ -177,3 +180,21 @@ func toggle_parachute() -> void:
 
 func set_sprint(sprint: bool) -> void:
 	is_sprinting = sprint
+
+func set_outfit_colors(shirt_color: Color, longyi_color: Color) -> void:
+	if torso_mesh:
+		var torso_mat = StandardMaterial3D.new()
+		torso_mat.albedo_color = shirt_color
+		torso_mesh.set_surface_override_material(0, torso_mat)
+	if longyi_mesh:
+		var longyi_mat = StandardMaterial3D.new()
+		longyi_mat.albedo_color = longyi_color
+		longyi_mat.roughness = 0.8
+		longyi_mesh.set_surface_override_material(0, longyi_mat)
+
+func _apply_saved_outfit() -> void:
+	var save_mgr = get_node_or_null("/root/SaveManager")
+	if save_mgr and save_mgr.get("save_data") is Dictionary:
+		var data = save_mgr.save_data
+		if data.has("shirt_color") and data.has("longyi_color"):
+			set_outfit_colors(data["shirt_color"], data["longyi_color"])
