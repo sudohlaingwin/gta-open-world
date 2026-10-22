@@ -90,7 +90,7 @@ func _generate_mindon_roads(roads: Array) -> void:
 			continue
 
 		var r_type = str(r.get("type", "residential"))
-		var road_width: float = 6.5 if r_type == "unclassified" else (4.2 if r_type == "residential" else 3.2)
+		var road_width: float = 9.2 if r_type == "unclassified" else (5.8 if r_type == "residential" else 4.2)
 		var mat = asphalt_mat if r_type == "unclassified" else earth_mat
 
 		for i in range(pts.size() - 1):
@@ -117,12 +117,12 @@ func _generate_mindon_roads(roads: Array) -> void:
 				# Left Curb
 				var curb_l = MeshInstance3D.new()
 				var curb_box = BoxMesh.new()
-				curb_box.size = Vector3(0.3, 0.16, dist)
+				curb_box.size = Vector3(0.4, 0.18, dist)
 				curb_l.mesh = curb_box
 				curb_l.set_surface_override_material(0, curb_mat)
 				var right_dir = forward.cross(Vector3.UP).normalized()
 				road_holder.add_child(curb_l)
-				curb_l.global_position = mid_point - right_dir * (road_width * 0.5 + 0.15)
+				curb_l.global_position = mid_point - right_dir * (road_width * 0.5 + 0.2)
 				curb_l.look_at(curb_l.global_position + forward, Vector3.UP)
 
 				# Right Curb
@@ -130,14 +130,14 @@ func _generate_mindon_roads(roads: Array) -> void:
 				curb_r.mesh = curb_box
 				curb_r.set_surface_override_material(0, curb_mat)
 				road_holder.add_child(curb_r)
-				curb_r.global_position = mid_point + right_dir * (road_width * 0.5 + 0.15)
+				curb_r.global_position = mid_point + right_dir * (road_width * 0.5 + 0.2)
 				curb_r.look_at(curb_r.global_position + forward, Vector3.UP)
 
 				# Dashed yellow lane divider stripe
 				if i % 2 == 0 and dist >= 1.5:
 					var stripe = MeshInstance3D.new()
 					var stripe_mesh = BoxMesh.new()
-					stripe_mesh.size = Vector3(0.18, 0.09, minf(dist * 0.6, 3.0))
+					stripe_mesh.size = Vector3(0.28, 0.09, minf(dist * 0.6, 3.8))
 					stripe.mesh = stripe_mesh
 					stripe.set_surface_override_material(0, line_mat)
 					road_holder.add_child(stripe)
