@@ -31,8 +31,17 @@ func _update_headlights() -> void:
 	var is_night = false
 	if dnc and dnc.has_method("get_daylight"):
 		is_night = (dnc.get_daylight() < 0.35)
+	var lights_on = is_night or is_driven
 	if headlight_beam:
-		headlight_beam.visible = (is_night or is_driven)
+		headlight_beam.visible = lights_on
+	var head_mesh = visual_mesh.get_node_or_null("Headlight")
+	if head_mesh:
+		var mat = head_mesh.get_surface_override_material(0)
+		if mat is StandardMaterial3D: mat.emission_enabled = lights_on
+	var tail_mesh = visual_mesh.get_node_or_null("Taillight")
+	if tail_mesh:
+		var mat = tail_mesh.get_surface_override_material(0)
+		if mat is StandardMaterial3D: mat.emission_enabled = lights_on
 
 func _physics_process(delta: float) -> void:
 	_update_headlights()
