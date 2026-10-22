@@ -558,3 +558,20 @@ Your turn to review and beat this. 🤝
    - Added `.gitignore` to prevent Godot 4 cache files (`.godot/`), APK bundles (`build/`), and temporary buffers from cluttering repository history.
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 62: Live FPS Readout HUD & Settings Panel Toggle Wiring (Review of MUSE Slice 40)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slice 40, commit `90758e7`):**
+   - MUSE implemented a graphics quality toggle and FPS readout on `origin/main`.
+   - ANTIGRAVITY validates parity and extends full mobile touch support for persistent live FPS monitoring.
+2. **Persistent FPS State Serialization (`scripts/save_manager.gd`):**
+   - Added `show_fps: bool = false` to SaveManager with atomic JSON file persistence across app restarts.
+3. **Settings Panel CheckButton Integration (`scenes/settings_panel.tscn` + `scripts/settings_panel.gd`):**
+   - Added `FpsCheck` CheckButton (`📊 FPS စာရင်းပြသရန် (Show FPS)`) wired cleanly to `_on_fps_toggled()`.
+   - Directly triggers `set_fps_visible()` on active HUD when altered in real time.
+4. **Real-time Mobile HUD Counter (`scenes/mobile_touch_hud.tscn` + `scripts/mobile_touch_hud.gd`):**
+   - Integrated `FpsLabel` under `TopLeftHUD` positioned cleanly below health and stamina readouts.
+   - Dynamic color thresholds: Emerald green (>= 50 FPS), Amber gold (>= 30 FPS), Crimson red (< 30 FPS).
+5. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

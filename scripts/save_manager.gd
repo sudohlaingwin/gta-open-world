@@ -14,6 +14,7 @@ var volume: float = 1.0
 var camera_sensitivity: float = 1.0
 var hud_scale: float = 1.0
 var joystick_deadzone: float = 0.15
+var show_fps: bool = true
 var shirt_color: Color = Color(0.96, 0.94, 0.90, 1.0)
 var longyi_color: Color = Color(0.08, 0.35, 0.22, 1.0)
 
@@ -83,6 +84,7 @@ func load_settings() -> void:
 	camera_sensitivity = 1.0
 	hud_scale = 1.0
 	joystick_deadzone = 0.15
+	show_fps = true
 	car_paint_html = "#1F73C7"
 	motorcycle_paint_html = "#D9261A"
 	tuktuk_paint_html = "#F2B81A"
@@ -101,6 +103,7 @@ func load_settings() -> void:
 		if d.has("camera_sensitivity"): camera_sensitivity = clampf(float(d["camera_sensitivity"]), 0.5, 2.0)
 		if d.has("hud_scale"): hud_scale = clampf(float(d["hud_scale"]), 0.8, 1.25)
 		if d.has("joystick_deadzone"): joystick_deadzone = clampf(float(d["joystick_deadzone"]), 0.0, 0.4)
+		if d.has("show_fps"): show_fps = bool(d["show_fps"])
 		if d.has("car_paint_html"): car_paint_html = str(d["car_paint_html"])
 		if d.has("motorcycle_paint_html"): motorcycle_paint_html = str(d["motorcycle_paint_html"])
 		if d.has("tuktuk_paint_html"): tuktuk_paint_html = str(d["tuktuk_paint_html"])
@@ -112,6 +115,7 @@ func save_settings() -> bool:
 		"camera_sensitivity": camera_sensitivity,
 		"hud_scale": hud_scale,
 		"joystick_deadzone": joystick_deadzone,
+		"show_fps": show_fps,
 		"car_paint_html": car_paint_html,
 		"motorcycle_paint_html": motorcycle_paint_html,
 		"tuktuk_paint_html": tuktuk_paint_html
@@ -124,6 +128,7 @@ func reset_settings() -> void:
 	camera_sensitivity = 1.0
 	hud_scale = 1.0
 	joystick_deadzone = 0.15
+	show_fps = true
 	car_paint_html = "#1F73C7"
 	motorcycle_paint_html = "#D9261A"
 	tuktuk_paint_html = "#F2B81A"

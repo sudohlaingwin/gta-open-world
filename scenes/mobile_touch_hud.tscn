@@ -208,6 +208,17 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_health_fill")
 value = 100.0
 show_percentage = false
 
+[node name="FpsLabel" type="Label" parent="TopLeftHUD"]
+visible = false
+layout_mode = 0
+offset_top = 208.0
+offset_right = 140.0
+offset_bottom = 226.0
+theme_override_colors/font_color = Color(0.2, 0.9, 0.3, 1)
+theme_override_font_sizes/font_size = 12
+text = "60 FPS"
+horizontal_alignment = 1
+
 [node name="TopCenterHUD" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 5

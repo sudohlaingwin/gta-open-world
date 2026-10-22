@@ -102,6 +102,12 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "🔇 အသံတိတ်စနစ် (Mute Audio)"
 
+[node name="FpsCheck" type="CheckButton" parent="Panel/ScrollBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+button_pressed = true
+text = "📊 FPS စောင့်ကြည့်ပြသမှု (FPS Readout)"
+
 [node name="VolumeLabel" type="Label" parent="Panel/ScrollBox"]
 layout_mode = 2
 text = "🔊 အသံအတိုးအကျယ် (Volume): 100%"

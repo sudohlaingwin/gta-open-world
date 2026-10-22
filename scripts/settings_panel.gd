@@ -4,6 +4,7 @@ extends Control
 
 @onready var close_btn: Button = $Panel/CloseBtn
 @onready var mute_check: CheckButton = $Panel/ScrollBox/MuteCheck
+@onready var fps_check: CheckButton = $Panel/ScrollBox/FpsCheck
 @onready var volume_slider: HSlider = $Panel/ScrollBox/VolumeSlider
 @onready var volume_label: Label = $Panel/ScrollBox/VolumeLabel
 @onready var camera_slider: HSlider = $Panel/ScrollBox/CameraSlider
@@ -19,6 +20,8 @@ func _ready() -> void:
 		close_btn.pressed.connect(func(): visible = false)
 	if mute_check:
 		mute_check.toggled.connect(_on_mute_toggled)
+	if fps_check:
+		fps_check.toggled.connect(_on_fps_toggled)
 	if volume_slider:
 		volume_slider.value_changed.connect(_on_volume_changed)
 	if camera_slider:
@@ -41,6 +44,8 @@ func refresh() -> void:
 		return
 	if mute_check and sm.get("muted") != null:
 		mute_check.button_pressed = bool(sm.muted)
+	if fps_check and sm.get("show_fps") != null:
+		fps_check.button_pressed = bool(sm.show_fps)
 	if volume_slider and sm.get("volume") != null:
 		volume_slider.value = float(sm.volume) * 100.0
 		if volume_label: volume_label.text = "🔊 အသံအတိုးအကျယ် (Volume): %d%%" % int(round(volume_slider.value))
@@ -58,6 +63,16 @@ func _on_mute_toggled(pressed: bool) -> void:
 	var sm = _sm()
 	if sm:
 		sm.muted = pressed
+		sm.save_settings()
+
+func _on_fps_toggled(pressed: bool) -> void:
+	var sm = _sm()
+	if sm:
+		sm.show_fps = pressed
+		sm.save_settings()
+		var hud = get_tree().get_first_node_in_group("hud")
+		if hud and hud.has_method("set_fps_visible"):
+			hud.set_fps_visible(pressed)
 		sm.save_settings()
 
 func _on_volume_changed(val: float) -> void:

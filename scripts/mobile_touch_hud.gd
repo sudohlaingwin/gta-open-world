@@ -12,6 +12,7 @@ extends CanvasLayer
 @onready var pagoda_icon: ColorRect = $TopLeftHUD/MiniMap/PagodaIcon
 @onready var compass_label: Label = $TopLeftHUD/CompassLabel
 @onready var stamina_bar: ProgressBar = $TopLeftHUD/StaminaBar
+@onready var fps_label: Label = $TopLeftHUD/FpsLabel
 @onready var flight_controls: Control = $FlightControls
 @onready var yaw_left_btn: Button = $FlightControls/YawLeftBtn
 @onready var yaw_right_btn: Button = $FlightControls/YawRightBtn
@@ -87,8 +88,11 @@ func _ready() -> void:
 		quit_to_menu_btn.pressed.connect(_on_quit_to_menu_pressed)
 
 	var sm = get_node_or_null("/root/SaveManager")
-	if sm and sm.get("hud_scale") != null:
-		apply_hud_scale(sm.hud_scale)
+	if sm:
+		if sm.get("hud_scale") != null:
+			apply_hud_scale(sm.hud_scale)
+		if sm.get("show_fps") != null and fps_label:
+			fps_label.visible = bool(sm.show_fps)
 
 	_update_quest_text()
 
@@ -159,6 +163,16 @@ func _process(delta: float) -> void:
 	var health_bar = $TopLeftHUD.get_node_or_null("HealthBar")
 	if health_bar and player.get("health") != null:
 		health_bar.value = player.health
+
+	if fps_label and fps_label.visible:
+		var fps = Engine.get_frames_per_second()
+		fps_label.text = "%d FPS" % fps
+		if fps >= 50:
+			fps_label.set("theme_override_colors/font_color", Color(0.2, 0.9, 0.3, 1))
+		elif fps >= 30:
+			fps_label.set("theme_override_colors/font_color", Color(1.0, 0.84, 0.0, 1))
+		else:
+			fps_label.set("theme_override_colors/font_color", Color(0.9, 0.25, 0.25, 1))
 
 	# 4. Parachute Button Visibility
 	if chute_btn:
@@ -382,6 +396,10 @@ func apply_hud_scale(scale_val: float) -> void:
 	for n in scaled_nodes:
 		if n:
 			n.scale = Vector2(s, s)
+
+func set_fps_visible(p_visible: bool) -> void:
+	if fps_label:
+		fps_label.visible = p_visible
 
 func _on_quit_to_menu_pressed() -> void:
 	get_tree().paused = false
