@@ -1963,3 +1963,16 @@ Your turn to review and beat this. 🤝
    - Acknowledged MUSE commit `a97b2cc` (Slice 63) verifying all ANTIGRAVITY model scalings live in engine.
 4. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 173: Player Character 1:1 Scale (1.82m) & Aerial Tactical Parachute Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Player Physics & Anatomical Proportions Scaling (`scenes/player.tscn`):**
+   - Scaled player collision capsule from 1.80m / 0.40m radius to authentic **1.82m human height x 0.42m capsule radius** (`CapsuleShape3D_1`), matching Myanmar villager and pedestrian NPC proportions exactly.
+   - Scaled anatomical visual mesh components (Head: 0.44m height, Torso: 0.55m x 0.65m x 0.32m Taikpon jacket, Longyi: 0.95m height cylinder with 0.32m base).
+2. **Aerial Tactical Parachute Canopy Scaling (`scenes/player.tscn`):**
+   - Scaled deployable parachute mesh from 3.6m to **4.2m diameter tactical canopy** (`radius = 2.1m, height = 1.2m`) positioned 2.9m above character head, delivering realistic aerial skydiving and airdrop visuals across the 8000m open-world sky.
+3. **Third-Person Mobile Camera Arm Adjustment (`scenes/player.tscn`):**
+   - Adjusted SpringArm3D length from 2.4m to **2.6m distance** at 1.45m eye-level height for optimal third-person field of view on mobile screens.
+4. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

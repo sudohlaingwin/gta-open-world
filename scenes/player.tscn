@@ -4,27 +4,27 @@
 [ext_resource type="Script" path="res://scripts/camera_orbit.gd" id="2_cam"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
-radius = 0.4
-height = 1.8
+radius = 0.42
+height = 1.82
 
 [sub_resource type="SphereMesh" id="SphereMesh_head"]
-radius = 0.2
-height = 0.4
+radius = 0.22
+height = 0.44
 
 [sub_resource type="BoxMesh" id="BoxMesh_torso"]
-size = Vector3(0.5, 0.6, 0.3)
+size = Vector3(0.55, 0.65, 0.32)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_taikpon"]
 albedo_color = Color(0.96, 0.94, 0.90, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_longyi"]
-top_radius = 0.28
-bottom_radius = 0.30
-height = 0.9
+top_radius = 0.3
+bottom_radius = 0.32
+height = 0.95
 
 [sub_resource type="SphereMesh" id="SphereMesh_parachute"]
-radius = 1.8
-height = 1.0
+radius = 2.1
+height = 1.2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chute_fabric"]
 albedo_color = Color(0.9, 0.25, 0.15, 1)
@@ -38,39 +38,39 @@ roughness = 0.8
 script = ExtResource("1_player")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.91, 0)
 shape = SubResource("CapsuleShape3D_1")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Head" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58, 0)
 mesh = SubResource("SphereMesh_head")
 
 [node name="ParachuteMesh" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
 visible = false
 mesh = SubResource("SphereMesh_parachute")
 surface_material_override/0 = SubResource("StandardMaterial3D_chute_fabric")
 
 [node name="Torso" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, 0)
 mesh = SubResource("BoxMesh_torso")
 surface_material_override/0 = SubResource("StandardMaterial3D_taikpon")
 
 [node name="Longyi" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48, 0)
 mesh = SubResource("CylinderMesh_longyi")
 surface_material_override/0 = SubResource("StandardMaterial3D_longyi")
 
 [node name="CameraPivot" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
 script = ExtResource("2_cam")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
-spring_length = 2.4
+spring_length = 2.6
 margin = 0.2
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.6)
 current = true
