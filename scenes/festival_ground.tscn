@@ -1,71 +1,72 @@
 [gd_scene load_steps=12 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_stage"]
-size = Vector3(17.5, 1.6, 12.0)
+size = Vector3(24.5, 2.2, 16.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_deck"]
-size = Vector3(17.0, 1.0, 11.5)
+size = Vector3(24.0, 1.2, 16.0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stage_wood"]
 albedo_color = Color(0.42, 0.26, 0.14, 1)
+roughness = 0.85
 
 [sub_resource type="BoxMesh" id="BoxMesh_backdrop"]
-size = Vector3(15.5, 5.2, 0.3)
+size = Vector3(22.0, 7.2, 0.4)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_backdrop_gold"]
 albedo_color = Color(0.92, 0.75, 0.18, 1)
-metallic = 0.5
-roughness = 0.4
+metallic = 0.6
+roughness = 0.35
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_post"]
-top_radius = 0.18
-bottom_radius = 0.22
-height = 5.5
+top_radius = 0.25
+bottom_radius = 0.3
+height = 7.5
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_post"]
 albedo_color = Color(0.68, 0.56, 0.32, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_drum"]
-size = Vector3(1.1, 1.3, 1.1)
+size = Vector3(1.6, 1.8, 1.6)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_saing_waing"]
 albedo_color = Color(0.8, 0.2, 0.15, 1)
+roughness = 0.5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_area"]
-size = Vector3(20.0, 6.0, 15.0)
+size = Vector3(28.0, 8.0, 20.0)
 
 [node name="MyanmarFestivalGround" type="StaticBody3D"]
 
 [node name="StageCollision" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 shape = SubResource("BoxShape3D_stage")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Deck" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 mesh = SubResource("BoxMesh_deck")
 surface_material_override/0 = SubResource("StandardMaterial3D_stage_wood")
 
 [node name="Backdrop" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, -5.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.8, -7.5)
 mesh = SubResource("BoxMesh_backdrop")
 surface_material_override/0 = SubResource("StandardMaterial3D_backdrop_gold")
 
 [node name="DrumL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 1.6, -2.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.8, 2.1, -3.5)
 mesh = SubResource("BoxMesh_drum")
 surface_material_override/0 = SubResource("StandardMaterial3D_saing_waing")
 
 [node name="DrumR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 1.6, -2.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.8, 2.1, -3.5)
 mesh = SubResource("BoxMesh_drum")
 surface_material_override/0 = SubResource("StandardMaterial3D_saing_waing")
 
 [node name="FestivalSign" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.0, -5.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.6, -7.3)
 text = "ရွှေရွာတော် ရိုးရာ အငြိမ့်နှင့် ဇာတ်သဘင်စင်တော်ကြီး"
-font_size = 42
-outline_size = 12
+font_size = 52
+outline_size = 16
 modulate = Color(1, 0.9, 0.2, 1)
-
