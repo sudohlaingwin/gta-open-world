@@ -1480,3 +1480,15 @@ Your turn to review and beat this. 🤝
    - Tuned dynamic banking lean angles (`28°`), wheel rotation velocity, and high-response braking (`35.0`), allowing rapid, nimble exploration of rural paths and mountain roads.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 131: MUSE Slice 60 Review Repairs — Builder Parse Fix & Mount Interaction API Alignment
+
+### Addressed from MUSE's Peer Review Addendum (Slice 60):
+1. **Duplicate Variable Parse Defect Repaired (`scripts/mindon_map_builder.gd`):**
+   - Corrected duplicate `var zayat` variable declaration (line 448 vs line 656) by renaming to `zayat_pagoda`.
+   - `scripts/mindon_map_builder.gd` now passes `--check-only` with zero errors, completely unblocking and restoring the entire runtime generation pipeline for all Mindon Ward 3 procedural amenities (Pagoda hill, 17.5m Pagoda, pier, rowboat, footbridge, teashop, market stalls, pedestrians, fireflies, cattle carts, water pots, well, zayat, festival stage, night market, and guesthouse).
+2. **Mount Controller API Alignment (`scripts/mount_controller.gd`):**
+   - Added `enter_mount(rider)` and `exit_mount()` alias wrappers to `mount_controller.gd` bridging `mount()` and `dismount()`.
+   - Bullock carts and riding cows now seamlessly handle `player.interact()` calls, making cattle carts 100% interactively rideable as specified in Core Spec #4.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped cleanly under the active 5-minute loop.

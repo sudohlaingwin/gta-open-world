@@ -140,6 +140,12 @@ func dismount() -> void:
 		rider.set_mounted_state(false, null)
 	mount_exited.emit()
 
+func enter_mount(rider: Node3D) -> void:
+	mount(rider)
+
+func exit_mount() -> void:
+	dismount()
+
 func _on_interaction_area_entered(body: Node3D) -> void:
 	if body.is_in_group("player") and body.has_method("set_interactable_mount"):
 		body.set_interactable_mount(self)

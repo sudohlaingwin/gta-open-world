@@ -653,11 +653,11 @@ func _generate_ward3_amenities() -> void:
 	well_communal.global_position = Vector3(-120.0, 0.0, 186.0)
 
 	# Traditional Teakwood Wayfarer Rest House (ဓမ္မာရုံ / ဇရပ်) near Pagoda base
-	var zayat = ZAYAT_SCENE.instantiate()
-	zayat.name = "MindonPagodaZayat"
-	amenities_holder.add_child(zayat)
-	zayat.global_position = Vector3(-85.0, 0.0, 168.0)
-	zayat.rotation.y = deg_to_rad(-25.0)
+	var zayat_pagoda = ZAYAT_SCENE.instantiate()
+	zayat_pagoda.name = "MindonPagodaZayat"
+	amenities_holder.add_child(zayat_pagoda)
+	zayat_pagoda.global_position = Vector3(-85.0, 0.0, 168.0)
+	zayat_pagoda.rotation.y = deg_to_rad(-25.0)
 
 	# Village Traditional Zat Pwe / Festival Stage (ရိုးရာပွဲတော်နှင့် ဇာတ်စင်ကြီး)
 	var stage = FESTIVAL_SCENE.instantiate()
