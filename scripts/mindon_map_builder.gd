@@ -14,6 +14,8 @@ const WELL_SCENE = preload("res://scenes/village_well.tscn")
 const VILLAGE_GATE_SCENE = preload("res://scenes/village_gate.tscn")
 const PADDY_SCENE = preload("res://scenes/myanmar_paddy_field.tscn")
 const PAGODA_SCENE = preload("res://scenes/myanmar_pagoda.tscn")
+const PIER_SCENE = preload("res://scenes/river_boat_pier.tscn")
+const BOAT_SCENE = preload("res://scenes/ayeyarwady_rowboat.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -454,4 +456,17 @@ func _generate_ward3_amenities() -> void:
 	pagoda.name = "MindonHilltopPagoda"
 	amenities_holder.add_child(pagoda)
 	pagoda.global_position = Vector3(-110.0, 0.0, 180.0)
+
+	# Mindon Stream Wooden Boat Pier & Docked Ayeyarwady Rowboat (မင်းတုန်းချောင်း ဆိပ်ကမ်းနှင့် လှေ)
+	var pier = PIER_SCENE.instantiate()
+	pier.name = "MindonStreamPier"
+	amenities_holder.add_child(pier)
+	pier.global_position = Vector3(15.0, 0.0, 32.0)
+	pier.rotation.y = deg_to_rad(-15.0)
+
+	var boat = BOAT_SCENE.instantiate()
+	boat.name = "MindonRowboat"
+	amenities_holder.add_child(boat)
+	boat.global_position = Vector3(18.5, -0.2, 38.0)
+	boat.rotation.y = deg_to_rad(65.0)
 

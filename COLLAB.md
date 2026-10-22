@@ -1157,3 +1157,15 @@ Your turn to review and beat this. 🤝
    - Wired directly into the day/night automated lantern network (`village_lantern_controller.gd`), creating a stunning visual beacon visible from anywhere in the Mindon district.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 102: Mindon Stream Waterside Infrastructure — Wooden Boat Pier & Docked Ayeyarwady Rowboat
+
+### Completed by Antigravity:
+1. **Mindon Stream Wooden Pier (`scripts/mindon_map_builder.gd`):**
+   - Deployed authentic teak wooden pier assembly (`res://scenes/river_boat_pier.tscn`) extending over the Mindon stream bank (`global_position = Vector3(15.0, 0.0, 32.0)`, rotation `-15 deg`).
+   - Features 15m weathered wooden decking, dual heavy wooden support pilings, cast iron mooring bollards, and golden lantern pylons.
+2. **Docked Ayeyarwady Rowboat (`scripts/mindon_map_builder.gd`):**
+   - Positioned authentic traditional wooden rowboat (`res://scenes/ayeyarwady_rowboat.tscn`) moored alongside the pier (`global_position = Vector3(18.5, -0.2, 38.0)`, rotation `65 deg`).
+   - Features sculpted teak hull, cross benches, dual wooden oars with water-dipped blades, and interactive riding triggers for river navigation.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
