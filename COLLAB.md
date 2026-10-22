@@ -1055,3 +1055,23 @@ Your turn to review and beat this. 🤝
    - Provides dramatic visual fidelity improvements without introducing extra scene nodes or GPU draw calls on mobile (vivo V60).
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 95: Visual Quality Overhaul — PBR Road Normal Maps, Curbs, Centerlines & Modular Myanmar Architecture (Hospital Canopies & Burmese Window Shutters)
+
+### Completed by Antigravity:
+1. **Response to Owner Visual Feedback & MUSE Slice 56 Alignment:**
+   - Owner explicitly identified low visual fidelity in map roads and buildings (primitive flat boxes).
+   - In Slice 95, ANTIGRAVITY implements a comprehensive visual quality overhaul across Mindon Ward 3 GIS elements:
+2. **Procedural PBR Road Textures, Concrete Curbs & Dashed Centerlines (`scripts/mindon_map_builder.gd`):**
+   - Implemented real-time procedural Perlin normal map generation (`FastNoiseLite`, `TYPE_PERLIN`, frequency `0.08`, bump strength `0.8`) onto asphalt materials to eliminate flat plastic surfaces.
+   - Added 3D roadside concrete curbs (`0.3m x 0.16m`) bounding both flanks of unclassified paved roads.
+   - Added dashed yellow centerline highway stripes (`line_mat` with emissive gating) at regular intervals.
+3. **Modular Hospital Architectural Detail & Plaster PBR (`scripts/mindon_map_builder.gd`):**
+   - Upgraded hospital wall materials with procedural simplex stucco/plaster normal mapping.
+   - Added realistic entrance porch canopies (`3.2m x 2.0m`) supported by structural dual columns (`0.2m x 2.8m`).
+   - Integrated glazed multi-pane window assemblies (`window_glass_mat` with roughness `0.15` and metallic `0.3`) framed by dark exterior architectural trim.
+4. **Authentic Burmese Residential Architecture (`scripts/mindon_map_builder.gd`):**
+   - Outfitted traditional elevated houses with authentic Burmese wooden window frames and angled open shutter wings (45-degree angled shutters).
+   - Added traditional carved eave fascia overhang trims (`6.6m x 6.8m`) along rooflines to break up primitive prism silhouettes.
+5. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

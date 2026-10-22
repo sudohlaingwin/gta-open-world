@@ -37,11 +37,31 @@ func _generate_mindon_roads(roads: Array) -> void:
 
 	var asphalt_mat = StandardMaterial3D.new()
 	asphalt_mat.albedo_color = Color(0.24, 0.25, 0.27, 1.0)
-	asphalt_mat.roughness = 0.95
+	asphalt_mat.roughness = 0.92
+	var asphalt_noise = FastNoiseLite.new()
+	asphalt_noise.noise_type = FastNoiseLite.TYPE_PERLIN
+	asphalt_noise.frequency = 0.08
+	var noise_tex = NoiseTexture2D.new()
+	noise_tex.noise = asphalt_noise
+	noise_tex.as_normal_map = true
+	noise_tex.bump_strength = 0.8
+	asphalt_mat.normal_enabled = true
+	asphalt_mat.normal_texture = noise_tex
 
 	var earth_mat = StandardMaterial3D.new()
 	earth_mat.albedo_color = Color(0.48, 0.39, 0.28, 1.0)
 	earth_mat.roughness = 1.0
+
+	var curb_mat = StandardMaterial3D.new()
+	curb_mat.albedo_color = Color(0.65, 0.64, 0.62, 1.0)
+	curb_mat.roughness = 0.8
+
+	var line_mat = StandardMaterial3D.new()
+	line_mat.albedo_color = Color(0.95, 0.85, 0.2, 1.0)
+	line_mat.roughness = 0.5
+	line_mat.emission_enabled = true
+	line_mat.emission = Color(0.85, 0.75, 0.15, 1.0)
+	line_mat.emission_energy_multiplier = 0.3
 
 	var palm_count = 0
 	var banana_count = 0
@@ -74,6 +94,38 @@ func _generate_mindon_roads(roads: Array) -> void:
 			mesh_inst.global_position = mid_point
 			mesh_inst.look_at(mid_point + forward, Vector3.UP)
 
+			# Road curbs and dashed center markings along paved unclassified highway
+			if r_type == "unclassified":
+				# Left Curb
+				var curb_l = MeshInstance3D.new()
+				var curb_box = BoxMesh.new()
+				curb_box.size = Vector3(0.3, 0.16, dist)
+				curb_l.mesh = curb_box
+				curb_l.set_surface_override_material(0, curb_mat)
+				var right_dir = forward.cross(Vector3.UP).normalized()
+				road_holder.add_child(curb_l)
+				curb_l.global_position = mid_point - right_dir * (road_width * 0.5 + 0.15)
+				curb_l.look_at(curb_l.global_position + forward, Vector3.UP)
+
+				# Right Curb
+				var curb_r = MeshInstance3D.new()
+				curb_r.mesh = curb_box
+				curb_r.set_surface_override_material(0, curb_mat)
+				road_holder.add_child(curb_r)
+				curb_r.global_position = mid_point + right_dir * (road_width * 0.5 + 0.15)
+				curb_r.look_at(curb_r.global_position + forward, Vector3.UP)
+
+				# Dashed yellow lane divider stripe
+				if i % 2 == 0 and dist >= 1.5:
+					var stripe = MeshInstance3D.new()
+					var stripe_mesh = BoxMesh.new()
+					stripe_mesh.size = Vector3(0.18, 0.09, minf(dist * 0.6, 3.0))
+					stripe.mesh = stripe_mesh
+					stripe.set_surface_override_material(0, line_mat)
+					road_holder.add_child(stripe)
+					stripe.global_position = mid_point + Vector3(0, 0.01, 0)
+					stripe.look_at(stripe.global_position + forward, Vector3.UP)
+
 			# Plant roadside authentic vegetation along real road shoulders
 			if i % 3 == 0 and palm_count < 90:
 				var right_dir = forward.cross(Vector3.UP).normalized()
@@ -104,11 +156,30 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 
 	var hospital_wall_mat = StandardMaterial3D.new()
 	hospital_wall_mat.albedo_color = Color(0.92, 0.94, 0.95, 1.0)
-	hospital_wall_mat.roughness = 0.7
+	hospital_wall_mat.roughness = 0.75
+	var stucco_noise = FastNoiseLite.new()
+	stucco_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
+	stucco_noise.frequency = 0.12
+	var stucco_tex = NoiseTexture2D.new()
+	stucco_tex.noise = stucco_noise
+	stucco_tex.as_normal_map = true
+	stucco_tex.bump_strength = 0.6
+	hospital_wall_mat.normal_enabled = true
+	hospital_wall_mat.normal_texture = stucco_tex
 
 	var hospital_roof_mat = StandardMaterial3D.new()
 	hospital_roof_mat.albedo_color = Color(0.22, 0.42, 0.65, 1.0)
-	hospital_roof_mat.roughness = 0.4
+	hospital_roof_mat.roughness = 0.35
+	hospital_roof_mat.metallic = 0.4
+
+	var window_glass_mat = StandardMaterial3D.new()
+	window_glass_mat.albedo_color = Color(0.18, 0.32, 0.45, 0.9)
+	window_glass_mat.roughness = 0.15
+	window_glass_mat.metallic = 0.3
+
+	var frame_mat = StandardMaterial3D.new()
+	frame_mat.albedo_color = Color(0.15, 0.22, 0.28, 1.0)
+	frame_mat.roughness = 0.6
 
 	var cross_mat = StandardMaterial3D.new()
 	cross_mat.albedo_color = Color(0.9, 0.1, 0.1, 1.0)
@@ -193,6 +264,43 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 			cross_h.set_surface_override_material(0, b_cross_mat)
 			hosp.add_child(cross_h)
 
+			# Hospital entrance porch canopy & columns
+			var canopy = MeshInstance3D.new()
+			var canopy_mesh = BoxMesh.new()
+			canopy_mesh.size = Vector3(3.2, 0.25, 2.0)
+			canopy.mesh = canopy_mesh
+			canopy.position = Vector3(0.0, 2.8, front_z + 0.9)
+			canopy.set_surface_override_material(0, hospital_roof_mat)
+			hosp.add_child(canopy)
+
+			for pillar_x in [-1.4, 1.4]:
+				var pillar = MeshInstance3D.new()
+				var pillar_mesh = BoxMesh.new()
+				pillar_mesh.size = Vector3(0.2, 2.8, 0.2)
+				pillar.mesh = pillar_mesh
+				pillar.position = Vector3(pillar_x, 1.4, front_z + 1.8)
+				pillar.set_surface_override_material(0, frame_mat)
+				hosp.add_child(pillar)
+
+			# Glazed windows on building front
+			var win_offset_x = (b_width * 0.5) * 0.55
+			for wx in [-win_offset_x, win_offset_x]:
+				var win = MeshInstance3D.new()
+				var win_mesh = BoxMesh.new()
+				win_mesh.size = Vector3(1.6, 1.3, 0.1)
+				win.mesh = win_mesh
+				win.position = Vector3(wx, 2.2, front_z)
+				win.set_surface_override_material(0, window_glass_mat)
+				hosp.add_child(win)
+
+				var win_frame = MeshInstance3D.new()
+				var win_fmesh = BoxMesh.new()
+				win_fmesh.size = Vector3(1.72, 1.42, 0.06)
+				win_frame.mesh = win_fmesh
+				win_frame.position = Vector3(wx, 2.2, front_z - 0.02)
+				win_frame.set_surface_override_material(0, frame_mat)
+				hosp.add_child(win_frame)
+
 			var sign = Label3D.new()
 			sign.text = "မင်းတုန်းမြို့နယ် ပြည်သူ့ဆေးရုံ"
 			sign.font_size = 22
@@ -220,6 +328,53 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 			var house = HOUSE_SCENE.instantiate()
 			house_idx += 1
 			house.name = "MyanmarHouse_%d" % house_idx
+
+			# Architectural upgrade: add authentic wooden window shutters and eave fascias
+			var visual = house.get_node_or_null("VisualMesh")
+			if visual:
+				var wood_mat = StandardMaterial3D.new()
+				wood_mat.albedo_color = Color(0.38, 0.22, 0.12, 1.0)
+				wood_mat.roughness = 0.85
+
+				var shutter_mat = StandardMaterial3D.new()
+				shutter_mat.albedo_color = Color(0.28, 0.16, 0.08, 1.0)
+				shutter_mat.roughness = 0.9
+
+				# Front window with traditional Burmese hinged shutters
+				var win_mesh = BoxMesh.new()
+				win_mesh.size = Vector3(1.1, 1.1, 0.08)
+				var win_inst = MeshInstance3D.new()
+				win_inst.mesh = win_mesh
+				win_inst.position = Vector3(0.5, 2.2, 2.92)
+				win_inst.set_surface_override_material(0, wood_mat)
+				visual.add_child(win_inst)
+
+				# Open wooden shutter wings
+				var shutter_l = MeshInstance3D.new()
+				var shutter_mesh = BoxMesh.new()
+				shutter_mesh.size = Vector3(0.5, 1.0, 0.04)
+				shutter_l.mesh = shutter_mesh
+				shutter_l.position = Vector3(-0.1, 2.2, 2.96)
+				shutter_l.rotation = Vector3(0, deg_to_rad(45.0), 0)
+				shutter_l.set_surface_override_material(0, shutter_mat)
+				visual.add_child(shutter_l)
+
+				var shutter_r = MeshInstance3D.new()
+				shutter_r.mesh = shutter_mesh
+				shutter_r.position = Vector3(1.1, 2.2, 2.96)
+				shutter_r.rotation = Vector3(0, deg_to_rad(-45.0), 0)
+				shutter_r.set_surface_override_material(0, shutter_mat)
+				visual.add_child(shutter_r)
+
+				# Roof carved eave overhang trim (နန်းတွင်း/ရိုးရာ အမိုးအနားသတ်)
+				var eave = MeshInstance3D.new()
+				var eave_mesh = BoxMesh.new()
+				eave_mesh.size = Vector3(6.6, 0.12, 6.8)
+				eave.mesh = eave_mesh
+				eave.position = Vector3(0.0, 3.32, 0.0)
+				eave.set_surface_override_material(0, wood_mat)
+				visual.add_child(eave)
+
 			building_holder.add_child(house)
 			house.global_position = Vector3(cx, 0.0, cz)
 
