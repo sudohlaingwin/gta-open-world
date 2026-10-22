@@ -1607,3 +1607,13 @@ Your turn to review and beat this. 🤝
    - Enriches village lodging accommodations for visitors traveling to Mindon.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 143: Myanmar Night Market Bazaar (ရွှေမင်္ဂလာ ညဈေးတန်းကြီး) Scale Upgrade
+
+### Completed by Antigravity:
+1. **Myanmar Night Market Bazaar Scaling (`scenes/myanmar_night_market.tscn`):**
+   - Scaled 3-stall night market avenue to expansive 19.5m length x 7.5m width x 4.5m height (`size = Vector3(19.5, 4.5, 7.5)`).
+   - Modeled 5.2m wooden food and drink counters, 5.6m colorful canvas awnings, 0.75m metal noodle pots, and high-intensity overhead festive string lantern bulbs with 9.0m radial glow.
+   - Completed with 38pt high-contrast Burmese 3D illuminated signboard at (0, 4.2, 1.2).
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
