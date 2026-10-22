@@ -9,8 +9,9 @@ bottom_radius = 0.38
 height = 6.8
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak"]
-albedo_color = Color(0.32, 0.18, 0.08, 1)
-roughness = 0.85
+albedo_color = Color(0.30, 0.16, 0.08, 1)
+roughness = 0.70
+specular = 0.25
 
 [sub_resource type="BoxMesh" id="BoxMesh_deck"]
 size = Vector3(17.0, 0.65, 13.0)
@@ -24,7 +25,8 @@ left_to_right = 0.5
 size = Vector3(13.0, 2.8, 10.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_roof_tile"]
-albedo_color = Color(0.55, 0.28, 0.18, 1)
+albedo_color = Color(0.52, 0.24, 0.14, 1)
+roughness = 0.74
 
 [node name="MyanmarZayat" type="StaticBody3D"]
 

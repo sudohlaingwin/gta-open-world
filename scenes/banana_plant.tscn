@@ -1,4 +1,6 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Shader" path="res://scripts/foliage_sway.gdshader" id="1_sway"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_banana"]
 height = 6.8
@@ -10,15 +12,22 @@ bottom_radius = 0.55
 height = 5.2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_banana_trunk"]
-albedo_color = Color(0.40, 0.55, 0.22, 1)
-roughness = 0.8
+albedo_color = Color(0.38, 0.52, 0.20, 1)
+roughness = 0.75
 
 [sub_resource type="BoxMesh" id="BoxMesh_leaf"]
 size = Vector3(5.2, 0.08, 1.65)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_leaf"]
-albedo_color = Color(0.18, 0.62, 0.15, 1)
-roughness = 0.6
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_banana_leaf"]
+render_priority = 0
+shader = ExtResource("1_sway")
+shader_parameter/foliage_color = Color(0.20, 0.65, 0.14, 1)
+shader_parameter/stalk_color = Color(0.28, 0.54, 0.16, 1)
+shader_parameter/sun_transmission_color = Color(0.48, 0.88, 0.20, 1)
+shader_parameter/wind_speed = 1.6
+shader_parameter/wind_strength = 0.24
+shader_parameter/flutter_speed = 5.8
+shader_parameter/flutter_strength = 0.09
 
 [node name="BananaPlant" type="StaticBody3D"]
 
@@ -36,14 +45,14 @@ surface_material_override/0 = SubResource("StandardMaterial3D_banana_trunk")
 [node name="Leaf1" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(0.866, -0.25, 0.433, 0.5, 0.433, -0.75, 0, 0.866, 0.5, 1.8, 5.0, 1.2)
 mesh = SubResource("BoxMesh_leaf")
-surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+surface_material_override/0 = SubResource("ShaderMaterial_banana_leaf")
 
 [node name="Leaf2" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(-0.866, -0.25, -0.433, -0.5, 0.433, 0.75, 0, 0.866, -0.5, -1.8, 5.0, -1.2)
 mesh = SubResource("BoxMesh_leaf")
-surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+surface_material_override/0 = SubResource("ShaderMaterial_banana_leaf")
 
 [node name="Leaf3" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(0.25, -0.25, -0.935, 0, 0.965, -0.258, 0.968, 0.065, 0.241, -0.9, 5.2, 1.8)
 mesh = SubResource("BoxMesh_leaf")
-surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+surface_material_override/0 = SubResource("ShaderMaterial_banana_leaf")
