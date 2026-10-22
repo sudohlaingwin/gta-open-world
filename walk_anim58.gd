@@ -44,8 +44,11 @@ func _process(delta: float) -> void:
 		# — arms sway gently, longyi hem moves slightly, legs still.
 		# This runs ONLY when not walking/driving, so walk swing and
 		# idle sway never fight (walking branch below is untouched).
-		_idle_phase += delta * 1.5
-		var ib := sin(_idle_phase) * 0.06
+		# Slice 70 (owner 06:32: people look like wobbly dolls):
+		# idle breathing cut 0.06 -> 0.025 rad and slowed 1.5 ->
+		# 1.2, so a standing person reads near-still, not shaking.
+		_idle_phase += delta * 1.2
+		var ib := sin(_idle_phase) * 0.025
 		if _arm_r != null:
 			_arm_r.rotation.x = ib
 		if _arm_l != null:
@@ -55,21 +58,26 @@ func _process(delta: float) -> void:
 		if _leg_l != null:
 			_leg_l.rotation.x = 0.0
 		if _longyi != null:
-			_longyi.rotation.x = sin(_idle_phase) * 0.01
+			_longyi.rotation.x = sin(_idle_phase) * 0.005
 		_amp = move_toward(_amp, 0.0, delta * 4.0)
 		return
 	if driving != true and speed > 0.2:
 		_phase += delta * (4.0 + speed * 1.8)
 		target = 1.0
 	_amp = move_toward(_amp, target, delta * 4.0)
-	var s := sin(_phase) * 0.45 * _amp
+	# Slice 70: walk swing cut 0.45 -> 0.32 rad, leg factor
+	# 0.7 -> 0.55, longyi factor 0.12 -> 0.06. The step frequency
+	# is untouched (it was already speed-tied and plausible); only
+	# the rubbery amplitude shrinks, so walking reads as a natural
+	# stride instead of a doll wobble.
+	var s := sin(_phase) * 0.32 * _amp
 	if _arm_r != null:
 		_arm_r.rotation.x = s
 	if _arm_l != null:
 		_arm_l.rotation.x = -s
 	if _leg_r != null:
-		_leg_r.rotation.x = -s * 0.7
+		_leg_r.rotation.x = -s * 0.55
 	if _leg_l != null:
-		_leg_l.rotation.x = s * 0.7
+		_leg_l.rotation.x = s * 0.55
 	if _longyi != null:
-		_longyi.rotation.x = -s * 0.12
+		_longyi.rotation.x = -s * 0.06

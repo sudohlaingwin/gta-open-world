@@ -446,6 +446,20 @@ func _ready() -> void:
 		_real66.name = "MaterialRealism66"
 		_real66.set_script(load("res://material_realism66.gd"))
 		_world66.call_deferred("add_child", _real66)
+	# Slice 70 graphics realism, part 1 (owner 06:32: people and
+	# houses must stop looking like wobbly dolls — no new feature
+	# in this slice): pitched roof caps, stilt rails/bracing,
+	# head/neck/hands reshaping, procedural wall/roof/window/door/
+	# road textures, ground tiling, sun shadow bias. Runtime-only,
+	# no scene touched. Captures once at its frame >= 12, after
+	# all deferred dressing and the Slice 61 style pass, then
+	# stops processing (zero per-frame cost).
+	var _world70 := get_parent()
+	if _world70 != null and _world70.get_node_or_null("Realism70") == null:
+		var _real70 := Node3D.new()
+		_real70.name = "Realism70"
+		_real70.set_script(load("res://realism70.gd"))
+		_world70.call_deferred("add_child", _real70)
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
