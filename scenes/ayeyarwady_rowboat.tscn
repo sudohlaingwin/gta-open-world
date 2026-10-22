@@ -9,8 +9,9 @@ size = Vector3(2.6, 1.5, 7.8)
 size = Vector3(2.4, 0.95, 7.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak"]
-albedo_color = Color(0.35, 0.22, 0.12, 1)
-roughness = 0.85
+albedo_color = Color(0.34, 0.20, 0.10, 1)
+roughness = 0.68
+specular = 0.32
 
 [sub_resource type="BoxMesh" id="BoxMesh_bench"]
 size = Vector3(2.2, 0.18, 0.75)

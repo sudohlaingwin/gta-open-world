@@ -7,16 +7,21 @@ size = Vector3(32.5, 2.4, 22.5)
 size = Vector3(32.0, 1.4, 22.0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stage_wood"]
-albedo_color = Color(0.42, 0.26, 0.14, 1)
-roughness = 0.85
+albedo_color = Color(0.38, 0.24, 0.12, 1)
+roughness = 0.72
+specular = 0.25
 
 [sub_resource type="BoxMesh" id="BoxMesh_backdrop"]
 size = Vector3(29.0, 9.6, 0.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_backdrop_gold"]
-albedo_color = Color(0.92, 0.75, 0.18, 1)
-metallic = 0.6
-roughness = 0.35
+albedo_color = Color(0.96, 0.78, 0.18, 1)
+metallic = 0.88
+roughness = 0.20
+specular = 0.55
+emission_enabled = true
+emission = Color(0.92, 0.72, 0.15, 1)
+emission_energy_multiplier = 0.18
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_post"]
 top_radius = 0.3
@@ -24,14 +29,17 @@ bottom_radius = 0.38
 height = 9.8
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_post"]
-albedo_color = Color(0.68, 0.56, 0.32, 1)
+albedo_color = Color(0.66, 0.54, 0.30, 1)
+roughness = 0.82
+specular = 0.18
 
 [sub_resource type="BoxMesh" id="BoxMesh_drum"]
 size = Vector3(2.4, 2.4, 2.4)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_saing_waing"]
-albedo_color = Color(0.8, 0.2, 0.15, 1)
-roughness = 0.5
+albedo_color = Color(0.84, 0.18, 0.14, 1)
+roughness = 0.42
+specular = 0.42
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_area"]
 size = Vector3(36.0, 10.0, 26.0)

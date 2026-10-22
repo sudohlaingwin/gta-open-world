@@ -13,8 +13,9 @@ size = Vector3(0.4, 1.8, 36.0)
 size = Vector3(5.0, 0.3, 35.8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo"]
-albedo_color = Color(0.70, 0.58, 0.35, 1)
-roughness = 0.8
+albedo_color = Color(0.68, 0.56, 0.32, 1)
+roughness = 0.76
+specular = 0.22
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_post"]
 top_radius = 0.18
