@@ -203,6 +203,59 @@ func sightseeing_load_state(data: Dictionary) -> void:
 		sightseeing_index = 0
 
 
+## Slice 60 — Mindon district side quests (see mission_data.gd
+## DISTRICT60_QUESTS). Parallel to the main chain and to sightseeing:
+## it never touches stage/rewards/counters, and a pre-60 save loads
+## with both quests undone, never as an error. State is saved under
+## the optional "district60" key in the save file (player.gd).
+## Check the given world-x/z position against every undone quest.
+## Returns {"visited": bool, "quest": String, "all_done": bool}.
+## A visit only counts inside DISTRICT60_RADIUS; already-done quests
+## never re-trigger, so the stamina reward cannot be farmed.
+var district60_done: Dictionary = {"hospital": false, "mrtv": false}
+
+
+func district60_done_count() -> int:
+	var n := 0
+	for q in Data.DISTRICT60_QUESTS:
+		if bool(district60_done.get(str(q.get("id", "")), false)):
+			n += 1
+	return n
+
+
+func district60_check(pos: Vector2) -> Dictionary:
+	for q in Data.DISTRICT60_QUESTS:
+		var qid := str(q.get("id", ""))
+		if bool(district60_done.get(qid, false)):
+			continue
+		var target: Vector2 = q.get("pos", Vector2.ZERO)
+		if pos.distance_to(target) <= Data.DISTRICT60_RADIUS:
+			district60_done[qid] = true
+			return {"visited": true, "quest": qid, "all_done": district60_done_count() >= Data.DISTRICT60_QUESTS.size()}
+	return {"visited": false, "quest": "", "all_done": false}
+
+
+func district60_label() -> String:
+	var done := district60_done_count()
+	var total := Data.DISTRICT60_QUESTS.size()
+	if done >= total:
+		return "မင်းတုန်း ပြီးပါပြီ (%d/%d)" % [done, total]
+	for q in Data.DISTRICT60_QUESTS:
+		if not bool(district60_done.get(str(q.get("id", "")), false)):
+			return "မင်းတုန်း (%d/%d): %s" % [done, total, str(q.get("label", ""))]
+	return "မင်းတုန်း (%d/%d)" % [done, total]
+
+
+func district60_state() -> Dictionary:
+	return district60_done.duplicate()
+
+
+func district60_load_state(data: Dictionary) -> void:
+	for q in Data.DISTRICT60_QUESTS:
+		var qid := str(q.get("id", ""))
+		district60_done[qid] = bool(data.get(qid, false))
+
+
 ## Load mission state from a save dictionary (old saves use the same
 ## keys, so a Slice 26 save maps onto this manager unchanged).
 func load_state(stage_value: int, rewards_data: Dictionary, counters_data: Dictionary) -> void:

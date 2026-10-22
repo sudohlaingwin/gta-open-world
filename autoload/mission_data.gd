@@ -197,6 +197,22 @@ const SIGHTSEEING_STOPS: Array = [
 	{"id": "sight_zayat", "title": "ဇရပ်", "label": "ဇရပ်ကို သွားပါ", "pos": Vector2(28.0, 2.0)},
 ]
 
+# Slice 60 — Mindon district side quests (SECOND new mission type).
+# Same pattern as Slice 54 sightseeing: parallel to the 36-stage main
+# chain, never advances quest_stage, never grants r1..r10, never gates
+# movement/driving/dialogue. Two independent single-visit quests, any
+# order, each once: positions are REAL scene transforms from
+# main.tscn (MindonHospital (122, 0, 58), MindonMRTV (108, 0, 42)),
+# not invented. Radius 9.0 m matches the sightseeing reasoning:
+# building solids stop the player a few metres out, so a smaller
+# radius would be unreachable on foot. Reward per quest is a stamina
+# refill to 100 (capped, no farming: done flags persist in the save).
+const DISTRICT60_RADIUS: float = 9.0
+const DISTRICT60_QUESTS: Array = [
+	{"id": "hospital", "title": "ဆေးရုံ", "label": "မင်းတုန်း ဆေးရုံကို သွားပါ", "pos": Vector2(122.0, 58.0)},
+	{"id": "mrtv", "title": "MRTV", "label": "MRTV ကို သွားပါ", "pos": Vector2(108.0, 42.0)},
+]
+
 static func label_for(stage: int, rewards: Dictionary, talked: int, total: int, banana: int) -> String:
 	if stage == 0:
 		return TALK_LABEL_PREFIX + str(talked) + "/" + str(total) + ")"
@@ -214,4 +230,9 @@ static func tracker_for(stage: int) -> String:
 	var parts: Array = []
 	for i in range(36):
 		parts.append(("✓ " if stage > i else "○ ") + STAGE_TITLES[i])
-	return "   ".join(parts)
+	# Slice 60 legibility: single-space joins (was triple-space).
+	# Same 36 stages, same order, same marks — just ~70 chars
+	# shorter, so the wrapped tracker fits its rect (see
+	# hud_polish60.gd: the label's minimum size grows with wrapped
+	# text and would otherwise overflow its anchor band).
+	return " ".join(parts)

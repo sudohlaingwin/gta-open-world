@@ -4,6 +4,7 @@ const City56Script = preload("res://city_visual56.gd")
 const River57Script = preload("res://river_bridge57.gd")
 const Dress58Script = preload("res://character_dress58.gd")
 const Dress59Script = preload("res://district_dress59.gd")
+const HudPolish60Script = preload("res://hud_polish60.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -210,6 +211,19 @@ var map_button: Button = null
 var sightseeing_button: Button = null
 var sightseeing_button_connected: bool = false
 var sightseeing_label: Label = null
+## Slice 60 owned-vehicle garage: the name of the last vehicle the
+## player drove (one of the 14 _try_enter_vehicle names, "" = none
+## yet). Persisted under the "garage" save key; a pre-60 save loads
+## as "" (no recall until the player drives something). The recall
+## button only MOVES that vehicle near the player — it never
+## auto-enters it, so the existing Vehicle-button flow still owns
+## entering, and a recalled aircraft/boat keeps its own height.
+var garage_vehicle_name: String = ""
+var garage_notice_text: String = ""
+var garage_notice_timer: float = 0.0
+var garage_button: Button = null
+var garage_label: Label = null
+var district_label: Label = null
 var map_button_connected: bool = false
 # Slice 16: parachute + festival. The parachute deploys itself on
 # a mid-air vehicle exit and stows itself on landing (no button
@@ -337,6 +351,12 @@ func _ready() -> void:
 	_apply_hud_scale()
 	_create_sightseeing_hud()
 	_apply_hud_scale()
+	# Slice 60 HUD polish + garage/district HUD nodes (runtime-only,
+	# see hud_polish60.gd). Runs here so the layer exists; hud-scale
+	# uses Control.scale, independent of the polish anchor changes.
+	var _layer60 := get_node_or_null("../JoystickLayer") as CanvasLayer
+	if _layer60 != null:
+		HudPolish60Script.polish(_layer60, self)
 	apply_graphics_quality()
 	_configure_map_bounds()
 	# Slice 53 graphics: village dressing (walls/windows/doors for
@@ -425,6 +445,8 @@ func _physics_process(delta: float) -> void:
 	_update_compass()
 	_update_waypoint_guide()
 	_update_sightseeing()
+	_update_district60()
+	_update_garage_notice(delta)
 	_update_stamina(delta)
 	_update_prompt_label()
 	_update_fruit_water_label()
@@ -940,6 +962,14 @@ func _try_enter_vehicle() -> void:
 		driving = true
 		driving_vehicle = best
 		visible = false
+		# Slice 60 garage: remember the last vehicle driven and
+		# persist it at once, so a quit right after entering still
+		# keeps the garage (same save-on-action pattern as the
+		# sightseeing button press).
+		garage_vehicle_name = str(best.name)
+		var _sm60 = _sm()
+		if _sm60 != null:
+			_sm60.call("save_game", collect_save_data())
 		# Driver-body fix: while driving, the player body must not
 		# block its own vehicle. Entering hid the body but left it
 		# live at the entry spot, running zero-velocity
@@ -1739,6 +1769,130 @@ func _update_sightseeing() -> void:
 	var sm = _sm()
 	if sm != null:
 		sm.call("save_game", collect_save_data())
+
+
+## Slice 60 — Mindon district side quests (see mission_data.gd
+## DISTRICT60_QUESTS). Mirrors _update_sightseeing: the check runs
+## on foot AND in vehicles (vehicle position used while driving),
+## a visit chimes + refills stamina, and the label always shows
+## live progress. No waypoint is set: the two targets already have
+## minimap dots (MindonHospitalDot, MindonMRTVDot), and the label
+## names the next target, so no new guidance system is needed.
+func _update_district60() -> void:
+	var mm = _mm()
+	if mm == null:
+		return
+	if district_label == null:
+		district_label = _n("../JoystickLayer/DistrictLabel60") as Label
+	if district_label != null:
+		_set_text(district_label, mm.call("district60_label"))
+	var ref: Vector3 = global_position
+	if driving and driving_vehicle != null:
+		ref = (driving_vehicle as Node3D).global_position
+	var result: Dictionary = mm.call("district60_check", Vector2(ref.x, ref.z))
+	if not bool(result.get("visited", false)):
+		return
+	_play_tone(660.0, 0.25)
+	stamina = 100.0
+	if district_label != null:
+		_set_text(district_label, mm.call("district60_label"))
+	var sm = _sm()
+	if sm != null:
+		sm.call("save_game", collect_save_data())
+
+
+## Slice 60 — garage notice label (transient, 4 s). PromptLabel is
+## rewritten every frame by _update_prompt_label, so garage feedback
+## gets its own label instead of fighting it. The button hides
+## while driving, same as the other on-foot buttons.
+func _update_garage_notice(delta: float) -> void:
+	if garage_button == null:
+		garage_button = _n("../JoystickLayer/GarageButton60") as Button
+	if garage_button != null:
+		_set_visible(garage_button, not driving)
+	if garage_label == null:
+		garage_label = _n("../JoystickLayer/GarageLabel60") as Label
+	if garage_label == null:
+		return
+	if garage_notice_timer > 0.0:
+		garage_notice_timer -= delta
+		_set_text(garage_label, garage_notice_text)
+		_set_visible(garage_label, true)
+	else:
+		_set_visible(garage_label, false)
+
+
+## Slice 60 — garage recall. Moves the remembered vehicle to a
+## capsule-probed free spot near the player (same probe pattern as
+## find_free_exit_spot, centred on the player instead of the
+## vehicle). The vehicle keeps its own height, is never auto-entered,
+## and is never moved into a wall: if every candidate is blocked the
+## button says so and the vehicle stays where it is.
+func _on_garage_button_pressed() -> void:
+	if driving:
+		garage_notice_text = "ယာဉ်စီးနေစဉ် ဂိုဒေါင်ခေါ်၍မရ"
+		garage_notice_timer = 4.0
+		return
+	if garage_vehicle_name == "":
+		garage_notice_text = "ဂိုဒေါင်မှာ ယာဉ်မရှိသေးပါ — ယာဉ်တစ်စီး အရင်စီးပါ"
+		garage_notice_timer = 4.0
+		return
+	var veh := get_node_or_null("../" + garage_vehicle_name) as Node3D
+	if veh == null:
+		garage_notice_text = "ဂိုဒေါင်ယာဉ် ရှာမတွေ့ပါ"
+		garage_notice_timer = 4.0
+		return
+	var spot := _free_spot_near_player(veh)
+	if spot == Vector3.INF:
+		garage_notice_text = "အနီးမှာ နေရာကျပ်နေသည် — နည်းနည်းရွှေ့ပြီးမှ ပြန်ခေါ်ပါ"
+		garage_notice_timer = 4.0
+		return
+	veh.global_position = Vector3(spot.x, veh.global_position.y, spot.z)
+	garage_notice_text = "🚗 ဂိုဒေါင်ယာဉ် ရောက်လာပါပြီ — စီးမည် ကို နှိပ်ပါ"
+	garage_notice_timer = 4.0
+
+
+## Slice 60 — free-spot probe near the player (see
+## find_free_exit_spot for the pattern; exclusions identical plus
+## the recalled vehicle itself). Returns Vector3.INF if blocked.
+func _free_spot_near_player(vehicle: Node3D) -> Vector3:
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	if space == null:
+		return global_position + Vector3(3.0, 0.0, 0.0)
+	var shape := CapsuleShape3D.new()
+	shape.radius = 0.4
+	shape.height = 1.2
+	var params := PhysicsShapeQueryParameters3D.new()
+	params.shape = shape
+	params.collision_mask = 1
+	params.collide_with_bodies = true
+	params.collide_with_areas = false
+	var offsets: Array = [Vector3(3.0, 0.0, 0.0), Vector3(-3.0, 0.0, 0.0),
+		Vector3(0.0, 0.0, 3.0), Vector3(0.0, 0.0, -3.0),
+		Vector3(3.0, 0.0, 3.0), Vector3(3.0, 0.0, -3.0),
+		Vector3(-3.0, 0.0, 3.0), Vector3(-3.0, 0.0, -3.0),
+		Vector3(5.0, 0.0, 0.0), Vector3(-5.0, 0.0, 0.0),
+		Vector3(0.0, 0.0, 5.0), Vector3(0.0, 0.0, -5.0)]
+	for off in offsets:
+		var spot: Vector3 = global_position + off
+		params.transform = Transform3D(Basis.IDENTITY, spot + Vector3(0.0, 0.6, 0.0))
+		var hits: Array = space.intersect_shape(params, 8)
+		var blocked := false
+		for h in hits:
+			var col = h.get("collider")
+			if col == null:
+				continue
+			if col == self:
+				continue
+			if col == vehicle:
+				continue
+			if col.name == "GroundBody":
+				continue
+			blocked = true
+			break
+		if not blocked:
+			return spot
+	return Vector3.INF
 
 
 func _on_camera_reset() -> void:
@@ -2583,6 +2737,13 @@ func _apply_pending_load() -> void:
 		var sight_data = data.get("sightseeing", {})
 		if sight_data is Dictionary:
 			mm.call("sightseeing_load_state", sight_data)
+		# Slice 60 district quests: optional key, same guard.
+		var district_data = data.get("district60", {})
+		if district_data is Dictionary:
+			mm.call("district60_load_state", district_data)
+	var garage_data = data.get("garage", {})
+	if garage_data is Dictionary:
+		garage_vehicle_name = str(garage_data.get("vehicle", ""))
 	if data.has("stamina"):
 		stamina = clampf(float(data.get("stamina")), 0.0, 100.0)
 	var growth = data.get("growth", {})
@@ -2677,6 +2838,12 @@ func collect_save_data() -> Dictionary:
 	var sight_now := {}
 	if mm != null:
 		sight_now = mm.call("sightseeing_state")
+	# Slice 60 garage + district quests: optional keys, same guard
+	# pattern — a pre-60 save loads as no-garage / both-undone.
+	var garage_now := {"vehicle": garage_vehicle_name}
+	var district_now := {}
+	if mm != null:
+		district_now = mm.call("district60_state")
 	return {
 		"player": {"pos": [global_position.x, global_position.y, global_position.z], "rot_y": rotation.y},
 		"quest_stage": stage_now,
@@ -2685,6 +2852,8 @@ func collect_save_data() -> Dictionary:
 		"rewards": rewards_now,
 		"counters": counters_now,
 		"sightseeing": sight_now,
+		"garage": garage_now,
+		"district60": district_now,
 		"growth": {"crop": crop_growth, "rice": rice_growth},
 		"settings": {"muted": muted_now, "volume": volume_now},
 	}
