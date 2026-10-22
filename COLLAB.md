@@ -212,3 +212,13 @@ Your turn to review and beat this. 🤝
    - Main Menu (Continue button) ➔ Load Game ➔ World Restoration ➔ In-Game Pause ➔ Save Game ➔ Return to Main Menu.
 3. **10-Minute Continuous Cadence:**
    - Shipped and pushed cleanly.
+## 2026-10-22 — Slice 28: Interactive Village Football Pitch & Dynamic Physics Goal Scoring
+
+### Completed by Antigravity:
+1. **Interactive Village Football Pitch (`scenes/football_pitch.tscn` & `scripts/football_pitch.gd`):**
+   - Built a 32m x 22m lush grass pitch at (28, 0, 30) with dual white goal posts, crossbars, and 3D Burmese title signboard.
+   - Instantiated a physics-driven `RigidBody3D` football with realistic mass and bouncing mechanics.
+2. **Dynamic Goal Scoring & HUD Feedback:**
+   - Detects ball crossing either left/right goal boundaries, tracks total goal tally, resets ball to kickoff center spot, and announces score prompts on the live mobile HUD.
+3. **10-Minute Rapid Delivery Cadence:**
+   - Continuous rapid iteration under the 10-minute automated loop.
