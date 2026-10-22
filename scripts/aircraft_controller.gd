@@ -4,17 +4,27 @@ extends CharacterBody3D
 
 @export var max_thrust: float = 35.0
 @export var lift_coefficient: float = 1.4
-@export var pitch_speed: float = 1.6
-@export var roll_speed: float = 2.2
-@export var yaw_speed: float = 1.4
-@export var stall_speed: float = 9.0
+@export var stall_speed: float = 8.0
+@export var air_drag: float = 3.0
+@export var low_pitch_rate: float = 1.8
+@export var high_pitch_rate: float = 0.9
+@export var low_roll_rate: float = 2.4
+@export var high_roll_rate: float = 1.2
+@export var low_yaw_rate: float = 1.2
+@export var high_yaw_rate: float = 0.5
+@export var steer_response: float = 8.0
 
 var current_pilot: Node3D = null
 var is_flying: bool = false
 var throttle: float = 0.0
+var pitch_smooth: float = 0.0
+var roll_smooth: float = 0.0
+var yaw_smooth: float = 0.0
 
 @onready var cockpit_seat: Marker3D = $CockpitSeat
 @onready var interaction_area: Area3D = $InteractionArea
+@onready var visual_mesh: Node3D = $VisualMesh
+@onready var propeller_mesh: MeshInstance3D = get_node_or_null("VisualMesh/Propeller")
 
 signal pilot_entered(pilot)
 signal pilot_exited()
@@ -24,6 +34,11 @@ func _ready() -> void:
 		interaction_area.body_entered.connect(_on_interaction_area_entered)
 		interaction_area.body_exited.connect(_on_interaction_area_exited)
 
+func _spool_curve(speed_ratio: float) -> float:
+	if speed_ratio < 0.3:
+		return 0.55 + 0.45 * (speed_ratio / 0.3)
+	return 1.0 - 0.5 * ((speed_ratio - 0.3) / 0.7)
+
 func _physics_process(delta: float) -> void:
 	if not is_flying or not current_pilot:
 		if not is_on_floor():
@@ -31,34 +46,46 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
+	var forward = -global_transform.basis.z
+	var forward_speed = velocity.dot(forward)
+	var speed_ratio = clampf(abs(forward_speed) / 50.0, 0.0, 1.0)
+
 	# Pilot flight controls via Touch Joystick or Arrow/WASD keys
 	var input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if current_pilot.get("touch_input_vector") != null and current_pilot.touch_input_vector != Vector2.ZERO:
 		input_dir = current_pilot.touch_input_vector
 
-	# Throttle Management (Sprint increases throttle, normal allows deceleration to 0 for landing)
+	# Throttle Management with Progressive Spool Curve
+	var spool = _spool_curve(speed_ratio)
 	if current_pilot.get("is_sprinting") == true:
-		throttle = clamp(throttle + delta * 0.4, 0.0, 1.0)
+		throttle = clamp(throttle + delta * 0.4 * spool, 0.0, 1.0)
 	elif input_dir.y > 0.5:
-		throttle = clamp(throttle - delta * 0.35, 0.0, 1.0) # Down on stick brakes/decelerates to 0 for landing
+		throttle = clamp(throttle - delta * 0.35 * spool, 0.0, 1.0)
 
-	var forward = -global_transform.basis.z
-	var forward_speed = velocity.dot(forward)
+	# Control Smoothing and Speed-Dependent Authority
+	pitch_smooth = move_toward(pitch_smooth, -input_dir.y, steer_response * delta)
+	roll_smooth = move_toward(roll_smooth, -input_dir.x, steer_response * delta)
 
-	# Decoupled Flight Controls:
-	# Y axis -> Pitch (Nose Up/Down)
-	# X axis -> Roll Bank
-	rotate_object_local(Vector3.RIGHT, -input_dir.y * pitch_speed * delta)
-	rotate_object_local(Vector3.FORWARD, -input_dir.x * roll_speed * delta)
-	
-	# Dedicated Independent Yaw from Pilot Touch Yaw
+	var pitch_rate = lerpf(low_pitch_rate, high_pitch_rate, speed_ratio)
+	var roll_rate = lerpf(low_roll_rate, high_roll_rate, speed_ratio)
+	var yaw_rate = lerpf(low_yaw_rate, high_yaw_rate, speed_ratio)
+
+	rotate_object_local(Vector3.RIGHT, pitch_smooth * pitch_rate * delta)
+	rotate_object_local(Vector3.FORWARD, roll_smooth * roll_rate * delta)
+
+	# Dedicated Independent Yaw + Coordinated Rudder Bank
 	var explicit_yaw: float = 0.0
 	if current_pilot.get("touch_yaw") != null:
 		explicit_yaw = current_pilot.touch_yaw
 	if abs(explicit_yaw) > 0.05:
-		rotate_y(-explicit_yaw * yaw_speed * delta)
+		yaw_smooth = move_toward(yaw_smooth, -explicit_yaw, steer_response * delta)
+		rotate_y(yaw_smooth * yaw_rate * delta)
 	else:
-		rotate_y(-input_dir.x * (yaw_speed * 0.3) * delta) # Slight coordinated rudder bias
+		rotate_y(roll_smooth * (yaw_rate * 0.4) * delta)
+
+	# Propeller spin dynamically scaled with engine throttle
+	if propeller_mesh:
+		propeller_mesh.rotate_z(30.0 * (0.2 + 0.8 * throttle) * delta)
 
 	# Aerodynamic Stall & Lift Calculation
 	var thrust = forward * (throttle * max_thrust)
@@ -73,7 +100,10 @@ func _physics_process(delta: float) -> void:
 
 	var gravity_force = Vector3.DOWN * 9.8
 	velocity += (thrust + lift + gravity_force) * delta
-	velocity = velocity.limit_length(60.0)
+
+	# Real Air Drag (throttle cut naturally decelerates the aircraft)
+	velocity = velocity.move_toward(Vector3.ZERO, air_drag * delta)
+	velocity = velocity.limit_length(50.0)
 
 	move_and_slide()
 
@@ -83,6 +113,9 @@ func enter_aircraft(pilot: Node3D) -> void:
 	is_flying = true
 	current_pilot = pilot
 	throttle = 0.5
+	pitch_smooth = 0.0
+	roll_smooth = 0.0
+	yaw_smooth = 0.0
 	pilot.reparent(cockpit_seat)
 	pilot.position = Vector3.ZERO
 	pilot.rotation = Vector3.ZERO
@@ -96,6 +129,9 @@ func exit_aircraft() -> void:
 	var pilot = current_pilot
 	is_flying = false
 	current_pilot = null
+	pitch_smooth = 0.0
+	roll_smooth = 0.0
+	yaw_smooth = 0.0
 	var exit_pos = global_position + (global_transform.basis.x * 3.0)
 	pilot.reparent(get_parent())
 	pilot.global_position = exit_pos

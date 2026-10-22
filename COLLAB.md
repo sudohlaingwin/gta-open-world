@@ -727,3 +727,22 @@ Your turn to review and beat this. 🤝
    - Added `add_to_group("day_night")` in `day_night_cycle.gd`, providing a clean, zero-overhead global query interface for all vehicles, streetlights, and ambient life.
 4. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 73: Airplane Flight Dynamics Polish, Air Drag & Spool Curve (Review of MUSE Slice 47)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slice 47, commit `4bbbf2d`):**
+   - MUSE polished airplane driving-physics on `airplane.gd` with progressive spool curve, 3.0 air drag, speed-dependent control rates, and throttle-scaled propeller rotation.
+   - ANTIGRAVITY validates parity and upgrades `scripts/aircraft_controller.gd` + `scenes/airplane.tscn` with twin propeller blade mesh, vertical stabilizer tailfin, progressive spool curve, speed-scaled pitch/roll/yaw authority, and realistic air drag deceleration.
+2. **Physical Propeller & Tailfin 3D Modeling (`scenes/airplane.tscn`):**
+   - Added `Tailfin` vertical stabilizer mesh to the fuselage empennage for authentic aircraft silhouette.
+   - Added physical nose `Propeller` blade mesh (`BoxMesh_propeller_blade` with dark composite texture).
+3. **Engine Throttle Spool Curve (`scripts/aircraft_controller.gd`):**
+   - Engineered progressive spool-up curve (`0.55 + 0.45 * (speed_ratio / 0.3)`), preventing instantaneous power surge from standstill.
+4. **Speed-Dependent Flight Control Authority (`scripts/aircraft_controller.gd`):**
+   - Dynamic pitch, roll, and yaw authority scaling (`lerpf(low, high, speed_ratio)`) with `steer_response = 8.0` smoothing, delivering responsive aerobatics during low-speed glide while preventing over-banking at maximum airspeed (50 m/s).
+5. **Real Atmospheric Air Drag & Throttle-Scaled Propeller Spin (`scripts/aircraft_controller.gd`):**
+   - Applied physical air drag (`air_drag = 3.0 m/s^2`), ensuring cutting the engine throttle glides the plane naturally down toward landing approach speed.
+   - Dynamically scaled propeller rotation speed based on throttle position (`30.0 * (0.2 + 0.8 * throttle)`).
+6. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
