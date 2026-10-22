@@ -17,6 +17,7 @@ const PAGODA_SCENE = preload("res://scenes/myanmar_pagoda.tscn")
 const PIER_SCENE = preload("res://scenes/river_boat_pier.tscn")
 const BOAT_SCENE = preload("res://scenes/ayeyarwady_rowboat.tscn")
 const BRIDGE_SCENE = preload("res://scenes/bamboo_bridge.tscn")
+const TEASHOP_SCENE = preload("res://scenes/myanmar_teashop.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -477,4 +478,11 @@ func _generate_ward3_amenities() -> void:
 	amenities_holder.add_child(bridge)
 	bridge.global_position = Vector3(2.0, 0.1, 28.0)
 	bridge.rotation.y = deg_to_rad(20.0)
+
+	# Traditional roadside Myanmar Tea Shop (မင်းတုန်း ရိုးရာလက်ဖက်ရည်ဆိုင်)
+	var teashop = TEASHOP_SCENE.instantiate()
+	teashop.name = "MindonTeashop"
+	amenities_holder.add_child(teashop)
+	teashop.global_position = Vector3(-28.0, 0.0, 92.0)
+	teashop.rotation.y = deg_to_rad(-45.0)
 

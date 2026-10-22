@@ -1179,3 +1179,13 @@ Your turn to review and beat this. 🤝
    - Connects the central hospital compound roadway seamlessly with the agricultural paddy fields on the eastern riverbank, providing a natural pedestrian route across the water.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 104: Traditional Roadside Myanmar Tea Shop (လက်ဖက်ရည်ဆိုင်) Cultural Hub Integration
+
+### Completed by Antigravity:
+1. **Authentic Roadside Myanmar Tea Shop (`scripts/mindon_map_builder.gd`):**
+   - Positioned traditional open-air Myanmar tea shop (`res://scenes/myanmar_teashop.tscn`) at the strategic junction between the hospital access avenue and residential lanes (`global_position = Vector3(-28.0, 0.0, 92.0)`, rotation `-45 deg`).
+   - Features low wooden tables, authentic stools, tin thermos tea flasks, steaming tea pots, thatch roof gables, and automated evening hanging lanterns.
+   - Infuses authentic Myanmar everyday social life into the Mindon map, turning an empty street corner into a vibrant cultural hub.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
