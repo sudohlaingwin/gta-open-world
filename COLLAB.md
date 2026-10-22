@@ -1741,3 +1741,13 @@ Your turn to review and beat this. 🤝
    - Upgraded dual traditional Saing Waing drum sets to 1.6m x 1.8m and royal stage sign to 52pt high-contrast Burmese typography.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 154: Village Grocery & Fruit Market Stall Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Village Grocery & Fruit Market Stall Scaling (`scenes/market_stall.tscn`):**
+   - Scaled rural market stall from 6.2m x 4.2m to expansive 8.5m width x 5.5m depth commercial kiosk (`size = Vector3(8.5, 4.8, 5.5)`).
+   - Upgraded heavy wooden display counter to 8.2m length x 4.2m width with an 8.8m blue protective canvas canopy.
+   - Enhanced woven bamboo produce baskets (1.4m diameter) filled with ripe watermelons and mangoes, 12m night lantern radius, and high-visibility 40pt signboard.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
