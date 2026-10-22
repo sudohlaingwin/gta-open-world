@@ -1,4 +1,4 @@
-[gd_scene load_steps=440 format=3]
+[gd_scene load_steps=445 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Script" path="res://car.gd" id="1_car"]
@@ -1480,6 +1480,21 @@ size = Vector3(9, 3.6, 7)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mindon_block_hospital"]
 size = Vector3(10.8, 3.8, 8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_solid_stilt15"]
+size = Vector3(2.0, 2.8, 4.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_solid_stilt17"]
+size = Vector3(5.0, 2.8, 4.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_solid_post"]
+size = Vector3(0.12, 1.0, 0.12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_solid_bed"]
+size = Vector3(0.5, 0.6, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_solid_pillar"]
+size = Vector3(0.2, 0.7, 0.2)
 
 [node name="Main" type="Node3D"]
 
@@ -4784,11 +4799,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
 shape = SubResource("BoxShape3D_s14_deck")
 
 [node name="RampCollisionS" type="CollisionShape3D" parent="BambooBridge14"]
-transform = Transform3D(1, 0, 0, 0, 0.989, -0.148, 0, 0.148, 0.989, 0, 0.18, -5.5)
+transform = Transform3D(1, 0, 0, 0, 0.989, 0.148, 0, -0.148, 0.989, 0, 0.18, -5.5)
 shape = SubResource("BoxShape3D_s14_ramp")
 
 [node name="RampCollisionN" type="CollisionShape3D" parent="BambooBridge14"]
-transform = Transform3D(1, 0, 0, 0, 0.989, 0.148, 0, -0.148, 0.989, 0, 0.18, 5.5)
+transform = Transform3D(1, 0, 0, 0, 0.989, -0.148, 0, 0.148, 0.989, 0, 0.18, 5.5)
 shape = SubResource("BoxShape3D_s14_ramp")
 
 [node name="Deck14" type="MeshInstance3D" parent="BambooBridge14"]
@@ -10553,3 +10568,420 @@ offset_top = 0.0
 offset_right = 8.0
 offset_bottom = 8.0
 color = Color(0.85, 0.8, 0.7, 1)
+
+[node name="House1Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.4, -8)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="House1Solid"]
+shape = SubResource("BoxShape3D_camblock_0")
+
+[node name="House2Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1.4, -10)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="House2Solid"]
+shape = SubResource("BoxShape3D_camblock_1")
+
+[node name="House3Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.4, 10)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="House3Solid"]
+shape = SubResource("BoxShape3D_camblock_2")
+
+[node name="House4Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 1.4, 14)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="House4Solid"]
+shape = SubResource("BoxShape3D_camblock_3")
+
+[node name="House5Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 1.4, -8)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="House5Solid"]
+shape = SubResource("BoxShape3D_camblock_4")
+
+[node name="House6Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 1.5, 30)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="House6Solid"]
+shape = SubResource("BoxShape3D_camblock_5")
+
+[node name="House7Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 1.5, 30)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="House7Solid"]
+shape = SubResource("BoxShape3D_camblock_6")
+
+[node name="House8Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 1.5, 30)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="House8Solid"]
+shape = SubResource("BoxShape3D_camblock_7")
+
+[node name="SchoolSolid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 1.6, 14)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="SchoolSolid"]
+shape = SubResource("BoxShape3D_camblock_8")
+
+[node name="Stilt5Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 1.5, -16)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="Stilt5Solid"]
+shape = SubResource("BoxShape3D_camblock_9")
+
+[node name="Stilt6Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -22)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="Stilt6Solid"]
+shape = SubResource("BoxShape3D_camblock_10")
+
+[node name="Stilt13Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1.9, -22)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="Stilt13Solid"]
+shape = SubResource("BoxShape3D_camblock_11")
+
+[node name="LakesideHutSolid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 1.0, 38)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="LakesideHutSolid"]
+shape = SubResource("BoxShape3D_camblock_12")
+
+[node name="MDHouse1Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 125, 1.4, -14)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse1Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse2Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 125, 1.4, 14)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse2Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse3Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 155, 1.4, -14)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse3Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse4Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 155, 1.4, 16)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse4Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse5Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170, 1.4, -16)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse5Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse6Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170, 1.4, 14)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse6Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse7Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 148, 1.4, -32)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse7Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse8Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 148, 1.4, 32)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse8Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse9Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 1.4, -14)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse9Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse10Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 1.4, 16)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse10Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse11Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 220, 1.4, 30)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse11Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse12Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 215, 1.4, -35)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse12Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse13Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 1.4, 60)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse13Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse14Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 195, 1.4, 62)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MDHouse14Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="OoHouse1Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 66, 1.4, -16)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="OoHouse1Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="OoHouse2Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 66, 1.4, 16)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="OoHouse2Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="OoHouse3Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 74, 1.4, -10)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="OoHouse3Solid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MindonTempleSolid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 218, 1.8, -22)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MindonTempleSolid"]
+shape = SubResource("BoxShape3D_mindon_block_temple")
+
+[node name="MindonHospitalSolid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 122, 1.9, 58)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MindonHospitalSolid"]
+shape = SubResource("BoxShape3D_mindon_block_hospital")
+
+[node name="MindonPostSolid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 148, 1.4, 26)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MindonPostSolid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MindonEduSolid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 102, 1.4, 62)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MindonEduSolid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MindonMRTVSolid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 1.4, 42)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MindonMRTVSolid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MindonShopsSolid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 205, 1.4, 38)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="MindonShopsSolid"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="Stilt15Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 1.4, -4)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="Stilt15Solid"]
+shape = SubResource("BoxShape3D_solid_stilt15")
+
+[node name="Stilt15CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 1.4, -4)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="Stilt15CamBlock"]
+shape = SubResource("BoxShape3D_solid_stilt15")
+
+[node name="Stilt17Solid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1.4, -38)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="Stilt17Solid"]
+shape = SubResource("BoxShape3D_solid_stilt17")
+
+[node name="Stilt17CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1.4, -38)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="Stilt17CamBlock"]
+shape = SubResource("BoxShape3D_solid_stilt17")
+
+[node name="GuestPostSolid_0" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.5, 1.2, 34.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="GuestPostSolid_0"]
+shape = SubResource("BoxShape3D_solid_post")
+
+[node name="GuestPostSolid_1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5, 1.2, 34.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="GuestPostSolid_1"]
+shape = SubResource("BoxShape3D_solid_post")
+
+[node name="GuestPostSolid_2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.5, 1.2, 38.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="GuestPostSolid_2"]
+shape = SubResource("BoxShape3D_solid_post")
+
+[node name="GuestPostSolid_3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5, 1.2, 38.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="GuestPostSolid_3"]
+shape = SubResource("BoxShape3D_solid_post")
+
+[node name="GuestBedSolid" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.8, 0.45, 35.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="GuestBedSolid"]
+shape = SubResource("BoxShape3D_solid_bed")
+
+[node name="PagodaPillarSolid_0" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.0, 1.05, -25.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="PagodaPillarSolid_0"]
+shape = SubResource("BoxShape3D_solid_pillar")
+
+[node name="PagodaPillarSolid_1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, 1.05, -25.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="PagodaPillarSolid_1"]
+shape = SubResource("BoxShape3D_solid_pillar")
+
+[node name="PagodaPillarSolid_2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.0, 1.05, -33.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="PagodaPillarSolid_2"]
+shape = SubResource("BoxShape3D_solid_pillar")
+
+[node name="PagodaPillarSolid_3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.0, 1.05, -17.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape3D" parent="PagodaPillarSolid_3"]
+shape = SubResource("BoxShape3D_solid_pillar")
+
+[node name="EdgeLabel38" type="Label" parent="JoystickLayer"]
+anchor_left = 0.3
+anchor_top = 0.13
+anchor_right = 0.7
+anchor_bottom = 0.18
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+horizontal_alignment = 1
+visible = false
+text = ""
+
+[node name="StuckButton38" type="Button" parent="JoystickLayer/PausePanel21"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.35
+anchor_top = 0.78
+anchor_right = 0.65
+anchor_bottom = 0.86
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+text = "ညပ်နေလား? လွတ်မြောက်ရန်"

@@ -125,12 +125,19 @@ func _exit_car() -> void:
 	if driver == null:
 		return
 	var p: Node = driver
+	# Slice 38: never step out into a wall — probe for a free spot
+	# first; if every candidate is blocked, stay in the vehicle
+	# and say so instead of teleporting into a collider.
+	var spot: Vector3 = p.find_free_exit_spot(self, Vector3(2.0, 0.5, 0.0))
+	if spot == Vector3.INF:
+		p.show_exit_blocked()
+		return
 	driver = null
 	speed = 0.0
 	steer_smooth = 0.0
 	velocity = Vector3.ZERO
 	# Step out beside the car so the player is not stuck inside it.
-	p.global_position = global_position + Vector3(2.0, 0.5, 0.0)
+	p.global_position = spot
 	var cam := get_node_or_null("../FollowCamera")
 	if cam != null:
 		cam.set("target", p.get_path())

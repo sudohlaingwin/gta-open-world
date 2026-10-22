@@ -73,11 +73,17 @@ func _exit_elephant() -> void:
 	if driver == null:
 		return
 	var p: Node = driver
+	# Slice 38: exit clearance probe (see car.gd) — never step out
+	# into a wall; if blocked everywhere, stay mounted and say so.
+	var spot: Vector3 = p.find_free_exit_spot(self, Vector3(2.5, 0.5, 0.0))
+	if spot == Vector3.INF:
+		p.show_exit_blocked()
+		return
 	driver = null
 	speed = 0.0
 	velocity = Vector3.ZERO
 	# Step out beside the elephant so the player is not stuck in it.
-	p.global_position = global_position + Vector3(2.5, 0.5, 0.0)
+	p.global_position = spot
 	var cam := get_node_or_null("../FollowCamera")
 	if cam != null:
 		cam.set("target", p.get_path())

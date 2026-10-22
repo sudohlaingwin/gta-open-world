@@ -63,6 +63,24 @@ var guide_dist: Label = null
 # set (beacon + minimap dot stay) until the player clears it from
 # the map, so arrival never silently deletes the player's marker.
 const GUIDE_ARRIVED_RADIUS: float = 5.0
+# Slice 38 solidity: world bounds, exit clearance, stuck recovery.
+# The playable ground plane is 320 x 220 centred at (90, 0), so the
+# playable area is x -70..250, z -110..110. The clamp keeps the
+# capsule CENTRE 0.5 m inside the edge so the body never hangs off
+# the plane; the edge label tells the player why they stopped.
+const WORLD_MIN_X: float = -69.5
+const WORLD_MAX_X: float = 249.5
+const WORLD_MIN_Z: float = -109.5
+const WORLD_MAX_Z: float = 109.5
+# Last ground position where the player stood freely (on the floor
+# with no slide collision). Stuck recovery returns here. Runtime
+# only — never saved, so it is always fresh for this session.
+var last_free_pos: Vector3 = Vector3(0.0, 1.0, 5.0)
+var _probe_shape: CapsuleShape3D = null
+var exit_blocked_timer: float = 0.0
+var edge_label: Label = null
+var stuck_button: Button = null
+var stuck_button_connected: bool = false
 var day_label: Label = null
 var stamina_bar: ProgressBar = null
 var speed_bar: ProgressBar = null
@@ -232,6 +250,8 @@ func _ready() -> void:
 		last_saved_stage = mm.stage
 
 func _physics_process(delta: float) -> void:
+	if exit_blocked_timer > 0.0:
+		exit_blocked_timer -= delta
 	_apply_deferred_load()
 	if not vehicle_paints_applied:
 		_apply_vehicle_paints()
@@ -261,6 +281,12 @@ func _physics_process(delta: float) -> void:
 	if driving:
 		velocity = Vector3.ZERO
 		move_and_slide()
+		# Slice 38: vehicles are clamped to the playable area too.
+		# The driven vehicle moves in its own script; this corrects
+		# any overshoot each frame so driving past the edge stops
+		# at the edge instead of leaving the ground plane.
+		if driving_vehicle != null:
+			_show_edge_notice(_clamp_node_to_bounds(driving_vehicle))
 		if talk_button != null:
 			talk_button.visible = false
 		_update_market_buttons()
@@ -310,6 +336,14 @@ func _physics_process(delta: float) -> void:
 		velocity.x = 0.0
 		velocity.z = 0.0
 	move_and_slide()
+	# Slice 38: on foot, the player stops at the world edge, and
+	# every freely-stood ground position becomes the recovery point.
+	# "Free" is verified with the player's own capsule shape (the
+	# slide-count heuristic was wrong: a standing player rests in
+	# contact with the ground, so slide count is 1 even when free).
+	_show_edge_notice(_clamp_node_to_bounds(self))
+	if is_on_floor() and _capsule_spot_is_free(global_position):
+		last_free_pos = global_position
 	_update_talk_button()
 	_update_market_buttons()
 	_update_action_buttons()
@@ -755,6 +789,169 @@ func leave_vehicle() -> void:
 	if global_position.y > 3.0:
 		_deploy_parachute()
 
+## Slice 38 solidity: world bounds. Clamps a node's X/Z to the
+## playable ground-plane extent (0.5 m margin keeps the capsule
+## centre on the plane). Returns true when it actually moved the
+## node, so the caller can show the edge notice only while the
+## player is pushing against the edge.
+func _clamp_node_to_bounds(node: Node) -> bool:
+	if not (node is Node3D):
+		return false
+	var n3: Node3D = node as Node3D
+	var p: Vector3 = n3.global_position
+	var cx: float = clampf(p.x, WORLD_MIN_X, WORLD_MAX_X)
+	var cz: float = clampf(p.z, WORLD_MIN_Z, WORLD_MAX_Z)
+	if cx == p.x and cz == p.z:
+		return false
+	n3.global_position = Vector3(cx, p.y, cz)
+	return true
+
+## Slice 38 solidity: per-frame vehicle clamp. The driven vehicle
+## moves in its own script AFTER this script's _physics_process
+## clamp, so it can overshoot the edge by one physics tick (0.23 m
+## at top speed) before the next correction. Re-clamping here, in
+## the idle frame after all physics ticks and before rendering,
+## keeps the vehicle visibly at the edge instead of past it.
+func _process(_delta: float) -> void:
+	if driving and driving_vehicle != null:
+		_clamp_node_to_bounds(driving_vehicle)
+
+## Slice 38 solidity: free-spot probe. True when the player's own
+## capsule (same radius/height as the real body) placed at the
+## given position overlaps no layer-1 body except the ground. The
+## 0.05 m lift matches the exit probe: resting contact with the
+## ground or a bridge deck never counts as blocked, while any wall,
+## house, pagoda base or other vehicle overlapping the capsule
+## does. Touching a wall face exactly counts as blocked, which is
+## conservative and safe: the recovery point stays clearly free.
+func _capsule_spot_is_free(spot: Vector3) -> bool:
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	if space == null:
+		return true
+	if _probe_shape == null:
+		_probe_shape = CapsuleShape3D.new()
+		_probe_shape.radius = 0.4
+		_probe_shape.height = 1.2
+	var params := PhysicsShapeQueryParameters3D.new()
+	params.shape = _probe_shape
+	params.collision_mask = 1
+	params.collide_with_bodies = true
+	params.collide_with_areas = false
+	params.transform = Transform3D(Basis.IDENTITY, spot + Vector3(0.0, 0.05, 0.0))
+	var hits: Array = space.intersect_shape(params, 8)
+	for h in hits:
+		var col = h.get("collider")
+		if col == null or col == self or col.name == "GroundBody":
+			continue
+		return false
+	return true
+
+## Slice 38 solidity: edge notice. A small label under the waypoint
+## guide strip; visible exactly while a clamp is active, so the
+## failure mode reads "you are at the edge", never silent void.
+func _show_edge_notice(show: bool) -> void:
+	if edge_label == null:
+		edge_label = get_node_or_null("../JoystickLayer/EdgeLabel38") as Label
+	if edge_label == null:
+		return
+	edge_label.visible = show
+	if show:
+		edge_label.text = "⚠ အစွန်းရောက်နေပါပြီ — ဒီထက်ဆက်သွား၍ မရပါ"
+
+## Slice 38 solidity: exit clearance. Probes candidate step-out
+## spots around a vehicle with the player's own capsule shape and
+## returns the first spot that overlaps no layer-1 body except the
+## ground, the vehicle itself, and the player's own (hidden while
+## driving) body. The probe capsule sits 0.05 m above the exact
+## placement height so resting contact with the ground or a bridge
+## deck never counts as blocked, while any wall, house, pagoda base
+## or other vehicle overlapping the capsule does. Returns
+## Vector3.INF when every candidate is blocked — the caller must
+## then keep the player in the vehicle and say so, never silently
+## teleport them into a wall. Candidate order preserves the old
+## behaviour in open ground: the vehicle's existing step-out offset
+## is tried first, so an open-ground exit lands exactly where it
+## always did.
+func find_free_exit_spot(vehicle: Node3D, preferred_offset: Vector3) -> Vector3:
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	if space == null:
+		return vehicle.global_position + preferred_offset
+	var shape := CapsuleShape3D.new()
+	shape.radius = 0.4
+	shape.height = 1.2
+	var params := PhysicsShapeQueryParameters3D.new()
+	params.shape = shape
+	params.collision_mask = 1
+	params.collide_with_bodies = true
+	params.collide_with_areas = false
+	var offsets: Array = [preferred_offset,
+		Vector3(-preferred_offset.x, preferred_offset.y, preferred_offset.z),
+		Vector3(0.0, preferred_offset.y, 2.0),
+		Vector3(0.0, preferred_offset.y, -2.0),
+		Vector3(2.0, preferred_offset.y, 2.0),
+		Vector3(2.0, preferred_offset.y, -2.0),
+		Vector3(-2.0, preferred_offset.y, 2.0),
+		Vector3(-2.0, preferred_offset.y, -2.0),
+		Vector3(3.5, preferred_offset.y, 0.0),
+		Vector3(-3.5, preferred_offset.y, 0.0),
+		Vector3(0.0, preferred_offset.y, 3.5),
+		Vector3(0.0, preferred_offset.y, -3.5)]
+	for off in offsets:
+		var spot: Vector3 = vehicle.global_position + off + Vector3(0.0, 0.05, 0.0)
+		params.transform = Transform3D(Basis.IDENTITY, spot)
+		var hits: Array = space.intersect_shape(params, 8)
+		var blocked := false
+		for h in hits:
+			var col = h.get("collider")
+			if col == null:
+				continue
+			if col == self:
+				continue
+			if col == vehicle:
+				continue
+			if col.name == "GroundBody":
+				continue
+			blocked = true
+			break
+		if not blocked:
+			return vehicle.global_position + off
+	return Vector3.INF
+
+## Slice 38 solidity: refused-exit notice. Called by a vehicle exit
+## path when find_free_exit_spot returns INF; the prompt label
+## shows it for a few seconds (see _update_prompt_label).
+func show_exit_blocked() -> void:
+	exit_blocked_timer = 2.5
+
+## Slice 38 solidity: stuck recovery (touch-first: the pause-menu
+## "Stuck" button calls this; no keyboard key exists for it).
+## Returns the player on foot to the last freely-stood ground
+## position. If the player is driving, the vehicle is stopped and
+## left where it is — the player is freed, the vehicle is not
+## teleported. The confirmation lands in the pause-menu status
+## label, which the player is already looking at.
+func recover_from_stuck() -> void:
+	if driving and driving_vehicle != null:
+		var v: Node = driving_vehicle
+		v.set("driver", null)
+		if v.get("speed") != null:
+			v.set("speed", 0.0)
+		if v is CharacterBody3D:
+			(v as CharacterBody3D).velocity = Vector3.ZERO
+		var cam := get_node_or_null("../FollowCamera")
+		if cam != null:
+			cam.set("target", get_path())
+		leave_vehicle()
+	global_position = last_free_pos
+	velocity = Vector3.ZERO
+	if save_status_label == null:
+		save_status_label = get_node_or_null("../JoystickLayer/PausePanel21/SaveStatusLabel21") as Label
+	if save_status_label != null:
+		save_status_label.text = "လွတ်မြောက်ပါပြီ ✓"
+
+func _on_stuck_pressed() -> void:
+	recover_from_stuck()
+
 ## Slice 16 parachute (TOUCH-FIRST — no button needed: it opens
 ## itself on a mid-air exit and stows itself on landing; the
 ## joystick steers the drift while it is out, like walking).
@@ -1075,6 +1272,12 @@ func _update_minimap() -> void:
 func _update_prompt_label() -> void:
 	if prompt_label == null:
 		prompt_label = get_node_or_null("../JoystickLayer/PromptLabel") as Label
+	# Slice 38: a refused vehicle exit owns the prompt for a few
+	# seconds so the player knows WHY they stayed in the vehicle.
+	if exit_blocked_timer > 0.0 and prompt_label != null:
+		prompt_label.text = "ထွက်လို့မရပါ — ဘေးမှာ နေရာကျပ်နေသည်"
+		prompt_label.visible = true
+		return
 	if prompt_label == null:
 		return
 	if driving:
@@ -1801,7 +2004,14 @@ func _update_slice18_buttons() -> void:
 		feed18_button.visible = ele != null and global_position.distance_to(ele.global_position) < 4.0
 	var pag := get_node_or_null("../Pagoda") as Node3D
 	if offer_button != null:
-		offer_button.visible = pag != null and global_position.distance_to(pag.global_position) < 5.0
+		# Slice 38 fix: the pre-existing Slice 18 range (5.0 m) was
+		# unreachable — the pagoda base cylinder (Slice 4, radius
+		# 6.5 m) stops the player at 6.9 m from the centre, so the
+		# offer button never showed and the quest chain stalled at
+		# stage 22. 8.0 m lets the player offer from the pagoda
+		# base without touching the collision; nothing else about
+		# the interaction changes.
+		offer_button.visible = pag != null and global_position.distance_to(pag.global_position) < 8.0
 	var paddy := get_node_or_null("../Paddy18") as Node3D
 	if plant_button != null:
 		plant_button.visible = paddy != null and global_position.distance_to(paddy.global_position) < 4.0
@@ -2142,6 +2352,12 @@ func _update_pause_ui() -> void:
 		if quit_button != null and not quit_button_connected:
 			quit_button.pressed.connect(_on_quit_to_menu_pressed)
 			quit_button_connected = true
+	# Slice 38: stuck recovery lives in the pause menu (touch-first).
+	if stuck_button == null:
+		stuck_button = get_node_or_null("../JoystickLayer/PausePanel21/StuckButton38") as Button
+		if stuck_button != null and not stuck_button_connected:
+			stuck_button.pressed.connect(_on_stuck_pressed)
+			stuck_button_connected = true
 	if save_status_label == null:
 		save_status_label = get_node_or_null("../JoystickLayer/PausePanel21/SaveStatusLabel21") as Label
 	if pause_settings_panel == null:
