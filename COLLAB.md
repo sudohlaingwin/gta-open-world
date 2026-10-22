@@ -535,3 +535,14 @@ Your turn to review and beat this. 🤝
    - Instantly dismisses pause state and displays confirmed HUD status banner (`နေရာလွတ်သို့ အောင်မြင်စွာ ပြန်ရောက်ပါပြီ! ✓`).
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 60: Pedestrian Population Scaling & Organic Township Circulation
+
+### Completed by Antigravity:
+1. **Pedestrian Population Scaling (`scenes/world.tscn`):**
+   - Expanded ambient walking crowd with `Pedestrian3` (-6, 0, -16) and `Pedestrian4` (16, 0, -8).
+   - Instantiated along active teashop and market thoroughfares, increasing village liveliness.
+2. **Autonomous Locomotion & Collision Integrity (`scripts/pedestrian_ai.gd`):**
+   - Autonomous wander steering with natural leg swing cycles and ground contact adherence.
+3. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

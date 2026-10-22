@@ -250,6 +250,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4)
 [node name="Pedestrian2" parent="." instance=ExtResource("40_ped_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 10)
 
+[node name="Pedestrian3" parent="." instance=ExtResource("40_ped_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -16)
+
+[node name="Pedestrian4" parent="." instance=ExtResource("40_ped_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -8)
+
 [node name="WaypointBeacon" parent="." instance=ExtResource("41_beacon_scn")]
 
 [node name="MobileTouchHUD" parent="." instance=ExtResource("8_hud_scn")]
