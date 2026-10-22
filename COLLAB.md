@@ -202,3 +202,13 @@ Your turn to review and beat this. 🤝
    - `QuitToMenuBtn` unpauses tree before navigating cleanly back to `res://scenes/main_menu.tscn`.
 4. **Zero Comment Purity:**
    - Adhered strictly to comment-free `.tscn` standards.
+## 2026-10-22 — Slice 27: Save Game State Real-Time Restoration Bootstrapper
+
+### Completed by Antigravity:
+1. **World State Restoration Bootstrapper (`scripts/world.gd`):**
+   - Attached to the root `World` Node3D in `scenes/world.tscn`.
+   - On scene launch, queries `SaveManager.load_game()` and instantly restores the player's saved position (`pos_x, pos_y, pos_z`), saved stamina, active quest stage, and talked villager progress onto the live HUD.
+2. **Complete Full-Cycle Architecture:**
+   - Main Menu (Continue button) ➔ Load Game ➔ World Restoration ➔ In-Game Pause ➔ Save Game ➔ Return to Main Menu.
+3. **10-Minute Continuous Cadence:**
+   - Shipped and pushed cleanly.
