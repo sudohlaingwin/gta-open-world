@@ -16,6 +16,8 @@ size = Vector3(0.55, 0.65, 0.32)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_taikpon"]
 albedo_color = Color(0.96, 0.94, 0.90, 1)
+roughness = 0.70
+specular = 0.22
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_longyi"]
 top_radius = 0.3
@@ -27,12 +29,14 @@ radius = 2.1
 height = 1.2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chute_fabric"]
-albedo_color = Color(0.9, 0.25, 0.15, 1)
-roughness = 0.5
+albedo_color = Color(0.92, 0.22, 0.14, 1)
+roughness = 0.42
+specular = 0.48
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_longyi"]
-albedo_color = Color(0.08, 0.35, 0.22, 1)
-roughness = 0.8
+albedo_color = Color(0.06, 0.38, 0.24, 1)
+roughness = 0.62
+specular = 0.35
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_player")

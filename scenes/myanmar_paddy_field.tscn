@@ -9,12 +9,21 @@ size = Vector3(36.0, 0.5, 28.0)
 size = Vector3(36.0, 0.3, 28.0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mud"]
-albedo_color = Color(0.25, 0.18, 0.12, 1)
-roughness = 0.95
+albedo_color = Color(0.24, 0.16, 0.10, 1)
+roughness = 0.32
+metallic = 0.08
+specular = 0.65
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_crops"]
 render_priority = 0
 shader = ExtResource("1_sway")
+shader_parameter/foliage_color = Color(0.24, 0.65, 0.16, 1)
+shader_parameter/stalk_color = Color(0.18, 0.42, 0.12, 1)
+shader_parameter/sun_transmission_color = Color(0.48, 0.86, 0.22, 1)
+shader_parameter/wind_speed = 1.8
+shader_parameter/wind_strength = 0.22
+shader_parameter/flutter_speed = 6.8
+shader_parameter/flutter_strength = 0.08
 
 [sub_resource type="BoxMesh" id="BoxMesh_crops"]
 size = Vector3(35.2, 1.1, 27.2)
