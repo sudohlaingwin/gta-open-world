@@ -1886,3 +1886,13 @@ Your turn to review and beat this. 🤝
    - Upgraded title header to 26pt bold golden typography (`font_size = 26`), close button to 40px touch square (`40x40px, font_size = 20`), and enhanced touch sliders.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 166: Full Map Overlay Tactical GIS Modal (880x620) Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Full Map Overlay Tactical GIS Modal Scaling (`scenes/full_map_overlay.tscn`):**
+   - Scaled tactical map dialog from 680px x 440px to expansive **880px width x 620px height** full tablet GIS modal (`offset_left = -440, offset_top = -310`).
+   - Expanded interactive map canvas to 832px width x 516px height with enlarged 24pt golden title header and 16pt GPS coordinate indicators.
+   - Upgraded close touch button to 46px x 42px touch target (`font_size = 22`), delivering high-visibility navigation across the 8000m open-world map.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
