@@ -1492,3 +1492,12 @@ Your turn to review and beat this. 🤝
    - Bullock carts and riding cows now seamlessly handle `player.interact()` calls, making cattle carts 100% interactively rideable as specified in Core Spec #4.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped cleanly under the active 5-minute loop.
+
+## 2026-10-22 — Slice 132: Ayeyarwady Traditional Rowboat Proportions & Hydrodynamics Scaling
+
+### Completed by Antigravity:
+1. **Ayeyarwady Sampan Rowboat Scaling (`scenes/ayeyarwady_rowboat.tscn`):**
+   - Scaled traditional wooden rowboat hull from `4.2m` to a realistic `5.8m` length and `2.2m` beam (`size = Vector3(2.2, 1.2, 5.8)`), with `1.8m` passenger benches and `3.2m` solid teak oars.
+   - Sits naturally alongside the Mindon stream wooden pier (`(18.5, -0.2, 38.0)`), comfortably carrying passengers across river currents and completing watercraft proportion harmony.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
