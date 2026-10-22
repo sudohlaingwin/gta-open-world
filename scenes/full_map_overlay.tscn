@@ -172,3 +172,21 @@ offset_bottom = 18.0
 theme_override_colors/font_color = Color(0.6, 0.85, 1.0, 1)
 theme_override_font_sizes/font_size = 13
 text = "🌊 မင်းတုန်းချောင်းတံတား"
+
+[node name="MapLegend" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -26.0
+offset_right = -24.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.85, 0.90, 0.95, 0.9)
+theme_override_font_sizes/font_size = 12
+text = "အညွှန်း — 🔵 ကစားသူ • 🔴 ဆေးရုံ • 🟡 စေတီတော် • 🟠 ညဈေး • 🔷 မင်းတုန်းချောင်း | မြေပုံပေါ်ထိ၍ လမ်းညွှန်မှတ်တိုင် (Waypoint) သတ်မှတ်နိုင်သည်"
+horizontal_alignment = 1
+vertical_alignment = 1
