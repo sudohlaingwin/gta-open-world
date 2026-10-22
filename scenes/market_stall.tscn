@@ -3,106 +3,107 @@
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_stall"]
-size = Vector3(4.5, 3.2, 3.2)
+size = Vector3(6.2, 4.2, 4.2)
 
 [sub_resource type="BoxMesh" id="BoxMesh_table"]
-size = Vector3(4.0, 0.8, 2.4)
+size = Vector3(5.8, 1.1, 3.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_table_wood"]
 albedo_color = Color(0.40, 0.25, 0.12, 1)
 
 [sub_resource type="PrismMesh" id="PrismMesh_canopy"]
 left_to_right = 0.5
-size = Vector3(4.4, 0.8, 3.0)
+size = Vector3(6.4, 1.2, 4.4)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_canopy"]
 albedo_color = Color(0.15, 0.35, 0.65, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_basket"]
-top_radius = 0.35
-bottom_radius = 0.25
-height = 0.4
+top_radius = 0.5
+bottom_radius = 0.38
+height = 0.55
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_basket"]
 albedo_color = Color(0.68, 0.55, 0.35, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_fruit"]
-radius = 0.18
-height = 0.36
+radius = 0.26
+height = 0.5
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_watermelon"]
 albedo_color = Color(0.12, 0.45, 0.18, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_mango"]
-radius = 0.12
-height = 0.22
+radius = 0.18
+height = 0.32
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mango"]
 albedo_color = Color(0.95, 0.72, 0.12, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_lamp"]
-radius = 0.14
-height = 0.2
+radius = 0.22
+height = 0.32
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lamp"]
 albedo_color = Color(1.0, 0.90, 0.5, 1)
 emission_enabled = true
 emission = Color(1.0, 0.82, 0.4, 1)
-emission_energy_multiplier = 2.0
+emission_energy_multiplier = 2.5
 
 [node name="MarketStall" type="StaticBody3D"]
 script = ExtResource("1_lantern")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
 shape = SubResource("BoxShape3D_stall")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Table" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
 mesh = SubResource("BoxMesh_table")
 surface_material_override/0 = SubResource("StandardMaterial3D_table_wood")
 
 [node name="Canopy" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, 0)
 mesh = SubResource("PrismMesh_canopy")
 surface_material_override/0 = SubResource("StandardMaterial3D_canopy")
 
 [node name="StallLantern" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.0, 0)
 mesh = SubResource("SphereMesh_lamp")
 surface_material_override/0 = SubResource("StandardMaterial3D_lamp")
 
 [node name="StallLight" type="OmniLight3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
 light_color = Color(1.0, 0.85, 0.5, 1)
-light_energy = 1.6
-omni_range = 6.0
+light_energy = 2.2
+omni_range = 9.0
 
 [node name="BasketL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 1.0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.4, 0)
 mesh = SubResource("CylinderMesh_basket")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_basket")
 
 [node name="WatermelonL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 1.3, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.8, 0)
 mesh = SubResource("SphereMesh_fruit")
 surface_material_override/0 = SubResource("StandardMaterial3D_watermelon")
 
 [node name="BasketR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 1.0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.4, 0)
 mesh = SubResource("CylinderMesh_basket")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_basket")
 
 [node name="MangoR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 1.25, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.75, 0)
 mesh = SubResource("SphereMesh_mango")
 surface_material_override/0 = SubResource("StandardMaterial3D_mango")
 
 [node name="StallSign" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 1.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 2.2)
 text = "သစ်သီးနှင့် ကုန်စုံဆိုင်"
-font_size = 24
-outline_size = 8
+font_size = 32
+outline_size = 10
 modulate = Color(1, 0.9, 0.3, 1)
+
