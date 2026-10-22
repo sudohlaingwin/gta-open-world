@@ -36,7 +36,13 @@ var hud_slider: HSlider = null
 var hud_label: Label = null
 var deadzone_slider: HSlider = null
 var deadzone_label: Label = null
+## Slice 68 graphics tiers replace the Slice 40 High/Low toggle:
+## a cycle button (Low -> Balanced -> High -> Ultra -> Low)
+## writing SaveManager.graphics_tier (and the graphics_quality
+## mirror), persisted immediately, applied live to the world via
+## player.apply_graphics_quality when one is loaded.
 var quality_check: CheckButton = null
+var tier_button: Button = null
 var fps_check: CheckButton = null
 var drive_label: Label = null
 var drive_button: Button = null
@@ -66,7 +72,10 @@ func _ready() -> void:
 	deadzone_label = get_node_or_null("DeadzoneLabel") as Label
 	quality_check = get_node_or_null("QualityCheck") as CheckButton
 	if quality_check != null:
-		quality_check.toggled.connect(_on_quality_toggled)
+		quality_check.visible = false
+	tier_button = get_node_or_null("TierButton") as Button
+	if tier_button != null:
+		tier_button.pressed.connect(_on_tier_pressed)
 	fps_check = get_node_or_null("FpsCheck") as CheckButton
 	if fps_check != null:
 		fps_check.toggled.connect(_on_fps_toggled)
@@ -110,7 +119,9 @@ func refresh() -> void:
 	if deadzone_label != null:
 		deadzone_label.text = "Joystick အသေဇုန်: %d%%" % int(round(float(sm.get("joystick_deadzone")) * 100.0))
 	if quality_check != null:
-		quality_check.button_pressed = int(sm.get("graphics_quality")) == 1
+		quality_check.visible = false
+	if tier_button != null:
+		tier_button.text = _tier_text(_current_tier(sm))
 	if fps_check != null:
 		fps_check.button_pressed = bool(sm.get("fps_visible"))
 	if drive_button != null:
@@ -132,12 +143,36 @@ func _apply_quality_to_world() -> void:
 		pl.call("apply_graphics_quality")
 
 
-func _on_quality_toggled(pressed: bool) -> void:
+func _current_tier(sm) -> int:
+	if sm == null:
+		return 2
+	if sm.get("graphics_tier") != null:
+		return clampi(int(sm.get("graphics_tier")), 0, 3)
+	return 2 if int(sm.get("graphics_quality")) == 0 else 0
+
+
+func _tier_text(tier: int) -> String:
+	match clampi(tier, 0, 3):
+		0:
+			return "ဂရပ်ဖစ်: နိမ့် (Low)"
+		1:
+			return "ဂရပ်ဖစ်: အလယ် (Balanced)"
+		3:
+			return "ဂရပ်ဖစ်: အလွန်မြင့် (Ultra)"
+		_:
+			return "ဂရပ်ဖစ်: မြင့် (High)"
+
+
+func _on_tier_pressed() -> void:
 	var sm = _sm()
 	if sm == null:
 		return
-	sm.set("graphics_quality", 1 if pressed else 0)
+	var next_tier = (_current_tier(sm) + 1) % 4
+	sm.set("graphics_tier", next_tier)
+	sm.set("graphics_quality", 0 if next_tier >= 2 else 1)
 	sm.call("save_settings")
+	if tier_button != null:
+		tier_button.text = _tier_text(next_tier)
 	_apply_quality_to_world()
 
 

@@ -54,9 +54,15 @@ var joystick_deadzone: float = 0.15
 ## shadows off, 3D render scale 0.75 with bilinear upscaling — the
 ## two levers that actually exist in this project; it has no
 ## WorldEnvironment, so there is no glow/bloom lever to offer).
-## fps_visible toggles the measured-FPS overlay (default OFF, so the
+## Slice 68 graphics tiers supersede this flag: graphics_tier
+## 0 = Low, 1 = Balanced, 2 = High, 3 = Ultra (default High, the
+## pre-68 look). graphics_quality is kept as a mirror (0 when
+## tier >= 2, else 1) so old files and old readers keep working:
+## a pre-68 file (quality 0) loads as tier High, (quality 1) as
+## tier Low. fps_visible toggles the measured-FPS overlay (default OFF, so the
 ## already-dense HUD is not cluttered further).
 var graphics_quality: int = 0
+var graphics_tier: int = 2
 var fps_visible: bool = false
 ## Slice 55 driving-assistance modes (audit item 9): 0 = Arcade
 ## (more forgiving), 1 = Balanced (the default, and exactly the
@@ -145,6 +151,7 @@ func load_settings() -> void:
 	hud_scale = 1.0
 	joystick_deadzone = 0.15
 	graphics_quality = 0
+	graphics_tier = 2
 	fps_visible = false
 	driving_mode = 1
 	season62 = 0
@@ -192,6 +199,11 @@ func load_settings() -> void:
 		joystick_deadzone = clampf(float(parsed.get("joystick_deadzone")), 0.0, 0.4)
 	if parsed.has("graphics_quality"):
 		graphics_quality = clampi(int(parsed.get("graphics_quality")), 0, 1)
+	if parsed.has("graphics_tier"):
+		graphics_tier = clampi(int(parsed.get("graphics_tier")), 0, 3)
+		graphics_quality = 0 if graphics_tier >= 2 else 1
+	else:
+		graphics_tier = 2 if graphics_quality == 0 else 0
 	if parsed.has("fps_visible"):
 		fps_visible = bool(parsed.get("fps_visible"))
 	if parsed.has("driving_mode"):
@@ -212,6 +224,7 @@ func save_settings() -> bool:
 		"hud_scale": hud_scale,
 		"joystick_deadzone": joystick_deadzone,
 		"graphics_quality": graphics_quality,
+		"graphics_tier": graphics_tier,
 		"fps_visible": fps_visible,
 		"driving_mode": driving_mode,
 		"season62": season62}
@@ -231,6 +244,7 @@ func reset_settings() -> void:
 	hud_scale = 1.0
 	joystick_deadzone = 0.15
 	graphics_quality = 0
+	graphics_tier = 2
 	fps_visible = false
 	driving_mode = 1
 	season62 = 0

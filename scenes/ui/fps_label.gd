@@ -36,8 +36,11 @@ func _process(delta: float) -> void:
 		_accum = 0.0
 		_frames = 0
 	var quality_text: String = "မြင့်"
-	if sm != null and int(sm.get("graphics_quality")) == 1:
-		quality_text = "နိမ့်"
+	if sm != null:
+		if sm.get("graphics_tier") != null:
+			quality_text = ["နိမ့်", "အလယ်", "မြင့်", "အလွန်မြင့်"][clampi(int(sm.get("graphics_tier")), 0, 3)]
+		elif int(sm.get("graphics_quality")) == 1:
+			quality_text = "နိမ့်"
 	if get_tree().paused:
 		text = "FPS: %d (ရပ်) · %s" % [_shown, quality_text]
 	else:

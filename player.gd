@@ -476,32 +476,54 @@ func _configure_map_bounds() -> void:
 		MapTransform.configure_from_ground(ground)
 
 
-## Audit item 4: graphics quality. Reads SaveManager.graphics_quality
-## (0 = High, 1 = Low) and applies the two levers that actually exist
-## in this project, both LIVE (no restart, no world reload):
-## - Sun shadows: DayNight/SunLight.shadow_enabled, on at High, off
-##   at Low. day_night.gd never touches shadow_enabled, so this
-##   setting and the Slice 25 golden-hour sun-colour pass do not fight.
-## - 3D render scale: the root viewport renders at full resolution
-##   at High (scale 1.0); at Low it renders at 0.75 with bilinear
-##   upscaling. (Godot 4.3 exposes only BILINEAR/FSR scale modes on
-##   the viewport — there is no DISABLED constant in this binary,
-##   verified empirically — so full resolution is scale 1.0.)
-##   This project has no WorldEnvironment, so there is no glow/bloom
-##   lever to offer — none is claimed.
-## Called at world spawn and again from the Settings panel whenever
-## the toggle changes in the pause menu, so a pause-menu change
-## takes effect the moment play resumes.
+## Slice 68 graphics tiers: replaces the Slice 40 High/Low toggle
+## (0 = High, 1 = Low) with four tiers, all LIVE (no restart, no
+## world reload), using only levers that actually exist in this
+## project — there is no WorldEnvironment, so no glow/bloom lever
+## is claimed. Tier table (all five read back in the SIM68 sim):
+## - Low (0): sun shadows OFF, render scale 0.75, MSAA off,
+##   camera far 500 m (shorter draw distance — far corners clip
+##   from the opposite corner, a real tradeoff), rain 150 drops.
+## - Balanced (1): shadows ON, scale 0.90, MSAA 2X, far 1000 m,
+##   rain 300 drops.
+## - High (2, default = pre-68 look): shadows ON, scale 1.0,
+##   MSAA 2X, far 2000 m, rain 400 drops.
+## - Ultra (3): shadows ON, scale 1.0, MSAA 4X, far 4000 m
+##   (the Camera3D default), rain 400 drops.
+## Old files without graphics_tier map from graphics_quality
+## (0 -> High, 1 -> Low), so a pre-68 Low user stays Low.
+## Night floor 0.35 (Slice 61), season tints (Slice 62) and
+## material realism (Slice 66) are untouched: this function
+## never writes sun colour/energy or any material albedo.
+## Called at world spawn and again from the Settings panel
+## whenever the tier changes in the pause menu, so a pause-menu
+## change takes effect the moment play resumes.
 func apply_graphics_quality() -> void:
 	var sm = get_node_or_null("/root/SaveManager")
-	var low: bool = sm != null and int(sm.get("graphics_quality")) == 1
+	var tier := 2
+	if sm != null:
+		if sm.get("graphics_tier") != null:
+			tier = clampi(int(sm.get("graphics_tier")), 0, 3)
+		else:
+			tier = 2 if int(sm.get("graphics_quality")) == 0 else 0
+	var scales := [0.75, 0.9, 1.0, 1.0]
+	var msaas := [Viewport.MSAA_DISABLED, Viewport.MSAA_2X, Viewport.MSAA_2X, Viewport.MSAA_4X]
+	var fars := [500.0, 1000.0, 2000.0, 4000.0]
+	var rain_amounts := [150, 300, 400, 400]
 	var sun = get_parent().get_node_or_null("DayNight/SunLight") as DirectionalLight3D
 	if sun != null:
-		sun.shadow_enabled = not low
+		sun.shadow_enabled = tier != 0
 	var vp = get_viewport()
 	if vp != null:
 		vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
-		vp.scaling_3d_scale = 0.75 if low else 1.0
+		vp.scaling_3d_scale = scales[tier]
+		vp.msaa_3d = msaas[tier]
+	var cam = get_node_or_null("../FollowCamera") as Camera3D
+	if cam != null:
+		cam.far = fars[tier]
+	var rain = get_node_or_null("../Rain17") as GPUParticles3D
+	if rain != null:
+		rain.amount = rain_amounts[tier]
 	var mm = _mm()
 	if mm != null:
 		last_saved_stage = mm.stage
