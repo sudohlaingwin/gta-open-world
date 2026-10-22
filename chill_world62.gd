@@ -325,11 +325,13 @@ static func dress(world: Node3D) -> void:
 		# cart-top; Season cycles နွေ/မိုး/ဆောင်း. Font size 14 +
 		# short labels so the buttons stay one line tall (a wrapped
 		# label rendered 56 px tall and overlapped Rain).
-		# Honest limit, same as the Slice 61 stack itself: when the
-		# cluster row 1 (Talk/Vehicle, y 500..604) is visible at the
-		# same time as an open More stack, row 1 overlaps the stack
-		# — this row shares that pre-existing overlap class, and is
-		# clear of the stack and of cluster row 2 in all states.
+		# Slice 63 resolved the stack-vs-cluster overlap class
+		# noted here before: while More is open, player.gd hides
+		# Talk / Vehicle / ThrottleUp (the only cluster buttons
+		# sharing the stack's rects), so the stack is disjoint
+		# from the cluster in every More × driving state; this
+		# row itself is clear of the stack and of cluster row 2
+		# in all states.
 		var cam := world.get_node_or_null("FollowCamera")
 		var view_btn := layer.get_node_or_null("ViewButton62") as Button
 		if view_btn == null:

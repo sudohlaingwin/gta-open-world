@@ -667,7 +667,11 @@ func _update_talk_button() -> void:
 			talk_button.pressed.connect(_try_talk)
 			talk_button_connected = true
 	if talk_button != null:
-		talk_button.visible = _nearest_villager() != null
+		# Slice 63: while the More stack is open, the right column
+		# belongs to the stack — Talk sits on the stack's Photo /
+		# Rain / View / Season rects, so it stays hidden until
+		# More closes (the More button itself stays tappable).
+		talk_button.visible = _nearest_villager() != null and not hud_more_open
 
 ## Slice 8: wires the on-screen Sprint / Jump / Vehicle buttons.
 ## They live in the real scene (JoystickLayer), found lazily like
@@ -763,11 +767,14 @@ func _update_action_buttons() -> void:
 		if jump_button != null:
 			jump_button.visible = false
 		if vehicle_button != null:
-			vehicle_button.visible = true
+			vehicle_button.visible = not hud_more_open
 			_set_text(vehicle_button, "ဆင်းမည်")
 		var flying := driving_vehicle != null and driving_vehicle.name in ["Airplane", "Helicopter"]
 		if throttle_up_button != null:
-			throttle_up_button.visible = flying
+			# Slice 63: ThrottleUp sits on the stack's Garage /
+			# Mute / Photo rects, so it hides while More is open
+			# (ThrottleDown is left of the stack and stays).
+			throttle_up_button.visible = flying and not hud_more_open
 		if throttle_down_button != null:
 			throttle_down_button.visible = flying
 		if yaw_left_button != null:
@@ -800,7 +807,7 @@ func _update_action_buttons() -> void:
 		orbit_button.visible = true
 	if vehicle_button != null:
 		var near := _nearest_vehicle()
-		vehicle_button.visible = near != null
+		vehicle_button.visible = near != null and not hud_more_open
 		if near != null:
 			_set_text(vehicle_button, "စီးမည်")
 	if yaw_left_button != null:

@@ -24,16 +24,16 @@ extends Node3D
 ## Milestone 6 (part 2): a second vehicle type (van) shares the routes
 ## with the cars, and the fleet follows the time of day. Density and
 ## speed come from the SAME shared daylight value day_night.gd
-## exposes (daylight()): midday (daylight >= 0.6) runs all 6 slots at
-## full speed; morning/evening (0.15 <= daylight < 0.6) runs 4 slots
-## at 0.85 speed; night (daylight < 0.15) runs 2 slots at 0.7 speed.
-## The total is still capped (6 max) so low-end phones stay safe.
+## exposes (daylight()): midday (daylight >= 0.6) runs all 10 slots at
+## full speed; morning/evening (0.15 <= daylight < 0.6) runs 7 slots
+## at 0.85 speed; night (daylight < 0.15) runs 3 slots at 0.7 speed.
+## The total is still capped (10 max) so low-end phones stay safe.
 ## Shrinking the fleet despawns the extra vehicles outright (the same
 ## despawn the stuck-timeout already used); growing it refills the
 ## empty slots from free waypoints. No vehicle is ever teleported
 ## into the player's face: refills use the same 25-45 m band.
 
-const MAX_SLOTS: int = 6
+const MAX_SLOTS: int = 10
 const SPAWN_MIN: float = 25.0
 const SPAWN_MAX: float = 45.0
 const DESPAWN_DIST: float = 75.0
@@ -47,6 +47,37 @@ const STUCK_TIMEOUT: float = 15.0
 ## Time-of-day re-evaluation cadence: the daylight band changes a
 ## few times per 120 s day, so checking once a second is plenty.
 const REEVAL_INTERVAL: float = 1.0
+
+## Slice 63: EAST routes on the Slice 62 East Fields network. The
+## main road is a 12 m slab (z -6..6), so it carries a two-lane loop
+## (eastbound z -3, westbound z +3, both on the slab, corners cut by
+## at most ~3 m at turn_rate 2.2 — still inside the x -70..450
+## bounds and clear of every house/tree/lamp). The dirt lanes are
+## dead ends, so they run as out-and-back loops (the repeated middle
+## waypoint is intentional: drive() advances on arrival, so the car
+## drives down the lane and back on the same strip, U-turning at
+## the far end). Clearances checked against Slice 62 coordinates:
+## north lane x 340 stays 6.4+ m from the (330,-40)/(330,-70)
+## stilt-house footprints (x ..332.5) and 8 m from lane trees;
+## south lane x 390 stays clear of pond B (x 410..420) and lane
+## trees; neither lane touches the x 350 stream (x 347..353) or
+## any pond. Traffic cars have no physics body, so a route that
+## crossed a house footprint would still LOOK wrong — none does.
+## Fleet grows 6 -> 10 slots (4 east): the old "6 max" cap was a
+## low-end safety note, and 4 extra body-less scene instances do
+## not change that profile; village loops are untouched.
+var east_main_route: Array = [
+	Vector2(250, -3), Vector2(445, -3),
+	Vector2(445, 3), Vector2(250, 3),
+]
+var east_north_route: Array = [
+	Vector2(340, 0), Vector2(340, -50), Vector2(340, -95),
+	Vector2(340, -50), Vector2(340, 0),
+]
+var east_south_route: Array = [
+	Vector2(390, 0), Vector2(390, 40), Vector2(390, 75),
+	Vector2(390, 40), Vector2(390, 0),
+]
 
 ## North loop: entrance road (x=-1, threading the gate posts and the
 ## lantern posts with ~0.1-0.5 m clearance) then the north village
@@ -68,12 +99,14 @@ var south_route: Array = [
 	Vector2(14, 28), Vector2(14, 26.6), Vector2(6, 26.6),
 ]
 ## Slot table, fixed at _ready: slots 0-2 run the north loop, 3-5 the
-## south loop. Types alternate so both routes are mixed: north runs
-## car, van, car; south runs van, car, van. Order is the slot's
-## position within its own route (used for spawn spreading).
-var _slot_is_van: Array = [false, true, false, true, false, true]
-var _slot_route_idx: Array = [0, 0, 0, 1, 1, 1]
-var _slot_order: Array = [0, 1, 2, 0, 1, 2]
+## south loop, 6-7 the east main-road loop, 8 the north dirt lane,
+## 9 the south dirt lane. Types alternate so routes are mixed:
+## north car, van, car; south van, car, van; east main car, van;
+## lanes one car each. Order is the slot's position within its own
+## route (used for spawn spreading).
+var _slot_is_van: Array = [false, true, false, true, false, true, false, true, false, false]
+var _slot_route_idx: Array = [0, 0, 0, 1, 1, 1, 2, 2, 3, 4]
+var _slot_order: Array = [0, 1, 2, 0, 1, 2, 0, 1, 0, 0]
 
 var _cars: Array = []
 var _player: Node3D = null
@@ -93,7 +126,16 @@ var _speed_factor: float = 1.0
 var _reeval_timer: float = 0.0
 
 func _route_for(slot: int) -> Array:
-	return north_route if _slot_route_idx[slot] == 0 else south_route
+	var ri: int = _slot_route_idx[slot]
+	if ri == 0:
+		return north_route
+	if ri == 1:
+		return south_route
+	if ri == 2:
+		return east_main_route
+	if ri == 3:
+		return east_north_route
+	return east_south_route
 
 func _scene_for(slot: int) -> PackedScene:
 	return _van_scene if _slot_is_van[slot] else _car_scene
@@ -104,15 +146,17 @@ func _name_for(slot: int) -> String:
 	return "TrafficCar%d" % slot
 
 ## Which slots run at each fleet size. The first slots of each route
-## stay on longest: at night only slot 0 (north car) and slot 3
-## (south van) run; morning/evening adds slot 1 (north van) and
-## slot 4 (south car); midday runs all six.
+## stay on longest: at night only slot 0 (north car), slot 3
+## (south van) and slot 6 (east main car) run, so no road network
+## goes fully quiet; morning/evening adds slot 1 (north van),
+## slot 4 (south car), slot 7 (east main van) and slot 8 (north
+## lane); midday runs all ten.
 func _active_slots(count: int) -> Array:
-	if count >= 6:
-		return [0, 1, 2, 3, 4, 5]
-	if count >= 4:
-		return [0, 1, 3, 4]
-	return [0, 3]
+	if count >= 10:
+		return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+	if count >= 7:
+		return [0, 1, 3, 4, 6, 7, 8]
+	return [0, 3, 6]
 
 func _daylight() -> float:
 	if _day_night == null or not _day_night.has_method("daylight"):
@@ -121,10 +165,10 @@ func _daylight() -> float:
 
 func _fleet_for_day(day: float) -> int:
 	if day >= 0.6:
-		return 6
+		return 10
 	if day >= 0.15:
-		return 4
-	return 2
+		return 7
+	return 3
 
 func _speed_for_day(day: float) -> float:
 	if day >= 0.6:
