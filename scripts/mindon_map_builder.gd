@@ -21,6 +21,7 @@ const TEASHOP_SCENE = preload("res://scenes/myanmar_teashop.tscn")
 const STALL_SCENE = preload("res://scenes/market_stall.tscn")
 const PEDESTRIAN_SCENE = preload("res://scenes/ambient_pedestrian.tscn")
 const FIREFLIES_SCENE = preload("res://scenes/village_fireflies.tscn")
+const HINTHAR_SCENE = preload("res://scenes/hinthar_statue.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -567,4 +568,17 @@ func _generate_ward3_amenities() -> void:
 	flies_paddy.name = "MindonPaddyFireflies"
 	amenities_holder.add_child(flies_paddy)
 	flies_paddy.global_position = Vector3(60.0, 1.2, 95.0)
+
+	# Guardian Golden Hinthar Bird Statues (ဟင်္သာရုပ်တုများ) at Pagoda Stairway Portal
+	var hinthar_l = HINTHAR_SCENE.instantiate()
+	hinthar_l.name = "GuardianHinthar_L"
+	amenities_holder.add_child(hinthar_l)
+	hinthar_l.global_position = Vector3(-113.0, 0.0, 163.0)
+	hinthar_l.rotation.y = deg_to_rad(15.0)
+
+	var hinthar_r = HINTHAR_SCENE.instantiate()
+	hinthar_r.name = "GuardianHinthar_R"
+	amenities_holder.add_child(hinthar_r)
+	hinthar_r.global_position = Vector3(-107.0, 0.0, 163.0)
+	hinthar_r.rotation.y = deg_to_rad(-15.0)
 

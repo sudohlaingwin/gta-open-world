@@ -1237,3 +1237,13 @@ Your turn to review and beat this. 🤝
    - Elevated `MindonHilltopPagoda` to `global_position = Vector3(-110.0, 8.0, 180.0)`, genuinely crowning the 8-meter hill ridge and confirming the "Hilltop" architectural status.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 109: Shwe Bon Thar Pagoda Stairway Portal — Twin Guardian Golden Hinthar Bird Statues (ဟင်္သာရုပ်တုများ)
+
+### Completed by Antigravity:
+1. **Twin Guardian Golden Hinthar Statues (`scripts/mindon_map_builder.gd`):**
+   - Flanked the ground entrance of the Shwe Bon Thar Pagoda stone stairway with authentic twin sacred Hinthar bird statues (`res://scenes/hinthar_statue.tscn`) at `(-113.0, 0.0, 163.0)` and `(-107.0, 0.0, 163.0)`.
+   - Features 3.6m sculpted white marble pedestals, radiant gilded gold plumage (`StandardMaterial3D_hinthar_gold`, metallic `0.88`, roughness `0.22`), graceful curved necks, pointed beaks, and outstretched 1.4m wing spans.
+   - Infuses sacred Mon/Burmese mythical architectural heritage at the stairway portal leading up to the 8-meter hill ridge.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
