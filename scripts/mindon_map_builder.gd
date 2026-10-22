@@ -24,6 +24,7 @@ const FIREFLIES_SCENE = preload("res://scenes/village_fireflies.tscn")
 const HINTHAR_SCENE = preload("res://scenes/hinthar_statue.tscn")
 const PITCH_SCENE = preload("res://scenes/football_pitch.tscn")
 const BELL_SCENE = preload("res://scenes/monastery_bell.tscn")
+const MONASTERY_SCENE = preload("res://scenes/monastery_school.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -597,4 +598,11 @@ func _generate_ward3_amenities() -> void:
 	amenities_holder.add_child(bell)
 	bell.global_position = Vector3(-98.0, 8.0, 178.0)
 	bell.rotation.y = deg_to_rad(-30.0)
+
+	# Mindon Ward 3 Monastic Education Monastery School (ဘုန်းတော်ကြီးသင်ပညာရေးကျောင်း)
+	var monastery = MONASTERY_SCENE.instantiate()
+	monastery.name = "MindonMonasterySchool"
+	amenities_holder.add_child(monastery)
+	monastery.global_position = Vector3(-135.0, 0.0, 195.0)
+	monastery.rotation.y = deg_to_rad(25.0)
 
