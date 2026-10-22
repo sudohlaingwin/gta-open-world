@@ -82,8 +82,8 @@ func _generate_mindon_roads(roads: Array) -> void:
 				palm_pos.y = 0.0
 				
 				var palm = PALM_SCENE.instantiate()
-				palm.global_position = palm_pos
 				road_holder.add_child(palm)
+				palm.global_position = palm_pos
 				palm_count += 1
 
 			if i % 4 == 1 and banana_count < 70:
@@ -93,8 +93,8 @@ func _generate_mindon_roads(roads: Array) -> void:
 				banana_pos.y = 0.0
 
 				var banana = BANANA_SCENE.instantiate()
-				banana.global_position = banana_pos
 				road_holder.add_child(banana)
+				banana.global_position = banana_pos
 				banana_count += 1
 
 func _generate_mindon_buildings(buildings: Array) -> void:
@@ -121,6 +121,8 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 		if pts.is_empty():
 			continue
 
+		var cx = 0.0
+		var cz = 0.0
 		var min_x = 99999.0
 		var max_x = -99999.0
 		var min_z = 99999.0
@@ -192,13 +194,13 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 			sign.position = Vector3(0.0, 3.8, 5.1)
 			hosp.add_child(sign)
 
-			hosp.global_position = Vector3(cx, 0.0, cz)
 			building_holder.add_child(hosp)
+			hosp.global_position = Vector3(cx, 0.0, cz)
 		else:
 			# Myanmar teak & bamboo elevated residential home
 			var house = HOUSE_SCENE.instantiate()
-			house.global_position = Vector3(cx, 0.0, cz)
 			building_holder.add_child(house)
+			house.global_position = Vector3(cx, 0.0, cz)
 
 func _generate_mindon_rivers(rivers: Array) -> void:
 	var river_holder = Node3D.new()
@@ -240,13 +242,13 @@ func _generate_ward3_amenities() -> void:
 	add_child(amenities_holder)
 
 	var well = WELL_SCENE.instantiate()
-	well.global_position = Vector3(5.0, 0.0, -8.0)
 	amenities_holder.add_child(well)
+	well.global_position = Vector3(5.0, 0.0, -8.0)
 
 	var pot = POT_SCENE.instantiate()
-	pot.global_position = Vector3(3.5, 0.0, -6.5)
 	amenities_holder.add_child(pot)
+	pot.global_position = Vector3(3.5, 0.0, -6.5)
 
 	var zayat = ZAYAT_SCENE.instantiate()
-	zayat.global_position = Vector3(-12.0, 0.0, -14.0)
 	amenities_holder.add_child(zayat)
+	zayat.global_position = Vector3(-12.0, 0.0, -14.0)
