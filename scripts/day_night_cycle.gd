@@ -33,6 +33,27 @@ func _process(delta: float) -> void:
 			sun.light_color = Color(0.42, 0.52, 0.78, 1.0)
 			sun.light_energy = 0.12
 
+		# Dynamic atmospheric procedural sky gradient modulation
+		var world_env = get_tree().get_first_node_in_group("world_env")
+		if not world_env:
+			world_env = get_parent().get_node_or_null("WorldEnvironment")
+		if world_env and world_env.environment and world_env.environment.sky:
+			var sky_mat = world_env.environment.sky.sky_material
+			if sky_mat is ProceduralSkyMaterial:
+				if daylight >= 0.6:
+					# Crisp tropical blue sky
+					sky_mat.sky_top_color = Color(0.24, 0.54, 0.88, 1.0)
+					sky_mat.sky_horizon_color = Color(0.72, 0.81, 0.90, 1.0)
+				elif daylight >= 0.15:
+					# Vibrant Myanmar Sunset & Golden Hour gradient
+					var t = (daylight - 0.15) / 0.45
+					sky_mat.sky_top_color = Color.lerp(Color(0.35, 0.22, 0.52, 1.0), Color(0.24, 0.54, 0.88, 1.0), t)
+					sky_mat.sky_horizon_color = Color.lerp(Color(0.96, 0.52, 0.28, 1.0), Color(0.72, 0.81, 0.90, 1.0), t)
+				else:
+					# Deep starlit tropical night
+					sky_mat.sky_top_color = Color(0.04, 0.06, 0.12, 1.0)
+					sky_mat.sky_horizon_color = Color(0.12, 0.14, 0.22, 1.0)
+
 func get_daylight() -> float:
 	if sun:
 		var angle = wrapf(sun.rotation.x, 0.0, TAU)
