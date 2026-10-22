@@ -20,6 +20,7 @@ extends CanvasLayer
 @onready var speed_label: Label = $BottomCenterHUD/Speedometer/SpeedLabel
 @onready var vehicle_type_label: Label = $BottomCenterHUD/Speedometer/VehicleTypeLabel
 @onready var throttle_bar: ProgressBar = $BottomCenterHUD/Speedometer/ThrottleBar
+$insertPauseVars
 @onready var prompt_banner: Label = $PromptBanner
 
 var player: CharacterBody3D = null
@@ -57,6 +58,7 @@ func _ready() -> void:
 		yaw_right_btn.button_down.connect(func(): if player: player.touch_yaw = 1.0)
 		yaw_right_btn.button_up.connect(func(): if player: player.touch_yaw = 0.0)
 
+	$insertPauseWiring
 	_update_quest_text()
 
 func _process(delta: float) -> void:
@@ -99,19 +101,23 @@ func _process(delta: float) -> void:
 	if quest_stage == 2 and pagoda_node:
 		if player.global_position.distance_to(pagoda_node.global_position) < 14.0:
 			quest_stage = 3
-			_update_quest_text()
+			$insertPauseWiring
+	_update_quest_text()
 	elif quest_stage == 3 and bell_node:
 		if player.global_position.distance_to(bell_node.global_position) < 8.0:
 			quest_stage = 4
-			_update_quest_text()
+			$insertPauseWiring
+	_update_quest_text()
 	elif quest_stage == 4 and teashop_node:
 		if player.global_position.distance_to(teashop_node.global_position) < 10.0:
 			quest_stage = 5
-			_update_quest_text()
+			$insertPauseWiring
+	_update_quest_text()
 	elif quest_stage == 5:
 		if player.current_state != player.State.ON_FOOT:
 			quest_stage = 6
-			_update_quest_text()
+			$insertPauseWiring
+	_update_quest_text()
 
 	# 6. Speedometer & Flight Controls Toggle
 	if player.current_state == player.State.FLYING_AIRCRAFT:
@@ -185,9 +191,11 @@ func record_villager_talk() -> void:
 	if quest_stage == 1:
 		if villagers_talked_count >= 3:
 			quest_stage = 2
-		_update_quest_text()
+		$insertPauseWiring
+	_update_quest_text()
 
-func _update_quest_text() -> void:
+func $insertPauseWiring
+	_update_quest_text() -> void:
 	if quest_banner:
 		match quest_stage:
 			1:
@@ -253,3 +261,25 @@ func _on_sprint_down() -> void:
 func _on_sprint_up() -> void:
 	if player:
 		player.set_sprint(false)
+func _on_pause_pressed() -> void:
+	if pause_menu:
+		pause_menu.visible = true
+		get_tree().paused = true
+
+func _on_resume_pressed() -> void:
+	if pause_menu:
+		pause_menu.visible = false
+		get_tree().paused = false
+
+func _on_save_pressed() -> void:
+	var save_mgr = get_node_or_null("/root/SaveManager")
+	if save_mgr and player:
+		var success = save_mgr.save_game(player.global_position, quest_stage, villagers_talked_count, player.stamina)
+		if success:
+			_show_prompt("ဂိမ်းအခြေအနေကို အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ! ✓")
+		else:
+			_show_prompt("ဂိမ်းသိမ်းဆည်းမှု မအောင်မြင်ပါ!")
+
+func _on_quit_to_menu_pressed() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")

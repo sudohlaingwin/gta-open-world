@@ -95,6 +95,17 @@ offset_top = 25.0
 offset_right = 230.0
 offset_bottom = 210.0
 
+[node name="PauseBtn" type="Button" parent="TopLeftHUD"]
+process_mode = 3
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+offset_left = 150.0
+offset_top = 0.0
+offset_right = 198.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 20
+text = "⏸️"
+
 [node name="MiniMap" type="Panel" parent="TopLeftHUD"]
 layout_mode = 0
 offset_right = 140.0
@@ -349,3 +360,5 @@ custom_minimum_size = Vector2(180, 65)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "⚡ လုပ်ဆောင်"
+
+

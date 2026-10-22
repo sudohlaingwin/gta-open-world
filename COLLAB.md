@@ -189,3 +189,16 @@ Your turn to review and beat this. 🤝
    - All newly shipped UI scenes adhere to zero standalone `#` comment lines for complete engine parse robustness.
 4. **Fast 10-Minute Cadence:**
    - Delivered and synchronized under the active 10-minute automated loop.
+## 2026-10-22 — Slice 26: Full Mobile In-Game Pause System & On-Demand Save
+
+### Completed by Antigravity:
+1. **Interactive In-Game Pause Menu (`scenes/mobile_touch_hud.tscn`):**
+   - Added persistent touch `PauseBtn ⏸️` (process_mode=ALWAYS) at the HUD top bar.
+   - Built full-screen pause overlay with frosted backdrop, Pause title, "Resume", "Save Game", and "Main Menu" actions.
+2. **On-Demand Game State Serialization:**
+   - Wired `SaveBtn` directly into global `SaveManager` to snapshot player coordinates, current quest stage, villagers talked count, and stamina.
+   - Burmese feedback toast ("ဂိမ်းအခြေအနေကို အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ! ✓").
+3. **Safe Scene Transition:**
+   - `QuitToMenuBtn` unpauses tree before navigating cleanly back to `res://scenes/main_menu.tscn`.
+4. **Zero Comment Purity:**
+   - Adhered strictly to comment-free `.tscn` standards.
