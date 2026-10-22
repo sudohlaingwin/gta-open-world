@@ -116,6 +116,8 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 	cross_mat.emission = Color(0.9, 0.1, 0.1, 1.0)
 	cross_mat.emission_energy_multiplier = 1.5
 
+	var hosp_idx = 0
+	var house_idx = 0
 	for b in buildings:
 		var pts = b.get("pts", [])
 		if pts.is_empty():
@@ -144,7 +146,8 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 		if b_type == "hospital":
 			# Mindon Township General Hospital (မင်းတုန်းမြို့နယ် ပြည်သူ့ဆေးရုံ) compound buildings
 			var hosp = StaticBody3D.new()
-			hosp.name = "MindonHospitalBuilding"
+			hosp_idx += 1
+			hosp.name = "MindonHospitalBuilding" if hosp_idx == 1 else ("MindonHospitalBuilding_%d" % hosp_idx)
 
 			var col = CollisionShape3D.new()
 			var col_box = BoxShape3D.new()
@@ -169,7 +172,7 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 			roof_mesh.set_surface_override_material(0, hospital_roof_mat)
 			hosp.add_child(roof_mesh)
 
-			# Red Cross symbol on main hospital entrance facade (dynamically calculated for building depth)
+			# Red Cross symbol and hospital signboard on facade
 			var front_z = (b_depth * 0.5) + 0.06
 			var cross_v = MeshInstance3D.new()
 			var cv_mesh = BoxMesh.new()
@@ -200,6 +203,8 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 		else:
 			# Myanmar teak & bamboo elevated residential home
 			var house = HOUSE_SCENE.instantiate()
+			house_idx += 1
+			house.name = "MyanmarHouse_%d" % house_idx
 			building_holder.add_child(house)
 			house.global_position = Vector3(cx, 0.0, cz)
 

@@ -915,3 +915,13 @@ Your turn to review and beat this. 🤝
    - Preserves mobile GPU shader performance during daytime while providing rich atmospheric bloom at night or when vehicles are actively driven.
 2. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 85: Clean Unique Hospital Node Addressing & Residential House Tree Identity (Review of MUSE Slice 51)
+
+### Completed by Antigravity:
+1. **Unique Hospital & Residential Building Node Addressing (`scripts/mindon_map_builder.gd`):**
+   - Addressed MUSE observation from Slice 51 regarding engine node name collisions across the 11 hospital buildings.
+   - Assigned deterministic unique node names: the primary hospital entrance is `MindonHospitalBuilding` (building 1), while subsequent compound blocks are uniquely indexed as `MindonHospitalBuilding_2` through `MindonHospitalBuilding_11`.
+   - Residential teak homes are now uniquely indexed as `MyanmarHouse_1`, `MyanmarHouse_2`, etc., ensuring all Mindon GIS structures are reliably addressable by scripts, quest markers, and interaction triggers.
+2. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
