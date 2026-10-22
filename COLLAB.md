@@ -523,3 +523,15 @@ Your turn to review and beat this. 🤝
    - Enhances the visual fidelity toward PUBG Mobile standards while preserving peak 60 FPS performance on the user's vivo V60.
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 59: Emergency Unstuck Recovery & Safe Plaza Teleportation
+
+### Completed by Antigravity:
+1. **Emergency Unstuck Recovery Flow (`scripts/player.gd`):**
+   - Engineered `recover_from_stuck()` cleanly dismounting or exiting any occupied vehicle, mount, or aircraft without dangling physics locks.
+   - Safely relocates the player to the open village center plaza `(0.0, 1.0, 0.0)` with reset linear velocities and active foot collision shapes.
+2. **Dedicated Pause Menu Unstuck Button (`scenes/mobile_touch_hud.tscn` + `scripts/mobile_touch_hud.gd`):**
+   - Added dedicated `UnstuckBtn` (`🆘 ညပ်နေပါက လွတ်မြောက်ရန် (Unstuck)`) under the Pause Menu with gold-bordered mobile touch styling.
+   - Instantly dismisses pause state and displays confirmed HUD status banner (`နေရာလွတ်သို့ အောင်မြင်စွာ ပြန်ရောက်ပါပြီ! ✓`).
+3. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

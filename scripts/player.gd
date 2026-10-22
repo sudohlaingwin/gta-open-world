@@ -214,3 +214,19 @@ func _apply_saved_outfit() -> void:
 		var data = save_mgr.save_data
 		if data.has("shirt_color") and data.has("longyi_color"):
 			set_outfit_colors(data["shirt_color"], data["longyi_color"])
+
+func recover_from_stuck() -> void:
+	if current_state == State.DRIVING_VEHICLE and active_vehicle:
+		if active_vehicle.has_method("exit_vehicle"):
+			active_vehicle.exit_vehicle()
+	elif current_state == State.RIDING_MOUNT and active_mount:
+		if active_mount.has_method("exit_mount"):
+			active_mount.exit_mount()
+	elif current_state == State.FLYING_AIRCRAFT and active_aircraft:
+		if active_aircraft.has_method("exit_aircraft"):
+			active_aircraft.exit_aircraft()
+	# Unstuck teleport to open village ground (Safe central plaza spawn)
+	global_position = Vector3(0.0, 1.0, 0.0)
+	velocity = Vector3.ZERO
+	current_state = State.ON_FOOT
+	collision_shape.disabled = false

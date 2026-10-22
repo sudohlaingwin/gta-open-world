@@ -24,6 +24,7 @@ extends CanvasLayer
 @onready var pause_menu: Control = $PauseMenu
 @onready var resume_btn: Button = $PauseMenu/PauseBox/ResumeBtn
 @onready var save_btn: Button = $PauseMenu/PauseBox/SaveBtn
+@onready var unstuck_btn: Button = $PauseMenu/PauseBox/UnstuckBtn
 @onready var settings_btn: Button = $PauseMenu/PauseBox/SettingsBtn
 @onready var quit_to_menu_btn: Button = $PauseMenu/PauseBox/QuitToMenuBtn
 @onready var full_map_overlay: Control = $FullMapOverlay
@@ -78,6 +79,8 @@ func _ready() -> void:
 		resume_btn.pressed.connect(_on_resume_pressed)
 	if save_btn:
 		save_btn.pressed.connect(_on_save_pressed)
+	if unstuck_btn:
+		unstuck_btn.pressed.connect(_on_unstuck_pressed)
 	if settings_btn:
 		settings_btn.pressed.connect(_on_settings_pressed)
 	if quit_to_menu_btn:
@@ -353,6 +356,14 @@ func _on_save_pressed() -> void:
 			_show_prompt("ဂိမ်းအခြေအနေကို အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ! ✓")
 		else:
 			_show_prompt("ဂိမ်းသိမ်းဆည်းမှု မအောင်မြင်ပါ!")
+
+func _on_unstuck_pressed() -> void:
+	if player and player.has_method("recover_from_stuck"):
+		player.recover_from_stuck()
+		if pause_menu:
+			pause_menu.visible = false
+			get_tree().paused = false
+		_show_prompt("နေရာလွတ်သို့ အောင်မြင်စွာ ပြန်ရောက်ပါပြီ! ✓")
 
 func _on_settings_pressed() -> void:
 	if settings_panel:
