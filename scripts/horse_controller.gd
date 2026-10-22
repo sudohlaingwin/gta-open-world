@@ -71,7 +71,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = forward.x * current_speed
 		velocity.z = forward.z * current_speed
 
-		# Gallop leg swinging animation
+		# Gallop leg swinging animation & hoof audio
 		if abs(current_speed) > 0.5:
 			var anim_rate = 0.012 * (abs(current_speed) / max_speed + 0.5)
 			var gallop_cycle = sin(Time.get_ticks_msec() * anim_rate) * 0.45
@@ -79,6 +79,9 @@ func _physics_process(delta: float) -> void:
 			if leg_br: leg_br.rotation.x = gallop_cycle
 			if leg_fr: leg_fr.rotation.x = -gallop_cycle
 			if leg_bl: leg_bl.rotation.x = -gallop_cycle
+			var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
+			if audio_mgr and audio_mgr.has_method("play_horse_gallop"):
+				audio_mgr.play_horse_gallop(speed_ratio)
 	else:
 		current_speed = move_toward(current_speed, 0.0, coast_drag * 2.0 * delta)
 		velocity.x = move_toward(velocity.x, 0.0, coast_drag * delta)

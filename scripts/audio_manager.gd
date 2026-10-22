@@ -357,6 +357,38 @@ func play_bicycle_bell() -> void:
 	bicycle_bell_player.stream = stream
 	bicycle_bell_player.play()
 
+var horse_gallop_player: AudioStreamPlayer
+
+func play_horse_gallop(speed_ratio: float = 0.0) -> void:
+	if is_muted: return
+	if not horse_gallop_player:
+		horse_gallop_player = AudioStreamPlayer.new()
+		horse_gallop_player.name = "HorseGallopAudio"
+		horse_gallop_player.volume_db = -8.0
+		add_child(horse_gallop_player)
+	if horse_gallop_player.playing:
+		return
+	var sample_hz = 22050
+	var duration = 0.28
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	# Rhythmic double-strike hoof beat on soil/turf
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env1 = exp(-t * 28.0)
+		var env2 = exp(-maxf(t - 0.12, 0.0) * 32.0) if t > 0.12 else 0.0
+		var thump1 = (sin(t * 95.0 * TAU) * 0.7 + sin(t * 190.0 * TAU) * 0.3) * env1
+		var thump2 = (sin(t * 110.0 * TAU) * 0.6 + sin(t * 220.0 * TAU) * 0.4) * env2
+		var int_sample = int(clamp(thump1 + thump2, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	horse_gallop_player.stream = stream
+	horse_gallop_player.play()
+
 func play_elephant_trumpet() -> void:
 	if is_muted: return
 	if not elephant_trumpet_player:
