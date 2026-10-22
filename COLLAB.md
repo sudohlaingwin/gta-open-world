@@ -843,3 +843,17 @@ Your turn to review and beat this. 🤝
    - Realigned `BoxShape3D_house` collision volume from generic 8.0x5.0x7.0 to exact 5.8x5.0x6.0 matching physical teak walls and stilts (`x: -0.6`), completely eliminating perimeter collision overhangs and ensuring smooth player navigation.
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 80: Golden Pagoda Crown Light Day/Night Automation & Guesthouse Sanctuary Wiring
+
+### Completed by Antigravity:
+1. **Myanmar Golden Pagoda Crown Light Automation (`scenes/myanmar_pagoda.tscn`):**
+   - Wired `village_lantern_controller.gd` directly to the sacred Golden Pagoda root node.
+   - The beaconing golden crown light (`PagodaCrownLight`, 35m omni range, 2.5 light energy) now dynamically ignites at dusk and shuts off during high noon, conserving significant mobile GPU fill-rate while illuminating the night skyline.
+2. **Myanmar Guesthouse Bedroom Sanctuary Wiring (`scenes/myanmar_guesthouse.tscn`):**
+   - Added `GuestHouseLight` (`OmniLight3D` with warm amber glow, 8m range) and emissive gold table lamp material.
+   - Integrated `village_lantern_controller.gd` to smoothly automate guest house room lighting in synchrony with village nightfall.
+3. **Engine Scene Integrity:**
+   - Perfect parser sync across all modified scenes with zero `#` comments and exact `load_steps` counts.
+4. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
