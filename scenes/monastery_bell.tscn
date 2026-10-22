@@ -58,3 +58,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_timber")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, 0)
 mesh = SubResource("CylinderMesh_kyone")
 surface_material_override/0 = SubResource("StandardMaterial3D_bronze")
+
+[node name="BellSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.2, 0.4)
+text = "သာသနာ့ ကြေးစည် ခေါင်းလောင်းတော်ကြီး"
+font_size = 40
+outline_size = 12
+modulate = Color(1.0, 0.88, 0.35, 1)

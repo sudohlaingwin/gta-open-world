@@ -68,3 +68,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_post_wood")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.65, 0)
 mesh = SubResource("BoxMesh_cross")
 surface_material_override/0 = SubResource("StandardMaterial3D_post_wood")
+
+[node name="WellSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.2, 0.4)
+text = "ရွာလယ် ရှေးဟောင်း အုတ်ရေတွင်းကြီး"
+font_size = 40
+outline_size = 12
+modulate = Color(1.0, 0.90, 0.40, 1)

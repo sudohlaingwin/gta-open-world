@@ -42,3 +42,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_clay")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 1.95, 0)
 mesh = SubResource("SphereMesh_pot")
 surface_material_override/0 = SubResource("StandardMaterial3D_clay")
+
+[node name="PotSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0.6)
+text = "သောက်ရေချမ်းစင် (ရေအလှူတော်)"
+font_size = 36
+outline_size = 10
+modulate = Color(1.0, 0.90, 0.40, 1)

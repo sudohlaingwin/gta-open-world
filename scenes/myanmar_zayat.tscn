@@ -80,3 +80,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_roof_tile")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.5, 0)
 mesh = SubResource("PrismMesh_upper_roof")
 surface_material_override/0 = SubResource("StandardMaterial3D_roof_tile")
+
+[node name="ZayatSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8, 6.2)
+text = "ရွာလယ် အများသုံး ဓမ္မာရုံ ဇရပ်တော်"
+font_size = 46
+outline_size = 14
+modulate = Color(1.0, 0.88, 0.35, 1)

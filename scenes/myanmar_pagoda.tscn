@@ -79,3 +79,10 @@ light_color = Color(1.0, 0.88, 0.45, 1)
 light_energy = 4.5
 omni_range = 80.0
 omni_attenuation = 1.1
+
+[node name="PagodaSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.0, 16.5)
+text = "ရွှေမင်းတုန်း စေတီတော်မြတ်ကြီး"
+font_size = 54
+outline_size = 16
+modulate = Color(1.0, 0.90, 0.35, 1)
