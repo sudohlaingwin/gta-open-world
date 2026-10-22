@@ -1217,3 +1217,36 @@ What works, and how it differs from the opponent's dead map:
 Verification (load/simulation test, NOT a playtest). All 25 scripts pass `--check-only` (world_map.gd included). Map simulation, 30/30 green: panel hidden initially; MapButton exists and is visible (wired); pressing it opens the overlay and pauses; all six landmark dots match real node positions; world→map→world round-trips exactly; player marker clamps at the world edge and after zoom+pan; waypoint tap computes the correct world coordinates, mirrors to the minimap dot at the right position, and shows the in-world beacon; zoom+pan keeps landmarks consistent; clear hides the minimap dot and beacon; close restores pause state both ways; main + menu scenes load with zero script/scene errors. Two test-harness notes: a `SceneTree` test script has no `get_tree()` (use the tree's own `paused` property), and inferred-Variant locals are errors in this project, so test locals need explicit types. Honest statement: the transform math, wiring, clamping, waypoint round-trips, and pause bookkeeping are proven headlessly, but touch feel and map readability on a phone cannot be verified headlessly — they need the owner's on-device verdict; no "reads beautifully on a phone" claim is made.
 
 Intentionally deferred (not built this round): navigation/pathfinding to the waypoint (marker + bearing only, as stated); landmark filters (all six landmarks always shown — no filter toggles yet); waypoint persistence across saves (the waypoint lives for the session; save/load keys unchanged from Slice 27); pinch-to-zoom (button zoom only — pinch is a later touch refinement); a larger landmark set (only the six required landmarks; the minimap's full dot set is untouched). Honest gaps, unchanged: whole-country map and PUBG graphics still missing; the APK on Drive is still the Slice 10 build and was NOT rebuilt (per instruction).
+
+## Villager schedules v2 — all 18 villagers (direction-independent — serves the village world AND any future city district)
+
+This round completes the Slice 23 schedules v1, which wired only Villager1/2/3. No new mechanism, no behaviour change to anything else: the same `npc.gd` `day_anchor` rule, the same daylight rule, the same walk-not-teleport shift, the same mid-conversation deferral. The only change is 15 `day_anchor` property lines in `main.tscn` — no new script, no new node, no new resource, so `main.tscn` `load_steps` stays 431 and zero `#` comment lines were added. All Slice 28 features kept (working world map, mission framework, car physics, camera avoidance, traffic, visuals, menu/pause/save/load); save keys unchanged (schedules are live state, not saved state — a villager's wander centre is recomputed from the clock on load, so old saves load unchanged).
+
+Day = the villager's workplace (their stall, shop, school, or gathering place); night = home (their spawn point). Every anchor is a real in-scene position, not an invented location:
+
+| Villager | Home (night) | Day anchor (workplace) |
+|---|---|---|
+| Villager1 မောင်မောင်လွင် | (-10, -10) | (14, 14) day market |
+| Villager2 ဦးဖိုးသော် | (12, 8) | (14, 14) day market |
+| Villager3 ဒေါ်မြ | (-2, -15) | (14, 14) day market |
+| Villager4 ဈေးသည် မမ (market vendor) | (19, 13) | (14, 14) day market centre |
+| Villager5 ဂိတ် ဦးဘ (gatekeeper) | (4, 24) | (0, 26) village gate |
+| Villager6 တံငါသည် ဦးထွန်း (fisherman) | (14, 38) | (10, 41) pier |
+| Villager7 လက်ဖက်ရည်ဆိုင် ဦးအောင် (tea owner) | (-10, 16) | (-14, 20) tea shop |
+| Villager8 ဆရာတော် ဦးဇင်း (monk) | (-28, 8) | (-20, -25) pagoda |
+| Villager9 ပွဲစီစဉ်သူ ကိုအောင် (festival organiser) | (39, -34) | (42, -33) festival ground |
+| Villager10 အကသမား မသီတာ (dancer) | (45, -35) | (42, -34) festival mat |
+| Villager11 ပန်းပဲဆရာ ဦးမောင် (blacksmith) | (-38, -12) | (-40, -12) forge |
+| Villager12 အိုးသည် မလှ (potter) | (42, 6) | (40, 6) pottery wheel |
+| Villager13 ရွှေဆိုင် ဦးစိန် (goldsmith) | (26, 22) | (29, 22) gold stall |
+| Villager14 ဆရာမ မအေး (teacher) | (-26, 20) | (-34, 14) school |
+| Villager15 လှေသမား ဦးကျော် (boatman) | (14, 42) | (10, 41) pier |
+| Villager16 ပန်းသည် မခင် (flower seller) | (40, 34) | (14, 14) day market |
+| Villager17 တည်းခိုခန်း ပိုင်ရှင် ဦးသိန်း (guest house owner) | (26, 33) | (26, 36) guest house |
+| Villager18 ညဈေး ရောင်းသူ မစု (night market seller) | (-36, 29) night market itself | (-28, 30) nearby houses by day |
+
+Two honest notes. First, Villager18 works nights, so her pattern reads reversed on purpose and needs no code change: by day she wanders near the houses at (-28, 30); at night her wander centre is home (-36, 29), which IS the night market (NightMarket20 sits at (-36, 32)) — she is at her stall after dark by virtue of living there. Second, villagers whose home is already at their workplace (blacksmith, potter, goldsmith, guest house owner, festival pair, market vendor) show only a small day/night shift — they live at work, so their commute is a few metres; the visible commutes are the gatekeeper, monk, teacher, boatman, fisherman, tea owner, and flower seller, whose workplaces are 10–35 m from home (a ~21 s walk at villager speed, inside the ~54 s day band of the 120 s cycle).
+
+Verification (load/simulation test, NOT a playtest). All scripts pass `--check-only` (no script changed). Schedule simulation, all green: forced midday (daylight 1.0) → all 18 wander centres equal their day anchors, each anchor matching the table above; forced deep night (daylight 0.0) → all 18 wander centres equal home; no villager's position changed across either forced shift (walk, never teleport — positions compared immediately before and after each shift in the same frame); a mid-conversation forced flip defers on Villager5 (wander centre stays at the day anchor while talking, shifts to home the moment the talk ends); main + menu scenes load with zero script/scene errors. The test run's trailing RID-leak lines at exit are headless dummy-renderer noise (the same class noted in earlier slices), not logic errors — the run itself prints zero errors. Honest statement: the schedule wiring, anchors, deferral, and no-teleport rule are proven headlessly, but whether the village feels alive on a phone cannot be verified headlessly — it needs the owner's on-device verdict; no "feels alive" claim is made.
+
+Intentionally deferred (not built this round): schedules tied to quest stages (a villager's anchor never changes with quest progress); indoor behaviour (villagers wander outside around their workplace, never inside buildings); schedules for future city districts (no city exists yet); night_anchor as a separate export (not needed — Villager18's night anchor is her home, which is the night market). Honest gaps, unchanged: whole-country map and PUBG graphics still missing; the APK on Drive is still the Slice 10 build and was NOT rebuilt (per instruction).

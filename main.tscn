@@ -3811,6 +3811,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 1, 13)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ဈေးမှာ သစ်သီးလတ်လတ်ဆတ်ဆတ် ရှိတယ်။"
 villager_name = "ဈေးသည် မမ"
+day_anchor = Vector3(14, 0, 14)
 wander_radius = 3.0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager4"]
 shape = SubResource("CapsuleShape3D_player")
@@ -4036,6 +4037,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 24)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ရွာထဲကို ဝင်လာတာ ကြိုဆိုပါတယ်။"
 villager_name = "ဂိတ် ဦးဘ"
+day_anchor = Vector3(0, 0, 26)
 wander_radius = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager5"]
@@ -5098,6 +5100,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 1, 38)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ငါးမျှားနေတာ၊ မြစ်ကမ်းနားက ငါးတွေ ပေါတယ်။"
 villager_name = "တံငါသည် ဦးထွန်း"
+day_anchor = Vector3(10, 0, 41)
 wander_radius = 4.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager6"]
@@ -5465,6 +5468,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 16)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! လက်ဖက်ရည် တစ်ခွက် သောက်ပါလား၊ ပူပူနွေးနွေး ရှိတယ်။"
 villager_name = "လက်ဖက်ရည်ဆိုင် ဦးအောင်"
+day_anchor = Vector3(-14, 0, 20)
 wander_radius = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager7"]
@@ -5519,6 +5523,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 1, 8)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! စာသင်ကျောင်းကို စာအုပ်လှူရင် ကုသိုလ်ရတယ်။"
 villager_name = "ဆရာတော် ဦးဇင်း"
+day_anchor = Vector3(-20, 0, -25)
 wander_radius = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager8"]
@@ -6374,6 +6379,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39, 1, -34)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ပွဲတော်ကို လာလည်တာ ဝမ်းသာပါတယ်။ ဗုံတီးကြည့်ပါဦး။"
 villager_name = "ပွဲစီစဉ်သူ ကိုအောင်"
+day_anchor = Vector3(42, 0, -33)
 wander_radius = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager9"]
@@ -6423,6 +6429,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 1, -35)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ပွဲတော်မှာ အကအလှတွေ ကြည့်လို့ရတယ်။"
 villager_name = "အကသမား မသီတာ"
+day_anchor = Vector3(42, 0, -34)
 wander_radius = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager10"]
@@ -6968,6 +6975,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 1, -12)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ပန်းပဲဖိုမှာ ကိရိယာတွေ လုပ်ပေးပါတယ်။"
 villager_name = "ပန်းပဲဆရာ ဦးမောင်"
+day_anchor = Vector3(-40, 0, -12)
 wander_radius = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager11"]
@@ -7018,6 +7026,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 1, 6)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ရွှံ့အိုးလှလှလေးတွေ လုပ်ရောင်းပါတယ်။"
 villager_name = "အိုးသည် မလှ"
+day_anchor = Vector3(40, 0, 6)
 wander_radius = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager12"]
@@ -7377,6 +7386,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 1, 22)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ရွှေဆိုင်မှာ လက်စွပ်နဲ့ ဆွဲကြိုးတွေ ရောင်းပါတယ်။"
 villager_name = "ရွှေဆိုင် ဦးစိန်"
+day_anchor = Vector3(29, 0, 22)
 wander_radius = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager13"]
@@ -7449,6 +7459,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 1, 20)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ကျောင်းမှာ ကလေးတွေကို စာသင်ပေးပါတယ်။"
 villager_name = "ဆရာမ မအေး"
+day_anchor = Vector3(-34, 0, 14)
 wander_radius = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager14"]
@@ -8249,6 +8260,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 1, 42)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! လှေနဲ့ မြစ်ကူးလို့ ရပါတယ်၊ ငါးဖမ်းထွက်ချင်ရင် ပြောပါ။"
 villager_name = "လှေသမား ဦးကျော်"
+day_anchor = Vector3(10, 0, 41)
 wander_radius = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager15"]
@@ -8321,6 +8333,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 1, 34)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ပန်းစည်း လတ်လတ်ဆတ်ဆတ် ရောင်းပါတယ်။"
 villager_name = "ပန်းသည် မခင်"
+day_anchor = Vector3(14, 0, 14)
 wander_radius = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager16"]
@@ -8883,6 +8896,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 1, 33)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! တည်းခိုခန်း လွတ်နေပါတယ်၊ နားနားနေနေ အိပ်ပါ။"
 villager_name = "တည်းခိုခန်း ပိုင်ရှင် ဦးသိန်း"
+day_anchor = Vector3(26, 0, 36)
 wander_radius = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager17"]
@@ -8932,6 +8946,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 1, 29)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ခေါက်ဆွဲ ပူပူလေး၊ အအေးလည်း ရှိတယ်။"
 villager_name = "ညဈေး ရောင်းသူ မစု"
+day_anchor = Vector3(-28, 0, 30)
 wander_radius = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager18"]
