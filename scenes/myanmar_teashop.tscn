@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=24 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(7.0, 0.3, 5.5)
@@ -65,6 +65,33 @@ size = Vector3(0.35, 0.35, 0.35)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stool_blue"]
 albedo_color = Color(0.15, 0.45, 0.85, 1)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stool_red"]
+albedo_color = Color(0.82, 0.18, 0.14, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_plate"]
+top_radius = 0.24
+bottom_radius = 0.22
+height = 0.04
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_plate"]
+albedo_color = Color(0.92, 0.92, 0.90, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_eclair"]
+size = Vector3(0.08, 0.06, 0.28)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_snack"]
+albedo_color = Color(0.78, 0.52, 0.22, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_lamp"]
+radius = 0.18
+height = 0.24
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lamp"]
+albedo_color = Color(1.0, 0.92, 0.65, 1)
+emission_enabled = true
+emission = Color(1.0, 0.88, 0.50, 1)
+emission_energy_multiplier = 2.0
+
 [node name="MyanmarTeaShop" type="StaticBody3D"]
 
 [node name="FloorCollision" type="CollisionShape3D" parent="."]
@@ -99,6 +126,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
 mesh = SubResource("PrismMesh_roof")
 surface_material_override/0 = SubResource("StandardMaterial3D_roof_thatch")
 
+[node name="TeashopLamp" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7, 0)
+mesh = SubResource("SphereMesh_lamp")
+surface_material_override/0 = SubResource("StandardMaterial3D_lamp")
+
+[node name="TeashopLight" type="OmniLight3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
+light_color = Color(1.0, 0.88, 0.55, 1)
+light_energy = 2.2
+omni_range = 8.0
+
 [node name="Table1" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0.45, 0)
 mesh = SubResource("CylinderMesh_table")
@@ -113,6 +151,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_tin_flask")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0.8, -0.15)
 mesh = SubResource("SphereMesh_pot")
 surface_material_override/0 = SubResource("StandardMaterial3D_teapot")
+
+[node name="Plate1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.72, 0.0)
+mesh = SubResource("CylinderMesh_plate")
+surface_material_override/0 = SubResource("StandardMaterial3D_plate")
+
+[node name="Snack1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.76, 0.0)
+mesh = SubResource("BoxMesh_eclair")
+surface_material_override/0 = SubResource("StandardMaterial3D_snack")
 
 [node name="Table2" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0.45, 0)
@@ -134,9 +182,26 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.3, 0)
 mesh = SubResource("BoxMesh_stool")
 surface_material_override/0 = SubResource("StandardMaterial3D_stool_blue")
 
+[node name="Stool2A" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.3, 0)
+mesh = SubResource("BoxMesh_stool")
+surface_material_override/0 = SubResource("StandardMaterial3D_stool_red")
+
+[node name="Stool2B" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0.3, 0)
+mesh = SubResource("BoxMesh_stool")
+surface_material_override/0 = SubResource("StandardMaterial3D_stool_red")
+
 [node name="Signboard" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 2.8)
 text = "ရွှေမင်္ဂလာ လက်ဖက်ရည်ဆိုင်"
 font_size = 28
 outline_size = 8
 modulate = Color(1, 0.85, 0.2, 1)
+
+[node name="MenuBoard" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, -2.6)
+text = "• လက်ဖက်ရည် (ချိုကျ/ပုံမှန်)\n• အီကြာကွေး နှင့် ဆမူဆာ\n• ကော်ဖီ / နို့မလိုင်"
+font_size = 20
+outline_size = 6
+modulate = Color(0.95, 0.95, 0.85, 1)

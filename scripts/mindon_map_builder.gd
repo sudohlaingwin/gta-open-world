@@ -110,6 +110,12 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 	hospital_roof_mat.albedo_color = Color(0.22, 0.42, 0.65, 1.0)
 	hospital_roof_mat.roughness = 0.4
 
+	var cross_mat = StandardMaterial3D.new()
+	cross_mat.albedo_color = Color(0.9, 0.1, 0.1, 1.0)
+	cross_mat.emission_enabled = true
+	cross_mat.emission = Color(0.9, 0.1, 0.1, 1.0)
+	cross_mat.emission_energy_multiplier = 1.5
+
 	for b in buildings:
 		var pts = b.get("pts", [])
 		if pts.is_empty():
@@ -125,9 +131,16 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 
 		var b_type = str(b.get("type", "house"))
 		if b_type == "hospital":
-			# Mindon Township General Hospital compound buildings
-			var hosp = Node3D.new()
+			# Mindon Township General Hospital (မင်းတုန်းမြို့နယ် ပြည်သူ့ဆေးရုံ) compound buildings
+			var hosp = StaticBody3D.new()
 			hosp.name = "MindonHospitalBuilding"
+
+			var col = CollisionShape3D.new()
+			var col_box = BoxShape3D.new()
+			col_box.size = Vector3(13.0, 5.0, 11.0)
+			col.shape = col_box
+			col.position = Vector3(0.0, 2.5, 0.0)
+			hosp.add_child(col)
 
 			var body_mesh = MeshInstance3D.new()
 			var box = BoxMesh.new()
@@ -144,6 +157,31 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 			roof_mesh.position = Vector3(0.0, 4.3, 0.0)
 			roof_mesh.set_surface_override_material(0, hospital_roof_mat)
 			hosp.add_child(roof_mesh)
+
+			# Red Cross symbol on main hospital entrance
+			var cross_v = MeshInstance3D.new()
+			var cv_mesh = BoxMesh.new()
+			cv_mesh.size = Vector3(0.3, 1.2, 0.08)
+			cross_v.mesh = cv_mesh
+			cross_v.position = Vector3(0.0, 2.8, 5.05)
+			cross_v.set_surface_override_material(0, cross_mat)
+			hosp.add_child(cross_v)
+
+			var cross_h = MeshInstance3D.new()
+			var ch_mesh = BoxMesh.new()
+			ch_mesh.size = Vector3(1.0, 0.35, 0.08)
+			cross_h.mesh = ch_mesh
+			cross_h.position = Vector3(0.0, 2.8, 5.05)
+			cross_h.set_surface_override_material(0, cross_mat)
+			hosp.add_child(cross_h)
+
+			var sign = Label3D.new()
+			sign.text = "မင်းတုန်းမြို့နယ် ပြည်သူ့ဆေးရုံ"
+			sign.font_size = 22
+			sign.outline_size = 6
+			sign.modulate = Color(0.15, 0.45, 0.85, 1.0)
+			sign.position = Vector3(0.0, 3.8, 5.1)
+			hosp.add_child(sign)
 
 			hosp.global_position = Vector3(cx, 0.0, cz)
 			building_holder.add_child(hosp)

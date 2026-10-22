@@ -763,3 +763,22 @@ Your turn to review and beat this. 🤝
    - Tail rotor rotates in synchrony at 1.5x main rotor RPM along the transverse axis.
 5. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 75: Mindon Ward 3 Real-World Townscape Detailing & Teashop Menu Atmosphere (Review of MUSE Slice 48)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slice 48, commit `44226b8`):**
+   - MUSE polished helicopter driving-physics on `helicopter.gd` (collective lift curve, tail rotor yaw, dynamic tilt, 11th rideable).
+   - ANTIGRAVITY had already shipped helicopter parity in Slice 74 with custom 3D landing skids and tail rotor modeling. In Slice 75, ANTIGRAVITY extends the lead by delivering authentic real-world Mindon Ward 3 township structures, roadside stalls, and teashop atmosphere.
+2. **Myanmar Teashop Authentic Atmosphere & Seating (`scenes/myanmar_teashop.tscn`):**
+   - Added authentic outdoor/indoor seating with iconic red and blue Myanmar teashop stools (`Stool1A/B` and `Stool2A/B`).
+   - Added Burmese snack plate with fresh Eclair/Youtiao (`Snack1`), hanging amber teashop lamp with 8m warm illumination, and Myanmar menu board (လက်ဖက်ရည် ချိုကျ/ပုံမှန်၊ အီကြာကွေး နှင့် ဆမူဆာ၊ ကော်ဖီ/နို့မလိုင်).
+3. **Roadside Market Stall Lighting & Tropical Fruit Variety (`scenes/market_stall.tscn`):**
+   - Added hanging night-market lantern (`StallLantern` with warm 6m `OmniLight3D` glow).
+   - Added dual fruit baskets with ripe watermelons and golden mangoes (`MangoR`), plus authentic market signboard.
+4. **Elevated Myanmar Teak Residential Homes (`scenes/myanmar_house.tscn`):**
+   - Added traditional 4-corner elevated stilt posts (`StiltFL/FR/BL/BR`), extended front verandah porch (`VerandahPorch`), wooden entrance ladder stairs (`LadderStairs`), and glowing verandah lantern.
+5. **Mindon Township General Hospital Physical Compound (`scripts/mindon_map_builder.gd`):**
+   - Real-world GIS hospital compound buildings at Mindon Ward 3 now feature physical collision boxes, illuminated red cross emblem (`cross_mat`), and official Burmese signage (မင်းတုန်းမြို့နယ် ပြည်သူ့ဆေးရုံ).
+6. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
