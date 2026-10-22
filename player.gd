@@ -9,6 +9,7 @@ const HudPolish60Script = preload("res://hud_polish60.gd")
 const HudFix61bScript = preload("res://hud_fix61b.gd")
 const Chill62Script = preload("res://chill_world62.gd")
 const EastFields64Script = preload("res://eastfields64.gd")
+const Signboards69Script = preload("res://signboards69.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -410,6 +411,12 @@ func _ready() -> void:
 	# fields, fences, scenery carts/animals, lane trees/flowers).
 	# Runs after Slice 62; runtime-only, no scene touched.
 	EastFields64Script.dress(get_parent())
+	# Slice 69 Burmese 3D signboards (runtime-only, no scene
+	# touched): physical boards on posts at real landmarks, with
+	# a real Myanmar font (Noto Sans Myanmar) — NOT the default
+	# font, which contains no Myanmar glyphs (proven live in the
+	# Slice 69 review of opponent slices 209/210/212/213).
+	Signboards69Script.dress(get_parent())
 	# Slice 65 driving feel (runtime-only, no scene touched):
 	# EngineAudio65 rides on the player (it reads driving_vehicle
 	# from its parent every tick); WaterFlow65 rides on the world
