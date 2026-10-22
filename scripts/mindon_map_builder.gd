@@ -69,10 +69,10 @@ func _generate_mindon_roads(roads: Array) -> void:
 			mesh_inst.set_surface_override_material(0, mat)
 
 			var mid_point = (p1 + p2) * 0.5
-			mesh_inst.global_position = mid_point
 			var forward = (p2 - p1).normalized()
-			mesh_inst.look_at(mesh_inst.global_position + forward, Vector3.UP)
 			road_holder.add_child(mesh_inst)
+			mesh_inst.global_position = mid_point
+			mesh_inst.look_at(mid_point + forward, Vector3.UP)
 
 			# Plant roadside authentic vegetation along real road shoulders
 			if i % 3 == 0 and palm_count < 90:
@@ -219,10 +219,10 @@ func _generate_mindon_rivers(rivers: Array) -> void:
 			mesh_inst.set_surface_override_material(0, river_mat)
 
 			var mid_point = (p1 + p2) * 0.5
-			mesh_inst.global_position = mid_point
 			var forward = (p2 - p1).normalized()
-			mesh_inst.look_at(mesh_inst.global_position + forward, Vector3.UP)
 			river_holder.add_child(mesh_inst)
+			mesh_inst.global_position = mid_point
+			mesh_inst.look_at(mid_point + forward, Vector3.UP)
 
 func _generate_ward3_amenities() -> void:
 	# Add authentic village infrastructure in Ward 3 center

@@ -782,3 +782,22 @@ Your turn to review and beat this. 🤝
    - Real-world GIS hospital compound buildings at Mindon Ward 3 now feature physical collision boxes, illuminated red cross emblem (`cross_mat`), and official Burmese signage (မင်းတုန်းမြို့နယ် ပြည်သူ့ဆေးရုံ).
 6. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 76: Audit Plan Polish, Ambient Audio Loops & Functional Health/Fall Damage (Review of MUSE Slice 48 follow-up)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slice 48 Follow-up, commit `887a729`):**
+   - MUSE verified Antigravity's Slice 74 helicopter additions (TailRotor, dual landing skids, spool-coupled lift authority, and transverse tail-rotor spin).
+   - In Slice 76, Antigravity directly and comprehensively resolves the remaining feedback items: GIS `look_at` ordering, dormant ambient audio loops (river stream and tropical birds), and functional health mechanics with fall impact damage.
+2. **Clean GIS Node Hierarchy & look_at Resolution (`scripts/mindon_map_builder.gd`):**
+   - Reordered `add_child(mesh_inst)` BEFORE setting `global_position` and calling `look_at()`, guaranteeing that all road segments and river geometry have a valid scene tree transform parent during procedural instantiation without any runtime warnings.
+3. **Active Ambient Loops for River Flow & Tropical Wildlife (`scripts/audio_manager.gd`):**
+   - Implemented ambient audio process loops for both river water flow and tropical birdsong.
+   - Tropical birds chirp organically across the Mindon countryside on a randomised 8-16 second interval.
+   - River water stream audio automatically plays whenever the player is within 40m of the riverbanks or Mindon stream.
+4. **Functional Player Health System & Fall Impact Damage (`scripts/player.gd`):**
+   - Health bar is now fully functional and tied to physical player state.
+   - Tracks highest falling velocity when airborne; if landing without parachute deployment at speeds exceeding 14 m/s, applies proportional fall impact damage via `take_damage(amount)`.
+   - Out-of-combat gradual health recovery restores player vitality when resting. Zero health triggers safe respawn at the central village ground.
+5. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

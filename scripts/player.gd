@@ -39,6 +39,8 @@ func _ready() -> void:
 	add_to_group("player")
 	_apply_saved_outfit()
 
+var highest_fall_speed: float = 0.0
+
 func _physics_process(delta: float) -> void:
 	if current_state != State.ON_FOOT:
 		return
@@ -55,14 +57,26 @@ func _physics_process(delta: float) -> void:
 			var glide_dir = (forward * -touch_input_vector.y + right * touch_input_vector.x).normalized()
 			velocity.x = glide_dir.x * parachute_glide_speed
 			velocity.z = glide_dir.z * parachute_glide_speed
+			highest_fall_speed = 0.0
 		else:
 			velocity.y -= gravity * delta
+			if -velocity.y > highest_fall_speed:
+				highest_fall_speed = -velocity.y
 	else:
 		if is_parachuting:
 			is_parachuting = false
 			var chute_mesh = visual_mesh.get_node_or_null("ParachuteMesh")
 			if chute_mesh:
 				chute_mesh.visible = false
+		elif highest_fall_speed > 14.0:
+			# Apply authentic fall impact damage based on landing velocity
+			var damage = (highest_fall_speed - 14.0) * 4.5
+			take_damage(damage)
+		highest_fall_speed = 0.0
+
+		# Gradual health recovery over time when resting safely
+		if health < max_health:
+			health = min(max_health, health + 2.0 * delta)
 
 	# Input handling (Touch priority, keyboard fallback)
 	var input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
@@ -242,3 +256,10 @@ func recover_from_stuck() -> void:
 	velocity = Vector3.ZERO
 	current_state = State.ON_FOOT
 	collision_shape.disabled = false
+
+func take_damage(amount: float) -> void:
+	health = clampf(health - amount, 0.0, max_health)
+	if health <= 0.0:
+		# Player knockdown & respawn at central village ground
+		recover_from_stuck()
+		health = max_health

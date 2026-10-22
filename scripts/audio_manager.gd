@@ -8,10 +8,32 @@ var cow_moo_player: AudioStreamPlayer
 var vehicle_engine_player: AudioStreamPlayer
 var footstep_player: AudioStreamPlayer
 var teashop_chime_player: AudioStreamPlayer
+var bird_ambient_timer: float = 3.0
+var river_ambient_timer: float = 1.0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_setup_audio_players()
+
+func _process(delta: float) -> void:
+	if is_muted:
+		return
+	# Ambient tropical birds singing across the countryside
+	bird_ambient_timer -= delta
+	if bird_ambient_timer <= 0.0:
+		bird_ambient_timer = randf_range(8.0, 16.0)
+		play_tropical_birds()
+
+	# Ambient river flowing sound near Mindon stream or village river
+	river_ambient_timer -= delta
+	if river_ambient_timer <= 0.0:
+		river_ambient_timer = 2.2
+		var player = get_tree().get_first_node_in_group("player")
+		if player:
+			# If player is near the river (Z around 20-35 or river coordinates)
+			var dist_to_river = absf(player.global_position.z - 28.0)
+			if dist_to_river < 40.0:
+				play_river_flow()
 
 func _setup_audio_players() -> void:
 	# 1. Monastery Bell Player
