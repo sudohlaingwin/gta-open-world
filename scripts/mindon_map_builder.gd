@@ -240,63 +240,63 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 
 			var col = CollisionShape3D.new()
 			var col_box = BoxShape3D.new()
-			col_box.size = Vector3(b_width + 0.5, 4.5, b_depth + 0.5)
+			col_box.size = Vector3(b_width + 0.6, 6.8, b_depth + 0.6)
 			col.shape = col_box
-			col.position = Vector3(0.0, 2.25, 0.0)
+			col.position = Vector3(0.0, 3.4, 0.0)
 			hosp.add_child(col)
 
 			var body_mesh = MeshInstance3D.new()
 			var box = BoxMesh.new()
-			box.size = Vector3(b_width, 4.0, b_depth)
+			box.size = Vector3(b_width, 6.2, b_depth)
 			body_mesh.mesh = box
-			body_mesh.position = Vector3(0.0, 2.0, 0.0)
+			body_mesh.position = Vector3(0.0, 3.1, 0.0)
 			body_mesh.set_surface_override_material(0, hospital_wall_mat)
 			hosp.add_child(body_mesh)
 
 			var roof_mesh = MeshInstance3D.new()
 			var roof_box = BoxMesh.new()
-			roof_box.size = Vector3(b_width + 1.0, 0.6, b_depth + 1.0)
+			roof_box.size = Vector3(b_width + 1.2, 0.8, b_depth + 1.2)
 			roof_mesh.mesh = roof_box
-			roof_mesh.position = Vector3(0.0, 4.3, 0.0)
+			roof_mesh.position = Vector3(0.0, 6.6, 0.0)
 			roof_mesh.set_surface_override_material(0, hospital_roof_mat)
 			hosp.add_child(roof_mesh)
 
 			# Red Cross symbol and hospital signboard on facade
-			var front_z = (b_depth * 0.5) + 0.06
+			var front_z = (b_depth * 0.5) + 0.08
 			var b_cross_mat = cross_mat.duplicate()
 			var cross_v = MeshInstance3D.new()
 			cross_v.name = "CrossV"
 			var cv_mesh = BoxMesh.new()
-			cv_mesh.size = Vector3(0.3, 1.2, 0.08)
+			cv_mesh.size = Vector3(0.45, 1.8, 0.1)
 			cross_v.mesh = cv_mesh
-			cross_v.position = Vector3(0.0, 2.8, front_z)
+			cross_v.position = Vector3(0.0, 4.4, front_z)
 			cross_v.set_surface_override_material(0, b_cross_mat)
 			hosp.add_child(cross_v)
 
 			var cross_h = MeshInstance3D.new()
 			cross_h.name = "CrossH"
 			var ch_mesh = BoxMesh.new()
-			ch_mesh.size = Vector3(1.0, 0.35, 0.08)
+			ch_mesh.size = Vector3(1.5, 0.5, 0.1)
 			cross_h.mesh = ch_mesh
-			cross_h.position = Vector3(0.0, 2.8, front_z)
+			cross_h.position = Vector3(0.0, 4.4, front_z)
 			cross_h.set_surface_override_material(0, b_cross_mat)
 			hosp.add_child(cross_h)
 
 			# Hospital entrance porch canopy & columns
 			var canopy = MeshInstance3D.new()
 			var canopy_mesh = BoxMesh.new()
-			canopy_mesh.size = Vector3(3.2, 0.25, 2.0)
+			canopy_mesh.size = Vector3(4.8, 0.35, 2.8)
 			canopy.mesh = canopy_mesh
-			canopy.position = Vector3(0.0, 2.8, front_z + 0.9)
+			canopy.position = Vector3(0.0, 3.8, front_z + 1.3)
 			canopy.set_surface_override_material(0, hospital_roof_mat)
 			hosp.add_child(canopy)
 
-			for pillar_x in [-1.4, 1.4]:
+			for pillar_x in [-2.1, 2.1]:
 				var pillar = MeshInstance3D.new()
 				var pillar_mesh = BoxMesh.new()
-				pillar_mesh.size = Vector3(0.2, 2.8, 0.2)
+				pillar_mesh.size = Vector3(0.3, 3.8, 0.3)
 				pillar.mesh = pillar_mesh
-				pillar.position = Vector3(pillar_x, 1.4, front_z + 1.8)
+				pillar.position = Vector3(pillar_x, 1.9, front_z + 2.5)
 				pillar.set_surface_override_material(0, frame_mat)
 				hosp.add_child(pillar)
 
@@ -305,35 +305,35 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 			for wx in [-win_offset_x, win_offset_x]:
 				var win = MeshInstance3D.new()
 				var win_mesh = BoxMesh.new()
-				win_mesh.size = Vector3(1.6, 1.3, 0.1)
+				win_mesh.size = Vector3(2.2, 1.8, 0.12)
 				win.mesh = win_mesh
-				win.position = Vector3(wx, 2.2, front_z)
+				win.position = Vector3(wx, 3.2, front_z)
 				win.set_surface_override_material(0, window_glass_mat)
 				hosp.add_child(win)
 
 				var win_frame = MeshInstance3D.new()
 				var win_fmesh = BoxMesh.new()
-				win_fmesh.size = Vector3(1.72, 1.42, 0.06)
+				win_fmesh.size = Vector3(2.35, 1.95, 0.08)
 				win_frame.mesh = win_fmesh
-				win_frame.position = Vector3(wx, 2.2, front_z - 0.02)
+				win_frame.position = Vector3(wx, 3.2, front_z - 0.02)
 				win_frame.set_surface_override_material(0, frame_mat)
 				hosp.add_child(win_frame)
 
 			var sign = Label3D.new()
 			sign.text = "မင်းတုန်းမြို့နယ် ပြည်သူ့ဆေးရုံ"
-			sign.font_size = 22
-			sign.outline_size = 6
+			sign.font_size = 36
+			sign.outline_size = 10
 			sign.modulate = Color(0.15, 0.45, 0.85, 1.0)
-			sign.position = Vector3(0.0, 3.8, front_z + 0.05)
+			sign.position = Vector3(0.0, 5.6, front_z + 0.05)
 			hosp.add_child(sign)
 
 			# Attach automated day/night lantern controller and porch lantern
 			var porch_light = OmniLight3D.new()
 			porch_light.name = "HospitalPorchLight"
 			porch_light.light_color = Color(1.0, 0.92, 0.82, 1.0)
-			porch_light.light_energy = 1.8 if hosp_idx == 1 else 1.2
-			porch_light.omni_range = 10.0 if hosp_idx == 1 else 7.0
-			porch_light.position = Vector3(0.0, 3.2, front_z + 0.5)
+			porch_light.light_energy = 2.6 if hosp_idx == 1 else 1.8
+			porch_light.omni_range = 24.0 if hosp_idx == 1 else 16.0
+			porch_light.position = Vector3(0.0, 4.2, front_z + 0.8)
 			hosp.add_child(porch_light)
 
 			var hosp_lantern = preload("res://scripts/village_lantern_controller.gd").new()

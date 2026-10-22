@@ -1995,3 +1995,13 @@ Your turn to review and beat this. 🤝
    - Upgraded highway stone curbs to **0.40m thickness x 0.18m height** (`curb_box.size = Vector3(0.4, 0.18, dist)`) and widened center dashed yellow lane markings to **0.28m width x 3.8m segment length** for crisp visibility at high speeds.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 176: Mindon Township General Hospital Compound (6.2m Two-Story Complex) Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Mindon Township General Hospital Scaling (`scripts/mindon_map_builder.gd`):**
+   - Scaled hospital compound buildings from 4.0m to **6.2m two-story civic medical structure** (`col_box = 6.8m height, body = 6.2m, roof = 6.6m elevation`).
+   - Scaled Red Cross emergency facade insignia to **1.8m vertical x 1.5m horizontal cross** (`cv_mesh = Vector3(0.45, 1.8, 0.1)`), enlarged hospital entrance porch canopy to **4.8m width x 2.8m projection** supported by 3.8m structural pillars (`Vector3(0.3, 3.8, 0.3)`).
+   - Scaled glazed medical ward windows to **2.2m width x 1.8m height**, upgraded hospital signboard to **36pt typography**, and boosted nocturnal porch floodlight to **24.0m illumination range** (`light_energy = 2.6`).
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
