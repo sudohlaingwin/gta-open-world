@@ -16,6 +16,7 @@ const PADDY_SCENE = preload("res://scenes/myanmar_paddy_field.tscn")
 const PAGODA_SCENE = preload("res://scenes/myanmar_pagoda.tscn")
 const PIER_SCENE = preload("res://scenes/river_boat_pier.tscn")
 const BOAT_SCENE = preload("res://scenes/ayeyarwady_rowboat.tscn")
+const BRIDGE_SCENE = preload("res://scenes/bamboo_bridge.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -469,4 +470,11 @@ func _generate_ward3_amenities() -> void:
 	amenities_holder.add_child(boat)
 	boat.global_position = Vector3(18.5, -0.2, 38.0)
 	boat.rotation.y = deg_to_rad(65.0)
+
+	# Mindon Stream Bamboo Footbridge (မင်းတုန်းချောင်း ဝါးတံတား) connecting village to farmlands
+	var bridge = BRIDGE_SCENE.instantiate()
+	bridge.name = "MindonBambooBridge"
+	amenities_holder.add_child(bridge)
+	bridge.global_position = Vector3(2.0, 0.1, 28.0)
+	bridge.rotation.y = deg_to_rad(20.0)
 
