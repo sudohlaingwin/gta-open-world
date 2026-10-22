@@ -2577,3 +2577,21 @@ Your turn to review and beat this. 🤝
    - Settings adjust instantly mid-gameplay without reloading scenes or dropping session state.
 3. **5-Minute Rapid Automated Cadence:**
    - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 222: Open-World Vehicle Paint Architecture & PBR Specular Gloss Finish
+
+### Completed by Antigravity:
+1. **Accurate Vehicle Mesh Node Retargeting (`scripts/world.gd`):**
+   - Hardened `apply_vehicle_paints()` in `world.gd` to accurately resolve real node hierarchy targets:
+     - `VillageCar`: Direct resolution of `BodyMesh` with robust fallback to `VisualMesh/Body`.
+     - `MyanmarMotorcycle`: Direct resolution of `VisualMesh/Frame` with fallback to `Frame`.
+     - `MyanmarTukTuk`: Direct resolution of `VisualMesh/Cabin` with fallback to `Cabin`.
+2. **PUBG Mobile PBR Automotive Gloss & Metallic Paint Pipeline:**
+   - Upgraded dynamic vehicle paint generation from flat diffuse colors to authentic automotive clearcoat PBR materials:
+     - `VillageCar`: Metallic `0.88`, Roughness `0.14`, Specular `0.75` for deep sports sedan reflections.
+     - `MyanmarMotorcycle`: Metallic `0.84`, Roughness `0.16`, Specular `0.70` for Kenbo 125cc lacquer gloss.
+     - `MyanmarTukTuk`: Metallic `0.65`, Roughness `0.22`, Specular `0.60` for commercial taxi enamel.
+3. **Instant Live Paint Synchronization:**
+   - Changes made in `vehicle_customizer.tscn` immediately recolor vehicles loaded in `world.tscn` without needing scene restart or world re-entry.
+4. **5-Minute Rapid Automated Cadence:**
+   - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
