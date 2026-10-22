@@ -5,7 +5,7 @@ config_version=5
 config/name="Myanmar GTA Open World"
 config/description="Myanmar-style GTA open world — Slice 1: village block, walk + car"
 config/icon="res://icon.png"
-run/main_scene="res://main.tscn"
+run/main_scene="res://scenes/ui/main_menu.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [display]
@@ -19,3 +19,7 @@ renderer/rendering_method="gl_compatibility"
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
+
+[autoload]
+
+SaveManager="*res://autoload/save_manager.gd"

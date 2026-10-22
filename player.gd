@@ -215,10 +215,38 @@ var sleep_button_connected: bool = false
 var guestbook_button: Button = null
 var guestbook_button_connected: bool = false
 
+# Slice 21: main menu + pause + save foundation. SaveManager is an
+# autoload; every access goes through _sm() so a missing manager
+# degrades to no-save instead of a crash. Talked villagers are saved
+# by node name (instance ids change every run); growth scales and the
+# talked-name mapping apply on the first physics frame, when every
+# scene node is in the tree (player _ready runs before later siblings
+# like the villagers enter).
+var pause_button: Button = null
+var pause_button_connected: bool = false
+var pause_panel: Panel = null
+var resume_button: Button = null
+var resume_button_connected: bool = false
+var save_button21: Button = null
+var save_button21_connected: bool = false
+var pause_settings_button: Button = null
+var pause_settings_button_connected: bool = false
+var quit_button: Button = null
+var quit_button_connected: bool = false
+var save_status_label: Label = null
+var pause_settings_panel: Node = null
+var pending_talked_names: Array = []
+var pending_growth_applied: bool = false
+var last_saved_stage: int = -1
+
 func _ready() -> void:
-	pass
+	_apply_pending_load()
+	last_saved_stage = quest_stage
 
 func _physics_process(delta: float) -> void:
+	_apply_deferred_load()
+	_update_pause_ui()
+	_autosave_on_stage_change()
 	_update_clock_label()
 	_update_day_label()
 	_update_minimap()
@@ -1549,11 +1577,17 @@ func _on_buy_snack() -> void:
 ## show only while driving the matching vehicle, the rest only on
 ## foot near their spot. No keyboard path exists for any of them.
 func _play_tone(freq: float, dur: float) -> void:
-	if not sound_on:
+	var sm_tone = _sm()
+	if sm_tone != null:
+		if bool(sm_tone.get("muted")):
+			return
+	elif not sound_on:
 		return
 	if chime_player == null:
 		chime_player = AudioStreamPlayer.new()
 		add_child(chime_player)
+	if sm_tone != null:
+		chime_player.volume_db = float(sm_tone.call("volume_db"))
 	var wav := AudioStreamWAV.new()
 	wav.format = AudioStreamWAV.FORMAT_16_BITS
 	wav.mix_rate = 22050
@@ -1760,6 +1794,9 @@ func _update_slice18_buttons() -> void:
 	if feed18_button != null and not feed18_button_connected:
 		feed18_button_connected = true
 	if mute_button != null:
+		var sm_mute = _sm()
+		if sm_mute != null:
+			sound_on = not bool(sm_mute.get("muted"))
 		mute_button.visible = true
 		mute_button.text = "အသံပိတ်" if sound_on else "အသံဖွင့်"
 	if driving:
@@ -1825,6 +1862,261 @@ func _on_rest() -> void:
 
 func _on_mute() -> void:
 	sound_on = not sound_on
+	var sm = _sm()
+	if sm != null:
+		sm.set("muted", not sound_on)
+		sm.call("save_settings")
+
+
+func _sm():
+	return get_node_or_null("/root/SaveManager")
+
+
+func _apply_pending_load() -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	var data = sm.get("pending_load")
+	if not (data is Dictionary) or data.is_empty():
+		return
+	sm.set("pending_load", {})
+	var p = data.get("player", {})
+	if p is Dictionary and p.has("pos"):
+		var pos = p.get("pos")
+		if pos is Array and pos.size() == 3:
+			global_position = Vector3(float(pos[0]), float(pos[1]), float(pos[2]))
+	if p is Dictionary and p.has("rot_y"):
+		rotation.y = float(p.get("rot_y"))
+	quest_stage = int(data.get("quest_stage", 0))
+	if data.has("stamina"):
+		stamina = clampf(float(data.get("stamina")), 0.0, 100.0)
+	var rewards = data.get("rewards", {})
+	if rewards is Dictionary:
+		quest_rewarded = bool(rewards.get("r1", false))
+		quest_rewarded2 = bool(rewards.get("r2", false))
+		quest_rewarded3 = bool(rewards.get("r3", false))
+		quest_rewarded4 = bool(rewards.get("r4", false))
+		quest_rewarded5 = bool(rewards.get("r5", false))
+		quest_rewarded6 = bool(rewards.get("r6", false))
+		quest_rewarded7 = bool(rewards.get("r7", false))
+		quest_rewarded8 = bool(rewards.get("r8", false))
+		quest_rewarded9 = bool(rewards.get("r9", false))
+		quest_rewarded10 = bool(rewards.get("r10", false))
+	var counters = data.get("counters", {})
+	if counters is Dictionary:
+		fruit_count = int(counters.get("fruit", 0))
+		water_count = int(counters.get("water", 0))
+		banana_count = int(counters.get("banana", 0))
+		snack_count = int(counters.get("snack", 0))
+		lantern_count = int(counters.get("lantern", 0))
+		fish_count = int(counters.get("fish", 0))
+		donation_count = int(counters.get("donation", 0))
+		milk_count = int(counters.get("milk", 0))
+		egg_count = int(counters.get("egg", 0))
+		goal_count = int(counters.get("goal", 0))
+		photo_count = int(counters.get("photo", 0))
+		tea_count = int(counters.get("tea", 0))
+		book_count = int(counters.get("book", 0))
+		flower_count = int(counters.get("flower", 0))
+		rice_count = int(counters.get("rice", 0))
+		gold_count = int(counters.get("gold", 0))
+		lesson_count = int(counters.get("lesson", 0))
+		horse_feed = int(counters.get("horse_feed", 0))
+		elephant_feed = int(counters.get("elephant_feed", 0))
+		noodle_count = int(counters.get("noodle", 0))
+		drink_count = int(counters.get("drink", 0))
+		guestbook_count = int(counters.get("guestbook", 0))
+	var growth = data.get("growth", {})
+	if growth is Dictionary:
+		crop_growth = int(growth.get("crop", 0))
+		rice_growth = int(growth.get("rice", 0))
+	if data.has("talked_names"):
+		var names = data.get("talked_names")
+		if names is Array:
+			pending_talked_names = names.duplicate()
+	_apply_reward_stats()
+	last_chime_stage = quest_stage
+	_update_quest_label()
+	_update_fruit_water_label()
+
+
+func _apply_reward_stats() -> void:
+	walk_speed = 5.0
+	sprint_multiplier = 1.6
+	jump_velocity = 5.0
+	if quest_rewarded2:
+		walk_speed *= 1.1
+	if quest_rewarded3:
+		walk_speed *= 1.05
+	if quest_rewarded4:
+		walk_speed *= 1.05
+	if quest_rewarded5:
+		sprint_multiplier *= 1.1
+	if quest_rewarded6:
+		walk_speed *= 1.05
+		jump_velocity *= 1.1
+	if quest_rewarded7:
+		walk_speed *= 1.05
+		jump_velocity *= 1.1
+	if quest_rewarded8:
+		walk_speed *= 1.05
+	if quest_rewarded9:
+		walk_speed *= 1.05
+	if quest_rewarded10:
+		walk_speed *= 1.05
+		jump_velocity *= 1.10
+
+
+func _apply_deferred_load() -> void:
+	if pending_growth_applied:
+		return
+	pending_growth_applied = true
+	if crop_growth > 0:
+		var s = 1.0 + 0.3 * float(crop_growth)
+		for i in range(6):
+			var pl = get_node_or_null("../SesameField15/SesamePlant15_%d" % i) as Node3D
+			if pl != null:
+				pl.scale = Vector3(s, s, s)
+	if rice_growth > 0:
+		var s2 = 1.0 + 0.3 * float(rice_growth)
+		for i in range(6):
+			var sd = get_node_or_null("../Paddy18/RiceSeedling18_%d" % i) as Node3D
+			if sd != null:
+				sd.scale = Vector3(s2, s2, s2)
+	if not pending_talked_names.is_empty():
+		var villagers = get_tree().get_nodes_in_group("villagers")
+		for v in villagers:
+			if pending_talked_names.has(v.name):
+				var vid = v.get_instance_id()
+				if not talked_ids.has(vid):
+					talked_ids.append(vid)
+		pending_talked_names.clear()
+	_update_quest_label()
+
+
+func _autosave_on_stage_change() -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	if quest_stage == last_saved_stage:
+		return
+	last_saved_stage = quest_stage
+	sm.call("save_game", collect_save_data())
+
+
+func collect_save_data() -> Dictionary:
+	var sm = _sm()
+	var muted_now = not sound_on
+	var volume_now = 1.0
+	if sm != null:
+		muted_now = bool(sm.get("muted"))
+		volume_now = float(sm.get("volume"))
+	var talked_names: Array = []
+	for v in get_tree().get_nodes_in_group("villagers"):
+		if talked_ids.has(v.get_instance_id()):
+			talked_names.append(v.name)
+	return {
+		"player": {"pos": [global_position.x, global_position.y, global_position.z], "rot_y": rotation.y},
+		"quest_stage": quest_stage,
+		"talked_names": talked_names,
+		"stamina": stamina,
+		"rewards": {"r1": quest_rewarded, "r2": quest_rewarded2, "r3": quest_rewarded3, "r4": quest_rewarded4, "r5": quest_rewarded5, "r6": quest_rewarded6, "r7": quest_rewarded7, "r8": quest_rewarded8, "r9": quest_rewarded9, "r10": quest_rewarded10},
+		"counters": {"fruit": fruit_count, "water": water_count, "banana": banana_count, "snack": snack_count, "lantern": lantern_count, "fish": fish_count, "donation": donation_count, "milk": milk_count, "egg": egg_count, "goal": goal_count, "photo": photo_count, "tea": tea_count, "book": book_count, "flower": flower_count, "rice": rice_count, "gold": gold_count, "lesson": lesson_count, "horse_feed": horse_feed, "elephant_feed": elephant_feed, "noodle": noodle_count, "drink": drink_count, "guestbook": guestbook_count},
+		"growth": {"crop": crop_growth, "rice": rice_growth},
+		"settings": {"muted": muted_now, "volume": volume_now},
+	}
+
+
+func _update_pause_ui() -> void:
+	if pause_button == null:
+		pause_button = get_node_or_null("../JoystickLayer/PauseButton21") as Button
+		if pause_button != null and not pause_button_connected:
+			pause_button.pressed.connect(_on_pause_pressed)
+			pause_button_connected = true
+	if pause_button != null and not get_tree().paused:
+		pause_button.visible = true
+	if pause_panel == null:
+		pause_panel = get_node_or_null("../JoystickLayer/PausePanel21") as Panel
+	if resume_button == null:
+		resume_button = get_node_or_null("../JoystickLayer/PausePanel21/ResumeButton21") as Button
+		if resume_button != null and not resume_button_connected:
+			resume_button.pressed.connect(_on_resume_pressed)
+			resume_button_connected = true
+	if save_button21 == null:
+		save_button21 = get_node_or_null("../JoystickLayer/PausePanel21/SaveButton21") as Button
+		if save_button21 != null and not save_button21_connected:
+			save_button21.pressed.connect(_on_pause_save_pressed)
+			save_button21_connected = true
+	if pause_settings_button == null:
+		pause_settings_button = get_node_or_null("../JoystickLayer/PausePanel21/PauseSettingsButton21") as Button
+		if pause_settings_button != null and not pause_settings_button_connected:
+			pause_settings_button.pressed.connect(_on_pause_settings_pressed)
+			pause_settings_button_connected = true
+	if quit_button == null:
+		quit_button = get_node_or_null("../JoystickLayer/PausePanel21/QuitButton21") as Button
+		if quit_button != null and not quit_button_connected:
+			quit_button.pressed.connect(_on_quit_to_menu_pressed)
+			quit_button_connected = true
+	if save_status_label == null:
+		save_status_label = get_node_or_null("../JoystickLayer/PausePanel21/SaveStatusLabel21") as Label
+	if pause_settings_panel == null:
+		pause_settings_panel = get_node_or_null("../JoystickLayer/PausePanel21/SettingsPanel") as Node
+
+
+func _on_pause_pressed() -> void:
+	if pause_panel == null:
+		pause_panel = get_node_or_null("../JoystickLayer/PausePanel21") as Panel
+	if pause_panel == null:
+		return
+	if save_status_label == null:
+		save_status_label = get_node_or_null("../JoystickLayer/PausePanel21/SaveStatusLabel21") as Label
+	if save_status_label != null:
+		save_status_label.text = ""
+	if pause_settings_panel != null:
+		pause_settings_panel.visible = false
+	pause_panel.visible = true
+	if pause_button != null:
+		pause_button.visible = false
+	get_tree().paused = true
+
+
+func _on_resume_pressed() -> void:
+	get_tree().paused = false
+	if pause_panel != null:
+		pause_panel.visible = false
+	if pause_button != null:
+		pause_button.visible = true
+
+
+func _on_pause_save_pressed() -> void:
+	var sm = _sm()
+	var ok = false
+	if sm != null:
+		ok = bool(sm.call("save_game", collect_save_data()))
+	if save_status_label == null:
+		save_status_label = get_node_or_null("../JoystickLayer/PausePanel21/SaveStatusLabel21") as Label
+	if save_status_label != null:
+		save_status_label.text = "သိမ်းဆည်းပြီးပါပြီ ✓" if ok else "သိမ်းဆည်း၍ မရပါ"
+
+
+func _on_pause_settings_pressed() -> void:
+	if pause_settings_panel == null:
+		pause_settings_panel = get_node_or_null("../JoystickLayer/PausePanel21/SettingsPanel") as Node
+	if pause_settings_panel == null:
+		return
+	pause_settings_panel.visible = true
+	if pause_settings_panel.has_method("refresh"):
+		pause_settings_panel.call("refresh")
+
+
+func _on_quit_to_menu_pressed() -> void:
+	var sm = _sm()
+	if sm != null:
+		sm.call("save_game", collect_save_data())
+	get_tree().paused = false
+	if pause_panel != null:
+		pause_panel.visible = false
+	get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")
 
 func _on_trumpet() -> void:
 	_play_tone(392.0, 0.5)
