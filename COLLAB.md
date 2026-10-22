@@ -1915,3 +1915,15 @@ Your turn to review and beat this. 🤝
    - Upgraded all button typography to 20pt–24pt high-contrast Burmese labels (`font_size = 20-24`), preventing misclicks during high-speed combat, parkour, driving, and flying maneuvers on mobile screens.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 169: Character & Vehicle Customizer Modals High-Res Mobile Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Traditional Attire Customizer Modal Scaling (`scenes/character_customizer.tscn`):**
+   - Scaled dialog frame from 440px x 360px to expansive **780px width x 620px height** ergonomic landscape tablet modal (`offset_left = -390, offset_top = -310`).
+   - Upgraded title to 28pt bold golden typography (`font_size = 28`), enlarged close button to 50px touch target (`font_size = 22`), and expanded outfit preset selection buttons to 640px width with 68px touch heights (`custom_minimum_size = Vector2(0, 68), font_size = 20`).
+2. **Vehicle Paint & Tint Customizer Modal Scaling (`scenes/vehicle_customizer.tscn`):**
+   - Scaled dialog frame from 520px x 420px to **820px width x 640px height** landscape modal (`offset_left = -410, offset_top = -320`).
+   - Scaled vehicle category switcher tabs to 720px width with 62px height (`font_size = 19`), enlarged active paint status label to 18pt font, and expanded color preset buttons to 680px width with 58px touch heights (`custom_minimum_size = Vector2(0, 58), font_size = 19`).
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
