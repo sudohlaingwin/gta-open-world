@@ -23,12 +23,16 @@ size = Vector3(3.6, 0.12, 0.85)
 size = Vector3(2.4, 0.18, 0.08)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_plane"]
-albedo_color = Color(0.95, 0.95, 0.95, 1)
-roughness = 0.4
-metallic = 0.2
+albedo_color = Color(0.96, 0.96, 0.98, 1)
+metallic = 0.84
+roughness = 0.16
+specular = 0.62
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_prop_black"]
-albedo_color = Color(0.15, 0.15, 0.15, 1)
+albedo_color = Color(0.14, 0.14, 0.14, 1)
+metallic = 0.65
+roughness = 0.32
+specular = 0.45
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_interact"]
 radius = 5.5

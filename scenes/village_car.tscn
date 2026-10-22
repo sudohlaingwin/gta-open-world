@@ -9,16 +9,19 @@ size = Vector3(2.35, 1.75, 4.95)
 size = Vector3(2.3, 0.98, 4.9)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_car_paint"]
-albedo_color = Color(0.12, 0.45, 0.78, 1)
-metallic = 0.65
-roughness = 0.25
+albedo_color = Color(0.10, 0.45, 0.82, 1)
+metallic = 0.86
+roughness = 0.16
+specular = 0.65
 
 [sub_resource type="BoxMesh" id="BoxMesh_cabin"]
 size = Vector3(1.95, 0.88, 2.7)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cabin_glass"]
-albedo_color = Color(0.1, 0.15, 0.2, 0.8)
-roughness = 0.1
+albedo_color = Color(0.08, 0.14, 0.22, 0.85)
+roughness = 0.05
+metallic = 0.2
+specular = 0.8
 
 [sub_resource type="BoxMesh" id="BoxMesh_headlight"]
 size = Vector3(0.38, 0.24, 0.14)

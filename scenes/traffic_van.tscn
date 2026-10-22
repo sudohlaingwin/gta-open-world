@@ -6,15 +6,19 @@
 size = Vector3(2.35, 1.45, 5.6)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_van_white"]
-albedo_color = Color(0.92, 0.92, 0.94, 1)
-roughness = 0.3
+albedo_color = Color(0.94, 0.94, 0.96, 1)
+metallic = 0.78
+roughness = 0.20
+specular = 0.60
 
 [sub_resource type="BoxMesh" id="BoxMesh_cabin"]
 size = Vector3(2.2, 1.25, 3.8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glass"]
-albedo_color = Color(0.12, 0.15, 0.22, 0.8)
-roughness = 0.1
+albedo_color = Color(0.10, 0.14, 0.20, 0.85)
+roughness = 0.05
+metallic = 0.2
+specular = 0.8
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
 top_radius = 0.48
@@ -22,7 +26,9 @@ bottom_radius = 0.48
 height = 0.3
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tire"]
-albedo_color = Color(0.12, 0.12, 0.12, 1)
+albedo_color = Color(0.14, 0.14, 0.14, 1)
+roughness = 0.88
+specular = 0.15
 
 [sub_resource type="SphereMesh" id="SphereMesh_headlight"]
 radius = 0.19

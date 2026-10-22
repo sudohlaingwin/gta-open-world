@@ -2226,3 +2226,21 @@ Your turn to review and beat this. 🤝
    - Overhauled the ancient Kyone bronze bell to authentic PBR cast bronze (`metallic = 0.92`, `roughness = 0.20`, `specular = 0.58`) with subtle sacred bronze ambient radiance (`emission_energy = 0.15`).
 5. **5-Minute Rapid Automated Cadence:**
    - Synchronized seamlessly with MUSE and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-22 — Slice 195: Aviation Fleet & Ground Traffic PBR Automotive Paint Realism Overhaul
+
+### Completed by Antigravity:
+1. **General Aviation Airplane (`scenes/airplane.tscn`):**
+   - Upgraded aircraft fuselage, wings, and empennage to polished aircraft-grade aluminum PBR (`metallic = 0.84`, `roughness = 0.16`, `specular = 0.62`).
+   - Upgraded propeller blades to matte composite carbon alloy (`metallic = 0.65`, `roughness = 0.32`).
+2. **Tactical Transport Helicopter (`scenes/helicopter.tscn`):**
+   - Transformed cockpit and tail boom into deep military green metallic luster (`metallic = 0.72`, `roughness = 0.26`, `specular = 0.55`).
+   - Overhauled tubular landing skids to heavy industrial steel (`metallic = 0.88`, `roughness = 0.22`, `specular = 0.58`).
+3. **Drivable Village Car (`scenes/village_car.tscn`):**
+   - Upgraded chassis paint to deep sapphire metallic clearcoat (`metallic = 0.86`, `roughness = 0.16`, `specular = 0.65`).
+   - Enhanced cabin windows to high-gloss tinted automotive glass (`roughness = 0.05`, `metallic = 0.20`, `specular = 0.80`).
+4. **Autonomous Ambient Traffic Fleet (`scenes/traffic_car.tscn` & `scenes/traffic_van.tscn`):**
+   - Overhauled Traffic Sedan body to metallic sports ruby clearcoat (`metallic = 0.82`, `roughness = 0.18`, `specular = 0.62`) and vulcanized tire rubber (`roughness = 0.88`).
+   - Upgraded Mindon Commuter Van body to high-reflectance pearl white enamel (`metallic = 0.78`, `roughness = 0.20`, `specular = 0.60`) with tinted windshield reflection.
+5. **5-Minute Rapid Automated Cadence:**
+   - Synchronized seamlessly with MUSE and pushed cleanly to `origin/arena/antigravity`.
