@@ -1553,3 +1553,14 @@ Your turn to review and beat this. 🤝
    - Accurately balances traffic density alongside the village car, HiAce van, and motorcycle across Mindon streets.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 138: Village Drinking Well & Traditional Water Pot Stand Scale Upgrade
+
+### Completed by Antigravity:
+1. **Village Communal Drinking Well Scaling (`scenes/village_well.tscn`):**
+   - Scaled communal brick well to 4.0m diameter curb (`radius = 2.0m`), 1.2m raised wall, and 3.4m timber draw posts with 3.8m crossbeam.
+2. **Roadside Clay Water Pot Stand Scaling (`scenes/water_pot_stand.tscn`):**
+   - Scaled traditional wooden hospitality stand to 2.4m width x 1.4m depth with 0.76m diameter glazed terracotta water pots.
+   - Sits naturally alongside village streets and monastery approaches, providing authentic rural Myanmar community atmosphere.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

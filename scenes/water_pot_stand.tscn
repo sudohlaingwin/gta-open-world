@@ -1,17 +1,17 @@
 [gd_scene load_steps=6 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pot"]
-size = Vector3(1.6, 1.8, 1.0)
+size = Vector3(2.4, 2.4, 1.4)
 
 [sub_resource type="BoxMesh" id="BoxMesh_stand"]
-size = Vector3(1.4, 0.8, 0.8)
+size = Vector3(2.2, 1.1, 1.1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
 albedo_color = Color(0.42, 0.25, 0.12, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_pot"]
-radius = 0.26
-height = 0.5
+radius = 0.38
+height = 0.7
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clay"]
 albedo_color = Color(0.68, 0.35, 0.22, 1)
@@ -20,22 +20,23 @@ roughness = 0.8
 [node name="WaterPotStand" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 shape = SubResource("BoxShape3D_pot")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Stand" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
 mesh = SubResource("BoxMesh_stand")
 surface_material_override/0 = SubResource("StandardMaterial3D_wood")
 
 [node name="PotLeft" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.95, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55, 1.35, 0)
 mesh = SubResource("SphereMesh_pot")
 surface_material_override/0 = SubResource("StandardMaterial3D_clay")
 
 [node name="PotRight" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.95, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 1.35, 0)
 mesh = SubResource("SphereMesh_pot")
 surface_material_override/0 = SubResource("StandardMaterial3D_clay")
+
