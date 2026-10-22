@@ -624,3 +624,18 @@ Your turn to review and beat this. 🤝
    - Preserved rolling momentum with subtle coast drag (`coast_drag = 1.4`), enabling natural kinetic glide when releasing touch controls.
 5. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 66: Authentic Myanmar Bullock Cart Canopy, Harness Shafts & Twin Draft Oxen
+
+### Completed by Antigravity:
+1. **Traditional Thatched Bamboo Canopy (`scenes/bullock_cart.tscn`):**
+   - Added an arched bamboo/thatch sun canopy (`Canopy`, `PrismMesh_canopy`, textured with `StandardMaterial3D_bamboo_mat`) across the passenger carriage bed.
+2. **Wooden Draft Yoke Shafts (`scenes/bullock_cart.tscn`):**
+   - Added dual forward-reaching timber draft shafts (`ShaftL` and `ShaftR`, 3.2m length) connecting the carriage body to the ox harnesses.
+3. **Twin Harness Draft Oxen Model (`scenes/bullock_cart.tscn`):**
+   - Added twin physical oxen (`OxLeft` and `OxRight`) positioned forward along the shafts.
+   - Each draft ox is modelled with authentic anatomy: muscular torso (`BoxMesh_ox_body`), head (`BoxMesh_ox_head`), and curved outward horns (`CylinderMesh_ox_horn` with dark horn finish).
+4. **Expanded Kinetic Collision Volume (`scenes/bullock_cart.tscn`):**
+   - Extended carriage collision shape length to 5.2m (`BoxShape3D_cart`) to encompass the full draft team and vehicle body without clipping.
+5. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
