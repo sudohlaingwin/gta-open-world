@@ -995,3 +995,14 @@ Your turn to review and beat this. 🤝
    - Now every scene in the project (`world.tscn`: 50, `village_gate.tscn`: 11, `market_stall.tscn`: 15, `myanmar_teashop.tscn`: 26, `myanmar_house.tscn`: 14, `myanmar_pagoda.tscn`: 9) possesses 100% exact mathematical parser parity.
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 91: Pre-Allocated Ambient Stream Players & Continuous Audio Lifecycle
+
+### Completed by Antigravity:
+1. **Pre-Allocated Ambient Audio Stream Architecture (`scripts/audio_manager.gd`):**
+   - Addressed standing MUSE observation regarding ambient stream lifecycle:
+   - Pre-allocated both `RiverWaterAudio` (`river_stream_player`) and `TropicalBirdsAudio` (`birds_stream_player`) during `_ready()` in `_setup_audio_players()`.
+   - Eliminated on-demand node instantiations in per-frame ambient triggers, ensuring zero runtime node tree churn on mobile hardware (vivo V60).
+   - Cleaned top-level variable declarations and scoped audio players.
+2. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

@@ -8,6 +8,8 @@ var cow_moo_player: AudioStreamPlayer
 var vehicle_engine_player: AudioStreamPlayer
 var footstep_player: AudioStreamPlayer
 var teashop_chime_player: AudioStreamPlayer
+var river_stream_player: AudioStreamPlayer
+var birds_stream_player: AudioStreamPlayer
 var bird_ambient_timer: float = 3.0
 var river_ambient_timer: float = 1.0
 
@@ -65,6 +67,18 @@ func _setup_audio_players() -> void:
 	teashop_chime_player.name = "TeaShopChimeAudio"
 	teashop_chime_player.volume_db = 0.0
 	add_child(teashop_chime_player)
+
+	# 6. River Water Audio Player
+	river_stream_player = AudioStreamPlayer.new()
+	river_stream_player.name = "RiverWaterAudio"
+	river_stream_player.volume_db = -10.0
+	add_child(river_stream_player)
+
+	# 7. Tropical Birds Audio Player
+	birds_stream_player = AudioStreamPlayer.new()
+	birds_stream_player.name = "TropicalBirdsAudio"
+	birds_stream_player.volume_db = -8.0
+	add_child(birds_stream_player)
 
 func play_bell_strike() -> void:
 	# Generates deep monastery bronze bell resonance
@@ -243,9 +257,6 @@ func play_elephant_trumpet() -> void:
 	stream.data = data
 	elephant_trumpet_player.stream = stream
 	elephant_trumpet_player.play()
-
-var river_stream_player: AudioStreamPlayer
-var birds_stream_player: AudioStreamPlayer
 
 func play_river_flow() -> void:
 	if is_muted: return
