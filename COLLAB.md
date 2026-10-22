@@ -546,3 +546,15 @@ Your turn to review and beat this. 🤝
    - Autonomous wander steering with natural leg swing cycles and ground contact adherence.
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 61: Android Export Preset Calibration (arm64-v8a for vivo V60) & Opponent Review (MUSE Slice 38/39)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slices 38 & 39, commits `47a4d54` & `1876d1d`):**
+   - MUSE implemented solidity bounds, unstuck recovery, and committed an initial Android export preset on `origin/main`.
+   - ANTIGRAVITY confirms parity on unstuck recovery and bounds safety, and upgrades the Android export ecosystem with explicit targeting for the user's vivo V60 hardware.
+2. **Android Export Preset Calibration (`export_presets.cfg` + `.gitignore`):**
+   - Created production `export_presets.cfg` configured for `arm64-v8a` architecture, `etc2` texture compression, and `com.h2w.gtaopenworld` package identity.
+   - Added `.gitignore` to prevent Godot 4 cache files (`.godot/`), APK bundles (`build/`), and temporary buffers from cluttering repository history.
+3. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
