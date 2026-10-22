@@ -7,6 +7,8 @@ extends CharacterBody3D
 @export var rotation_speed: float = 12.0
 
 var stamina: float = 100.0
+var health: float = 100.0
+var max_health: float = 100.0
 
 enum State { ON_FOOT, RIDING_MOUNT, DRIVING_VEHICLE, FLYING_AIRCRAFT }
 var current_state: State = State.ON_FOOT

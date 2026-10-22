@@ -143,7 +143,7 @@ func _process(delta: float) -> void:
 		else:
 			waypoint_guide.visible = false
 
-	# 3. Dynamic Stamina
+	# 3. Dynamic Stamina & Health
 	if stamina_bar:
 		if player.is_sprinting and player.current_state == player.State.ON_FOOT and player.velocity.length() > 0.5:
 			player.stamina = max(0.0, player.stamina - 24.0 * delta)
@@ -152,6 +152,10 @@ func _process(delta: float) -> void:
 		else:
 			player.stamina = min(100.0, player.stamina + 16.0 * delta)
 		stamina_bar.value = player.stamina
+
+	var health_bar = $TopLeftHUD.get_node_or_null("HealthBar")
+	if health_bar and player.get("health") != null:
+		health_bar.value = player.health
 
 	# 4. Parachute Button Visibility
 	if chute_btn:
