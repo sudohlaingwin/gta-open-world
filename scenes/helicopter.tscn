@@ -82,3 +82,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -0.3)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
 shape = SubResource("SphereShape3D_interact")
+
+[node name="HeliSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 0)
+text = "မင်းတုန်း ကယ်ဆယ်ရေး ရဟတ်ယာဉ် 🚁"
+font_size = 40
+outline_size = 12
+modulate = Color(1.0, 0.90, 0.40, 1)

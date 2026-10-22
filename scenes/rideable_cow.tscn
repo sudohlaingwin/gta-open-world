@@ -106,3 +106,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
 shape = SubResource("SphereShape3D_interact")
+
+[node name="CowSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
+text = "စီးနင်းနိုင်သော နွားမကြီး 🐄"
+font_size = 38
+outline_size = 10
+modulate = Color(1.0, 0.90, 0.40, 1)

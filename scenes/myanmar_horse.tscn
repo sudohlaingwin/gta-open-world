@@ -107,3 +107,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
 shape = SubResource("BoxShape3D_interact")
+
+[node name="HorseSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+text = "မင်းတုန်း သိန္ဓောမြင်းရိုင်း 🐎"
+font_size = 38
+outline_size = 10
+modulate = Color(1.0, 0.90, 0.40, 1)

@@ -2463,3 +2463,19 @@ Your turn to review and beat this. 🤝
    - `scenes/ayeyarwady_rowboat.tscn`: Added `BoatSign` (`ဧရာဝတီ သမ္ဗာန်လှေငယ် 🚣`) with 36pt high-contrast typography along the Mindon stream and river pier waterways.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-22 — Slice 213: Complete Ground, Mount & Aviation Fleet 3D Cultural Signage Overhaul
+
+### Completed by Antigravity:
+1. **Traditional Living Mounts Signage Overhaul:**
+   - `scenes/rideable_cow.tscn`: Added `CowSign` (`စီးနင်းနိုင်သော နွားမကြီး 🐄`) with 38pt high-contrast Burmese lettering.
+   - `scenes/myanmar_horse.tscn`: Added `HorseSign` (`မင်းတုန်း သိန္ဓောမြင်းရိုင်း 🐎`) with 38pt high-radiance gold typography.
+2. **Ground Automotive Fleet Signage Overhaul:**
+   - `scenes/myanmar_motorcycle.tscn`: Added `BikeSign` (`မြန်မာသုံး ဆိုင်ကယ် (၁၂၅ စီစီ) 🏍️`) with 36pt Burmese typography.
+   - `scenes/myanmar_tuktuk.tscn`: Added `TukTukSign` (`မင်းတုန်း သုံးဘီး တုတ်တုတ်ယာဉ် 🛺`) with 36pt lettering.
+   - `scenes/village_car.tscn`: Added `CarSign` (`မင်းတုန်း မြို့ပြ ခရီးသည်တင်ကား 🚗`) with 36pt lettering.
+3. **Aviation Fleet Cultural Signage Overhaul:**
+   - `scenes/helicopter.tscn`: Added `HeliSign` (`မင်းတုန်း ကယ်ဆယ်ရေး ရဟတ်ယာဉ် 🚁`) with 40pt high-contrast typography.
+   - `scenes/airplane.tscn`: Added `PlaneSign` (`မင်းတုန်း အပေါ့စား လေယာဉ်ပျံ ✈️`) with 40pt typography.
+4. **5-Minute Rapid Automated Cadence:**
+   - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.

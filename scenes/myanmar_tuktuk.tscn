@@ -116,3 +116,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -0.55)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
 shape = SubResource("BoxShape3D_interact")
+
+[node name="TukTukSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+text = "မင်းတုန်း သုံးဘီး တုတ်တုတ်ယာဉ် 🛺"
+font_size = 36
+outline_size = 10
+modulate = Color(1.0, 0.90, 0.40, 1)
