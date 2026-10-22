@@ -3,23 +3,23 @@
 [ext_resource type="Script" path="res://scripts/pedestrian_ai.gd" id="1_ped"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ped"]
-radius = 0.35
-height = 1.75
+radius = 0.4
+height = 1.82
 
 [sub_resource type="SphereMesh" id="SphereMesh_head"]
-radius = 0.18
-height = 0.36
+radius = 0.22
+height = 0.44
 
 [sub_resource type="BoxMesh" id="BoxMesh_torso"]
-size = Vector3(0.48, 0.55, 0.28)
+size = Vector3(0.55, 0.65, 0.32)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_taikpon"]
 albedo_color = Color(0.92, 0.90, 0.85, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_leg"]
-top_radius = 0.1
-bottom_radius = 0.1
-height = 0.85
+top_radius = 0.12
+bottom_radius = 0.12
+height = 0.95
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_longyi"]
 albedo_color = Color(0.15, 0.32, 0.55, 1)
@@ -28,32 +28,32 @@ albedo_color = Color(0.15, 0.32, 0.55, 1)
 script = ExtResource("1_ped")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.91, 0)
 shape = SubResource("CapsuleShape3D_ped")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Head" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58, 0)
 mesh = SubResource("SphereMesh_head")
 
 [node name="Torso" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, 0)
 mesh = SubResource("BoxMesh_torso")
 surface_material_override/0 = SubResource("StandardMaterial3D_taikpon")
 
 [node name="LegL" type="Node3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14, 0.85, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0.95, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VisualMesh/LegL"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.42, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.47, 0)
 mesh = SubResource("CylinderMesh_leg")
 surface_material_override/0 = SubResource("StandardMaterial3D_longyi")
 
 [node name="LegR" type="Node3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, 0.85, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16, 0.95, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VisualMesh/LegR"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.42, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.47, 0)
 mesh = SubResource("CylinderMesh_leg")
 surface_material_override/0 = SubResource("StandardMaterial3D_longyi")

@@ -3,59 +3,59 @@
 [ext_resource type="Script" path="res://scripts/myanmar_villager.gd" id="1_villager"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_npc"]
-radius = 0.4
-height = 1.8
+radius = 0.42
+height = 1.82
 
 [sub_resource type="SphereMesh" id="SphereMesh_head"]
-radius = 0.2
-height = 0.4
+radius = 0.22
+height = 0.44
 
 [sub_resource type="BoxMesh" id="BoxMesh_torso"]
-size = Vector3(0.5, 0.6, 0.3)
+size = Vector3(0.55, 0.65, 0.32)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_taikpon"]
 albedo_color = Color(0.96, 0.94, 0.90, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_longyi"]
-top_radius = 0.28
-bottom_radius = 0.30
-height = 0.9
+top_radius = 0.3
+bottom_radius = 0.32
+height = 0.95
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_longyi_maroon"]
 albedo_color = Color(0.55, 0.12, 0.15, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_talk"]
-radius = 3.0
+radius = 3.6
 
 [node name="MyanmarVillager" type="CharacterBody3D"]
 script = ExtResource("1_villager")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.91, 0)
 shape = SubResource("CapsuleShape3D_npc")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Head" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58, 0)
 mesh = SubResource("SphereMesh_head")
 
 [node name="Torso" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, 0)
 mesh = SubResource("BoxMesh_torso")
 surface_material_override/0 = SubResource("StandardMaterial3D_taikpon")
 
 [node name="Longyi" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48, 0)
 mesh = SubResource("CylinderMesh_longyi")
 surface_material_override/0 = SubResource("StandardMaterial3D_longyi_maroon")
 
 [node name="DialogueLabel" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
 billboard = 1
 text = "မင်္ဂလာပါ ခင်ဗျာ! ကျွန်တော်တို့ ရွာလေးကို ကြိုဆိုပါတယ်။"
-font_size = 28
-outline_size = 8
+font_size = 32
+outline_size = 10
 
 [node name="InteractionArea" type="Area3D" parent="."]
 

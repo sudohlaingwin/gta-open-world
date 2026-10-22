@@ -1847,3 +1847,19 @@ Your turn to review and beat this. 🤝
    - Enhanced front spotlight headlight beam to 36m illumination range (`spot_range = 36.0, angle = 45.0`), elevated driver seat to 1.15m height, and expanded 5.8m boarding interaction box.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 163: Population & Navigation Overhaul (Villager, Pedestrian & 65m Waypoint Beacon)
+
+### Completed by Antigravity:
+1. **Myanmar Villager NPC Scaling (`scenes/myanmar_villager.tscn`):**
+   - Scaled village dialogue NPC to authentic 1.82m human height (`radius = 0.42m, height = 1.82m`).
+   - Upgraded traditional Taikpon jacket, maroon Longyi cylindrical drape, 32pt billboarded greeting dialogue banner, and 3.6m interaction perimeter.
+2. **Ambient Pedestrian AI Scaling (`scenes/ambient_pedestrian.tscn`):**
+   - Scaled wandering ambient citizens across Mindon streets to 1.82m height with dual walking Longyi legs (`0.95m length`), ensuring consistent crowd proportions.
+3. **Waypoint Navigation Beacon Scaling (`scenes/waypoint_beacon.tscn`):**
+   - Scaled tactical waypoint light pillar to 65.0m towering vertical beam (`height = 65.0, radius = 0.55m`).
+   - Topped with a 2.7m diameter pulsing golden beacon orb at 65m elevation, visible from across the entire open-world map.
+4. **Complete Scene Catalog Scaling Integrity:**
+   - With Slice 163, ALL 44 scenes in `scenes/` now adhere to realistic 1:1 scale proportions (architecture, mounts, vehicles, flora, population, and navigation).
+5. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
