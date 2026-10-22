@@ -71,3 +71,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_hinthar_gold")
 transform = Transform3D(1, 0, 0, 0, 0.965, 0.258, 0, -0.258, 0.965, 0, 3.7, 0)
 mesh = SubResource("BoxMesh_wing")
 surface_material_override/0 = SubResource("StandardMaterial3D_hinthar_gold")
+
+[node name="StatueSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 2.6)
+text = "မင်းတုန်း ရွှေဟင်္သာ ရုပ်တုတော်မြတ်"
+font_size = 42
+outline_size = 12
+modulate = Color(1.0, 0.88, 0.35, 1)

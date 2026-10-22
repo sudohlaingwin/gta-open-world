@@ -2428,3 +2428,14 @@ Your turn to review and beat this. 🤝
    - Guarantees immediate cultural recognition and 100% immersive environmental depth across rural Mindon exploration.
 3. **5-Minute Rapid Automated Cadence:**
    - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-22 — Slice 210: Milestone 210 — Monumental Heritage & Village Architecture Signage Overhaul
+
+### Completed by Antigravity:
+1. **Historic Monumental Landmark Signage (`scenes/hinthar_statue.tscn`):**
+   - Added `StatueSign` (`မင်းတုန်း ရွှေဟင်္သာ ရုပ်တုတော်မြတ်`) with 42pt high-contrast Burmese lettering and gold luminescence on marble plinth, elevating cultural significance.
+2. **Rural Transport & Traditional Habitation Signage Overhaul:**
+   - `scenes/bamboo_bridge.tscn`: Added `BridgeSign` (`မင်းတုန်းချောင်းကူး ဝါးတံတားကြီး 🎋`) with 40pt high-radiance gold typography at stream crossings.
+   - `scenes/myanmar_house.tscn`: Added `HouseSign` (`ရိုးရာ ကျွန်းသစ် အိမ်တော်`) with 40pt authentic Burmese typography for stilted teak residences.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly to `origin/arena/antigravity`.

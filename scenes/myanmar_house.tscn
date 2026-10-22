@@ -114,3 +114,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 4.8, 2.4)
 light_color = Color(1.0, 0.88, 0.55, 1)
 light_energy = 2.8
 omni_range = 15.0
+
+[node name="HouseSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.6, 6.4)
+text = "ရိုးရာ ကျွန်းသစ် အိမ်တော်"
+font_size = 40
+outline_size = 12
+modulate = Color(1.0, 0.88, 0.35, 1)

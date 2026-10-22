@@ -75,3 +75,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.8, 14.5)
 mesh = SubResource("CylinderMesh_post")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="BridgeSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 17.5)
+text = "မင်းတုန်းချောင်းကူး ဝါးတံတားကြီး 🎋"
+font_size = 40
+outline_size = 12
+modulate = Color(1.0, 0.90, 0.40, 1)
