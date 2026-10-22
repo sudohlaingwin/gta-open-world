@@ -9,8 +9,8 @@ var deadzone: float = 0.15
 var output_vector: Vector2 = Vector2.ZERO
 
 @onready var base: Panel = $Base
-@onready var handle: Panel = $Base/Handle
-@onready var direction_indicator: Control = $Base/Indicator
+@onready var handle: Control = $Base/Handle
+@onready var direction_indicator: Control = $Base.get_node_or_null("Indicator")
 
 signal joystick_moved(vector: Vector2)
 signal joystick_released()
