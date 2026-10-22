@@ -1453,3 +1453,12 @@ Your turn to review and beat this. 🤝
    - Sits near the Shwe Bon Thar Pagoda stairway entrance, providing authentic architectural shelter scale matching the newly scaled 17.5m Pagoda and 15m Toddy Palms.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 128: Massive Graphics Pipeline Overhaul — Atmospheric Sky & High-Dynamic Horizon
+
+### Completed by Antigravity:
+1. **Procedural Atmospheric Sky & High-Dynamic Sun Lighting (`scenes/world.tscn`):**
+   - Implemented high-dynamic procedural sky with subtle Rayleigh atmospheric scattering curve (`sky_curve = 0.08`), Mie sun bloom (`sun_angle_max = 35.0`, `sun_curve = 0.15`), and soft ground horizon blend (`ground_curve = 0.06`).
+   - Pairs seamlessly with ACES Filmic tonemapping, Screen Space Ambient Occlusion (SSAO), and Volumetric Sun Shafts to deliver authentic console-tier open-world atmosphere across the entire infinite terrain.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

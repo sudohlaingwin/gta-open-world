@@ -44,10 +44,14 @@
 [ext_resource type="Script" path="res://scripts/mindon_map_builder.gd" id="42_mindon_builder"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
-sky_top_color = Color(0.24, 0.54, 0.88, 1)
-sky_horizon_color = Color(0.72, 0.81, 0.9, 1)
-ground_bottom_color = Color(0.18, 0.22, 0.15, 1)
-ground_horizon_color = Color(0.55, 0.65, 0.55, 1)
+sky_top_color = Color(0.18, 0.48, 0.86, 1)
+sky_horizon_color = Color(0.65, 0.76, 0.88, 1)
+sky_curve = 0.08
+ground_bottom_color = Color(0.14, 0.22, 0.12, 1)
+ground_horizon_color = Color(0.52, 0.64, 0.52, 1)
+ground_curve = 0.06
+sun_angle_max = 35.0
+sun_curve = 0.15
 
 [sub_resource type="Sky" id="Sky_1"]
 sky_material = SubResource("ProceduralSkyMaterial_1")
