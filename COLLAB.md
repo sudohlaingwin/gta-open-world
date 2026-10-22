@@ -1876,3 +1876,13 @@ Your turn to review and beat this. 🤝
    - Delivers crisp, breathtaking open-world visual fidelity optimized for the vivo V60 mobile GPU.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 165: Ergonomic Landscape Settings Panel Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Ergonomic Landscape Tablet Settings Panel Scaling (`scenes/settings_panel.tscn`):**
+   - Scaled UI dialog frame from 600px x 560px to expansive **760px width x 620px height** ergonomic landscape tablet modal (`offset_left = -380, offset_top = -310`).
+   - Expanded internal container width to 660px (`offset_left = -330, offset_right = 330`) allowing longer Burmese text labels to render without cramped line wrapping.
+   - Upgraded title header to 26pt bold golden typography (`font_size = 26`), close button to 40px touch square (`40x40px, font_size = 20`), and enhanced touch sliders.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
