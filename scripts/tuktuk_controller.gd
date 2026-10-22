@@ -1,16 +1,17 @@
 extends CharacterBody3D
 
-# --- Authentic Myanmar Three-Wheeler Thone-Bane-Gyi / Tuk-Tuk (သုံးဘီးဆိုင်ကယ်) ---
-
 @export var max_speed: float = 14.0
-@export var acceleration: float = 10.0
-@export var turn_speed: float = 2.4
+@export var acceleration: float = 12.0
+@export var brake_decel: float = 22.0
+@export var low_speed_turn: float = 2.8
+@export var high_speed_turn: float = 1.6
 
 var current_driver: Node3D = null
 var is_driven: bool = false
 var current_speed: float = 0.0
 
 @onready var driver_seat: Marker3D = $DriverSeat
+@onready var visual_mesh: Node3D = $VisualMesh
 @onready var interaction_area: Area3D = $InteractionArea
 @onready var front_wheel: Node3D = $VisualMesh/FrontWheel
 @onready var wheel_bl: Node3D = $VisualMesh/WheelBL
@@ -33,26 +34,37 @@ func _physics_process(delta: float) -> void:
 		if current_driver.get("touch_input_vector") != null and current_driver.touch_input_vector != Vector2.ZERO:
 			input_dir = current_driver.touch_input_vector
 
-		# Steer
-		rotate_y(-input_dir.x * turn_speed * delta)
+		var speed_ratio = clamp(abs(current_speed) / max_speed, 0.0, 1.0)
+		var turn_rate = lerp(low_speed_turn, high_speed_turn, speed_ratio)
 
-		# Forward / Reverse
-		var target_speed = -input_dir.y * max_speed
-		current_speed = move_toward(current_speed, target_speed, acceleration * delta)
+		# Steer
+		rotate_y(-input_dir.x * turn_rate * delta)
+
+		# Progressive Throttle, Active Brake & Coasting
+		if input_dir.y < -0.1: # Forward
+			var power = lerp(0.7, 1.0, 1.0 - speed_ratio * 0.4)
+			current_speed = move_toward(current_speed, max_speed, acceleration * power * delta)
+		elif input_dir.y > 0.1: # Brake / Reverse
+			if current_speed > 0.5:
+				current_speed = move_toward(current_speed, 0.0, brake_decel * delta)
+			else:
+				current_speed = move_toward(current_speed, -3.5, acceleration * 0.5 * delta)
+		else:
+			current_speed = move_toward(current_speed, 0.0, 2.5 * delta)
 
 		var forward = -global_transform.basis.z
 		velocity.x = forward.x * current_speed
 		velocity.z = forward.z * current_speed
 
-		# Wheel roll
+		# Triple Wheel Synchronous Rolling
 		var spin_rate = (current_speed / 0.35) * delta
 		if front_wheel: front_wheel.rotate_x(spin_rate)
 		if wheel_bl: wheel_bl.rotate_x(spin_rate)
 		if wheel_br: wheel_br.rotate_x(spin_rate)
 	else:
-		current_speed = move_toward(current_speed, 0.0, acceleration * 2.0 * delta)
-		velocity.x = move_toward(velocity.x, 0.0, acceleration * delta)
-		velocity.z = move_toward(velocity.z, 0.0, acceleration * delta)
+		current_speed = move_toward(current_speed, 0.0, 4.0 * delta)
+		velocity.x = move_toward(velocity.x, 0.0, 4.0 * delta)
+		velocity.z = move_toward(velocity.z, 0.0, 4.0 * delta)
 
 	move_and_slide()
 

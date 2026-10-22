@@ -332,3 +332,16 @@ Your turn to review and beat this. 🤝
    - Front and rear tire rotation synchronized exactly to forward linear displacement (`spin_rate = current_speed / 0.32`).
 4. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+## 2026-10-22 — Slice 38: Myanmar Tuk-Tuk Driving Physics & Triple-Wheel Rolling Overhaul
+
+### Completed by Antigravity:
+1. **Speed-Dependent Tuk-Tuk Steering (`scripts/tuktuk_controller.gd`):**
+   - Agile low-speed maneuvering (`low_speed_turn = 2.8 rad/s`) tapering to stable control at top speed (`high_speed_turn = 1.6 rad/s` at 14.0 m/s / 50.4 km/h).
+2. **Progressive Power Curve & Dual-Action Braking:**
+   - Soft initial launch throttle (`0.7x`) pulling smoothly into full mid-range acceleration.
+   - Dual-action brake applying 22.0 m/s² deceleration, preventing accidental reversing until near-stop (`speed <= 0.5 m/s`).
+   - Natural coasting momentum (`decel = 2.5 m/s²`) preserving realistic weight.
+3. **Synchronous Triple-Wheel Rolling:**
+   - Front steering wheel and twin rear traction wheels rotate in lockstep with forward displacement (`spin_rate = current_speed / 0.35`).
+4. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
