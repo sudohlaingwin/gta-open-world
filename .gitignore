@@ -1,3 +1,7 @@
 .import/
-export_presets.cfg
+# export_presets.cfg is committed DELIBERATELY (audit plan item 3):
+# it is the Android debug export config every APK build uses, and it
+# contains no secrets (debug-certificate signing only, no keystore or
+# key passwords anywhere in the file). Keep it in the repo so a fresh
+# clone can reproduce the Android export without local fixes.
 *.tmp
