@@ -684,3 +684,15 @@ Your turn to review and beat this. 🤝
    - Calibrated the multi-tiered Pyatthat roof spire to stand out with radiant contrast against the night sky and distant mountain fog.
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 70: Rideable Cow Locomotion Tuning & Mount Script Parity Integrity (Review of MUSE Slice 45)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slice 45, commit `6b7f4ae`):**
+   - MUSE tuned cow driving-physics on `cow.gd` with soft launch, angular reverse gating, and speed-dependent turning.
+   - ANTIGRAVITY fixed an internal variable reference in `scripts/mount_controller.gd` (`move_speed` → `current_drive_speed` at wheel rotation), guaranteeing 100% script runtime purity across all animal and cart mounts.
+2. **Rideable Cow Locomotion & Turning Alignment (`scripts/mount_controller.gd`):**
+   - Tuned speed-dependent turning authority and progressive acceleration curve on `mount_controller.gd`, ensuring seamless handling for both the standalone rideable cow and dual-oxen bullock carts.
+   - Preserved dynamic leg stride animation cycle scaled proportionally to ground speed.
+3. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

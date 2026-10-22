@@ -93,7 +93,7 @@ func _physics_process(delta: float) -> void:
 		# 1. Wheels rotation on ground speed (for bullock carts)
 		var actual_speed = Vector2(velocity.x, velocity.z).length()
 		for w in wheels:
-			w.rotate_object_local(Vector3(0, 1, 0), (actual_speed / 0.8) * delta * (1.0 if move_speed >= 0 else -1.0))
+			w.rotate_object_local(Vector3(0, 1, 0), (actual_speed / 0.8) * delta * (1.0 if current_drive_speed >= 0 else -1.0))
 		if wheels.size() > 0 and actual_speed > 0.5:
 			var am = get_node_or_null("/root/AudioManager")
 			if am and am.has_method("play_cart_wheel_creak"):
