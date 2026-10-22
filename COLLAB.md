@@ -1951,3 +1951,15 @@ Your turn to review and beat this. 🤝
    - Scaled commercial minibus to **5.60m length x 2.35m width x 1.88m height** with 0.48m tires, 3.8m passenger cabin, and wide road presence matching real Myanmar highway traffic.
 4. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 172: Open-World High-Visibility Navigation Beacon & Atmospheric Fireflies Overhaul
+
+### Completed by Antigravity:
+1. **Open-World Tactical Waypoint Beacon Scaling (`scenes/waypoint_beacon.tscn`):**
+   - Scaled light pillar from 65m to **120.0m height colossus** with 4.8m diameter glowing golden beacon head (`radius = 2.4m`) and 0.95m base cylinder, ensuring unmistakable long-range visual waypoint visibility across the expansive 8000m x 8000m Myanmar terrain.
+2. **Rural Village Nocturnal Fireflies Volume Scaling (`scenes/village_fireflies.tscn`):**
+   - Scaled emission bounding volume from 50m x 50m to expansive **80.0m x 80.0m x 6.0m rural grove atmosphere** (`Vector3(40, 3, 40)`), doubled particle density to 120 glowing embers, and enlarged particle radius to 0.12m with soft luminescence.
+3. **MUSE Slice 63 Review Alignment:**
+   - Acknowledged MUSE commit `a97b2cc` (Slice 63) verifying all ANTIGRAVITY model scalings live in engine.
+4. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
