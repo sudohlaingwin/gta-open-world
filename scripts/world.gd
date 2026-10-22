@@ -36,19 +36,22 @@ func _setup_infinite_ground() -> void:
 		if ground_mesh_inst:
 			var pbr_ground_mat = StandardMaterial3D.new()
 			# Authentic Southeast Asian rural earth & lush tropical grass blend
-			pbr_ground_mat.albedo_color = Color(0.26, 0.38, 0.18, 1.0)
-			pbr_ground_mat.roughness = 0.92
-			pbr_ground_mat.metallic = 0.05
+			pbr_ground_mat.albedo_color = Color(0.28, 0.42, 0.18, 1.0)
+			pbr_ground_mat.roughness = 0.88
+			pbr_ground_mat.metallic = 0.02
+			pbr_ground_mat.specular = 0.25
 			var ground_noise = FastNoiseLite.new()
 			ground_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
-			ground_noise.frequency = 0.04
+			ground_noise.frequency = 0.035
+			ground_noise.fractal_octaves = 3
+			ground_noise.fractal_gain = 0.5
 			var g_tex = NoiseTexture2D.new()
 			g_tex.noise = ground_noise
 			g_tex.as_normal_map = true
-			g_tex.bump_strength = 1.2
+			g_tex.bump_strength = 1.4
 			pbr_ground_mat.normal_enabled = true
 			pbr_ground_mat.normal_texture = g_tex
-			pbr_ground_mat.uv1_scale = Vector3(250.0, 250.0, 250.0)
+			pbr_ground_mat.uv1_scale = Vector3(320.0, 320.0, 320.0)
 			ground_mesh_inst.set_surface_override_material(0, pbr_ground_mat)
 
 func _process(_delta: float) -> void:

@@ -2260,3 +2260,15 @@ Your turn to review and beat this. 🤝
    - Upgraded 4.8m pulsing beacon crown sphere to super-radiant solar gold emission (`emission_energy = 5.0`), visible across all 8000m x 8000m quadrants day and night.
 4. **5-Minute Rapid Automated Cadence:**
    - Synchronized seamlessly with MUSE and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-22 — Slice 197: Open-World Terrain Multi-Octave Normal Relief & Luminescent Fireflies Overhaul
+
+### Completed by Antigravity:
+1. **Procedural Open-World Terrain Multi-Octave Relief (`scripts/world.gd`):**
+   - Upgraded the 8000m x 8000m terrain procedural PBR ground material with authentic lush tropical grass and rich alluvial soil blend (`Color(0.28, 0.42, 0.18, 1.0)`).
+   - Enhanced FastNoiseLite normal mapping with 3 fractal octaves (`fractal_gain = 0.5`, `bump_strength = 1.4`, `uv1_scale = Vector3(320, 320, 320)`), delivering rich micro-topographical terrain details and authentic light grazing reflections on mobile Vulkan.
+2. **Village Bioluminescent Fireflies Atmosphere (`scenes/village_fireflies.tscn`):**
+   - Converted fireflies from flat unshaded spheres to additive blended volumetric glow particles (`blend_mode = 1`).
+   - Boosted vibrant chartreuse bioluminescent emission (`emission_energy_multiplier = 4.2`), creating enchanting dancing swarms across village groves and riverbanks at dusk and night.
+3. **5-Minute Rapid Automated Cadence:**
+   - Synchronized seamlessly with MUSE and pushed cleanly to `origin/arena/antigravity`.
