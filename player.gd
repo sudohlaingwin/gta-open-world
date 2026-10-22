@@ -410,6 +410,24 @@ func _ready() -> void:
 	# fields, fences, scenery carts/animals, lane trees/flowers).
 	# Runs after Slice 62; runtime-only, no scene touched.
 	EastFields64Script.dress(get_parent())
+	# Slice 65 driving feel (runtime-only, no scene touched):
+	# EngineAudio65 rides on the player (it reads driving_vehicle
+	# from its parent every tick); WaterFlow65 rides on the world
+	# (it finds EastDistrict62 there). Both deferred, same reason
+	# as the Slice 62 district adds: _ready runs while Main is
+	# still setting up children. Idempotent: re-running _ready
+	# (scene reload) finds the existing nodes and skips creating.
+	if get_node_or_null("EngineAudio65Node") == null:
+		var _eng65 := Node.new()
+		_eng65.name = "EngineAudio65Node"
+		_eng65.set_script(load("res://engine_audio65.gd"))
+		call_deferred("add_child", _eng65)
+	var _world65 := get_parent()
+	if _world65 != null and _world65.get_node_or_null("WaterFlow65") == null:
+		var _flow65 := Node.new()
+		_flow65.name = "WaterFlow65"
+		_flow65.set_script(load("res://water_flow65.gd"))
+		_world65.call_deferred("add_child", _flow65)
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
