@@ -105,7 +105,7 @@ size = Vector2(8000, 8000)
 [node name="World" type="Node3D"]
 script = ExtResource("36_world_script")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." groups=["world_env"]]
 environment = SubResource("Environment_1")
 
 [node name="DayNightCycle" type="Node3D" parent="."]

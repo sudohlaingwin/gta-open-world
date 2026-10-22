@@ -127,10 +127,39 @@ func _on_graphics_selected(index: int) -> void:
 		var modes = ["smooth", "balanced", "hd", "ultra"]
 		sm.graphics_quality = modes[clamp(index, 0, 3)]
 		sm.save_settings()
+		var vp_rid = get_viewport().get_viewport_rid()
+		var env_node = get_tree().get_first_node_in_group("world_env") as WorldEnvironment
+		if not env_node:
+			env_node = get_node_or_null("/root/World/WorldEnvironment") as WorldEnvironment
+		var env = env_node.environment if env_node else null
+		
 		if sm.graphics_quality == "smooth":
-			RenderingServer.viewport_set_msaa_3d(get_viewport().get_viewport_rid(), RenderingServer.VIEWPORT_MSAA_DISABLED)
-		elif sm.graphics_quality in ["hd", "ultra"]:
-			RenderingServer.viewport_set_msaa_3d(get_viewport().get_viewport_rid(), RenderingServer.VIEWPORT_MSAA_2X)
+			RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_DISABLED)
+			if env:
+				env.ssao_enabled = false
+				env.ssr_enabled = false
+				env.glow_bloom = 0.1
+		elif sm.graphics_quality == "balanced":
+			RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_2X)
+			if env:
+				env.ssao_enabled = true
+				env.ssao_radius = 2.0
+				env.ssr_enabled = false
+				env.glow_bloom = 0.18
+		elif sm.graphics_quality == "hd":
+			RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_2X)
+			if env:
+				env.ssao_enabled = true
+				env.ssao_radius = 3.2
+				env.ssr_enabled = true
+				env.glow_bloom = 0.22
+		elif sm.graphics_quality == "ultra":
+			RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_4X)
+			if env:
+				env.ssao_enabled = true
+				env.ssao_radius = 4.0
+				env.ssr_enabled = true
+				env.glow_bloom = 0.28
 
 func _on_vibrate_toggled(pressed: bool) -> void:
 	var sm = _sm()
