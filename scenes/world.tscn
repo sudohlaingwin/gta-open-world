@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3]
+[gd_scene load_steps=46 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player_scn"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="2_day_night"]
@@ -39,6 +39,7 @@
 [ext_resource type="PackedScene" path="res://scenes/football_pitch.tscn" id="37_pitch_scn"]
 [ext_resource type="PackedScene" path="res://scenes/river_boat_pier.tscn" id="38_pier_scn"]
 [ext_resource type="Script" path="res://scripts/traffic_manager.gd" id="39_traffic_mgr"]
+[ext_resource type="PackedScene" path="res://scenes/ambient_pedestrian.tscn" id="40_ped_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.24, 0.54, 0.88, 1)
@@ -224,6 +225,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, -0.2, 24)
 
 [node name="TrafficManager" type="Node" parent="."]
 script = ExtResource("39_traffic_mgr")
+
+[node name="Pedestrian1" parent="." instance=ExtResource("40_ped_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4)
+
+[node name="Pedestrian2" parent="." instance=ExtResource("40_ped_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 10)
 
 [node name="MobileTouchHUD" parent="." instance=ExtResource("8_hud_scn")]
 
