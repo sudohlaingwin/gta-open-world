@@ -173,19 +173,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, 24)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -8)
 villager_name = "ကိုဘသောင်း"
 dialogue_text = "မင်္ဂလာပါ! ကျွန်တော်တို့ ရွာဦးစေတီကို သွားဖူးလိုက်ပါဦးဗျာ။"
-longyi_color = Color(0.1, 0.35, 0.2, 1)`nday_anchor = Vector3(0, 0, -22)
+longyi_color = Color(0.1, 0.35, 0.2, 1)
+day_anchor = Vector3(0, 0, -22)
 
 [node name="Villager2" parent="." instance=ExtResource("7_villager_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -12)
 villager_name = "ဦးရွှေရိုး"
 dialogue_text = "နေကောင်းလား ညီလေး! နွားလှည်းနဲ့ လယ်တောဘက် လိုက်လည်မလား။"
-longyi_color = Color(0.55, 0.12, 0.15, 1)`nday_anchor = Vector3(-16, 0, -16)
+longyi_color = Color(0.55, 0.12, 0.15, 1)
+day_anchor = Vector3(-16, 0, -16)
 
 [node name="Villager3" parent="." instance=ExtResource("7_villager_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 10)
 villager_name = "ဒေါ်အေးကြည်"
 dialogue_text = "ပျော်ရွှင်စရာ နေ့ရက်လေး ဖြစ်ပါစေနော်!"
-longyi_color = Color(0.15, 0.25, 0.6, 1)`nday_anchor = Vector3(20, 0, 10)
+longyi_color = Color(0.15, 0.25, 0.6, 1)
+day_anchor = Vector3(20, 0, 10)
 
 [node name="VillageCar" parent="." instance=ExtResource("23_car_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0.2, 5)
