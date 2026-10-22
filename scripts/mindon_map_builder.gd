@@ -27,6 +27,8 @@ const PITCH_SCENE = preload("res://scenes/football_pitch.tscn")
 const BELL_SCENE = preload("res://scenes/monastery_bell.tscn")
 const MONASTERY_SCENE = preload("res://scenes/monastery_school.tscn")
 const CART_SCENE = preload("res://scenes/bullock_cart.tscn")
+const NIGHT_MARKET_SCENE = preload("res://scenes/myanmar_night_market.tscn")
+const GUESTHOUSE_SCENE = preload("res://scenes/myanmar_guesthouse.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -653,6 +655,21 @@ func _generate_ward3_amenities() -> void:
 	amenities_holder.add_child(stage)
 	stage.global_position = Vector3(-70.0, 0.0, 135.0)
 	stage.rotation.y = deg_to_rad(15.0)
+
+	# Vibrant Night Market Bazaar (ရွှေမင်္ဂလာ ညဈေးတန်းကြီး) with food stalls & globe lanterns
+	var market = NIGHT_MARKET_SCENE.instantiate()
+	market.name = "MindonNightMarket"
+	amenities_holder.add_child(market)
+	market.global_position = Vector3(-42.0, 0.0, 108.0)
+	market.rotation.y = deg_to_rad(-8.0)
+
+	# Traditional Teakwood Guest House (ရွှေဧည့်ရိပ်သာ တည်းခိုခန်း) with night lantern
+	var guesthouse = GUESTHOUSE_SCENE.instantiate()
+	guesthouse.name = "MindonGuestHouse"
+	amenities_holder.add_child(guesthouse)
+	guesthouse.global_position = Vector3(-55.0, 0.0, 85.0)
+	guesthouse.rotation.y = deg_to_rad(-85.0)
+
 
 
 

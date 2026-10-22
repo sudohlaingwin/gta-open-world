@@ -1328,3 +1328,14 @@ Your turn to review and beat this. 🤝
    - Constructed a full-scale village festival theatrical stage (`res://scenes/festival_ground.tscn`) at `(-70.0, 0.0, 135.0)` featuring a 12m wooden deck, golden decorative backdrop, traditional Saing Waing brass/red drum sets, and festive Burmese banner ("ရွှေရွာတော် ရိုးရာ အငြိမ့်နှင့် ဇာတ်သဘင်စင်တော်ကြီး").
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 117: Vibrant Night Market Bazaar (ညဈေးတန်းကြီး) & Teakwood Guest House Integration
+
+### Completed by Antigravity:
+1. **Vibrant Village Night Market Bazaar (`scripts/mindon_map_builder.gd`):**
+   - Placed a 14-meter bustling rural night bazaar (`res://scenes/myanmar_night_market.tscn`) at `(-42.0, 0.0, 108.0)` between the road and festival ground.
+   - Features 3 authentic stalls: Burmese noodle stall with steaming aluminum broth pot, fresh drink/sugar cane stall, and toy/souvenir counter, illuminated by 3 automated warm nocturnal globe lights (`OmniLight3D`, 2.2 energy) and gilded signage ("ရွှေမင်္ဂလာ ညဈေးတန်းကြီး").
+2. **Teakwood Guest House (`scripts/mindon_map_builder.gd`):**
+   - Constructed a rural village inn (`res://scenes/myanmar_guesthouse.tscn`) at `(-55.0, 0.0, 85.0)` featuring teak flooring, traditional beds with white pillows and red woven blankets, study desks, thatched roofing, automated night lamp, and gilded signboard ("ရွှေဧည့်ရိပ်သာ တည်းခိုခန်း").
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
