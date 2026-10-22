@@ -11,7 +11,21 @@ var radius: float = 60.0
 # Slice 10 analog deadzone: tiny accidental touches (under 15% of
 # the radius) output zero instead of creeping, and the rest of the
 # range is rescaled so full deflection still means full speed.
+# Slice 32: the deadzone is a setting, not a constant. It is read
+# from SaveManager on every drag, so a change made in the pause
+# Settings screen takes effect immediately, and it is THE single
+# deadzone for the whole game: player movement and every vehicle
+# (car, motorcycle, tuk-tuk, and the rest) all steer from
+# touch_vector, which is what this filter produces. Falls back to
+# 0.15 when SaveManager is absent (headless test without autoloads).
 var deadzone: float = 0.15
+
+
+func _effective_deadzone() -> float:
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm == null:
+		return deadzone
+	return clampf(float(sm.get("joystick_deadzone")), 0.0, 0.4)
 
 func _gui_input(event: InputEvent) -> void:
 	var player := get_node_or_null(player_path)
@@ -32,9 +46,10 @@ func _gui_input(event: InputEvent) -> void:
 			dist = radius
 		$Base/Handle.position = Vector2(50, 50) + diff
 		if player != null:
+			var dz: float = _effective_deadzone()
 			var norm: float = dist / radius
-			if norm < deadzone:
+			if norm < dz:
 				player.touch_vector = Vector2.ZERO
 			else:
-				var scaled: float = (norm - deadzone) / (1.0 - deadzone)
+				var scaled: float = (norm - dz) / (1.0 - dz)
 				player.touch_vector = diff.normalized() * scaled

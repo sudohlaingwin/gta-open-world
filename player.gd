@@ -212,6 +212,7 @@ var last_saved_stage: int = -1
 func _ready() -> void:
 	_apply_pending_load()
 	_apply_outfit()
+	_apply_hud_scale()
 	var mm = _mm()
 	if mm != null:
 		last_saved_stage = mm.stage
@@ -1764,6 +1765,37 @@ func _apply_outfit() -> void:
 		hat.visible = bool(sm.get("hat_visible"))
 
 
+## Slice 32 HUD size: scales every touch HUD control around its own
+## centre, from the persisted hud_scale (0.8–1.25, default 1.0).
+## Applied at world spawn and again on pause-resume, so a change
+## made in the pause Settings screen takes effect without a world
+## reload. Two JoystickLayer children are deliberately EXCLUDED:
+## PausePanel21 (a menu — menus keep their own layout) and
+## WorldMapPanel (the Slice 28 map's pixel math is computed from
+## its unscaled size; scaling it would move every landmark dot).
+## Centred pivots keep each control in place while it grows or
+## shrinks, so edge buttons stay on screen at 1.25x and stay
+## tappable at 0.8x (the smallest button is still ~60 px across).
+## The joystick's drag math is unaffected: _gui_input works in the
+## control's local coordinates, which scale with the control.
+func _apply_hud_scale() -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	var layer := get_node_or_null("../JoystickLayer") as CanvasLayer
+	if layer == null:
+		return
+	var s: float = clampf(float(sm.get("hud_scale")), 0.8, 1.25)
+	for child in layer.get_children():
+		if not (child is Control):
+			continue
+		if child.name == "PausePanel21" or child.name == "WorldMapPanel":
+			continue
+		var ctl := child as Control
+		ctl.pivot_offset = ctl.size * 0.5
+		ctl.scale = Vector2(s, s)
+
+
 func _recolor_part(part_name: String, color: Color) -> void:
 	var part = get_node_or_null(part_name) as MeshInstance3D
 	if part == null:
@@ -1983,6 +2015,9 @@ func _on_pause_pressed() -> void:
 
 
 func _on_resume_pressed() -> void:
+	# Slice 32: re-apply HUD size here so a change made in the
+	# pause Settings screen takes effect on resume, no reload.
+	_apply_hud_scale()
 	get_tree().paused = false
 	if pause_panel != null:
 		pause_panel.visible = false

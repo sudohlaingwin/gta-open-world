@@ -4,9 +4,31 @@ extends Panel
 ## it), volume scales every generated tone, reset restores defaults
 ## and saves them. No decorative sliders: if a control is shown,
 ## it changes the game. Shared by the main menu and the pause menu.
+## Slice 32 adds three control settings, all persisted in
+## SaveManager settings and all genuinely wired:
+## - Camera sensitivity: scales touch-drag orbit speed in camera.gd
+##   (zoom buttons and Q/E fallbacks keep their fixed steps).
+## - HUD size: scales every touch HUD control around its own centre
+##   in player.gd (_apply_hud_scale); pause menu and world-map
+##   overlay are deliberately NOT scaled (menus keep their layout,
+##   and the map's pixel math must not move under it).
+## - Joystick deadzone: the single deadzone for player movement AND
+##   every vehicle's steering, because all vehicles read the
+##   joystick's deadzone-filtered touch_vector.
+## Camera sensitivity and deadzone are read live on every input, so
+## a change made in the pause Settings screen takes effect the
+## moment play resumes. HUD size applies on world load and on
+## pause-resume (player.gd re-applies it in _on_resume_pressed).
 
 var mute_check: CheckButton = null
 var volume_slider: HSlider = null
+var volume_label: Label = null
+var camera_slider: HSlider = null
+var camera_label: Label = null
+var hud_slider: HSlider = null
+var hud_label: Label = null
+var deadzone_slider: HSlider = null
+var deadzone_label: Label = null
 var reset_button: Button = null
 var back_button: Button = null
 
@@ -18,6 +40,19 @@ func _ready() -> void:
 	volume_slider = get_node_or_null("VolumeSlider") as HSlider
 	if volume_slider != null:
 		volume_slider.value_changed.connect(_on_volume_changed)
+	volume_label = get_node_or_null("VolumeLabel") as Label
+	camera_slider = get_node_or_null("CameraSlider") as HSlider
+	if camera_slider != null:
+		camera_slider.value_changed.connect(_on_camera_changed)
+	camera_label = get_node_or_null("CameraLabel") as Label
+	hud_slider = get_node_or_null("HudSlider") as HSlider
+	if hud_slider != null:
+		hud_slider.value_changed.connect(_on_hud_changed)
+	hud_label = get_node_or_null("HudLabel") as Label
+	deadzone_slider = get_node_or_null("DeadzoneSlider") as HSlider
+	if deadzone_slider != null:
+		deadzone_slider.value_changed.connect(_on_deadzone_changed)
+	deadzone_label = get_node_or_null("DeadzoneLabel") as Label
 	reset_button = get_node_or_null("ResetButton") as Button
 	if reset_button != null:
 		reset_button.pressed.connect(_on_reset_pressed)
@@ -39,6 +74,20 @@ func refresh() -> void:
 		mute_check.button_pressed = bool(sm.get("muted"))
 	if volume_slider != null:
 		volume_slider.value = float(sm.get("volume")) * 100.0
+	if volume_label != null:
+		volume_label.text = "အသံအတိုးအကျယ်: %d%%" % int(round(float(sm.get("volume")) * 100.0))
+	if camera_slider != null:
+		camera_slider.value = float(sm.get("camera_sensitivity")) * 100.0
+	if camera_label != null:
+		camera_label.text = "ကင်မရာ လှည့်နှုန်း: %d%%" % int(round(float(sm.get("camera_sensitivity")) * 100.0))
+	if hud_slider != null:
+		hud_slider.value = float(sm.get("hud_scale")) * 100.0
+	if hud_label != null:
+		hud_label.text = "ခလုတ် အရွယ်အစား: %d%%" % int(round(float(sm.get("hud_scale")) * 100.0))
+	if deadzone_slider != null:
+		deadzone_slider.value = float(sm.get("joystick_deadzone")) * 100.0
+	if deadzone_label != null:
+		deadzone_label.text = "Joystick အသေဇုန်: %d%%" % int(round(float(sm.get("joystick_deadzone")) * 100.0))
 
 
 func _on_mute_toggled(pressed: bool) -> void:
@@ -55,6 +104,38 @@ func _on_volume_changed(value: float) -> void:
 		return
 	sm.set("volume", clampf(value / 100.0, 0.0, 1.0))
 	sm.call("save_settings")
+	if volume_label != null:
+		volume_label.text = "အသံအတိုးအကျယ်: %d%%" % int(round(value))
+
+
+func _on_camera_changed(value: float) -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	sm.set("camera_sensitivity", clampf(value / 100.0, 0.5, 2.0))
+	sm.call("save_settings")
+	if camera_label != null:
+		camera_label.text = "ကင်မရာ လှည့်နှုန်း: %d%%" % int(round(value))
+
+
+func _on_hud_changed(value: float) -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	sm.set("hud_scale", clampf(value / 100.0, 0.8, 1.25))
+	sm.call("save_settings")
+	if hud_label != null:
+		hud_label.text = "ခလုတ် အရွယ်အစား: %d%%" % int(round(value))
+
+
+func _on_deadzone_changed(value: float) -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	sm.set("joystick_deadzone", clampf(value / 100.0, 0.0, 0.4))
+	sm.call("save_settings")
+	if deadzone_label != null:
+		deadzone_label.text = "Joystick အသေဇုန်: %d%%" % int(round(value))
 
 
 func _on_reset_pressed() -> void:

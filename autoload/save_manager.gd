@@ -4,7 +4,9 @@ extends Node
 ## quest stage, talked villagers by name, stamina, reward flags,
 ## counters, crop growth, and a settings snapshot for reference).
 ## Settings file user://settings.json holds mute + volume + the player
-## outfit (shirt/longyi colours as HTML strings, hat on/off), and is
+## outfit (shirt/longyi colours as HTML strings, hat on/off) + the
+## Slice 32 control settings (camera sensitivity, HUD scale,
+## joystick deadzone), and is
 ## the authority for settings at boot, in the Settings screen, and in
 ## the Character screen. Old settings files without the outfit keys
 ## load the default outfit, so a Slice 29 settings file keeps working.
@@ -28,6 +30,18 @@ var volume: float = 1.0
 var shirt_color_html: String = "#F5F0E6"
 var longyi_color_html: String = "#145938"
 var hat_visible: bool = true
+## Slice 32 control settings. camera_sensitivity scales touch-drag
+## orbit speed (1.0 = Slice 24 behaviour); hud_scale scales every
+## touch HUD control around its own centre (1.0 = current layout);
+## joystick_deadzone is the joystick deadzone fraction shared by
+## player movement AND all vehicle steering, because every vehicle
+## reads the player's touch_vector, which the joystick already
+## deadzone-filters. Ranges are enforced on load so a hand-edited
+## settings file can never produce an unusable HUD (tiny buttons)
+## or a dead joystick (deadzone >= 1.0).
+var camera_sensitivity: float = 1.0
+var hud_scale: float = 1.0
+var joystick_deadzone: float = 0.15
 
 
 func _ready() -> void:
@@ -75,6 +89,9 @@ func load_settings() -> void:
 	shirt_color_html = "#F5F0E6"
 	longyi_color_html = "#145938"
 	hat_visible = true
+	camera_sensitivity = 1.0
+	hud_scale = 1.0
+	joystick_deadzone = 0.15
 	if not FileAccess.file_exists(settings_path):
 		return
 	var file = FileAccess.open(settings_path, FileAccess.READ)
@@ -99,13 +116,22 @@ func load_settings() -> void:
 			longyi_color_html = lo
 	if parsed.has("hat_visible"):
 		hat_visible = bool(parsed.get("hat_visible"))
+	if parsed.has("camera_sensitivity"):
+		camera_sensitivity = clampf(float(parsed.get("camera_sensitivity")), 0.5, 2.0)
+	if parsed.has("hud_scale"):
+		hud_scale = clampf(float(parsed.get("hud_scale")), 0.8, 1.25)
+	if parsed.has("joystick_deadzone"):
+		joystick_deadzone = clampf(float(parsed.get("joystick_deadzone")), 0.0, 0.4)
 
 
 func save_settings() -> bool:
 	var data = {"muted": muted, "volume": volume,
 		"shirt_color_html": shirt_color_html,
 		"longyi_color_html": longyi_color_html,
-		"hat_visible": hat_visible}
+		"hat_visible": hat_visible,
+		"camera_sensitivity": camera_sensitivity,
+		"hud_scale": hud_scale,
+		"joystick_deadzone": joystick_deadzone}
 	var file = FileAccess.open(settings_path, FileAccess.WRITE)
 	if file == null:
 		return false
@@ -120,6 +146,9 @@ func reset_settings() -> void:
 	shirt_color_html = "#F5F0E6"
 	longyi_color_html = "#145938"
 	hat_visible = true
+	camera_sensitivity = 1.0
+	hud_scale = 1.0
+	joystick_deadzone = 0.15
 	save_settings()
 
 

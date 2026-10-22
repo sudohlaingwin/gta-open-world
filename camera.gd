@@ -44,11 +44,24 @@ func zoom_in() -> void:
 func zoom_out() -> void:
 	zoom = clamp(zoom + 0.2, 0.6, 1.8)
 
+# Slice 32 camera sensitivity: scales touch-drag orbit speed only
+# (zoom buttons keep their fixed 0.2 step; Q/E desktop fallbacks
+# keep their fixed 0.02 step). Read from SaveManager on every drag
+# so a change made in the pause Settings screen takes effect the
+# moment play resumes, with no world reload. Falls back to 1.0
+# when SaveManager is absent (headless test without autoloads).
+func _sensitivity() -> float:
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm == null:
+		return 1.0
+	return clampf(float(sm.get("camera_sensitivity")), 0.5, 2.0)
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventScreenDrag:
 		var vp := get_viewport().get_visible_rect().size
 		if event.position.x > vp.x * 0.5:
-			orbit_angle += event.relative.x * 0.005
+			orbit_angle += event.relative.x * 0.005 * _sensitivity()
 
 # Physics bodies the camera ray must ignore. Everything on the
 # default layer that is NOT a StaticBody3D is a character, a

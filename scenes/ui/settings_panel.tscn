@@ -19,9 +19,9 @@ corner_radius_bottom_right = 12
 [node name="SettingsPanel" type="Panel"]
 theme_override_styles/panel = SubResource("StyleBoxFlat_settings_bg")
 anchor_left = 0.2
-anchor_top = 0.22
+anchor_top = 0.08
 anchor_right = 0.8
-anchor_bottom = 0.78
+anchor_bottom = 0.94
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 0.0
@@ -30,9 +30,9 @@ script = ExtResource("1_settings_script")
 
 [node name="TitleLabel" type="Label" parent="."]
 anchor_left = 0.1
-anchor_top = 0.05
+anchor_top = 0.02
 anchor_right = 0.9
-anchor_bottom = 0.15
+anchor_bottom = 0.08
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 0.0
@@ -43,9 +43,9 @@ text = "ဆက်တင်များ"
 
 [node name="MuteCheck" type="CheckButton" parent="."]
 anchor_left = 0.1
-anchor_top = 0.25
+anchor_top = 0.10
 anchor_right = 0.9
-anchor_bottom = 0.35
+anchor_bottom = 0.15
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 0.0
@@ -54,20 +54,20 @@ text = "အသံပိတ်"
 
 [node name="VolumeLabel" type="Label" parent="."]
 anchor_left = 0.1
-anchor_top = 0.40
+anchor_top = 0.17
 anchor_right = 0.9
-anchor_bottom = 0.48
+anchor_bottom = 0.21
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 0.0
 offset_bottom = 0.0
-text = "အသံအတိုးအကျယ်"
+text = "အသံအတိုးအကျယ်: 100%"
 
 [node name="VolumeSlider" type="HSlider" parent="."]
 anchor_left = 0.1
-anchor_top = 0.50
+anchor_top = 0.22
 anchor_right = 0.9
-anchor_bottom = 0.58
+anchor_bottom = 0.26
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 0.0
@@ -77,12 +77,87 @@ max_value = 100.0
 step = 1.0
 value = 100.0
 
+[node name="CameraLabel" type="Label" parent="."]
+anchor_left = 0.1
+anchor_top = 0.28
+anchor_right = 0.9
+anchor_bottom = 0.32
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+text = "ကင်မရာ လှည့်နှုန်း: 100%"
+
+[node name="CameraSlider" type="HSlider" parent="."]
+anchor_left = 0.1
+anchor_top = 0.33
+anchor_right = 0.9
+anchor_bottom = 0.37
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+min_value = 50.0
+max_value = 200.0
+step = 5.0
+value = 100.0
+
+[node name="HudLabel" type="Label" parent="."]
+anchor_left = 0.1
+anchor_top = 0.39
+anchor_right = 0.9
+anchor_bottom = 0.43
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+text = "ခလုတ် အရွယ်အစား: 100%"
+
+[node name="HudSlider" type="HSlider" parent="."]
+anchor_left = 0.1
+anchor_top = 0.44
+anchor_right = 0.9
+anchor_bottom = 0.48
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+min_value = 80.0
+max_value = 125.0
+step = 5.0
+value = 100.0
+
+[node name="DeadzoneLabel" type="Label" parent="."]
+anchor_left = 0.1
+anchor_top = 0.50
+anchor_right = 0.9
+anchor_bottom = 0.54
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+text = "Joystick အသေဇုန်: 15%"
+
+[node name="DeadzoneSlider" type="HSlider" parent="."]
+anchor_left = 0.1
+anchor_top = 0.55
+anchor_right = 0.9
+anchor_bottom = 0.59
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+min_value = 0.0
+max_value = 40.0
+step = 5.0
+value = 15.0
+
 [node name="ResetButton" type="Button" parent="."]
 theme_override_styles/normal = SubResource("StyleBoxFlat_settings_button")
 anchor_left = 0.1
-anchor_top = 0.65
+anchor_top = 0.63
 anchor_right = 0.9
-anchor_bottom = 0.75
+anchor_bottom = 0.70
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 0.0
@@ -92,9 +167,9 @@ text = "မူလအတိုင်း ပြန်ထားပါ"
 [node name="BackButton" type="Button" parent="."]
 theme_override_styles/normal = SubResource("StyleBoxFlat_settings_button")
 anchor_left = 0.1
-anchor_top = 0.78
+anchor_top = 0.73
 anchor_right = 0.9
-anchor_bottom = 0.88
+anchor_bottom = 0.80
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 0.0
