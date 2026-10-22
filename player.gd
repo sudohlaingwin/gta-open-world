@@ -1,6 +1,7 @@
 extends CharacterBody3D
 const DressingScript = preload("res://village_dressing.gd")
 const City56Script = preload("res://city_visual56.gd")
+const River57Script = preload("res://river_bridge57.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -351,6 +352,10 @@ func _ready() -> void:
 	# Runs after Slice 53 dressing so it textures the walls
 	# Slice 53 added. Runtime-only: no scene file is touched.
 	City56Script.dress(get_parent())
+	# Slice 57 river + pagoda dressing (long wooden bridge,
+	# waterside, pagoda gold trim, night-gated lanterns).
+	# Runs after Slice 56; runtime-only, no scene touched.
+	River57Script.dress(get_parent())
 
 
 ## Slice 49: the shared map transform reads the live ground plane
