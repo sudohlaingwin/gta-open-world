@@ -620,4 +620,24 @@ func _generate_ward3_amenities() -> void:
 	cart_lane.global_position = Vector3(-18.0, 0.0, 72.0)
 	cart_lane.rotation.y = deg_to_rad(-120.0)
 
+	# Traditional Roadside Clay Water Pot Stands (ရေချမ်းစင်များ) for Wayfarers
+	var pot_gate = POT_SCENE.instantiate()
+	pot_gate.name = "RoadsideWaterPot_Gate"
+	amenities_holder.add_child(pot_gate)
+	pot_gate.global_position = Vector3(-9.0, 0.0, 76.0)
+	pot_gate.rotation.y = deg_to_rad(-80.0)
+
+	var pot_teashop = POT_SCENE.instantiate()
+	pot_teashop.name = "RoadsideWaterPot_Teashop"
+	amenities_holder.add_child(pot_teashop)
+	pot_teashop.global_position = Vector3(-25.0, 0.0, 94.0)
+	pot_teashop.rotation.y = deg_to_rad(10.0)
+
+	# Communal Brick Drinking Well (ရပ်ကွက်ရေတွင်းကြီး) near Monastic School
+	var well_communal = WELL_SCENE.instantiate()
+	well_communal.name = "MindonVillageWell"
+	amenities_holder.add_child(well_communal)
+	well_communal.global_position = Vector3(-120.0, 0.0, 186.0)
+
+
 

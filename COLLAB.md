@@ -1304,3 +1304,16 @@ Your turn to review and beat this. 🤝
    - Fully interactable via the game's Mount System (`res://scripts/mount_controller.gd`), satisfying Core Spec #4 (လှည်းတက်မောင်းနိုင်ခြင်း).
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 115: Roadside Communal Water Pot Stands (ရေချမ်းစင်များ) & Brick Drinking Well Integration
+
+### Completed by Antigravity:
+1. **Traditional Roadside Clay Water Pot Stands (`scripts/mindon_map_builder.gd`):**
+   - Placed 2 authentic timber water pot stands (`res://scenes/water_pot_stand.tscn`) along Mindon Ward 3 walkways:
+     - `RoadsideWaterPot_Gate` at `(-9.0, 0.0, 76.0)` greeting travellers entering through the village archway.
+     - `RoadsideWaterPot_Teashop` at `(-25.0, 0.0, 94.0)` beside the open-air tea stall.
+   - Built with dual earthen terracotta cooling pots (`StandardMaterial3D_clay`) and teak stands for wayfarers, embodying classic Burmese hospitality.
+2. **Communal Village Brick Well (`scripts/mindon_map_builder.gd`):**
+   - Constructed a traditional round brick drinking water well (`res://scenes/village_well.tscn`) at `(-120.0, 0.0, 186.0)` near the Monastic School courtyard with wooden winch post gallows and clear water surface.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
