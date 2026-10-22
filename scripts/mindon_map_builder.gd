@@ -473,11 +473,19 @@ func _generate_ward3_amenities() -> void:
 	var hill_col = CollisionShape3D.new()
 	var hill_cshape = CylinderShape3D.new()
 	hill_cshape.height = 8.0
-	hill_cshape.top_radius = 16.0
-	hill_cshape.bottom_radius = 24.0
+	hill_cshape.radius = 20.0
 	hill_col.shape = hill_cshape
 	hill_col.position = Vector3(0.0, 4.0, 0.0)
 	hill.add_child(hill_col)
+
+	# Stone stairway ascent ramp collider
+	var stair_col = CollisionShape3D.new()
+	var stair_box = BoxShape3D.new()
+	stair_box.size = Vector3(3.4, 0.6, 12.0)
+	stair_col.shape = stair_box
+	stair_col.position = Vector3(0.0, 3.8, -14.0)
+	stair_col.rotation.x = deg_to_rad(33.0)
+	hill.add_child(stair_col)
 
 	var hill_mesh = MeshInstance3D.new()
 	var hill_cmesh = CylinderMesh.new()

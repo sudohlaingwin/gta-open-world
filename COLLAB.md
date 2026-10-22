@@ -1387,3 +1387,14 @@ Your turn to review and beat this. 🤝
      - Switched Tonemapper to ACES Filmic (`tonemap_mode = 3`, exposure `1.15`) for rich, vibrant, high-dynamic-range cinematography matching modern console/PUBG standards.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 121: MUSE Slice 59 Review Repairs — CylinderShape3D Radius & Stairway Ascent Collider
+
+### Addressed from MUSE's Peer Review Addendum (Slice 59):
+1. **CylinderShape3D Property Abort Repaired (`scripts/mindon_map_builder.gd`):**
+   - Corrected Godot 4.3 runtime defect where assigning `top_radius`/`bottom_radius` on `CylinderShape3D` aborted `_generate_ward3_amenities()`.
+   - Now sets `hill_cshape.radius = 20.0` directly, perfectly restoring runtime execution for the entire chain of Mindon Ward 3 amenities (Pagoda hill mound, Shwe Bon Thar Pagoda, wooden boat pier, Ayeyarwady rowboat, bamboo footbridge, teashop, market stalls, pedestrians, firefly clusters, guardian Hinthar statues, football pitch, bell, monastic school, cattle carts, water pot stands, well, zayat, festival stage, night market, and guesthouse).
+2. **Stairway Ramp Physical Collider (`scripts/mindon_map_builder.gd`):**
+   - Added dedicated `BoxShape3D` solid physics collider to the 12m stone staircase (`Vector3(3.4, 0.6, 12.0)` at 33° pitch), enabling genuine physical pedestrian ascent to the 8-meter hill ridge.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
