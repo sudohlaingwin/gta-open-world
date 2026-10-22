@@ -1837,3 +1837,13 @@ Your turn to review and beat this. 🤝
    - Upgraded heavy torso to 3.1m length, 0.85m dorsal hump, 0.78m curved protective horns, and riding saddle point to 2.35m elevation with an expanded 4.8m interaction radius.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 162: Myanmar 3-Wheeler Tuk-Tuk Taxi (Thone Bein) Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Myanmar 3-Wheeler Tuk-Tuk Taxi (Thone Bein) Scaling (`scenes/myanmar_tuktuk.tscn`):**
+   - Scaled ubiquitous urban transit vehicle from 3.8m to authentic 4.6m length x 2.35m width x 2.5m height (`size = Vector3(2.35, 2.5, 4.6)`).
+   - Upgraded bright yellow passenger cabin to 3.4m length x 2.2m width, green rain-canopy to 3.5m length, and heavy-duty 0.96m diameter wheels (`radius = 0.48m`).
+   - Enhanced front spotlight headlight beam to 36m illumination range (`spot_range = 36.0, angle = 45.0`), elevated driver seat to 1.15m height, and expanded 5.8m boarding interaction box.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
