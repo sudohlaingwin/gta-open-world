@@ -1705,3 +1705,15 @@ Your turn to review and beat this. 🤝
    - Bridges the gap between village architecture (monasteries, guesthouses, gates) and the natural flora canopy across the Mindon district.
 4. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 151: Myanmar Motorcycle (Kenbo 125) & Ayeyarwady Teak Rowboat (Hlay) Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Myanmar Motorcycle (Kenbo 125) Automotive Scaling (`scenes/myanmar_motorcycle.tscn`):**
+   - Scaled ubiquitous Myanmar commuter motorbike from miniature proportions to authentic 2.35m length x 1.1m width x 1.45m height.
+   - Upgraded heavy spoked wheels to 0.84m diameter (`radius = 0.42m`), 0.96m saddle height, and 32m high-beam spotlight (`spot_range = 32.0`).
+2. **Ayeyarwady Teak Rowboat (Hlay) Maritime Scaling (`scenes/ayeyarwady_rowboat.tscn`):**
+   - Scaled traditional riverboat from 5.8m to 7.8m hull length with 2.6m beam width (`size = Vector3(2.6, 1.5, 7.8)`).
+   - Upgraded dual wooden rowing oars to 4.2m length with 0.95m blades, 0.75m rowing thwart bench, and 8.8m boarding interaction box.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

@@ -3,79 +3,79 @@
 [ext_resource type="Script" path="res://scripts/rowboat_controller.gd" id="1_boat"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_boat"]
-size = Vector3(2.2, 1.2, 5.8)
+size = Vector3(2.6, 1.5, 7.8)
 
 [sub_resource type="BoxMesh" id="BoxMesh_hull"]
-size = Vector3(2.0, 0.8, 5.6)
+size = Vector3(2.4, 0.95, 7.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak"]
 albedo_color = Color(0.35, 0.22, 0.12, 1)
 roughness = 0.85
 
 [sub_resource type="BoxMesh" id="BoxMesh_bench"]
-size = Vector3(1.8, 0.15, 0.6)
+size = Vector3(2.2, 0.18, 0.75)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_oar"]
-top_radius = 0.05
-bottom_radius = 0.05
-height = 3.2
+top_radius = 0.06
+bottom_radius = 0.06
+height = 4.2
 
 [sub_resource type="BoxMesh" id="BoxMesh_blade"]
-size = Vector3(0.28, 0.7, 0.06)
+size = Vector3(0.38, 0.95, 0.08)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
-size = Vector3(4.0, 2.5, 6.5)
+size = Vector3(4.8, 3.0, 8.8)
 
 [node name="AyeyarwadyRowboat" type="CharacterBody3D"]
 script = ExtResource("1_boat")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
 shape = SubResource("BoxShape3D_boat")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Hull" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
 mesh = SubResource("BoxMesh_hull")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="Bench" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
 mesh = SubResource("BoxMesh_bench")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="OarL" type="Node3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, -0.8, 0.6, 0)
+transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, -1.05, 0.8, 0)
 
 [node name="Shaft" type="MeshInstance3D" parent="VisualMesh/OarL"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1, 0)
 mesh = SubResource("CylinderMesh_oar")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="Blade" type="MeshInstance3D" parent="VisualMesh/OarL"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.4, 0)
 mesh = SubResource("BoxMesh_blade")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="OarR" type="Node3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, 0.8, 0.6, 0)
+transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, 1.05, 0.8, 0)
 
 [node name="Shaft" type="MeshInstance3D" parent="VisualMesh/OarR"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1, 0)
 mesh = SubResource("CylinderMesh_oar")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="Blade" type="MeshInstance3D" parent="VisualMesh/OarR"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.4, 0)
 mesh = SubResource("BoxMesh_blade")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="RowerSeat" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 
 [node name="InteractionArea" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
 shape = SubResource("BoxShape3D_interact")
