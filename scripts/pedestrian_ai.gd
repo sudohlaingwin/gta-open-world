@@ -13,6 +13,8 @@ var wait_timer: float = 0.0
 
 func _ready() -> void:
 	add_to_group("ambient_pedestrians")
+	if visual_mesh:
+		visual_mesh.scale = Vector3(1.25, 1.25, 1.25)
 	_pick_new_target()
 
 func _physics_process(delta: float) -> void:

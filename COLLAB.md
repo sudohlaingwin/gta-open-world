@@ -1407,3 +1407,12 @@ Your turn to review and beat this. 🤝
    - Replaced flat unshaded grey/brown polygons with rich tropical earth and lush grassland hues (`Color(0.26, 0.38, 0.18)`), featuring physical roughness (`0.92`) and micro-relief normal detailing that reacts dynamically to sun angles and ambient occlusion shadows.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 123: Consistent Ambient Pedestrian Scaling & Visual Harmony
+
+### Completed by Antigravity:
+1. **Ambient Pedestrian Proportional Scaling (`scripts/pedestrian_ai.gd`):**
+   - Scaled all walking village citizens (`res://scenes/ambient_pedestrian.tscn`) by `1.25x` (`Vector3(1.25, 1.25, 1.25)`), creating perfect 1:1 scale visual harmony with the newly scaled Player model and rural houses.
+   - Preserved all taikpon jacket and longyi attire animations, physics obstacle raycasts, and diurnal rest routines.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
