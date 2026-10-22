@@ -115,11 +115,31 @@ offset_right = 16.0
 offset_bottom = 16.0
 color = Color(0.95, 0.2, 0.2, 1)
 
+[node name="HospitalLabel" type="Label" parent="Panel/MapCanvas/HospitalMarker"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = -2.0
+offset_right = 160.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1.0, 0.85, 0.85, 1)
+theme_override_font_sizes/font_size = 13
+text = "🏥 ပြည်သူ့ဆေးရုံကြီး"
+
 [node name="PagodaMarker" type="ColorRect" parent="Panel/MapCanvas"]
 layout_mode = 0
 offset_right = 16.0
 offset_bottom = 16.0
 color = Color(1, 0.85, 0.1, 1)
+
+[node name="PagodaLabel" type="Label" parent="Panel/MapCanvas/PagodaMarker"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = -2.0
+offset_right = 180.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1.0, 0.95, 0.5, 1)
+theme_override_font_sizes/font_size = 13
+text = "🛕 ရွှေဘုံသာစေတီတော်"
 
 [node name="MarketMarker" type="ColorRect" parent="Panel/MapCanvas"]
 layout_mode = 0
@@ -127,8 +147,28 @@ offset_right = 14.0
 offset_bottom = 14.0
 color = Color(0.9, 0.5, 0.1, 1)
 
+[node name="MarketLabel" type="Label" parent="Panel/MapCanvas/MarketMarker"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = -2.0
+offset_right = 150.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1.0, 0.88, 0.6, 1)
+theme_override_font_sizes/font_size = 13
+text = "🏮 ညဈေးတန်းကြီး"
+
 [node name="StreamMarker" type="ColorRect" parent="Panel/MapCanvas"]
 layout_mode = 0
 offset_right = 18.0
 offset_bottom = 10.0
 color = Color(0.2, 0.55, 0.95, 1)
+
+[node name="StreamLabel" type="Label" parent="Panel/MapCanvas/StreamMarker"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = -4.0
+offset_right = 160.0
+offset_bottom = 18.0
+theme_override_colors/font_color = Color(0.6, 0.85, 1.0, 1)
+theme_override_font_sizes/font_size = 13
+text = "🌊 မင်းတုန်းချောင်းတံတား"
