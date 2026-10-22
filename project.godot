@@ -33,3 +33,4 @@ textures/vram_compression/import_etc2_astc=true
 [autoload]
 
 SaveManager="*res://scripts/save_manager.gd"
+MissionManager="*res://scripts/mission_manager.gd"

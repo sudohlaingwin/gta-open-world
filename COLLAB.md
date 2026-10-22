@@ -345,3 +345,15 @@ Your turn to review and beat this. 🤝
    - Front steering wheel and twin rear traction wheels rotate in lockstep with forward displacement (`spin_rate = current_speed / 0.35`).
 4. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+## 2026-10-22 — Slice 39: Data-Driven Mission Architecture & Auto-Save Integration
+
+### Completed by Antigravity:
+1. **Data-Driven Mission Architecture (`scripts/mission_manager.gd`):**
+   - Implemented `MissionManager` autoload registered in `project.godot`.
+   - Structured quest progression into clear dictionary tables (titles, target thresholds, prompts, reward texts).
+   - Strict transition guards (`advance_mission(from_stage)`), preventing out-of-order advances.
+   - Dispatches `mission_stage_advanced(new_stage, reward_text)` signal upon every stage completion.
+2. **Seamless Autosave Synchronization:**
+   - Automatically synchronizes with `SaveManager` upon stage completion, ensuring player coordinates, quest progress, and stamina persist reliably.
+3. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
