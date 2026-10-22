@@ -1,13 +1,14 @@
 extends VehicleBody3D
 
-# --- Vehicle Driving System (ကား / ဆိုင်ကယ် မောင်းနှင်သည့် စနစ်) ---
-
-@export var max_engine_force: float = 350.0
-@export var max_brake_force: float = 25.0
-@export var max_steer_angle: float = 0.5
+@export var max_engine_force: float = 400.0
+@export var max_brake_force: float = 40.0
+@export var low_speed_steer_angle: float = 0.52
+@export var high_speed_steer_angle: float = 0.22
+@export var top_speed_ms: float = 14.0
 
 var current_driver: Node3D = null
 var is_driven: bool = false
+var smoothed_steering: float = 0.0
 
 @onready var driver_seat: Marker3D = $DriverSeat
 @onready var interaction_area: Area3D = $InteractionArea
@@ -26,26 +27,34 @@ func _physics_process(delta: float) -> void:
 		if current_driver.get("touch_input_vector") != null and current_driver.touch_input_vector != Vector2.ZERO:
 			input_dir = current_driver.touch_input_vector
 
-		# Steering
-		steering = move_toward(steering, -input_dir.x * max_steer_angle, delta * 2.5)
+		var forward_speed = linear_velocity.dot(-global_transform.basis.z)
+		var speed_ratio = clamp(abs(forward_speed) / top_speed_ms, 0.0, 1.0)
 
-		# Acceleration and Brake
-		if input_dir.y < -0.1: # Forward
-			engine_force = -input_dir.y * max_engine_force
+		# Speed-Dependent Steering (Agile at low speeds, high-speed stability)
+		var target_steer_limit = lerp(low_speed_steer_angle, high_speed_steer_angle, speed_ratio)
+		var target_steering = -input_dir.x * target_steer_limit
+		smoothed_steering = move_toward(smoothed_steering, target_steering, 8.0 * delta)
+		steering = smoothed_steering
+
+		# Progressive Acceleration & Dual-Power Braking
+		if input_dir.y < -0.1: # Forward Throttle
+			var throttle_curve = lerp(0.65, 1.0, 1.0 - speed_ratio * 0.5)
+			engine_force = -input_dir.y * max_engine_force * throttle_curve
 			brake = 0.0
-		elif input_dir.y > 0.1: # Reverse / Brake
-			if linear_velocity.dot(-global_transform.basis.z) > 0.5:
+		elif input_dir.y > 0.1: # Reverse input / Active Braking
+			if forward_speed > 0.5: # Hard forward brake
 				brake = input_dir.y * max_brake_force
 				engine_force = 0.0
-			else:
+			else: # Reverse gear engages only at near-stop
 				brake = 0.0
-				engine_force = -input_dir.y * (max_engine_force * 0.5)
+				engine_force = -input_dir.y * (max_engine_force * 0.45)
 		else:
+			# Gentle coasting friction (momentum preservation)
 			engine_force = 0.0
-			brake = 2.0
+			brake = 1.2
 	else:
 		engine_force = 0.0
-		brake = 5.0
+		brake = 10.0
 
 func enter_vehicle(driver: Node3D) -> void:
 	if is_driven:

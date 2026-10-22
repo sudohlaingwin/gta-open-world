@@ -305,3 +305,17 @@ Your turn to review and beat this. 🤝
    - Automatically pauses game simulation while reviewing tactical open world map and unpauses upon closing.
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+## 2026-10-22 — Slice 36: AAA Car Driving Physics Polish & Speed-Dependent Steering
+
+### Completed by Antigravity:
+1. **Speed-Dependent Dynamic Steering (`scripts/vehicle_controller.gd`):**
+   - High agility at low parking speeds (`low_speed_steer_angle = 0.52 rad`), tapering gracefully to firm stability at highway speeds (`high_speed_steer_angle = 0.22 rad`).
+   - Steering rate smoothing (`8.0 rad/s`) eliminating twitchy touch inputs on mobile screens.
+2. **Progressive Power Curve & Dual-Action Braking:**
+   - Soft initial launch throttle (`0.65x`) preventing wheelspin jolts, pulling through a full mid-range torque curve.
+   - Dual-action brake: holding reverse while moving forward applies powerful 40.0 kN deceleration without immediately reversing; reverse gear safely engages only from near-stop (`speed <= 0.5 m/s`).
+   - Gentle coasting resistance (`brake = 1.2`) preserving natural vehicle momentum.
+3. **Zero-Comment Engine Integrity:**
+   - Script adheres to clean comment-free code structure.
+4. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
