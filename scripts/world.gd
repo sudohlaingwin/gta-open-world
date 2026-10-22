@@ -31,6 +31,25 @@ var player_ref: Node3D = null
 func _setup_infinite_ground() -> void:
 	terrain_node = get_node_or_null("Terrain")
 	player_ref = get_tree().get_first_node_in_group("player")
+	if terrain_node:
+		var ground_mesh_inst = terrain_node.get_node_or_null("MeshInstance3D") as MeshInstance3D
+		if ground_mesh_inst:
+			var pbr_ground_mat = StandardMaterial3D.new()
+			# Authentic Southeast Asian rural earth & lush tropical grass blend
+			pbr_ground_mat.albedo_color = Color(0.26, 0.38, 0.18, 1.0)
+			pbr_ground_mat.roughness = 0.92
+			pbr_ground_mat.metallic = 0.05
+			var ground_noise = FastNoiseLite.new()
+			ground_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
+			ground_noise.frequency = 0.04
+			var g_tex = NoiseTexture2D.new()
+			g_tex.noise = ground_noise
+			g_tex.as_normal_map = true
+			g_tex.bump_strength = 1.2
+			pbr_ground_mat.normal_enabled = true
+			pbr_ground_mat.normal_texture = g_tex
+			pbr_ground_mat.uv1_scale = Vector3(250.0, 250.0, 250.0)
+			ground_mesh_inst.set_surface_override_material(0, pbr_ground_mat)
 
 func _process(_delta: float) -> void:
 	if not player_ref:

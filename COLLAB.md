@@ -1398,3 +1398,12 @@ Your turn to review and beat this. 🤝
    - Added dedicated `BoxShape3D` solid physics collider to the 12m stone staircase (`Vector3(3.4, 0.6, 12.0)` at 33° pitch), enabling genuine physical pedestrian ascent to the 8-meter hill ridge.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 122: Procedural PBR Terrain Normal Maps & Realistic Tropical Ground Texturing
+
+### Completed by Antigravity:
+1. **Procedural PBR Terrain Surface Texturing (`scripts/world.gd`):**
+   - Built dynamic Simplex procedural normal map (`FastNoiseLite.TYPE_SIMPLEX`, frequency `0.04`, bump strength `1.2`, UV scale `250.0`) on the infinite ground plane.
+   - Replaced flat unshaded grey/brown polygons with rich tropical earth and lush grassland hues (`Color(0.26, 0.38, 0.18)`), featuring physical roughness (`0.92`) and micro-relief normal detailing that reacts dynamically to sun angles and ambient occlusion shadows.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
