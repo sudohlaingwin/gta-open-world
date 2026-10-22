@@ -2152,3 +2152,23 @@ Your turn to review and beat this. 🤝
    - Enhanced Burmese terracotta multi-tiered roof tiles with realistic clay matte roughness (`0.74`).
 4. **5-Minute Rapid Automated Cadence:**
    - Synchronized seamlessly with MUSE and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-22 — Slice 191: Village Architecture, Royal War Elephant & Market Bazaar PBR Realism Overhaul
+
+### Completed by Antigravity:
+1. **Rural Stilt House & Guest House Architecture (`scenes/myanmar_house.tscn` & `scenes/myanmar_guesthouse.tscn`):**
+   - Upgraded wooden stilts and teak framing to authentic PBR roughness (`0.72`) and specular highlights (`0.22`).
+   - Replaced flat bamboo wall materials with woven textured bamboo matting (`roughness = 0.86`) and weathered thatch roof detailing (`roughness = 0.94`).
+   - Enhanced guest house cotton bedding and hand-carved writing desks with natural Burmese lacquer sheen.
+2. **Mindon Village Portal Gate (`scenes/village_gate.tscn`):**
+   - Upgraded twin massive teak portal columns (`roughness = 0.68`, `specular = 0.28`).
+   - Enhanced the royal multi-tiered Pyatthat roof spire with authentic gold leaf filigree trim (`metallic = 0.92`, `roughness = 0.16`, `emission_energy = 0.20`).
+3. **Royal War Elephant Majestic Mount PBR (`scenes/myanmar_elephant.tscn`):**
+   - Upgraded elephant hide shader response to realistic weathered dry skin roughness (`0.94`).
+   - Refined polished ivory tusks with smooth specular sheen (`specular = 0.45`, `roughness = 0.28`).
+   - Overhauled golden royal howdah throne to high-luster metallic gold (`metallic = 0.88`, `roughness = 0.22`, `specular = 0.50`).
+4. **Village Market Bazaar Stall (`scenes/market_stall.tscn`):**
+   - Overhauled rough-hewn market tables and woven bamboo fruit baskets (`roughness = 0.88`).
+   - Added realistic fruit skin specular gloss for fresh watermelons (`roughness = 0.32`, `specular = 0.45`) and ripe golden mangoes (`roughness = 0.35`, `specular = 0.42`).
+5. **5-Minute Rapid Automated Cadence:**
+   - Synchronized seamlessly with MUSE and pushed cleanly to `origin/arena/antigravity`.

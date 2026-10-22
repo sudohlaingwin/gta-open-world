@@ -9,8 +9,9 @@ size = Vector3(3.6, 5.4, 6.8)
 size = Vector3(3.4, 3.6, 5.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_elephant_skin"]
-albedo_color = Color(0.38, 0.38, 0.40, 1)
-roughness = 0.9
+albedo_color = Color(0.36, 0.36, 0.38, 1)
+roughness = 0.94
+specular = 0.15
 
 [sub_resource type="BoxMesh" id="BoxMesh_head"]
 size = Vector3(2.4, 2.4, 2.4)
@@ -26,15 +27,18 @@ bottom_radius = 0.04
 height = 2.2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivory"]
-albedo_color = Color(0.95, 0.94, 0.88, 1)
+albedo_color = Color(0.96, 0.95, 0.86, 1)
+roughness = 0.28
+specular = 0.45
 
 [sub_resource type="BoxMesh" id="BoxMesh_howdah"]
 size = Vector3(2.8, 1.45, 2.8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold_howdah"]
-albedo_color = Color(0.9, 0.72, 0.15, 1)
-metallic = 0.6
-roughness = 0.3
+albedo_color = Color(0.94, 0.76, 0.16, 1)
+metallic = 0.88
+roughness = 0.22
+specular = 0.5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
 size = Vector3(6.8, 5.8, 8.0)

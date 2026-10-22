@@ -9,16 +9,17 @@ size = Vector3(8.5, 4.8, 5.5)
 size = Vector3(8.2, 1.25, 4.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_table_wood"]
-albedo_color = Color(0.40, 0.25, 0.12, 1)
-roughness = 0.85
+albedo_color = Color(0.36, 0.22, 0.10, 1)
+roughness = 0.72
+specular = 0.25
 
 [sub_resource type="PrismMesh" id="PrismMesh_canopy"]
 left_to_right = 0.5
 size = Vector3(8.8, 1.6, 5.6)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_canopy"]
-albedo_color = Color(0.15, 0.35, 0.65, 1)
-roughness = 0.7
+albedo_color = Color(0.12, 0.32, 0.62, 1)
+roughness = 0.85
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_basket"]
 top_radius = 0.72
@@ -26,21 +27,26 @@ bottom_radius = 0.55
 height = 0.75
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_basket"]
-albedo_color = Color(0.68, 0.55, 0.35, 1)
+albedo_color = Color(0.66, 0.52, 0.32, 1)
+roughness = 0.88
 
 [sub_resource type="SphereMesh" id="SphereMesh_fruit"]
 radius = 0.38
 height = 0.72
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_watermelon"]
-albedo_color = Color(0.12, 0.45, 0.18, 1)
+albedo_color = Color(0.10, 0.42, 0.16, 1)
+roughness = 0.32
+specular = 0.45
 
 [sub_resource type="SphereMesh" id="SphereMesh_mango"]
 radius = 0.26
 height = 0.45
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mango"]
-albedo_color = Color(0.95, 0.72, 0.12, 1)
+albedo_color = Color(0.96, 0.74, 0.14, 1)
+roughness = 0.35
+specular = 0.42
 
 [sub_resource type="SphereMesh" id="SphereMesh_lamp"]
 radius = 0.32
