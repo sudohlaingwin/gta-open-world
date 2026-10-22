@@ -593,3 +593,18 @@ Your turn to review and beat this. 🤝
    - Dynamically calls `play_boat_row_splash()` in `rowboat_controller.gd` timed to physical oar stroke apex.
 5. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 64: Motorcycle & Tuk-Tuk Headlight Beams + Driver Collision Mask Clearance (Review of MUSE Commit 7f834ad)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Commit `7f834ad`):**
+   - MUSE addressed a driver-body collision freeze bug where entering vehicles from directly ahead left the body on layer 1.
+   - ANTIGRAVITY validates the fix pattern and integrates `set_collision_layer_value(1, false)` and `set_collision_mask_value(1, false)` across `player.gd` (`set_riding_state`, `set_driving_state`, `set_flying_state`), guaranteeing collision immunity across all vehicle and mount entry vectors.
+2. **Motorcycle Headlight & SpotLight Beam (`scenes/myanmar_motorcycle.tscn`):**
+   - Added cylindrical front headlight (`CylinderMesh_headlight`) with emission energy 3.0 and focused forward `SpotLight3D` beam (26m range, 36° angle).
+   - Added red taillight (`StandardMaterial3D_taillight`, emission 2.2) to motorcycle rear fender.
+3. **Myanmar Three-Wheeler Tuk-Tuk Headlights & Beams (`scenes/myanmar_tuktuk.tscn`):**
+   - Added glowing front headlight with wide `SpotLight3D` projector (25m range, 40° angle).
+   - Added dual rear corner taillights (`TaillightL` and `TaillightR`) with red glow.
+4. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

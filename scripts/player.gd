@@ -149,30 +149,42 @@ func set_riding_state(riding: bool, mount_node: Node3D) -> void:
 		current_state = State.RIDING_MOUNT
 		active_mount = mount_node
 		collision_shape.disabled = true
+		set_collision_layer_value(1, false)
+		set_collision_mask_value(1, false)
 	else:
 		current_state = State.ON_FOOT
 		active_mount = null
 		collision_shape.disabled = false
+		set_collision_layer_value(1, true)
+		set_collision_mask_value(1, true)
 
 func set_driving_state(driving: bool, vehicle_node: Node3D) -> void:
 	if driving:
 		current_state = State.DRIVING_VEHICLE
 		active_vehicle = vehicle_node
 		collision_shape.disabled = true
+		set_collision_layer_value(1, false)
+		set_collision_mask_value(1, false)
 	else:
 		current_state = State.ON_FOOT
 		active_vehicle = null
 		collision_shape.disabled = false
+		set_collision_layer_value(1, true)
+		set_collision_mask_value(1, true)
 
 func set_flying_state(flying: bool, aircraft_node: Node3D) -> void:
 	if flying:
 		current_state = State.FLYING_AIRCRAFT
 		active_aircraft = aircraft_node
 		collision_shape.disabled = true
+		set_collision_layer_value(1, false)
+		set_collision_mask_value(1, false)
 	else:
 		current_state = State.ON_FOOT
 		active_aircraft = null
 		collision_shape.disabled = false
+		set_collision_layer_value(1, true)
+		set_collision_mask_value(1, true)
 
 func set_interactable_mount(mount_node: Node3D) -> void:
 	nearby_mount = mount_node
