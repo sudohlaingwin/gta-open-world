@@ -16,6 +16,8 @@ var smoothed_steering: float = 0.0
 @onready var headlight_beam_r: SpotLight3D = get_node_or_null("HeadlightBeamR")
 @onready var headlight_mesh_l: MeshInstance3D = get_node_or_null("HeadlightL")
 @onready var headlight_mesh_r: MeshInstance3D = get_node_or_null("HeadlightR")
+@onready var taillight_mesh_l: MeshInstance3D = get_node_or_null("TaillightL")
+@onready var taillight_mesh_r: MeshInstance3D = get_node_or_null("TaillightR")
 
 signal driver_entered(driver)
 signal driver_exited()
@@ -38,6 +40,12 @@ func _update_headlights() -> void:
 		if mat is StandardMaterial3D: mat.emission_enabled = lights_on
 	if headlight_mesh_r:
 		var mat = headlight_mesh_r.get_surface_override_material(0)
+		if mat is StandardMaterial3D: mat.emission_enabled = lights_on
+	if taillight_mesh_l:
+		var mat = taillight_mesh_l.get_surface_override_material(0)
+		if mat is StandardMaterial3D: mat.emission_enabled = lights_on
+	if taillight_mesh_r:
+		var mat = taillight_mesh_r.get_surface_override_material(0)
 		if mat is StandardMaterial3D: mat.emission_enabled = lights_on
 
 func _physics_process(delta: float) -> void:

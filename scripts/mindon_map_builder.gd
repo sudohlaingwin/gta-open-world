@@ -198,6 +198,11 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 			sign.position = Vector3(0.0, 3.8, front_z + 0.05)
 			hosp.add_child(sign)
 
+			# Attach automated day/night lantern controller to hospital entrance facade
+			if hosp_idx == 1:
+				var hosp_lantern = preload("res://scripts/village_lantern_controller.gd").new()
+				hosp.add_child(hosp_lantern)
+
 			building_holder.add_child(hosp)
 			hosp.global_position = Vector3(cx, 0.0, cz)
 		else:

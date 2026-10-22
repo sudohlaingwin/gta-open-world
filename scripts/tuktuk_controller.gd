@@ -38,9 +38,13 @@ func _update_headlights() -> void:
 	if head_mesh:
 		var mat = head_mesh.get_surface_override_material(0)
 		if mat is StandardMaterial3D: mat.emission_enabled = lights_on
-	var tail_mesh = visual_mesh.get_node_or_null("Taillight")
-	if tail_mesh:
-		var mat = tail_mesh.get_surface_override_material(0)
+	var tail_l = visual_mesh.get_node_or_null("TaillightL")
+	if tail_l:
+		var mat = tail_l.get_surface_override_material(0)
+		if mat is StandardMaterial3D: mat.emission_enabled = lights_on
+	var tail_r = visual_mesh.get_node_or_null("TaillightR")
+	if tail_r:
+		var mat = tail_r.get_surface_override_material(0)
 		if mat is StandardMaterial3D: mat.emission_enabled = lights_on
 
 func _physics_process(delta: float) -> void:
