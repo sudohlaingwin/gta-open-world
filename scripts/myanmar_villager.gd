@@ -113,7 +113,7 @@ func _pick_new_state() -> void:
 		state_timer = randf_range(4.0, 7.0)
 		var angle = randf() * TAU
 		var dist = randf_range(2.0, wander_radius)
-				var base_anchor = spawn_position
+		var base_anchor = spawn_position
 		if day_anchor != Vector3.ZERO:
 			var day_night = get_parent().get_node_or_null("DayNightCycle")
 			var daylight = 1.0

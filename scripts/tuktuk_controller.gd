@@ -58,9 +58,9 @@ func _physics_process(delta: float) -> void:
 
 		# Triple Wheel Synchronous Rolling
 		var spin_rate = (current_speed / 0.35) * delta
-		if front_wheel: front_wheel.rotate_x(spin_rate)
-		if wheel_bl: wheel_bl.rotate_x(spin_rate)
-		if wheel_br: wheel_br.rotate_x(spin_rate)
+		if front_wheel: front_wheel.rotate_object_local(Vector3(0, 1, 0), spin_rate)
+		if wheel_bl: wheel_bl.rotate_object_local(Vector3(0, 1, 0), spin_rate)
+		if wheel_br: wheel_br.rotate_object_local(Vector3(0, 1, 0), spin_rate)
 	else:
 		current_speed = move_toward(current_speed, 0.0, 4.0 * delta)
 		velocity.x = move_toward(velocity.x, 0.0, 4.0 * delta)
