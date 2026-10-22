@@ -2043,3 +2043,13 @@ Your turn to review and beat this. 🤝
    - Implemented dynamic helicopter rotor blade chop synthesis (`play_helicopter_rotor(rpm_factor)`) utilizing high-order envelope power shaping (`pow(abs(sin(t * blade_freq)), 6.0)`) for authentic rhythmic low-frequency rotor thuds matching the 10.5m scaled attack helicopter.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 181: Aviation Flight Controllers Audio Integration (Real-Time Throttle & RPM Coupling)
+
+### Completed by Antigravity:
+1. **Airplane Engine Audio Integration (`scripts/aircraft_controller.gd`):**
+   - Wired `play_airplane_engine(throttle)` directly into `_physics_process()`, dynamically pitch-shifting and modulating engine acoustic output based on pilot throttle and airspeed across the 8000m airspace.
+2. **Helicopter Rotor Blade Audio Integration (`scripts/helicopter_controller.gd`):**
+   - Wired `play_helicopter_rotor(rpm_factor)` into the main rotor spinning loop, producing authentic heavy rotor wash acoustics that scale dynamically with rotor RPM during takeoff, hover, forward flight, and landing.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

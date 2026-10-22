@@ -87,6 +87,11 @@ func _physics_process(delta: float) -> void:
 	if propeller_mesh:
 		propeller_mesh.rotate_z(30.0 * (0.2 + 0.8 * throttle) * delta)
 
+	# Trigger procedural engine roar audio
+	var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
+	if audio_mgr and audio_mgr.has_method("play_airplane_engine"):
+		audio_mgr.play_airplane_engine(throttle)
+
 	# Aerodynamic Stall & Lift Calculation
 	var thrust = forward * (throttle * max_thrust)
 	var lift: Vector3

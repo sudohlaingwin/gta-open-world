@@ -96,6 +96,13 @@ func _physics_process(delta: float) -> void:
 	if tail_rotor_mesh and rotor_speed > 0.1:
 		tail_rotor_mesh.rotate_x(rotor_speed * 1.5 * delta)
 
+	# Trigger procedural rotor blade chop audio
+	if rotor_speed > 2.0:
+		var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
+		if audio_mgr and audio_mgr.has_method("play_helicopter_rotor"):
+			var rpm_factor = clampf(rotor_speed / 42.0, 0.2, 1.4)
+			audio_mgr.play_helicopter_rotor(rpm_factor)
+
 	move_and_slide()
 
 func enter_aircraft(pilot: Node3D) -> void:
