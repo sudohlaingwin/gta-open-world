@@ -45,6 +45,10 @@ func _physics_process(delta: float) -> void:
 			var oar_angle = sin(Time.get_ticks_msec() * 0.006) * 0.4
 			if oar_left: oar_left.rotation.y = oar_angle
 			if oar_right: oar_right.rotation.y = -oar_angle
+			if abs(oar_angle) > 0.35:
+				var am = get_node_or_null("/root/AudioManager")
+				if am and am.has_method("play_boat_row_splash"):
+					am.play_boat_row_splash()
 	else:
 		current_speed = move_toward(current_speed, 0.0, acceleration * 2.0 * delta)
 		velocity.x = move_toward(velocity.x, 0.0, acceleration * delta)

@@ -275,3 +275,62 @@ func play_tropical_birds() -> void:
 	stream.data = data
 	birds_stream_player.stream = stream
 	birds_stream_player.play()
+
+var cart_wheel_player: AudioStreamPlayer
+var boat_splash_player: AudioStreamPlayer
+
+func play_cart_wheel_creak() -> void:
+	if is_muted: return
+	if not cart_wheel_player:
+		cart_wheel_player = AudioStreamPlayer.new()
+		cart_wheel_player.name = "CartWheelCreakAudio"
+		cart_wheel_player.volume_db = -9.0
+		add_child(cart_wheel_player)
+	if cart_wheel_player.playing:
+		return
+	var sample_hz = 22050
+	var duration = 0.35
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env = sin(t / duration * PI)
+		# Rhythmic wooden creak vibration
+		var creak = sin(t * 180.0 * TAU + sin(t * 40.0) * 4.0) * 0.6 + sin(t * 360.0 * TAU) * 0.3
+		var int_sample = int(clamp(creak * env, -1.0, 1.0) * 18000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	cart_wheel_player.stream = stream
+	cart_wheel_player.play()
+
+func play_boat_row_splash() -> void:
+	if is_muted: return
+	if not boat_splash_player:
+		boat_splash_player = AudioStreamPlayer.new()
+		boat_splash_player.name = "BoatSplashAudio"
+		boat_splash_player.volume_db = -8.0
+		add_child(boat_splash_player)
+	if boat_splash_player.playing:
+		return
+	var sample_hz = 22050
+	var duration = 0.42
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env = exp(-t * 5.5)
+		# Water splash burst
+		var water_burst = (sin(t * 110.0 * TAU) * 0.5 + sin(t * 260.0 * TAU) * 0.3 + sin(t * 520.0 * TAU) * 0.2)
+		var int_sample = int(clamp(water_burst * env, -1.0, 1.0) * 20000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	boat_splash_player.stream = stream
+	boat_splash_player.play()
