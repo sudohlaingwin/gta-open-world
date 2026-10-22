@@ -23,6 +23,25 @@ func _ready() -> void:
 					hud._update_quest_text()
 
 	apply_vehicle_paints()
+	_setup_infinite_ground()
+
+var terrain_node: Node3D = null
+var player_ref: Node3D = null
+
+func _setup_infinite_ground() -> void:
+	terrain_node = get_node_or_null("Terrain")
+	player_ref = get_tree().get_first_node_in_group("player")
+
+func _process(_delta: float) -> void:
+	if not player_ref:
+		player_ref = get_tree().get_first_node_in_group("player")
+	if terrain_node and player_ref:
+		# Infinite seamless terrain origin snapping (ကစားသူသွားရာနောက် မြေပြင်အဆုံးမရှိလိုက်ပါခြင်း)
+		var px = player_ref.global_position.x
+		var pz = player_ref.global_position.z
+		terrain_node.global_position.x = floor(px / 50.0) * 50.0
+		terrain_node.global_position.z = floor(pz / 50.0) * 50.0
+
 
 func apply_vehicle_paints() -> void:
 	var sm = get_node_or_null("/root/SaveManager")
