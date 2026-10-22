@@ -220,6 +220,62 @@ func play_teashop_chime() -> void:
 	teashop_chime_player.stream = stream
 	teashop_chime_player.play()
 
+func play_motorcycle_engine(speed_ratio: float = 0.0) -> void:
+	if is_muted: return
+	if not vehicle_engine_player:
+		vehicle_engine_player = AudioStreamPlayer.new()
+		vehicle_engine_player.name = "VehicleEngineAudio"
+		vehicle_engine_player.volume_db = -6.0
+		add_child(vehicle_engine_player)
+	if vehicle_engine_player.playing:
+		return
+	var sample_hz = 22050
+	var duration = 0.35
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	# High-rev single-cylinder Kenbo 125cc engine roar
+	var base_freq = 65.0 + clampf(speed_ratio, 0.0, 1.2) * 110.0
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var pop = sin(t * base_freq * TAU) * 0.6 + sin(t * base_freq * 2.0 * TAU) * 0.3 + sin(t * base_freq * 4.0 * TAU) * 0.1
+		var int_sample = int(clamp(pop, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	vehicle_engine_player.stream = stream
+	vehicle_engine_player.play()
+
+func play_tuktuk_engine(speed_ratio: float = 0.0) -> void:
+	if is_muted: return
+	if not vehicle_engine_player:
+		vehicle_engine_player = AudioStreamPlayer.new()
+		vehicle_engine_player.name = "VehicleEngineAudio"
+		vehicle_engine_player.volume_db = -6.0
+		add_child(vehicle_engine_player)
+	if vehicle_engine_player.playing:
+		return
+	var sample_hz = 22050
+	var duration = 0.4
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	# Characteristic 2-stroke / 4-stroke thumping Tuk-Tuk engine
+	var base_freq = 48.0 + clampf(speed_ratio, 0.0, 1.2) * 75.0
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var thump = sin(t * base_freq * TAU) * 0.7 + sin(t * base_freq * 1.5 * TAU) * 0.2 + sin(t * base_freq * 3.0 * TAU) * 0.1
+		var int_sample = int(clamp(thump, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	vehicle_engine_player.stream = stream
+	vehicle_engine_player.play()
+
 func play_footstep() -> void:
 	if is_muted: return
 	if not footstep_player:

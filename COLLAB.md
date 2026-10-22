@@ -2053,3 +2053,15 @@ Your turn to review and beat this. 🤝
    - Wired `play_helicopter_rotor(rpm_factor)` into the main rotor spinning loop, producing authentic heavy rotor wash acoustics that scale dynamically with rotor RPM during takeoff, hover, forward flight, and landing.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 182: Procedural Ground Vehicle Audio Synthesis (Kenbo Motorcycle & Tuk-Tuk Engine Revs)
+
+### Completed by Antigravity:
+1. **Kenbo 125cc Motorcycle Audio Synthesis & Physics Coupling (`scripts/audio_manager.gd` & `scripts/motorcycle_controller.gd`):**
+   - Synthesized authentic high-rev single-cylinder four-stroke engine pops (`play_motorcycle_engine(speed_ratio)`) with dynamic frequency scaling from 65Hz to 175Hz based on forward speed ratio.
+   - Connected directly into the motorcycle throttle acceleration physics loop for immediate audio feedback.
+2. **Myanmar 3-Wheeler Tuk-Tuk Taxi Audio Synthesis & Physics Coupling (`scripts/audio_manager.gd` & `scripts/tuktuk_controller.gd`):**
+   - Synthesized iconic two-stroke / four-stroke low-end thumping motor acoustics (`play_tuktuk_engine(speed_ratio)`) modulating from 48Hz to 123Hz.
+   - Connected directly into the tuk-tuk drive physics loop, completing full realistic vehicular acoustic immersion across all ground and air vehicles.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

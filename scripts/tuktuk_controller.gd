@@ -67,6 +67,9 @@ func _physics_process(delta: float) -> void:
 		if input_dir.y < -0.1: # Forward
 			var power = lerp(0.7, 1.0, 1.0 - speed_ratio * 0.4)
 			current_speed = move_toward(current_speed, max_speed, acceleration * power * delta)
+			var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
+			if audio_mgr and audio_mgr.has_method("play_tuktuk_engine"):
+				audio_mgr.play_tuktuk_engine(speed_ratio)
 		elif input_dir.y > 0.1: # Brake / Reverse
 			if current_speed > 0.5:
 				current_speed = move_toward(current_speed, 0.0, brake_decel * delta)
