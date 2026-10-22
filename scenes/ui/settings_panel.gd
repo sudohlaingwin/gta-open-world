@@ -29,6 +29,8 @@ var hud_slider: HSlider = null
 var hud_label: Label = null
 var deadzone_slider: HSlider = null
 var deadzone_label: Label = null
+var quality_check: CheckButton = null
+var fps_check: CheckButton = null
 var reset_button: Button = null
 var back_button: Button = null
 
@@ -53,6 +55,12 @@ func _ready() -> void:
 	if deadzone_slider != null:
 		deadzone_slider.value_changed.connect(_on_deadzone_changed)
 	deadzone_label = get_node_or_null("DeadzoneLabel") as Label
+	quality_check = get_node_or_null("QualityCheck") as CheckButton
+	if quality_check != null:
+		quality_check.toggled.connect(_on_quality_toggled)
+	fps_check = get_node_or_null("FpsCheck") as CheckButton
+	if fps_check != null:
+		fps_check.toggled.connect(_on_fps_toggled)
 	reset_button = get_node_or_null("ResetButton") as Button
 	if reset_button != null:
 		reset_button.pressed.connect(_on_reset_pressed)
@@ -88,6 +96,42 @@ func refresh() -> void:
 		deadzone_slider.value = float(sm.get("joystick_deadzone")) * 100.0
 	if deadzone_label != null:
 		deadzone_label.text = "Joystick အသေဇုန်: %d%%" % int(round(float(sm.get("joystick_deadzone")) * 100.0))
+	if quality_check != null:
+		quality_check.button_pressed = int(sm.get("graphics_quality")) == 1
+	if fps_check != null:
+		fps_check.button_pressed = bool(sm.get("fps_visible"))
+
+
+## Audit item 4: apply the quality setting to the live world, if one
+## is loaded. In the main menu there is no Player node, so this is a
+## no-op there and the choice applies at the next world spawn
+## (player.gd calls apply_graphics_quality in _ready). In the pause
+## menu the world is loaded, so the change takes effect the moment
+## play resumes — no restart, no reload.
+func _apply_quality_to_world() -> void:
+	var world = get_tree().current_scene
+	if world == null:
+		return
+	var pl = world.get_node_or_null("Player")
+	if pl != null and pl.has_method("apply_graphics_quality"):
+		pl.call("apply_graphics_quality")
+
+
+func _on_quality_toggled(pressed: bool) -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	sm.set("graphics_quality", 1 if pressed else 0)
+	sm.call("save_settings")
+	_apply_quality_to_world()
+
+
+func _on_fps_toggled(pressed: bool) -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	sm.set("fps_visible", pressed)
+	sm.call("save_settings")
 
 
 func _on_mute_toggled(pressed: bool) -> void:

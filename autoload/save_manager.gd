@@ -49,6 +49,15 @@ var tuktuk_paint_html: String = "#1A66CC"
 var camera_sensitivity: float = 1.0
 var hud_scale: float = 1.0
 var joystick_deadzone: float = 0.15
+## Audit item 4 graphics quality: 0 = High (the look every slice so
+## far shipped: sun shadows on, full 3D resolution), 1 = Low (sun
+## shadows off, 3D render scale 0.75 with bilinear upscaling — the
+## two levers that actually exist in this project; it has no
+## WorldEnvironment, so there is no glow/bloom lever to offer).
+## fps_visible toggles the measured-FPS overlay (default OFF, so the
+## already-dense HUD is not cluttered further).
+var graphics_quality: int = 0
+var fps_visible: bool = false
 
 
 func _ready() -> void:
@@ -120,6 +129,8 @@ func load_settings() -> void:
 	camera_sensitivity = 1.0
 	hud_scale = 1.0
 	joystick_deadzone = 0.15
+	graphics_quality = 0
+	fps_visible = false
 	if not FileAccess.file_exists(settings_path):
 		return
 	var file = FileAccess.open(settings_path, FileAccess.READ)
@@ -162,6 +173,10 @@ func load_settings() -> void:
 		hud_scale = clampf(float(parsed.get("hud_scale")), 0.8, 1.25)
 	if parsed.has("joystick_deadzone"):
 		joystick_deadzone = clampf(float(parsed.get("joystick_deadzone")), 0.0, 0.4)
+	if parsed.has("graphics_quality"):
+		graphics_quality = clampi(int(parsed.get("graphics_quality")), 0, 1)
+	if parsed.has("fps_visible"):
+		fps_visible = bool(parsed.get("fps_visible"))
 
 
 func save_settings() -> bool:
@@ -174,7 +189,9 @@ func save_settings() -> bool:
 		"tuktuk_paint_html": tuktuk_paint_html,
 		"camera_sensitivity": camera_sensitivity,
 		"hud_scale": hud_scale,
-		"joystick_deadzone": joystick_deadzone}
+		"joystick_deadzone": joystick_deadzone,
+		"graphics_quality": graphics_quality,
+		"fps_visible": fps_visible}
 	return _atomic_write(settings_path, JSON.stringify(data))
 
 
@@ -190,6 +207,8 @@ func reset_settings() -> void:
 	camera_sensitivity = 1.0
 	hud_scale = 1.0
 	joystick_deadzone = 0.15
+	graphics_quality = 0
+	fps_visible = false
 	save_settings()
 
 

@@ -245,6 +245,35 @@ func _ready() -> void:
 	_apply_pending_load()
 	_apply_outfit()
 	_apply_hud_scale()
+	apply_graphics_quality()
+
+
+## Audit item 4: graphics quality. Reads SaveManager.graphics_quality
+## (0 = High, 1 = Low) and applies the two levers that actually exist
+## in this project, both LIVE (no restart, no world reload):
+## - Sun shadows: DayNight/SunLight.shadow_enabled, on at High, off
+##   at Low. day_night.gd never touches shadow_enabled, so this
+##   setting and the Slice 25 golden-hour sun-colour pass do not fight.
+## - 3D render scale: the root viewport renders at full resolution
+##   at High (scale 1.0); at Low it renders at 0.75 with bilinear
+##   upscaling. (Godot 4.3 exposes only BILINEAR/FSR scale modes on
+##   the viewport — there is no DISABLED constant in this binary,
+##   verified empirically — so full resolution is scale 1.0.)
+##   This project has no WorldEnvironment, so there is no glow/bloom
+##   lever to offer — none is claimed.
+## Called at world spawn and again from the Settings panel whenever
+## the toggle changes in the pause menu, so a pause-menu change
+## takes effect the moment play resumes.
+func apply_graphics_quality() -> void:
+	var sm = get_node_or_null("/root/SaveManager")
+	var low: bool = sm != null and int(sm.get("graphics_quality")) == 1
+	var sun = get_parent().get_node_or_null("DayNight/SunLight") as DirectionalLight3D
+	if sun != null:
+		sun.shadow_enabled = not low
+	var vp = get_viewport()
+	if vp != null:
+		vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
+		vp.scaling_3d_scale = 0.75 if low else 1.0
 	var mm = _mm()
 	if mm != null:
 		last_saved_stage = mm.stage

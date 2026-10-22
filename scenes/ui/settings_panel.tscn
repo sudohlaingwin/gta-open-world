@@ -175,3 +175,25 @@ offset_top = 0.0
 offset_right = 0.0
 offset_bottom = 0.0
 text = "ပြန်သွားပါ"
+
+[node name="QualityCheck" type="CheckButton" parent="."]
+anchor_left = 0.1
+anchor_top = 0.82
+anchor_right = 0.9
+anchor_bottom = 0.86
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+text = "ဂရပ်ဖစ် အရည်အသွေးနိမ့် (မြန်ဆန်ရန်)"
+
+[node name="FpsCheck" type="CheckButton" parent="."]
+anchor_left = 0.1
+anchor_top = 0.87
+anchor_right = 0.9
+anchor_bottom = 0.91
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+text = "FPS ပြသရန်"

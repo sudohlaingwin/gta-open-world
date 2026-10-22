@@ -1,4 +1,4 @@
-[gd_scene load_steps=445 format=3]
+[gd_scene load_steps=446 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Script" path="res://car.gd" id="1_car"]
@@ -20,6 +20,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/settings_panel.tscn" id="21_settings_panel"]
 [ext_resource type="Script" path="res://traffic_manager.gd" id="1_traffic_manager"]
 [ext_resource type="Script" path="res://world_map.gd" id="1_worldmap"]
+[ext_resource type="Script" path="res://scenes/ui/fps_label.gd" id="1_fps_label"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
 size = Vector3(320, 1, 220)
@@ -1744,6 +1745,20 @@ offset_right = 0.0
 offset_bottom = 0.0
 horizontal_alignment = 2
 text = "အချိန် 06:00"
+
+[node name="FpsLabel40" type="Label" parent="JoystickLayer"]
+anchor_left = 0.78
+anchor_top = 0.08
+anchor_right = 0.97
+anchor_bottom = 0.12
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+horizontal_alignment = 2
+visible = false
+script = ExtResource("1_fps_label")
+text = "FPS: --"
 
 [node name="OrbitButton" type="Button" parent="JoystickLayer"]
 theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
