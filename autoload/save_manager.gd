@@ -79,15 +79,33 @@ func load_save() -> Dictionary:
 	return parsed
 
 
+## Audit fix (Phase 1): atomic writes. save_game/save_settings used to
+## open the live file for WRITE and stream JSON into it, so a kill,
+## crash, or power loss mid-write left a truncated file behind — and
+## load_save/load_settings treat truncated JSON as "no save", which
+## silently destroyed ALL progress (reproduced headlessly: a save
+## truncated to half its bytes loads as {}). Writing to a temp file
+## in the same directory and renaming over the live file closes that
+## window: rename is atomic, so the live file is always either the
+## complete old save or the complete new save, never a half-write.
+## This prevents FUTURE corruption from interrupted saves; it does
+## not recover a file that is already truncated.
+func _atomic_write(path: String, text: String) -> bool:
+	var tmp_path := path + ".tmp"
+	var file = FileAccess.open(tmp_path, FileAccess.WRITE)
+	if file == null:
+		return false
+	file.store_string(text)
+	file.close()
+	if DirAccess.rename_absolute(tmp_path, path) != OK:
+		return false
+	return true
+
+
 func save_game(data: Dictionary) -> bool:
 	var copy = data.duplicate(true)
 	copy["version"] = SAVE_VERSION
-	var file = FileAccess.open(save_path, FileAccess.WRITE)
-	if file == null:
-		return false
-	file.store_string(JSON.stringify(copy))
-	file.close()
-	return true
+	return _atomic_write(save_path, JSON.stringify(copy))
 
 
 func load_settings() -> void:
@@ -157,12 +175,7 @@ func save_settings() -> bool:
 		"camera_sensitivity": camera_sensitivity,
 		"hud_scale": hud_scale,
 		"joystick_deadzone": joystick_deadzone}
-	var file = FileAccess.open(settings_path, FileAccess.WRITE)
-	if file == null:
-		return false
-	file.store_string(JSON.stringify(data))
-	file.close()
-	return true
+	return _atomic_write(settings_path, JSON.stringify(data))
 
 
 func reset_settings() -> void:
