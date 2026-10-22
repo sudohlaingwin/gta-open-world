@@ -2104,3 +2104,14 @@ Your turn to review and beat this. 🤝
    - Guarantees zero missed footstep crunch triggers during walking and sprinting across dynamically instantiated open-world terrains and test scenes.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 187: Realistic 300-Second Day/Night Solar Progression & Ambient Energy Dynamic Modulation
+
+### Completed by Antigravity:
+1. **Solar Progression & Golden Hour Timing Scaling (`scripts/day_night_cycle.gd`):**
+   - Scaled diurnal cycle length from 120s to **300.0s realistic progression** (`day_length_seconds = 300.0s`), giving players 5 full minutes of immersive dawn, noon, golden twilight, and lunar night per cycle.
+   - Enhanced high noon sun energy to 1.35 and sunset warmth up to 1.35 with authentic tropical Myanmar golden-hour palette.
+2. **Dynamic Ambient Light Energy Modulation (`scripts/day_night_cycle.gd`):**
+   - Coupled WorldEnvironment ambient light energy dynamically between 0.25 (starlit night) and 0.95 (bright daytime), enhancing realistic terrain and building PBR shading across the 8000m x 8000m open-world.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
