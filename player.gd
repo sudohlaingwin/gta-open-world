@@ -87,6 +87,9 @@ var lights_on: bool = true
 var quest_tracker_label: Label = null
 var camera_reset_button: Button = null
 var camera_reset_connected: bool = false
+# Slice 28: world-map button (touch-first; lives in the real scene).
+var map_button: Button = null
+var map_button_connected: bool = false
 # Slice 16: parachute + festival. The parachute deploys itself on
 # a mid-air vehicle exit and stows itself on landing (no button
 # needed); drum / lantern / snack buttons are touch-first like
@@ -455,6 +458,16 @@ func _update_action_buttons() -> void:
 			camera_reset_connected = true
 	if camera_reset_button != null:
 		camera_reset_button.visible = true
+	# Slice 28 world-map button: tap to open the full-screen map.
+	# Wired lazily like every other HUD button, so the button is
+	# ACTUALLY CONNECTED (the opponent's slice-35 MapBtn never was).
+	if map_button == null:
+		map_button = get_node_or_null("../JoystickLayer/MapButton28") as Button
+		if map_button != null and not map_button_connected:
+			map_button.pressed.connect(_on_map_button_pressed)
+			map_button_connected = true
+	if map_button != null:
+		map_button.visible = true
 	if help_label == null:
 		help_label = get_node_or_null("../JoystickLayer/HelpLabel") as Label
 	if driving:
@@ -839,7 +852,7 @@ func _update_minimap() -> void:
 			"VillagerDot7", "VillagerDot8", "VehicleDotBicycle", "VehicleDotTukTuk",
 			"FestivalDot16", "VillagerDot9", "VillagerDot10",
 			"FishDot17", "DonateDot17", "VillagerDot11", "VillagerDot12", "StallDot17", "WellDot17", "VehicleDotCow2", "BallDot17", "HouseDot17", "VehicleDotElephant", "VillagerDot13", "VillagerDot14", "PavilionDot18", "PaddyDot18",
-			"VehicleDotHorse", "VillagerDot15", "VillagerDot16", "HutDot19", "GoldStallDot19", "WorkshopDot19", "NightMarketDot20", "GuestHouseDot20", "PierDot20", "VehicleDotBoat2", "VehicleDotHorse2", "VillagerDot17", "VillagerDot18"]:
+			"VehicleDotHorse", "VillagerDot15", "VillagerDot16", "HutDot19", "GoldStallDot19", "WorkshopDot19", "NightMarketDot20", "GuestHouseDot20", "PierDot20", "VehicleDotBoat2", "VehicleDotHorse2", "VillagerDot17", "VillagerDot18", "WaypointDot"]:
 			var dot := panel.get_node_or_null(name) as ColorRect
 			if dot != null:
 				minimap_dots[name] = dot
@@ -939,6 +952,17 @@ func _update_minimap() -> void:
 		var lm20 := get_node_or_null("../" + pair[0]) as Node3D
 		if lm20 != null:
 			put.call(pair[1], lm20.global_position)
+	# Slice 28 world-map waypoint dot on the minimap: the overlay owns
+	# the waypoint; the minimap only mirrors it (same transform family).
+	var wm28 := get_node_or_null("../JoystickLayer/WorldMapPanel")
+	var wp_dot: ColorRect = minimap_dots.get("WaypointDot")
+	if wp_dot != null:
+		if wm28 != null and bool(wm28.get("has_waypoint")):
+			var wpv: Vector2 = wm28.get("waypoint")
+			put.call("WaypointDot", Vector3(wpv.x, 0.0, wpv.y))
+			wp_dot.visible = true
+		else:
+			wp_dot.visible = false
 
 ## Slice 10 nearby prompt: what is close enough to use, on foot.
 func _update_prompt_label() -> void:
@@ -1041,6 +1065,13 @@ func _on_zoom_out() -> void:
 func _on_help_pressed() -> void:
 	if help_label != null:
 		help_label.visible = not help_label.visible
+
+## Slice 28: open the world map overlay (it owns pause bookkeeping).
+func _on_map_button_pressed() -> void:
+	var wm := get_node_or_null("../JoystickLayer/WorldMapPanel")
+	if wm != null and wm.has_method("open_map"):
+		wm.call("open_map")
+
 
 func _on_camera_reset() -> void:
 	var cam := get_node_or_null("../FollowCamera")

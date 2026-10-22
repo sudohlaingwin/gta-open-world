@@ -1,4 +1,4 @@
-[gd_scene load_steps=429 format=3]
+[gd_scene load_steps=431 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Script" path="res://car.gd" id="1_car"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" path="res://horse.gd" id="1_horse19"]
 [ext_resource type="PackedScene" path="res://scenes/ui/settings_panel.tscn" id="21_settings_panel"]
 [ext_resource type="Script" path="res://traffic_manager.gd" id="1_traffic_manager"]
+[ext_resource type="Script" path="res://world_map.gd" id="1_worldmap"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
 size = Vector3(100, 1, 100)
@@ -1415,6 +1416,12 @@ roughness = 0.6
 emission_enabled = false
 emission = Color(1.0, 0.72, 0.32, 1)
 emission_energy_multiplier = 1.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_beacon28"]
+albedo_color = Color(1.0, 0.1, 0.1, 1)
+emission_enabled = true
+emission = Color(1.0, 0.3, 0.1, 1)
+emission_energy_multiplier = 2.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_atmos_paint_red"]
 albedo_color = Color(0.85, 0.1, 0.15, 1)
@@ -9444,3 +9451,42 @@ surface_material_override/0 = SubResource("StandardMaterial3D_atmos_window")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 3.03)
 mesh = SubResource("BoxMesh_atmos_window")
 surface_material_override/0 = SubResource("StandardMaterial3D_atmos_window")
+
+[node name="MapButton28" type="Button" parent="JoystickLayer"]
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_button")
+anchor_left = 0.84
+anchor_top = 0.35
+anchor_right = 0.98
+anchor_bottom = 0.41
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+text = "🗺 မြေပုံ"
+
+[node name="WaypointDot" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 10.0
+offset_bottom = 10.0
+color = Color(1, 0.1, 0.1, 1)
+visible = false
+
+[node name="WaypointBeacon28" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("BoxMesh_atmos_window")
+surface_material_override/0 = SubResource("StandardMaterial3D_beacon28")
+visible = false
+
+[node name="WorldMapPanel" type="Control" parent="JoystickLayer"]
+pause_mode = 3
+script = ExtResource("1_worldmap")
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+visible = false
