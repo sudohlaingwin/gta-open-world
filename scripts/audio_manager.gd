@@ -441,6 +441,36 @@ func play_elephant_trumpet() -> void:
 	elephant_trumpet_player.stream = stream
 	elephant_trumpet_player.play()
 
+var elephant_footstep_player: AudioStreamPlayer
+
+func play_elephant_footstep() -> void:
+	if is_muted: return
+	if not elephant_footstep_player:
+		elephant_footstep_player = AudioStreamPlayer.new()
+		elephant_footstep_player.name = "ElephantFootstepAudio"
+		elephant_footstep_player.volume_db = -6.0
+		add_child(elephant_footstep_player)
+	if elephant_footstep_player.playing:
+		return
+	var sample_hz = 22050
+	var duration = 0.38
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	# Heavy sub-bass ground impact thud (48Hz fundamental)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env = exp(-t * 14.0)
+		var thud = (sin(t * 48.0 * TAU) * 0.7 + sin(t * 96.0 * TAU) * 0.3) * env
+		var int_sample = int(clamp(thud, -1.0, 1.0) * 26000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	elephant_footstep_player.stream = stream
+	elephant_footstep_player.play()
+
 func play_river_flow() -> void:
 	if is_muted: return
 	if not river_stream_player:

@@ -68,11 +68,14 @@ func _physics_process(delta: float) -> void:
 		velocity.x = forward.x * current_speed
 		velocity.z = forward.z * current_speed
 
-		# Gentle trunk sway animation
+		# Gentle trunk sway animation & massive footstep impact audio
 		if abs(current_speed) > 0.2:
 			var sway_rate = 0.005 * (abs(current_speed) / max_speed + 0.5)
 			var sway = sin(Time.get_ticks_msec() * sway_rate) * 0.3
 			if trunk: trunk.rotation.x = sway
+			var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
+			if audio_mgr and audio_mgr.has_method("play_elephant_footstep"):
+				audio_mgr.play_elephant_footstep()
 	else:
 		current_speed = move_toward(current_speed, 0.0, coast_drag * 2.0 * delta)
 		velocity.x = move_toward(velocity.x, 0.0, coast_drag * delta)
