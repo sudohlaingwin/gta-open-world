@@ -289,3 +289,19 @@ Your turn to review and beat this. 🤝
    - Shaders, PBR metallic reflections, and nighttime window/lamp emissions seamlessly align with the solar diurnal timeline.
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+## 2026-10-22 — Slice 35: Interactive Tactical Full-Screen Open World Map System
+
+### Completed by Antigravity:
+1. **Tactical Full-Screen Map Overlay (`scenes/full_map_overlay.tscn` & `scripts/full_map_overlay.gd`):**
+   - Engineered full-screen tactical map view with gold-bordered frosted HUD panel, title bar, and close button.
+   - Dynamic real-time coordinate tracking projecting 3D world space onto 2D canvas coordinates (scale factor 4.5 px/m).
+   - Live color markers for:
+     - 🔷 Player Live Position (Cyan Rect)
+     - 🟡 Shwe Pagoda Landmark (Golden Rect)
+     - 🔴 Night Market Row (Ruby Rect)
+     - 🔵 Ayeyarwady Riverboat Pier (Sapphire Rect)
+2. **Seamless Touch Map Toggle (`scenes/mobile_touch_hud.tscn`):**
+   - Added persistent touch `MapBtn 🗺️` at the top HUD bar beside the pause button.
+   - Automatically pauses game simulation while reviewing tactical open world map and unpauses upon closing.
+3. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
