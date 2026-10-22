@@ -1976,3 +1976,12 @@ Your turn to review and beat this. 🤝
    - Adjusted SpringArm3D length from 2.4m to **2.6m distance** at 1.45m eye-level height for optimal third-person field of view on mobile screens.
 4. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 174: Grand Ayeyarwady River Navigable Channel (800m x 85m) Overhaul
+
+### Completed by Antigravity:
+1. **Ayeyarwady River Water Mesh Scaling (`scenes/world.tscn`):**
+   - Scaled primary water surface from 140m x 28m to majestic **800.0m length x 85.0m width navigable river channel** (`BoxMesh_river = Vector3(800.0, 0.6, 85.0)`).
+   - Enables seamless navigation for the 7.8m teak rowboats, bamboo bridges (36m span), river piers (32m wharf), and watercraft across the expansive 8000m x 8000m open-world landscape.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

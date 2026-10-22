@@ -61,7 +61,7 @@ render_priority = 0
 shader = ExtResource("31_water_shader")
 
 [sub_resource type="BoxMesh" id="BoxMesh_river"]
-size = Vector3(140.0, 0.4, 28.0)
+size = Vector3(800.0, 0.6, 85.0)
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 2
