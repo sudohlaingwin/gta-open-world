@@ -3,30 +3,46 @@
 [ext_resource type="Script" path="res://scripts/vehicle_customizer.gd" id="1_vehicle_script"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
-bg_color = Color(0.08, 0.12, 0.18, 0.95)
+bg_color = Color(0.05, 0.09, 0.16, 0.96)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(1.0, 0.84, 0.0, 0.8)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
+border_color = Color(1.0, 0.86, 0.25, 0.95)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_size = 12
+shadow_offset = Vector2(0, 5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab"]
-bg_color = Color(0.15, 0.25, 0.38, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+bg_color = Color(0.10, 0.18, 0.28, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.75, 0.95, 0.85)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
-bg_color = Color(0.12, 0.45, 0.35, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+bg_color = Color(0.10, 0.38, 0.30, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.90, 0.65, 0.85)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
 
 [node name="VehicleCustomizer" type="Control"]
 process_mode = 3

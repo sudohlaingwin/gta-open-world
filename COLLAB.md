@@ -2400,3 +2400,16 @@ Your turn to review and beat this. 🤝
    - Enhanced panel title typography with radiant gold 24pt Burmese headers and crisp multi-layer drop shadows for maximum legibility on high-DPI mobile displays (vivo V60).
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-22 — Slice 208: Main Menu, Character & Vehicle Customizer Esports Glassmorphism Overhaul
+
+### Completed by Antigravity:
+1. **Esports Main Menu Interactive Glassmorphism (`scenes/main_menu.tscn`):**
+   - Upgraded `StyleBoxFlat_btn_gold` primary action button ("Continue") with 3px radiant gold border (`Color(1.0, 0.86, 0.25, 0.95)`), 16px corner geometry, and golden ambient bloom glow (`shadow_color = Color(1.0, 0.84, 0.0, 0.25)`).
+   - Upgraded standard action buttons (`StyleBoxFlat_btn`) with cyber cyan border outlines (`Color(0.20, 0.80, 0.95, 0.85)`), translucent deep slate blue fill, and 16px pill curves.
+   - Refined `StyleBoxFlat_btn_quit` with crimson alert styling (`Color(0.95, 0.28, 0.32, 0.85)`).
+2. **Traditional Myanmar Outfit & Vehicle Color Customizers Overhaul (`scenes/character_customizer.tscn` & `scenes/vehicle_customizer.tscn`):**
+   - Upgraded both customizer modal dialogs (`StyleBoxFlat_panel`) with 20px rounded ergonomic corners, 3px radiant gold borders, and 12px deep drop shadows.
+   - Enhanced item selection tabs and action buttons (`StyleBoxFlat_tab`, `StyleBoxFlat_btn`, `StyleBoxFlat_close`) with vibrant cyan/emerald accents and responsive mobile feedback.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly to `origin/arena/antigravity`.
