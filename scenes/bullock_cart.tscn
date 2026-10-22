@@ -9,7 +9,7 @@ size = Vector3(2.0, 1.6, 3.8)
 size = Vector3(1.8, 0.8, 2.8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
-albedo_color = Color(0.45, 0.28, 0.14, 1) # Teak wood color for traditional cart
+albedo_color = Color(0.45, 0.28, 0.14, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
 top_radius = 0.8

@@ -9,14 +9,14 @@ size = Vector3(1.6, 1.8, 3.2)
 size = Vector3(1.5, 1.2, 2.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tuktuk_yellow"]
-albedo_color = Color(0.95, 0.72, 0.1, 1) # Bright Myanmar Taxi Yellow
+albedo_color = Color(0.95, 0.72, 0.1, 1)
 roughness = 0.35
 
 [sub_resource type="BoxMesh" id="BoxMesh_canopy"]
 size = Vector3(1.55, 0.1, 2.3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_canopy_green"]
-albedo_color = Color(0.12, 0.45, 0.22, 1) # Forest Green Canopy
+albedo_color = Color(0.12, 0.45, 0.22, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
 top_radius = 0.35

@@ -7,14 +7,14 @@ size = Vector3(8.0, 5.0, 7.0)
 size = Vector3(7.5, 0.4, 6.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak"]
-albedo_color = Color(0.35, 0.20, 0.10, 1) # Dark Teak Wood
+albedo_color = Color(0.35, 0.20, 0.10, 1)
 roughness = 0.85
 
 [sub_resource type="BoxMesh" id="BoxMesh_walls"]
 size = Vector3(7.2, 2.8, 6.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo"]
-albedo_color = Color(0.72, 0.62, 0.42, 1) # Woven Bamboo Mat
+albedo_color = Color(0.72, 0.62, 0.42, 1)
 roughness = 0.9
 
 [sub_resource type="PrismMesh" id="PrismMesh_roof"]
@@ -22,7 +22,7 @@ left_to_right = 0.5
 size = Vector3(8.2, 2.2, 7.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thatch"]
-albedo_color = Color(0.48, 0.40, 0.25, 1) # Dry Palm/Thatch
+albedo_color = Color(0.48, 0.40, 0.25, 1)
 
 [node name="MyanmarHouse" type="StaticBody3D"]
 

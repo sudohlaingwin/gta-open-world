@@ -10,7 +10,7 @@ bottom_radius = 1.35
 height = 0.9
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brick"]
-albedo_color = Color(0.65, 0.28, 0.18, 1) # Red Brick
+albedo_color = Color(0.65, 0.28, 0.18, 1)
 roughness = 0.9
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_water"]

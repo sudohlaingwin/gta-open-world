@@ -9,7 +9,7 @@ size = Vector3(1.6, 1.0, 4.2)
 size = Vector3(1.4, 0.6, 4.0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak"]
-albedo_color = Color(0.35, 0.22, 0.12, 1) # Weathered Myanmar Teak Wood
+albedo_color = Color(0.35, 0.22, 0.12, 1)
 roughness = 0.85
 
 [sub_resource type="BoxMesh" id="BoxMesh_bench"]

@@ -26,7 +26,7 @@ radius = 0.4
 height = 0.8
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold"]
-albedo_color = Color(1.0, 0.84, 0.0, 1) # Pure Myanmar Shwedagon Gold
+albedo_color = Color(1.0, 0.84, 0.0, 1)
 metallic = 0.85
 roughness = 0.2
 

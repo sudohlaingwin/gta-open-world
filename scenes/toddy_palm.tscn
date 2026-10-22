@@ -10,7 +10,7 @@ bottom_radius = 0.42
 height = 10.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_palm_bark"]
-albedo_color = Color(0.28, 0.24, 0.20, 1) # Dark fibrous palm bark
+albedo_color = Color(0.28, 0.24, 0.20, 1)
 roughness = 0.95
 
 [sub_resource type="SphereMesh" id="SphereMesh_fronds"]
@@ -18,7 +18,7 @@ radius = 2.2
 height = 1.4
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fronds"]
-albedo_color = Color(0.12, 0.38, 0.15, 1) # Deep Tropical Green
+albedo_color = Color(0.12, 0.38, 0.15, 1)
 
 [node name="ToddyPalm" type="StaticBody3D"]
 

@@ -9,7 +9,7 @@ bottom_radius = 0.16
 height = 3.6
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak"]
-albedo_color = Color(0.32, 0.18, 0.08, 1) # Weathered Burmese Teak
+albedo_color = Color(0.32, 0.18, 0.08, 1)
 roughness = 0.85
 
 [sub_resource type="BoxMesh" id="BoxMesh_deck"]
@@ -24,7 +24,7 @@ left_to_right = 0.5
 size = Vector3(6.5, 1.4, 5.0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_roof_tile"]
-albedo_color = Color(0.55, 0.28, 0.18, 1) # Terracotta Burmese Clay Tiles
+albedo_color = Color(0.55, 0.28, 0.18, 1)
 
 [node name="MyanmarZayat" type="StaticBody3D"]
 

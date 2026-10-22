@@ -29,8 +29,12 @@ extends CanvasLayer
 @onready var full_map_overlay: Control = $FullMapOverlay
 @onready var settings_panel: Control = $SettingsPanel
 @onready var prompt_banner: Label = $PromptBanner
+@onready var waypoint_guide: Panel = $TopCenterHUD/WaypointGuide
+@onready var guide_arrow: Label = $TopCenterHUD/WaypointGuide/ArrowLabel
+@onready var guide_dist: Label = $TopCenterHUD/WaypointGuide/DistanceLabel
 
 var player: CharacterBody3D = null
+var beacon_node: Node3D = null
 var quest_stage: int = 1
 var villagers_talked_count: int = 0
 var pagoda_node: Node3D = null
@@ -106,6 +110,38 @@ func _process(delta: float) -> void:
 	if compass_label and player.visual_mesh:
 		var deg = wrapf(rad_to_deg(player.visual_mesh.rotation.y), 0, 360)
 		compass_label.text = "%d° %s" % [deg, _get_cardinal_dir(deg)]
+
+	# 2b. Waypoint Guidance HUD (Camera-relative Arrow + Distance)
+	if not beacon_node:
+		beacon_node = get_tree().get_first_node_in_group("waypoint_beacon")
+	if waypoint_guide and beacon_node:
+		if beacon_node.visible:
+			waypoint_guide.visible = true
+			var ref_pos = player.global_position
+			if player.current_state != player.State.ON_FOOT:
+				if player.active_vehicle: ref_pos = player.active_vehicle.global_position
+				elif player.active_mount: ref_pos = player.active_mount.global_position
+				elif player.active_aircraft: ref_pos = player.active_aircraft.global_position
+			var dist = ref_pos.distance_to(beacon_node.global_position)
+			if dist <= 5.0:
+				if guide_arrow: guide_arrow.visible = false
+				if guide_dist: guide_dist.text = "✓ ရောက်ရှိပါပြီ (Arrived)"
+			else:
+				if guide_arrow:
+					guide_arrow.visible = true
+					var cam = get_viewport().get_camera_3d()
+					var forward = -cam.global_transform.basis.z if cam else Vector3.FORWARD
+					forward.y = 0.0
+					forward = forward.normalized()
+					var to_target = (beacon_node.global_position - ref_pos)
+					to_target.y = 0.0
+					to_target = to_target.normalized()
+					var angle = forward.signed_angle_to(to_target, Vector3.UP)
+					guide_arrow.text = _get_relative_arrow(angle)
+				if guide_dist:
+					guide_dist.text = "📍 လမ်းညွှန်: %dm" % int(dist)
+		else:
+			waypoint_guide.visible = false
 
 	# 3. Dynamic Stamina
 	if stamina_bar:
@@ -251,6 +287,17 @@ func _get_cardinal_dir(deg: float) -> String:
 	elif deg >= 202.5 and deg < 247.5: return "SW"
 	elif deg >= 247.5 and deg < 292.5: return "W"
 	else: return "NW"
+
+func _get_relative_arrow(rad: float) -> String:
+	var deg = rad_to_deg(rad)
+	if deg > -22.5 and deg <= 22.5: return "↑"
+	elif deg > 22.5 and deg <= 67.5: return "↖"
+	elif deg > 67.5 and deg <= 112.5: return "←"
+	elif deg > 112.5 and deg <= 157.5: return "↙"
+	elif deg > -67.5 and deg <= -22.5: return "↗"
+	elif deg > -112.5 and deg <= -67.5: return "→"
+	elif deg > -157.5 and deg <= -112.5: return "↘"
+	else: return "↓"
 
 func _on_joystick_moved(vec: Vector2) -> void:
 	if player:

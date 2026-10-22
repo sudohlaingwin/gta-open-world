@@ -13,7 +13,7 @@ albedo_color = Color(0.42, 0.26, 0.14, 1)
 size = Vector3(10.5, 3.5, 0.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_backdrop_gold"]
-albedo_color = Color(0.92, 0.75, 0.18, 1) # Golden Anyeint / Zats Pwe Backdrop
+albedo_color = Color(0.92, 0.75, 0.18, 1)
 metallic = 0.5
 roughness = 0.4
 
@@ -29,7 +29,7 @@ albedo_color = Color(0.68, 0.56, 0.32, 1)
 size = Vector3(0.7, 0.9, 0.7)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_saing_waing"]
-albedo_color = Color(0.8, 0.2, 0.15, 1) # Red Traditional Saing Waing Drum
+albedo_color = Color(0.8, 0.2, 0.15, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_area"]
 size = Vector3(14.0, 4.0, 10.0)

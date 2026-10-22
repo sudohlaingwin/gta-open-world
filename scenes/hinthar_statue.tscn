@@ -10,14 +10,14 @@ bottom_radius = 1.0
 height = 1.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_white_marble"]
-albedo_color = Color(0.92, 0.92, 0.94, 1) # Sagyin White Marble
+albedo_color = Color(0.92, 0.92, 0.94, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_body"]
 radius = 0.55
 height = 1.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hinthar_gold"]
-albedo_color = Color(1.0, 0.82, 0.12, 1) # Pure Gold Leaf
+albedo_color = Color(1.0, 0.82, 0.12, 1)
 metallic = 0.88
 roughness = 0.22
 

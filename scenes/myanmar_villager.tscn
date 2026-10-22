@@ -22,7 +22,7 @@ bottom_radius = 0.30
 height = 0.9
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_longyi_maroon"]
-albedo_color = Color(0.55, 0.12, 0.15, 1) # Traditional Myanmar Ruby Maroon Longyi
+albedo_color = Color(0.55, 0.12, 0.15, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_talk"]
 radius = 3.0
