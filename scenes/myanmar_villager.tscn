@@ -55,11 +55,19 @@ mesh = SubResource("CylinderMesh_longyi")
 surface_material_override/0 = SubResource("StandardMaterial3D_longyi_maroon")
 
 [node name="DialogueLabel" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35, 0)
 billboard = 1
 text = "မင်္ဂလာပါ ခင်ဗျာ! ကျွန်တော်တို့ ရွာလေးကို ကြိုဆိုပါတယ်။"
 font_size = 32
 outline_size = 10
+
+[node name="VillagerTitle" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05, 0)
+billboard = 1
+text = "မင်းတုန်း ဒေသခံ ရွာသူရွာသား 👥"
+font_size = 26
+outline_size = 8
+modulate = Color(1.0, 0.88, 0.35, 1)
 
 [node name="InteractionArea" type="Area3D" parent="."]
 

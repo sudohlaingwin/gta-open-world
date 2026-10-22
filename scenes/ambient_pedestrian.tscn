@@ -61,3 +61,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16, 0.95, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.47, 0)
 mesh = SubResource("CylinderMesh_leg")
 surface_material_override/0 = SubResource("StandardMaterial3D_longyi")
+
+[node name="PedLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+text = "မင်းတုန်း မြို့သူမြို့သား 🚶"
+font_size = 28
+outline_size = 8
+modulate = Color(1.0, 0.95, 0.80, 1)
