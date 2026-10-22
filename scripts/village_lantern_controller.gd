@@ -20,7 +20,7 @@ func _find_lights_and_lanterns(parent: Node) -> void:
 	for child in parent.get_children():
 		if child is OmniLight3D:
 			omni_lights.append(child)
-		elif child is MeshInstance3D and ("Lamp" in child.name or "Lantern" in child.name):
+		elif child is MeshInstance3D and ("Lamp" in child.name or "Lantern" in child.name or "Cross" in child.name):
 			emissive_meshes.append(child)
 		_find_lights_and_lanterns(child)
 

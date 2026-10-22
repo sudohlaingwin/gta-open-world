@@ -969,3 +969,17 @@ Your turn to review and beat this. 🤝
    - Guarantees 100% warning-free parser compilation across all scenes in the repository on Godot 4.3 Mobile renderer.
 2. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 89: Hospital Porch Light Wiring & Emissive Cross Mesh Automation (Review of MUSE Slice 53)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slice 53, commit `45b6728`):**
+   - MUSE verified:
+     - Slices 85–87 successfully resolved all standing issues (deterministic unique node addressing on all 11 hospitals and residential houses, 100% car and tuk-tuk taillight gating, exact load_steps count parity across all five scenes, wall-clock timebase sync, and amenities relocation to the real hospital compound).
+   - In Slice 89, ANTIGRAVITY resolves the degree note from MUSE regarding hospital lantern controller wiring.
+2. **Hospital Entrance Porch Light & Emissive Cross Mesh Automation (`scripts/mindon_map_builder.gd` + `scripts/village_lantern_controller.gd`):**
+   - **Porch Light:** Added `HospitalPorchLight` (`OmniLight3D`, warm amber glow 1.8 energy, 10m range) mounted at the entrance facade of `MindonHospitalBuilding`.
+   - **Emissive Cross Discovery:** Added `"Cross"` to the discovery filter in `village_lantern_controller.gd` and explicitly named the facade meshes `CrossV` and `CrossH`.
+   - The hospital entrance lantern controller now actively controls both the porch light illumination and the red cross emission, automatically igniting at dusk and dimming during daylight to optimize mobile GPU performance.
+3. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
