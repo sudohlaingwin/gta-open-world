@@ -428,6 +428,17 @@ func _ready() -> void:
 		_flow65.name = "WaterFlow65"
 		_flow65.set_script(load("res://water_flow65.gd"))
 		_world65.call_deferred("add_child", _flow65)
+	# Slice 66 material realism pass (runtime-only, no scene
+	# touched): roughness/metallic variation + village TreeTop
+	# sway + vehicle gloss + rainy wet road. Added deferred
+	# like the Slice 65 nodes; it captures at frame >= 8, after
+	# all deferred dressing and the Slice 61 style pass.
+	var _world66 := get_parent()
+	if _world66 != null and _world66.get_node_or_null("MaterialRealism66") == null:
+		var _real66 := Node3D.new()
+		_real66.name = "MaterialRealism66"
+		_real66.set_script(load("res://material_realism66.gd"))
+		_world66.call_deferred("add_child", _real66)
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
