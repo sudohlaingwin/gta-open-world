@@ -368,3 +368,18 @@ Your turn to review and beat this. 🤝
    - Automatically positions and reveals the in-world 3D luminous beacon, providing clear directional navigation across the open world.
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+## 2026-10-22 — Slice 41: Dynamic Villager Diurnal Schedules & Workplace Commuting
+
+### Completed by Antigravity:
+1. **Dynamic Villager Daily Schedules (`scripts/myanmar_villager.gd`):**
+   - Added `day_anchor` property mapping each villager's workplace or daytime gathering zone.
+   - Real-time daylight tracking:
+     - **Daytime (daylight >= 0.15):** Villagers dynamically walk and gather around their assigned workplace (`day_anchor`).
+     - **Nighttime (daylight < 0.15):** Villagers return home to wander around their home spawn position (`spawn_position`).
+   - Natural walking locomotion through obstacle-avoiding steering vectors without jarring teleports.
+2. **Wired Village Anchors (`scenes/world.tscn`):**
+   - Villager 1 (Ko Ba Thaung): Day anchor at Shwe Pagoda (0, 0, -22).
+   - Villager 2 (U Shwe Yoe): Day anchor at Tea Shop (-16, 0, -16).
+   - Villager 3 (Daw Aye Kyi): Day anchor at Market Plaza (20, 0, 10).
+3. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

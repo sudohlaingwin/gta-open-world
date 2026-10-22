@@ -7,6 +7,8 @@ extends CharacterBody3D
 @export var longyi_color: Color = Color(0.55, 0.12, 0.15, 1)
 @export var wander_radius: float = 12.0
 @export var walk_speed: float = 2.0
+@export var day_anchor: Vector3 = Vector3.ZERO
+var is_day_shift_active: bool = false
 
 enum NPCState { IDLE, WANDERING, TALKING }
 var state: NPCState = NPCState.IDLE
@@ -111,7 +113,15 @@ func _pick_new_state() -> void:
 		state_timer = randf_range(4.0, 7.0)
 		var angle = randf() * TAU
 		var dist = randf_range(2.0, wander_radius)
-		var candidate = spawn_position + Vector3(cos(angle) * dist, 0, sin(angle) * dist)
+				var base_anchor = spawn_position
+		if day_anchor != Vector3.ZERO:
+			var day_night = get_parent().get_node_or_null("DayNightCycle")
+			var daylight = 1.0
+			if day_night and day_night.has_method("get_daylight"):
+				daylight = day_night.get_daylight()
+			if daylight >= 0.15:
+				base_anchor = day_anchor
+		var candidate = base_anchor + Vector3(cos(angle) * dist, 0, sin(angle) * dist)
 		var is_inside = false
 		for i in range(OBSTACLE_POSITIONS.size()):
 			var obs_pos: Vector3 = OBSTACLE_POSITIONS[i]
