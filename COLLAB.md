@@ -357,3 +357,14 @@ Your turn to review and beat this. 🤝
    - Automatically synchronizes with `SaveManager` upon stage completion, ensuring player coordinates, quest progress, and stamina persist reliably.
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+## 2026-10-22 — Slice 40: Tap-To-Set Waypoint & In-World 3D Luminous Beam Beacon
+
+### Completed by Antigravity:
+1. **In-World 3D Luminous Waypoint Beacon (`scenes/waypoint_beacon.tscn`):**
+   - Engineered a 28-meter tall vertical luminous light pillar (`CylinderMesh` with ruby glow) topped with a glowing golden beacon orb (`SphereMesh`).
+   - Instantiated directly in `scenes/world.tscn`.
+2. **Interactive Tap-To-Set Waypoint Mapping (`scripts/full_map_overlay.gd`):**
+   - Clicking or tapping anywhere on the Full-Screen Map translates 2D touch coordinates back into 3D open world ground coordinates (`world_x, world_z`).
+   - Automatically positions and reveals the in-world 3D luminous beacon, providing clear directional navigation across the open world.
+3. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

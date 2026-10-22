@@ -39,6 +39,7 @@
 [ext_resource type="PackedScene" path="res://scenes/football_pitch.tscn" id="37_pitch_scn"]
 [ext_resource type="PackedScene" path="res://scenes/river_boat_pier.tscn" id="38_pier_scn"]
 [ext_resource type="Script" path="res://scripts/traffic_manager.gd" id="39_traffic_mgr"]
+[ext_resource type="PackedScene" path="res://scenes/waypoint_beacon.tscn" id="41_beacon_scn"]
 [ext_resource type="PackedScene" path="res://scenes/ambient_pedestrian.tscn" id="40_ped_scn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
@@ -231,6 +232,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4)
 
 [node name="Pedestrian2" parent="." instance=ExtResource("40_ped_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 10)
+
+[node name="WaypointBeacon" parent="." instance=ExtResource("41_beacon_scn")]
 
 [node name="MobileTouchHUD" parent="." instance=ExtResource("8_hud_scn")]
 
