@@ -1339,3 +1339,20 @@ Your turn to review and beat this. 🤝
    - Constructed a rural village inn (`res://scenes/myanmar_guesthouse.tscn`) at `(-55.0, 0.0, 85.0)` featuring teak flooring, traditional beds with white pillows and red woven blankets, study desks, thatched roofing, automated night lamp, and gilded signboard ("ရွှေဧည့်ရိပ်သာ တည်းခိုခန်း").
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 118: Owner Feedback Addressed — Massive Open World Spatial Expansion & De-cluttering
+
+### Addressed from Owner's 22:17 Direct Feedback:
+- **Owner Observation:** "map area ကအရမ်းကျဉ်းနေတယ်... စာသင်ခန်းတစ်ခန်းစာလောက်ပဲရှိတယ်" (The map felt like a cramped classroom instead of an expansive town).
+- **Root Cause Diagnosed:** Legacy test props (airplanes, helis, multiple cars, cattle carts, animals, and duplicated static buildings) were originally piled into a tiny 20-meter perimeter at `(0, 0)`. Meanwhile, real GIS assets stretched across 1,000m x 800m.
+- **Completed Massive Spatial Expansion:**
+  1. **Purged Central Clutter (`scenes/world.tscn`):**
+     - Removed the cramped duplicated demo instances clustering at `(0, 0)`.
+     - Airport runway zone established at outer perimeter `(280.0, 0.0, -220.0)` for Airplane and `(220.0, 0.0, -180.0)` for Helicopter.
+     - Elephant relocated to western tropical riverside wilderness `(-85.0, 0.0, 50.0)`.
+     - Riding horse relocated to eastern meadow fields `(70.0, 0.0, 100.0)`.
+     - Vehicles (Cars, Motorbikes, Tuk-Tuks, Bullock carts) distributed naturally along genuine Mindon roadway lanes at `(15, 0.2, 85)`, `(-8, 0.2, 75)`, and `(-22, 0.2, 105)`.
+  2. **Player Movement Traversal Velocity Upgraded (`scripts/player.gd`):**
+     - Upgraded on-foot jog speed from `6.0 m/s` to `7.5 m/s` and sprint speed from `10.0 m/s` to `12.0 m/s`, allowing rapid and fluid open-world navigation matching PUBG standards.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped cleanly under the active 5-minute loop.

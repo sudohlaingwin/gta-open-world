@@ -1,9 +1,9 @@
 extends CharacterBody3D
 
 # --- Character Stats & State ---
-@export var speed: float = 6.0
-@export var sprint_speed: float = 10.0
-@export var jump_velocity: float = 4.8
+@export var speed: float = 7.5
+@export var sprint_speed: float = 12.0
+@export var jump_velocity: float = 5.2
 @export var rotation_speed: float = 12.0
 
 var stamina: float = 100.0

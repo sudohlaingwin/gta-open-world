@@ -105,136 +105,40 @@ mesh = SubResource("PlaneMesh_ground")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="VillageGate" parent="." instance=ExtResource("17_gate_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 32)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 78)
 
 [node name="RideableCow" parent="." instance=ExtResource("3_cow_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, 80)
 
 [node name="BullockCart" parent="." instance=ExtResource("4_cart_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 75)
 
 [node name="Airplane" parent="." instance=ExtResource("5_plane_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 280, 0, -220)
 
 [node name="Helicopter" parent="." instance=ExtResource("9_heli_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 18)
-
-[node name="GoldenPagoda" parent="." instance=ExtResource("6_pagoda_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -35)
-
-[node name="MonasteryBell" parent="." instance=ExtResource("11_bell_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -32)
-
-[node name="MyanmarZayat" parent="." instance=ExtResource("13_zayat_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -30)
-
-[node name="WaterPotStand" parent="." instance=ExtResource("14_pot_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, -26)
-
-[node name="HintharStatueL" parent="." instance=ExtResource("19_hinthar_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -32)
-
-[node name="HintharStatueR" parent="." instance=ExtResource("19_hinthar_scn")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 4, 0, -32)
-
-[node name="MarketStall1" parent="." instance=ExtResource("15_stall_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -18)
-
-[node name="MarketStall2" parent="." instance=ExtResource("15_stall_scn")]
-transform = Transform3D(0.965, 0, -0.258, 0, 1, 0, 0.258, 0, 0.965, 3, 0, -19)
-
-[node name="VillageWell" parent="." instance=ExtResource("16_well_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -16)
-
-[node name="MyanmarTeaShop" parent="." instance=ExtResource("21_teashop_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -18)
-
-[node name="MonasterySchool" parent="." instance=ExtResource("22_school_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, -32)
-
-[node name="BambooBridge" parent="." instance=ExtResource("20_bridge_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
-
-[node name="VillageHouse1" parent="." instance=ExtResource("10_house_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -10)
-
-[node name="VillageHouse2" parent="." instance=ExtResource("10_house_scn")]
-transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, -14, 0, -14)
-
-[node name="BananaPlant1" parent="." instance=ExtResource("18_banana_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -6)
-
-[node name="BananaPlant2" parent="." instance=ExtResource("18_banana_scn")]
-transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, 21, 0, -8)
-
-[node name="ToddyPalm1" parent="." instance=ExtResource("12_palm_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 6)
-
-[node name="ToddyPalm2" parent="." instance=ExtResource("12_palm_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 10)
-
-[node name="ToddyPalm3" parent="." instance=ExtResource("12_palm_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, 24)
-
-[node name="Villager1" parent="." instance=ExtResource("7_villager_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -8)
-villager_name = "ကိုဘသောင်း"
-dialogue_text = "မင်္ဂလာပါ! ကျွန်တော်တို့ ရွာဦးစေတီကို သွားဖူးလိုက်ပါဦးဗျာ။"
-longyi_color = Color(0.1, 0.35, 0.2, 1)
-day_anchor = Vector3(0, 0, -22)
-
-[node name="Villager2" parent="." instance=ExtResource("7_villager_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -12)
-villager_name = "ဦးရွှေရိုး"
-dialogue_text = "နေကောင်းလား ညီလေး! နွားလှည်းနဲ့ လယ်တောဘက် လိုက်လည်မလား။"
-longyi_color = Color(0.55, 0.12, 0.15, 1)
-day_anchor = Vector3(-16, 0, -16)
-
-[node name="Villager3" parent="." instance=ExtResource("7_villager_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 10)
-villager_name = "ဒေါ်အေးကြည်"
-dialogue_text = "ပျော်ရွှင်စရာ နေ့ရက်လေး ဖြစ်ပါစေနော်!"
-longyi_color = Color(0.15, 0.25, 0.6, 1)
-day_anchor = Vector3(20, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 220, 0, -180)
 
 [node name="VillageCar" parent="." instance=ExtResource("23_car_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0.2, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.2, 85)
 
 [node name="MyanmarMotorcycle" parent="." instance=ExtResource("24_bike_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.2, 7)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.2, 75)
 
 [node name="AyeyarwadyRowboat" parent="." instance=ExtResource("26_boat_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.4, 28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, -0.2, 38)
 
 [node name="MyanmarAudioManager" type="Node" parent="."]
 script = ExtResource("25_audio_mgr")
 
 [node name="MyanmarTukTuk" parent="." instance=ExtResource("27_tuktuk_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0.2, -4)
-
-[node name="FestivalGround" parent="." instance=ExtResource("28_festival_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0.2, 105)
 
 [node name="MyanmarHorse" parent="." instance=ExtResource("29_horse_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, 0, 100)
 
 [node name="MyanmarElephant" parent="." instance=ExtResource("30_elephant_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 24)
-
-[node name="VillageFireflies" parent="." instance=ExtResource("33_fireflies_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-
-[node name="MyanmarGuestHouse" parent="." instance=ExtResource("34_guesthouse_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, 28)
-
-[node name="MyanmarNightMarket" parent="." instance=ExtResource("35_night_market_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0, 32)
-
-[node name="FootballPitch" parent="." instance=ExtResource("37_pitch_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 30)
-
-[node name="RiverBoatPier" parent="." instance=ExtResource("38_pier_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, -0.2, 24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -85, 0, 50)
 
 [node name="VillageRiverWater" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 28)
