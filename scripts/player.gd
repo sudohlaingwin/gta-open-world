@@ -39,6 +39,11 @@ func _ready() -> void:
 	add_to_group("player")
 	_apply_saved_outfit()
 	_apply_game_mode()
+	# PUBG Full-size Character Scale (အရွယ်အစား ပီပြင်စေရန် 1.25x scale မြှင့်တင်ခြင်း)
+	if visual_mesh:
+		visual_mesh.scale = Vector3(1.25, 1.25, 1.25)
+	if collision_shape:
+		collision_shape.scale = Vector3(1.15, 1.15, 1.15)
 
 func _apply_game_mode() -> void:
 	var sm = get_node_or_null("/root/SaveManager")
@@ -49,9 +54,10 @@ func _apply_game_mode() -> void:
 		camera_pivot.current_arm_length = 6.5
 		camera_pivot.rotation.x = deg_to_rad(-45.0)
 	else:
-		camera_pivot.target_arm_length = 2.4
-		camera_pivot.current_arm_length = 2.4
-		camera_pivot.rotation.x = deg_to_rad(-10.0)
+		# PUBG TPP over-the-shoulder framing
+		camera_pivot.target_arm_length = 1.95
+		camera_pivot.current_arm_length = 1.95
+		camera_pivot.rotation.x = deg_to_rad(-8.0)
 
 var highest_fall_speed: float = 0.0
 

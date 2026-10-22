@@ -1356,3 +1356,18 @@ Your turn to review and beat this. 🤝
      - Upgraded on-foot jog speed from `6.0 m/s` to `7.5 m/s` and sprint speed from `10.0 m/s` to `12.0 m/s`, allowing rapid and fluid open-world navigation matching PUBG standards.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped cleanly under the active 5-minute loop.
+
+## 2026-10-22 — Slice 119: Owner Feedback Addressed — Authentic PUBG Proportional Scaling for Characters, Houses, and Trees
+
+### Addressed from Owner's 22:23 Direct Feedback:
+- **Owner Observation:** "pubg လောက်အထိ map အကျယ်ကိုချဲ့လိုက်တော့။ နောက်ပြီး ဇာတ်ကောင်နှင့် အဆောက်အအုံက သေးသေးလေးတွေဖြစ်နေတယ်... ကလေးကစားနေသလို... pubg ကာရိုက်တာ အိမ် သစ်ပင်လောက်ဆိုက်ဒ်လုပ်ပေး" (Scale up character, buildings, and trees to match authentic PUBG Mobile proportions).
+- **Completed Proportional Scaling:**
+  1. **Character Visual & TPP Framing (`scripts/player.gd` & `scripts/camera_orbit.gd`):**
+     - Scaled character mesh by `1.25x` and capsule collision by `1.15x`, establishing prominent full-body presence.
+     - Adjusted camera arm to tight `1.95m` over-the-shoulder framing (`deg_to_rad(-8.0)` pitch), eliminating toy-like miniature perspective.
+  2. **House Scale Upgrade (`scripts/mindon_map_builder.gd`):**
+     - Scaled all rural residential teak/bamboo houses by `1.45x` (`scale = Vector3(1.45, 1.45, 1.45)`), providing authentic two-story proportions that tower realistically over pedestrians and vehicles.
+  3. **Towering Tree Growth (`scenes/toddy_palm.tscn`):**
+     - Scaled native Myanmar toddy palm trees from `10m` to `15m` height with `3.6m` radius frond canopies, delivering realistic vertical foliage presence across the 2.5km terrain.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

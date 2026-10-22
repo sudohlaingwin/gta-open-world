@@ -10,8 +10,8 @@ extends Node3D
 @onready var spring_arm: SpringArm3D = $SpringArm3D
 @onready var camera: Camera3D = $SpringArm3D/Camera3D
 
-var target_arm_length: float = 2.4
-var current_arm_length: float = 2.4
+var target_arm_length: float = 1.95
+var current_arm_length: float = 1.95
 
 func _ready() -> void:
 	if spring_arm:

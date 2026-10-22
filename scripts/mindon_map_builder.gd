@@ -393,6 +393,8 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 				eave.set_surface_override_material(0, wood_mat)
 				visual.add_child(eave)
 
+			# PUBG full-sized house scaling (ကလေးကစားသလို မဖြစ်စေရန် 1.45x စကေးမြှင့်တင်ခြင်း)
+			house.scale = Vector3(1.45, 1.45, 1.45)
 			building_holder.add_child(house)
 			house.global_position = Vector3(cx, 0.0, cz)
 
