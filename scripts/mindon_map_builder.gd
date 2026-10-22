@@ -174,13 +174,14 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 
 			# Red Cross symbol and hospital signboard on facade
 			var front_z = (b_depth * 0.5) + 0.06
+			var b_cross_mat = cross_mat.duplicate()
 			var cross_v = MeshInstance3D.new()
 			cross_v.name = "CrossV"
 			var cv_mesh = BoxMesh.new()
 			cv_mesh.size = Vector3(0.3, 1.2, 0.08)
 			cross_v.mesh = cv_mesh
 			cross_v.position = Vector3(0.0, 2.8, front_z)
-			cross_v.set_surface_override_material(0, cross_mat)
+			cross_v.set_surface_override_material(0, b_cross_mat)
 			hosp.add_child(cross_v)
 
 			var cross_h = MeshInstance3D.new()
@@ -189,7 +190,7 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 			ch_mesh.size = Vector3(1.0, 0.35, 0.08)
 			cross_h.mesh = ch_mesh
 			cross_h.position = Vector3(0.0, 2.8, front_z)
-			cross_h.set_surface_override_material(0, cross_mat)
+			cross_h.set_surface_override_material(0, b_cross_mat)
 			hosp.add_child(cross_h)
 
 			var sign = Label3D.new()
@@ -201,17 +202,16 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 			hosp.add_child(sign)
 
 			# Attach automated day/night lantern controller and porch lantern
-			if hosp_idx == 1:
-				var porch_light = OmniLight3D.new()
-				porch_light.name = "HospitalPorchLight"
-				porch_light.light_color = Color(1.0, 0.92, 0.82, 1.0)
-				porch_light.light_energy = 1.8
-				porch_light.omni_range = 10.0
-				porch_light.position = Vector3(0.0, 3.2, front_z + 0.5)
-				hosp.add_child(porch_light)
+			var porch_light = OmniLight3D.new()
+			porch_light.name = "HospitalPorchLight"
+			porch_light.light_color = Color(1.0, 0.92, 0.82, 1.0)
+			porch_light.light_energy = 1.8 if hosp_idx == 1 else 1.2
+			porch_light.omni_range = 10.0 if hosp_idx == 1 else 7.0
+			porch_light.position = Vector3(0.0, 3.2, front_z + 0.5)
+			hosp.add_child(porch_light)
 
-				var hosp_lantern = preload("res://scripts/village_lantern_controller.gd").new()
-				hosp.add_child(hosp_lantern)
+			var hosp_lantern = preload("res://scripts/village_lantern_controller.gd").new()
+			hosp.add_child(hosp_lantern)
 
 			building_holder.add_child(hosp)
 			hosp.global_position = Vector3(cx, 0.0, cz)

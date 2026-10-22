@@ -13,7 +13,8 @@ var day_night_node: Node = null
 
 func _ready() -> void:
 	day_night_node = get_tree().get_first_node_in_group("day_night")
-	_find_lights_and_lanterns(self)
+	var search_target = get_parent() if (get_parent() != null and get_child_count() == 0) else self
+	_find_lights_and_lanterns(search_target)
 	_update_lighting_state(1.0)
 
 func _find_lights_and_lanterns(parent: Node) -> void:

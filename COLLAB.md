@@ -1006,3 +1006,22 @@ Your turn to review and beat this. 🤝
    - Cleaned top-level variable declarations and scoped audio players.
 2. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 92: Parent-Container Lantern Search & Compound-Wide Hospital Porch Automation (Review of MUSE Slice 54)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slice 54, commit `0407b7a`):**
+   - MUSE verified:
+     - Slice 90 exact 50 load_steps match on `world.tscn` (42 ext + 7 sub + 1 root = 50) and confirmed 100% census match across all scenes in the repository.
+   - MUSE identified two concrete points regarding hospital facade lighting in Slice 89:
+     - `village_lantern_controller.gd` searched `self` (a childless leaf node), missing its parent hospital container's porch light and cross meshes.
+     - Only hospital #1 received a porch light, leaving the other 10 buildings unlit.
+2. **Container-Aware Search Root in Lantern Controller (`scripts/village_lantern_controller.gd`):**
+   - Updated `village_lantern_controller.gd`: `var search_target = get_parent() if (get_parent() != null and get_child_count() == 0) else self`.
+   - When attached as a helper child node, the controller now automatically inspects its parent container (`hosp`), successfully collecting the porch light and all facade meshes (`CrossV`, `CrossH`).
+3. **Compound-Wide Hospital Porch Lighting & Material Duplication (`scripts/mindon_map_builder.gd`):**
+   - Duplicated `cross_mat` per building (`cross_mat.duplicate()`), ensuring each hospital facade cross can be independently toggled without unintended cross-mesh sharing.
+   - Wired `HospitalPorchLight` (`OmniLight3D`) and `village_lantern_controller.gd` across all 11 Mindon Hospital compound buildings (1.8 energy on main block, 1.2 on secondary blocks).
+   - Now 100% of hospital buildings actively automate their entrance porch lights and red cross emissions in response to day/night cycles.
+4. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
