@@ -19,6 +19,20 @@ extends Node3D
 @export var brake_rate: float = 9.0
 @export var turn_rate: float = 2.2
 @export var body_color: Color = Color(0.8, 0.2, 0.2, 1)
+## Milestone 6 (part 2): set by TrafficManager from the time of day
+## (1.0 midday, 0.85 morning/evening, 0.7 night) — calmer traffic at
+## night, same model, no per-car special cases.
+var speed_factor: float = 1.0
+## Half the vehicle length along its forward axis (car 1.6, van 2.2).
+## Slice 22 stopped at a fixed 2.5 m centre distance, which meant a
+## follower's front visually overlapped the leader's rear by 0.7 m
+## (cars) — worse for a longer van. Part 2 stops at own half-length
+## + the longest other traffic half-length (2.2) + a 0.4 m gap, so
+## no two traffic vehicles ever visually overlap: car 4.2 m, van
+## 4.8 m centre distance. The forward cone is the stop distance
+## plus 3.5 m of lookahead.
+@export var half_length: float = 1.6
+@export var wheel_radius: float = 0.32
 
 var route: Array = []
 var waypoint_index: int = 0
@@ -66,15 +80,17 @@ func _forward() -> Vector3:
 	return Vector3(sin(rotation.y), 0.0, cos(rotation.y))
 
 func _blocked(obstacles: Array) -> bool:
+	var stop_dist := half_length + 2.6
+	var cone_dist := stop_dist + 3.5
 	var pos := Vector2(global_position.x, global_position.z)
 	var fwd := _forward()
 	for ob in obstacles:
 		var o := Vector2(ob.x, ob.z)
 		var to_ob := o - pos
 		var dist := to_ob.length()
-		if dist < 2.5:
+		if dist < stop_dist:
 			return true
-		if dist < 6.0:
+		if dist < cone_dist:
 			var dir := to_ob / dist
 			var cone := fwd.x * dir.x + fwd.z * dir.y
 			if cone > 0.7:
@@ -102,7 +118,7 @@ func drive(delta: float, obstacles: Array) -> void:
 		diff += TAU
 	var step := clampf(diff, -turn_rate * delta, turn_rate * delta)
 	rotation.y += step
-	var want := top_speed
+	var want := top_speed * speed_factor
 	if _blocked(obstacles):
 		want = 0.0
 		# Still counts while decelerating into the jam: a car that
@@ -118,4 +134,4 @@ func drive(delta: float, obstacles: Array) -> void:
 	var fwd := _forward()
 	global_position += fwd * speed * delta
 	for wheel in _wheels:
-		wheel.rotation.x += speed * delta / 0.32
+		wheel.rotation.x += speed * delta / wheel_radius

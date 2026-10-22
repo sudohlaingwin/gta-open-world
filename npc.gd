@@ -24,6 +24,22 @@ var home: Vector3 = Vector3.ZERO
 var target: Vector3 = Vector3.ZERO
 var pause_left: float = 0.0
 var talking_left: float = 0.0
+## Milestone 6 (part 2): first daily schedule. day_anchor is the
+## daytime gathering place (Vector3.ZERO = no schedule: this villager
+## always wanders around home). With a day_anchor set, the villager
+## wanders around day_anchor while it is day and around home at
+## night. The shift is a WALK, never a teleport: only the wander
+## centre changes, and the next picked target is around the new
+## centre, so the villager walks there through the normal avoidance
+## steering. A villager mid-conversation is NEVER yanked away: if
+## the day/night band changes while talking_left > 0, the shift is
+## deferred (_schedule_pending) and applied when the talk ends.
+## wander_center is the live centre; home never changes.
+@export var day_anchor: Vector3 = Vector3.ZERO
+var wander_center: Vector3 = Vector3.ZERO
+var _schedule_is_day: bool = true
+var _schedule_pending: bool = false
+var _schedule_timer: float = 0.0
 ## Slice 17 obstacle circles: [x, z, radius] for the structures a
 ## villager must not walk through. Radii cover the footprint plus
 ## a small margin; steering adds its own 0.8 clearance.
@@ -49,7 +65,37 @@ const OBSTACLES: Array = [
 
 func _ready() -> void:
 	home = global_position
+	wander_center = home
 	_hide_label()
+	_pick_target()
+
+## Day band from the shared day/night cycle: day while daylight is
+## at least 0.15, night below it (the same < 0.15 dark rule the
+## moon, stars, fireflies, and traffic headlights use). No DayNight
+## node or no daylight() method: no schedule changes, ever.
+func _daylight_is_day() -> bool:
+	var dn := get_node_or_null("../DayNight")
+	if dn == null or not dn.has_method("daylight"):
+		return _schedule_is_day
+	return float(dn.call("daylight")) >= 0.15
+
+## Applies a day/night band change as a walk, not a teleport: only
+## wander_center moves, and _pick_target sends the villager walking
+## toward the new area. Called once a second from _physics_process,
+## and immediately (forced) when a deferred shift's talk ends.
+func _update_schedule(force: bool) -> void:
+	if day_anchor == Vector3.ZERO:
+		return
+	var is_day := _daylight_is_day()
+	if is_day == _schedule_is_day and not force:
+		return
+	if talking_left > 0.0 and not force:
+		# Mid-conversation: defer, do not yank the villager away.
+		_schedule_pending = true
+		return
+	_schedule_is_day = is_day
+	_schedule_pending = false
+	wander_center = day_anchor if is_day else home
 	_pick_target()
 
 func _hide_label() -> void:
@@ -80,9 +126,9 @@ func talk_to(player_pos: Vector3) -> void:
 func _pick_target() -> void:
 	for _i in range(8):
 		var t := Vector3(
-			home.x + randf_range(-wander_radius, wander_radius),
+			wander_center.x + randf_range(-wander_radius, wander_radius),
 			0.0,
-			home.z + randf_range(-wander_radius, wander_radius))
+			wander_center.z + randf_range(-wander_radius, wander_radius))
 		var clear := true
 		for ob in OBSTACLES:
 			if Vector2(t.x, t.z).distance_to(Vector2(ob[0], ob[1])) <= float(ob[2]) + 1.0:
@@ -91,7 +137,7 @@ func _pick_target() -> void:
 		if clear:
 			target = t
 			return
-	target = home
+	target = wander_center
 
 ## Slice 9 prompt: a "!" floats above this villager while the
 ## player is in talk range (and not already talking), so a phone
@@ -112,6 +158,13 @@ func _update_prompt() -> void:
 
 func _physics_process(delta: float) -> void:
 	_update_prompt()
+	# Milestone 6 (part 2): schedule check once a second, not every
+	# frame — the day/night band changes twice per 120 s day, so a
+	# 1 s cadence is plenty and costs nothing.
+	_schedule_timer += delta
+	if _schedule_timer >= 1.0:
+		_schedule_timer = 0.0
+		_update_schedule(false)
 	if not is_on_floor():
 		velocity.y -= 20.0 * delta
 	else:
@@ -122,6 +175,9 @@ func _physics_process(delta: float) -> void:
 		velocity.z = 0.0
 		if talking_left <= 0.0:
 			_hide_label()
+			if _schedule_pending:
+				# Talk over: apply the deferred day/night shift now.
+				_update_schedule(true)
 		move_and_slide()
 		return
 	if pause_left > 0.0:

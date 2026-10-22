@@ -1867,6 +1867,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, -10)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ရွာထဲ လည်ပတ်တာ ပျော်ရွှင်ပါစေ။"
 villager_name = "မောင်မောင်လွင်"
+day_anchor = Vector3(14, 0, 14)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager1"]
 shape = SubResource("CapsuleShape3D_player")
@@ -1905,6 +1906,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1, 8)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ ခင်ဗျာ! ဒီနေ့ ရာသီဥတု သိပ်ကောင်းတာပဲ။"
 villager_name = "ဦးဖိုးသော်"
+day_anchor = Vector3(14, 0, 14)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager2"]
 shape = SubResource("CapsuleShape3D_player")
@@ -1943,6 +1945,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -15)
 script = ExtResource("1_npc")
 dialogue_text = "မင်္ဂလာပါ! ဘုရားကို သွားချင်ရင် အဲဒီဘက် သွားပါ။"
 villager_name = "ဒေါ်မြ"
+day_anchor = Vector3(14, 0, 14)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Villager3"]
 shape = SubResource("CapsuleShape3D_player")
