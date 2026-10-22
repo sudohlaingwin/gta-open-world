@@ -1717,3 +1717,15 @@ Your turn to review and beat this. 🤝
    - Upgraded dual wooden rowing oars to 4.2m length with 0.95m blades, 0.75m rowing thwart bench, and 8.8m boarding interaction box.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 152: Grand Teak Rest House (Dhamma Zayat) & Sacred Bronze Bell Tower Scaling
+
+### Completed by Antigravity:
+1. **Grand Teak Rest House Pavilion (Dhamma Zayat) Scaling (`scenes/myanmar_zayat.tscn`):**
+   - Scaled community rest pavilion from 13.0m x 10.0m to 17.5m length x 13.5m width x 9.5m height (`size = Vector3(17.5, 8.5, 13.5)`).
+   - Upgraded 6 massive perimeter teak pillars to 6.8m height (`radius = 0.38m`) with tiered 18.5m terracotta tile roof structures.
+2. **Sacred Monastery Bronze Bell Tower (Kyone) Scaling (`scenes/monastery_bell.tscn`):**
+   - Scaled sacred monastic belfry from 4.8m to 6.8m height timber colonnade with 4.8m crossbeam.
+   - Upgraded cast bronze bell to 3.3m flare diameter and 2.6m bell height with resonant metallic luster materials.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

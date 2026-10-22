@@ -1,27 +1,27 @@
 [gd_scene load_steps=8 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_zayat"]
-size = Vector3(13.0, 6.8, 10.0)
+size = Vector3(17.5, 8.5, 13.5)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_pillar"]
-top_radius = 0.22
-bottom_radius = 0.26
-height = 5.2
+top_radius = 0.32
+bottom_radius = 0.38
+height = 6.8
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak"]
 albedo_color = Color(0.32, 0.18, 0.08, 1)
 roughness = 0.85
 
 [sub_resource type="BoxMesh" id="BoxMesh_deck"]
-size = Vector3(12.5, 0.5, 9.5)
+size = Vector3(17.0, 0.65, 13.0)
 
 [sub_resource type="PrismMesh" id="PrismMesh_lower_roof"]
 left_to_right = 0.5
-size = Vector3(13.5, 2.4, 10.5)
+size = Vector3(18.5, 3.2, 14.5)
 
 [sub_resource type="PrismMesh" id="PrismMesh_upper_roof"]
 left_to_right = 0.5
-size = Vector3(9.5, 2.0, 7.5)
+size = Vector3(13.0, 2.8, 10.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_roof_tile"]
 albedo_color = Color(0.55, 0.28, 0.18, 1)
@@ -29,52 +29,52 @@ albedo_color = Color(0.55, 0.28, 0.18, 1)
 [node name="MyanmarZayat" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.25, 0)
 shape = SubResource("BoxShape3D_zayat")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Deck" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
 mesh = SubResource("BoxMesh_deck")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="PillarFL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 3.2, 4.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 4.2, 5.5)
 mesh = SubResource("CylinderMesh_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="PillarFR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 3.2, 4.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 4.2, 5.5)
 mesh = SubResource("CylinderMesh_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="PillarML" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 3.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 4.2, 0)
 mesh = SubResource("CylinderMesh_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="PillarMR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 3.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 4.2, 0)
 mesh = SubResource("CylinderMesh_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="PillarBL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 3.2, -4.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 4.2, -5.5)
 mesh = SubResource("CylinderMesh_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="PillarBR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 3.2, -4.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 4.2, -5.5)
 mesh = SubResource("CylinderMesh_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="LowerRoof" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.6, 0)
 mesh = SubResource("PrismMesh_lower_roof")
 surface_material_override/0 = SubResource("StandardMaterial3D_roof_tile")
 
 [node name="UpperRoof" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.5, 0)
 mesh = SubResource("PrismMesh_upper_roof")
 surface_material_override/0 = SubResource("StandardMaterial3D_roof_tile")
