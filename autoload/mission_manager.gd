@@ -269,6 +269,68 @@ func district60_load_state(data: Dictionary) -> void:
 		district60_done[qid] = bool(data.get(qid, false))
 
 
+## Slice 64 — East Fields side quests (see mission_data.gd
+## EASTFIELDS64_QUESTS). Exact Slice 60 pattern, independent state:
+## it never touches stage/rewards/counters/sightseeing/district60,
+## and a pre-64 save loads with all four quests undone, never as an
+## error. State is saved under the optional "eastfields64" key in
+## the save file (player.gd). Check the given world-x/z position
+## against every undone quest. Returns {"visited": bool,
+## "quest": String, "all_done": bool}. A visit only counts inside
+## EASTFIELDS64_RADIUS; already-done quests never re-trigger, so
+## the stamina reward cannot be farmed.
+var eastfields64_done: Dictionary = {"east_road": false, "north_lane": false, "south_lane": false, "pond": false}
+
+
+func eastfields64_done_count() -> int:
+	var n := 0
+	for q in Data.EASTFIELDS64_QUESTS:
+		if bool(eastfields64_done.get(str(q.get("id", "")), false)):
+			n += 1
+	return n
+
+
+func eastfields64_next() -> Dictionary:
+	for q in Data.EASTFIELDS64_QUESTS:
+		var qid := str(q.get("id", ""))
+		if not bool(eastfields64_done.get(qid, false)):
+			return q
+	return {}
+
+
+func eastfields64_check(pos: Vector2) -> Dictionary:
+	for q in Data.EASTFIELDS64_QUESTS:
+		var qid := str(q.get("id", ""))
+		if bool(eastfields64_done.get(qid, false)):
+			continue
+		var target: Vector2 = q.get("pos", Vector2.ZERO)
+		if pos.distance_to(target) <= Data.EASTFIELDS64_RADIUS:
+			eastfields64_done[qid] = true
+			return {"visited": true, "quest": qid, "all_done": eastfields64_done_count() >= Data.EASTFIELDS64_QUESTS.size()}
+	return {"visited": false, "quest": "", "all_done": false}
+
+
+func eastfields64_label() -> String:
+	var done := eastfields64_done_count()
+	var total := Data.EASTFIELDS64_QUESTS.size()
+	if done >= total:
+		return "လယ်ကွင်း ပြီးပါပြီ (%d/%d)" % [done, total]
+	for q in Data.EASTFIELDS64_QUESTS:
+		if not bool(eastfields64_done.get(str(q.get("id", "")), false)):
+			return "လယ်ကွင်း (%d/%d): %s" % [done, total, str(q.get("label", ""))]
+	return "လယ်ကွင်း (%d/%d)" % [done, total]
+
+
+func eastfields64_state() -> Dictionary:
+	return eastfields64_done.duplicate()
+
+
+func eastfields64_load_state(data: Dictionary) -> void:
+	for q in Data.EASTFIELDS64_QUESTS:
+		var qid := str(q.get("id", ""))
+		eastfields64_done[qid] = bool(data.get(qid, false))
+
+
 ## Load mission state from a save dictionary (old saves use the same
 ## keys, so a Slice 26 save maps onto this manager unchanged).
 func load_state(stage_value: int, rewards_data: Dictionary, counters_data: Dictionary) -> void:

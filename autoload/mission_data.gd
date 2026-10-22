@@ -213,6 +213,32 @@ const DISTRICT60_QUESTS: Array = [
 	{"id": "mrtv", "title": "MRTV", "label": "MRTV ကို သွားပါ", "pos": Vector2(108.0, 42.0)},
 ]
 
+# Slice 64 — East Fields side quests (THIRD new mission type, same
+# pattern as Slice 60: parallel to the 36-stage main chain and to
+# sightseeing, never advances quest_stage, never grants r1..r10,
+# never gates movement/driving/dialogue. Four single-visit quests,
+# any order, each once). Positions are REAL Slice 62/64 coordinates,
+# not invented: east_road is the off-slab edge of the 12 m main road
+# east end (slab x 250..445, z -6..6; stop at z 8.5 so traffic lanes
+# at z -3/+3 never drive through the marker); north_lane/south_lane
+# sit 3.5 m / 3.5 m off their 5 m lane slabs (lane centres x 340 /
+# x 390, so stops at x 346 / x 384 stay clear of the Slice 63
+# traffic loops); pond is the bank of Slice 62 Pond62A (centre
+# (300, -60), r 6; stop at x 307, just off the water). Radius 9.0 m
+# matches Slice 60: on-foot arrival and drive-by arrival both count
+# (driving the road at z 3 passes 5.5 m from east_road; driving the
+# lanes passes 6 m from the lane stops), while the marker posts
+# themselves are never stood on. Reward per quest is a stamina
+# refill to 100 (capped, no farming: done flags persist in the save
+# under the "eastfields64" key).
+const EASTFIELDS64_RADIUS: float = 9.0
+const EASTFIELDS64_QUESTS: Array = [
+	{"id": "east_road", "title": "လမ်းမအရှေ့ဆုံး", "label": "လမ်းမကြီး အရှေ့ဆုံးကို သွားပါ", "pos": Vector2(440.0, 8.5)},
+	{"id": "north_lane", "title": "မြောက်လမ်းသွယ်", "label": "မြောက်ဘက် လမ်းသွယ်အဆုံးကို သွားပါ", "pos": Vector2(346.0, -95.0)},
+	{"id": "south_lane", "title": "တောင်လမ်းသွယ်", "label": "တောင်ဘက် လမ်းသွယ်အဆုံးကို သွားပါ", "pos": Vector2(384.0, 75.0)},
+	{"id": "pond", "title": "ရေကန်", "label": "လယ်ကွင်း ရေကန်နားကို သွားပါ", "pos": Vector2(307.0, -60.0)},
+]
+
 static func label_for(stage: int, rewards: Dictionary, talked: int, total: int, banana: int) -> String:
 	if stage == 0:
 		return TALK_LABEL_PREFIX + str(talked) + "/" + str(total) + ")"

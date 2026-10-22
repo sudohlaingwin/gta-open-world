@@ -8,6 +8,7 @@ const Style61Script = preload("res://style61.gd")
 const HudPolish60Script = preload("res://hud_polish60.gd")
 const HudFix61bScript = preload("res://hud_fix61b.gd")
 const Chill62Script = preload("res://chill_world62.gd")
+const EastFields64Script = preload("res://eastfields64.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -231,6 +232,14 @@ var garage_button: Button = null
 var hud_more_open: bool = false
 var garage_label: Label = null
 var district_label: Label = null
+## Slice 64 East Fields side quests: runtime touch button +
+## progress label, same pattern as the Slice 54 sightseeing HUD
+## (created at runtime because they do not exist in the scene
+## file). The button re-points the shared Slice 28/34 waypoint
+## guidance at the next unvisited East Fields stop (or clears it
+## when all four are done); the label always shows live progress.
+var eastfields_button: Button = null
+var eastfields_label: Label = null
 var map_button_connected: bool = false
 # Slice 16: parachute + festival. The parachute deploys itself on
 # a mid-air vehicle exit and stows itself on landing (no button
@@ -357,6 +366,7 @@ func _ready() -> void:
 	_apply_outfit()
 	_apply_hud_scale()
 	_create_sightseeing_hud()
+	_create_eastfields_hud()
 	_apply_hud_scale()
 	# Slice 60 HUD polish + garage/district HUD nodes (runtime-only,
 	# see hud_polish60.gd). Runs here so the layer exists; hud-scale
@@ -396,6 +406,10 @@ func _ready() -> void:
 	# Slice 62 big chill world (east expansion + living nature +
 	# seasons + FPP/cart-top views). Runs after Slice 59; runtime-only.
 	Chill62Script.dress(get_parent())
+	# Slice 64 East Fields living district (quest markers, farm
+	# fields, fences, scenery carts/animals, lane trees/flowers).
+	# Runs after Slice 62; runtime-only, no scene touched.
+	EastFields64Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
@@ -479,6 +493,7 @@ func _physics_process(delta: float) -> void:
 	_update_waypoint_guide()
 	_update_sightseeing()
 	_update_district60()
+	_update_eastfields64()
 	_update_garage_notice(delta)
 	_update_stamina(delta)
 	_update_prompt_label()
@@ -1432,7 +1447,7 @@ func _update_minimap() -> void:
 			"VillagerDot7", "VillagerDot8", "VehicleDotBicycle", "VehicleDotTukTuk",
 			"FestivalDot16", "VillagerDot9", "VillagerDot10",
 			"FishDot17", "DonateDot17", "VillagerDot11", "VillagerDot12", "StallDot17", "WellDot17", "VehicleDotCow2", "BallDot17", "HouseDot17", "VehicleDotElephant", "VillagerDot13", "VillagerDot14", "PavilionDot18", "PaddyDot18",
-			"VehicleDotHorse", "VillagerDot15", "VillagerDot16", "HutDot19", "GoldStallDot19", "WorkshopDot19", "NightMarketDot20", "GuestHouseDot20", "PierDot20", "VehicleDotBoat2", "VehicleDotHorse2", "VillagerDot17", "VillagerDot18", "WaypointDot", "MindonPagodaDot", "MindonTempleDot", "MindonPostDot", "MindonHospitalDot", "MindonEduDot", "MindonMRTVDot", "MindonShopsDot", "OoVillageDot"]:
+			"VehicleDotHorse", "VillagerDot15", "VillagerDot16", "HutDot19", "GoldStallDot19", "WorkshopDot19", "NightMarketDot20", "GuestHouseDot20", "PierDot20", "VehicleDotBoat2", "VehicleDotHorse2", "VillagerDot17", "VillagerDot18", "WaypointDot", "MindonPagodaDot", "MindonTempleDot", "MindonPostDot", "MindonHospitalDot", "MindonEduDot", "MindonMRTVDot", "MindonShopsDot", "OoVillageDot", "EastDot64_0", "EastDot64_1", "EastDot64_2", "EastDot64_3"]:
 			var dot := panel.get_node_or_null(name) as ColorRect
 			if dot != null:
 				minimap_dots[name] = dot
@@ -1544,6 +1559,15 @@ func _update_minimap() -> void:
 		var lm37 := _n("../" + pair[0]) as Node3D
 		if lm37 != null:
 			put.call(pair[1], lm37.global_position)
+	# Slice 64 dots: East Fields quest markers (runtime ColorRects
+	# created by eastfields64.dress, so they exist before this
+	# list is built on the first frame; missing dots are skipped
+	# by the put lambda, so a pre-64 scene never errors here).
+	for pair in [["EastFields64/Marker64_east_road", "EastDot64_0"], ["EastFields64/Marker64_north_lane", "EastDot64_1"],
+			["EastFields64/Marker64_south_lane", "EastDot64_2"], ["EastFields64/Marker64_pond", "EastDot64_3"]]:
+		var lm64 := _n("../" + pair[0]) as Node3D
+		if lm64 != null:
+			put.call(pair[1], lm64.global_position)
 	# Slice 28 world-map waypoint dot on the minimap: the overlay owns
 	# the waypoint; the minimap only mirrors it (same transform family).
 	var wm28 := _n("../JoystickLayer/WorldMapPanel")
@@ -1836,6 +1860,103 @@ func _update_district60() -> void:
 	stamina = 100.0
 	if district_label != null:
 		_set_text(district_label, mm.call("district60_label"))
+	var sm = _sm()
+	if sm != null:
+		sm.call("save_game", collect_save_data())
+
+
+## Slice 64 — East Fields side quests (see mission_data.gd
+## EASTFIELDS64_QUESTS). Mirrors _update_district60: the check runs
+## on foot AND in vehicles (vehicle position used while driving),
+## a visit chimes + refills stamina, and the label always shows
+## live progress. The button re-points the shared Slice 28/34
+## waypoint guidance at the next unvisited stop (same
+## WorldMapPanel + WaypointBeacon28 mechanism as sightseeing);
+## pressing it again, or pressing it when all four are done,
+## clears the waypoint. Button placement (audited in the Slice 64
+## sim): left column under the sightseeing button — anchor top
+## 0.64..0.70 (canvas y 461..504) sits below SightseeingButton54
+## (y 403..446) and above the joystick base (top y 540), so it
+## overlaps nothing; the label sits at anchor top 0.42..0.47
+## (canvas y 302..338), below GarageLabel60 (y 259..295) and
+## above nothing else in that column.
+func _create_eastfields_hud() -> void:
+	var layer := get_node_or_null("../JoystickLayer") as CanvasLayer
+	if layer == null:
+		return
+	if eastfields_button == null:
+		eastfields_button = Button.new()
+		eastfields_button.name = "EastFieldsButton64"
+		eastfields_button.text = "🌾 လယ်ကွင်း"
+		eastfields_button.anchor_left = 0.02
+		eastfields_button.anchor_top = 0.64
+		eastfields_button.anchor_right = 0.14
+		eastfields_button.anchor_bottom = 0.70
+		layer.add_child(eastfields_button)
+		eastfields_button.pressed.connect(_on_eastfields_button_pressed)
+	if eastfields_label == null:
+		eastfields_label = Label.new()
+		eastfields_label.name = "EastFieldsLabel64"
+		eastfields_label.anchor_left = 0.30
+		eastfields_label.anchor_top = 0.42
+		eastfields_label.anchor_right = 0.70
+		eastfields_label.anchor_bottom = 0.47
+		eastfields_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		eastfields_label.text = ""
+		layer.add_child(eastfields_label)
+	_update_eastfields_label()
+
+
+func _on_eastfields_button_pressed() -> void:
+	var mm = _mm()
+	if mm == null:
+		return
+	var nxt: Dictionary = mm.call("eastfields64_next")
+	if nxt.is_empty():
+		_clear_eastfields_waypoint()
+		return
+	var pos: Vector2 = nxt.get("pos", Vector2.ZERO)
+	var wm := _n("../JoystickLayer/WorldMapPanel")
+	if wm != null:
+		wm.set("has_waypoint", true)
+		wm.set("waypoint", pos)
+	var beacon := _n("../WaypointBeacon28") as MeshInstance3D
+	if beacon != null:
+		beacon.visible = true
+		beacon.global_position = Vector3(pos.x, 2.5, pos.y)
+
+
+func _clear_eastfields_waypoint() -> void:
+	var wm := _n("../JoystickLayer/WorldMapPanel")
+	if wm != null and wm.has_method("clear_waypoint"):
+		wm.call("clear_waypoint")
+
+
+func _update_eastfields_label() -> void:
+	if eastfields_label == null:
+		return
+	var mm = _mm()
+	if mm == null:
+		return
+	_set_text(eastfields_label, mm.call("eastfields64_label"))
+
+
+func _update_eastfields64() -> void:
+	var mm = _mm()
+	if mm == null:
+		return
+	_update_eastfields_label()
+	var ref: Vector3 = global_position
+	if driving and driving_vehicle != null:
+		ref = (driving_vehicle as Node3D).global_position
+	var result: Dictionary = mm.call("eastfields64_check", Vector2(ref.x, ref.z))
+	if not bool(result.get("visited", false)):
+		return
+	_play_tone(660.0, 0.25)
+	stamina = 100.0
+	if bool(result.get("all_done", false)):
+		_clear_eastfields_waypoint()
+	_update_eastfields_label()
 	var sm = _sm()
 	if sm != null:
 		sm.call("save_game", collect_save_data())
@@ -2785,6 +2906,10 @@ func _apply_pending_load() -> void:
 		var district_data = data.get("district60", {})
 		if district_data is Dictionary:
 			mm.call("district60_load_state", district_data)
+		# Slice 64 East Fields quests: optional key, same guard.
+		var east_data = data.get("eastfields64", {})
+		if east_data is Dictionary:
+			mm.call("eastfields64_load_state", east_data)
 	var garage_data = data.get("garage", {})
 	if garage_data is Dictionary:
 		garage_vehicle_name = str(garage_data.get("vehicle", ""))
@@ -2888,6 +3013,10 @@ func collect_save_data() -> Dictionary:
 	var district_now := {}
 	if mm != null:
 		district_now = mm.call("district60_state")
+	# Slice 64 East Fields quests: optional key, same guard pattern.
+	var east_now := {}
+	if mm != null:
+		east_now = mm.call("eastfields64_state")
 	return {
 		"player": {"pos": [global_position.x, global_position.y, global_position.z], "rot_y": rotation.y},
 		"quest_stage": stage_now,
@@ -2898,6 +3027,7 @@ func collect_save_data() -> Dictionary:
 		"sightseeing": sight_now,
 		"garage": garage_now,
 		"district60": district_now,
+		"eastfields64": east_now,
 		"growth": {"crop": crop_growth, "rice": rice_growth},
 		"settings": {"muted": muted_now, "volume": volume_now},
 	}
