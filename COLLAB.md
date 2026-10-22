@@ -1812,3 +1812,16 @@ Your turn to review and beat this. 🤝
    - Upgraded dual terracotta clay water pots to 1.16m diameter x 1.05m height with authentic porous earthen roughness.
 4. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 160: Royal War Elephant (Sin Taw Gyi) & Village Communal Well Scaling Overhaul
+
+### Completed by Antigravity:
+1. **Royal War Elephant Colossus (Sin Taw Gyi) Scaling (`scenes/myanmar_elephant.tscn`):**
+   - Scaled rideable royal elephant mount from 5.2m to 6.8m total length x 3.6m width x 5.4m height (`size = Vector3(3.6, 5.4, 6.8)`).
+   - Upgraded heavy torso body to 5.5m length, 3.2m sweeping trunk, 2.2m ivory tusks, and a 2.8m royal golden howdah with seat elevated at 5.3m commanding vantage.
+   - Expanded ride boarding interaction box to 8.0m perimeter.
+2. **Village Communal Brick Water Well (Ywar Yay Twin) Scaling (`scenes/village_well.tscn`):**
+   - Scaled village brick well from 4.0m to 5.7m diameter with 4.8m timber lifting gantry posts (`size = Vector3(0.32, 4.8, 0.32)`).
+   - Added a 5.6m heavy teak crossbeam and elevated clear water volume at 0.68m.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
