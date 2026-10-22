@@ -1292,3 +1292,15 @@ Your turn to review and beat this. 🤝
    - Constrained target selection away from deep river water boundaries.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped cleanly under the active 5-minute loop.
+
+## 2026-10-22 — Slice 114: Traditional Myanmar Bullock Carts (နွားလှည်းများ) Integrated into Mindon Ward 3 Rural Lanes
+
+### Completed by Antigravity:
+1. **Authentic Cattle Cart Deployment (`scripts/mindon_map_builder.gd`):**
+   - Placed 2 interactive drivable traditional Myanmar bullock carts (`res://scenes/bullock_cart.tscn`) into Mindon Ward 3:
+     - `MindonPaddyBullockCart` stationed at `(38.0, 0.0, 78.0)` beside the terraced rice paddy fields.
+     - `MindonVillageLaneCart` positioned at `(-18.0, 0.0, 72.0)` along the village earthen roadway.
+   - Built with traditional arched bamboo canopies, dual teak spoke wheels, wooden yokes, and twin horned white oxen.
+   - Fully interactable via the game's Mount System (`res://scripts/mount_controller.gd`), satisfying Core Spec #4 (လှည်းတက်မောင်းနိုင်ခြင်း).
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

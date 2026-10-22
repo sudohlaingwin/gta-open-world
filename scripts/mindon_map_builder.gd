@@ -25,6 +25,7 @@ const HINTHAR_SCENE = preload("res://scenes/hinthar_statue.tscn")
 const PITCH_SCENE = preload("res://scenes/football_pitch.tscn")
 const BELL_SCENE = preload("res://scenes/monastery_bell.tscn")
 const MONASTERY_SCENE = preload("res://scenes/monastery_school.tscn")
+const CART_SCENE = preload("res://scenes/bullock_cart.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -605,4 +606,18 @@ func _generate_ward3_amenities() -> void:
 	amenities_holder.add_child(monastery)
 	monastery.global_position = Vector3(-135.0, 0.0, 195.0)
 	monastery.rotation.y = deg_to_rad(25.0)
+
+	# Traditional Myanmar Bullock Carts (နွားလှည်းများ) along Village Lanes
+	var cart_paddy = CART_SCENE.instantiate()
+	cart_paddy.name = "MindonPaddyBullockCart"
+	amenities_holder.add_child(cart_paddy)
+	cart_paddy.global_position = Vector3(38.0, 0.0, 78.0)
+	cart_paddy.rotation.y = deg_to_rad(45.0)
+
+	var cart_lane = CART_SCENE.instantiate()
+	cart_lane.name = "MindonVillageLaneCart"
+	amenities_holder.add_child(cart_lane)
+	cart_lane.global_position = Vector3(-18.0, 0.0, 72.0)
+	cart_lane.rotation.y = deg_to_rad(-120.0)
+
 
