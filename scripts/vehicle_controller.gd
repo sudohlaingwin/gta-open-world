@@ -80,6 +80,11 @@ func _physics_process(delta: float) -> void:
 			# Gentle coasting friction (momentum preservation)
 			engine_force = 0.0
 			brake = 1.2
+
+		# Continuous procedural engine audio
+		var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
+		if audio_mgr and audio_mgr.has_method("play_car_engine"):
+			audio_mgr.play_car_engine(speed_ratio)
 	else:
 		engine_force = 0.0
 		brake = 10.0

@@ -220,6 +220,34 @@ func play_teashop_chime() -> void:
 	teashop_chime_player.stream = stream
 	teashop_chime_player.play()
 
+func play_car_engine(speed_ratio: float = 0.0) -> void:
+	if is_muted: return
+	if not vehicle_engine_player:
+		vehicle_engine_player = AudioStreamPlayer.new()
+		vehicle_engine_player.name = "VehicleEngineAudio"
+		vehicle_engine_player.volume_db = -6.0
+		add_child(vehicle_engine_player)
+	if vehicle_engine_player.playing:
+		return
+	var sample_hz = 22050
+	var duration = 0.35
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	# Deep 4-cylinder sedan engine rumble with RPM pitch modulation
+	var base_freq = 42.0 + clampf(speed_ratio, 0.0, 1.2) * 88.0
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var rumble = sin(t * base_freq * TAU) * 0.55 + sin(t * base_freq * 2.0 * TAU) * 0.3 + sin(t * base_freq * 4.0 * TAU) * 0.15
+		var int_sample = int(clamp(rumble, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	vehicle_engine_player.stream = stream
+	vehicle_engine_player.play()
+
 func play_motorcycle_engine(speed_ratio: float = 0.0) -> void:
 	if is_muted: return
 	if not vehicle_engine_player:
