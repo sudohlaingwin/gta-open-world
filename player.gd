@@ -51,6 +51,82 @@ var touch_yaw_right: bool = false
 var minimap_dots: Dictionary = {}
 var minimap_panel: Control = null
 var compass_label: Label = null
+# Slice 50 (audit item 7): per-frame HUD throttle. The audit counted ~25
+# _update_* calls per physics frame with ~60 minimap node lookups, a
+# villager group scan, and ~60 dot writes every frame. Measurement (see
+# README item-7 section) showed the real on-foot total was ~188 node
+# lookups + 3 group scans per frame, because the prompt loop, the
+# nearest-vehicle/villager helpers, and every button updater repeat the
+# same lookups. The fix has three parts, all behaviour-preserving:
+# 1. _n() caches every player-relative node reference once (nulls are
+#    never cached, so the lazy first-frame wiring still retries until
+#    the CanvasLayer exists; freed nodes are re-looked-up via
+#    is_instance_valid). World/scene nodes are never reparented at
+#    runtime, so a cached valid reference is the node at that path.
+# 2. _villagers() refreshes the villager group list at most once per
+#    second; membership never changes at runtime (18 villagers spawned
+#    with the scene, none freed), while dots still track every frame
+#    from the cached references.
+# 3. _set_text/_set_visible/_set_bar_value write only when the new
+#    value differs from the shown one; minimap dots write only when
+#    their computed panel position differs. Moving dots still track
+#    every frame while moving (their position changes every frame);
+#    parked vehicles, standing villagers, and static landmarks cost
+#    zero writes. Button visibility toggles are deliberately NOT
+#    converted (boolean assigns, out of the item's list) — deferred.
+var _node_cache: Dictionary = {}
+var _child_cache: Dictionary = {}
+var _villagers_cache: Array = []
+var _villagers_cache_age: float = 999.0
+var _mm_cached: Node = null
+var _sm_cached: Node = null
+
+
+## Cached player-relative node lookup (see the Slice 50 block above).
+func _n(path: String) -> Node:
+	var cached: Node = _node_cache.get(path)
+	if cached != null and is_instance_valid(cached):
+		return cached
+	var found: Node = get_node_or_null(path)
+	if found != null:
+		_node_cache[path] = found
+	return found
+
+
+## Cached child lookup for nodes owned by another node (lantern glows,
+## vehicle headlights): same rules as _n, keyed by a stable string.
+func _child_cached(parent: Node, child_name: String, key: String) -> Node:
+	var cached: Node = _child_cache.get(key)
+	if cached != null and is_instance_valid(cached):
+		return cached
+	var found: Node = parent.get_node_or_null(child_name) if parent != null else null
+	if found != null:
+		_child_cache[key] = found
+	return found
+
+
+## Villager group list, refreshed at most once per second (see above).
+func _villagers() -> Array:
+	if _villagers_cache_age > 1.0 or _villagers_cache.is_empty():
+		_villagers_cache = get_tree().get_nodes_in_group("villagers")
+		_villagers_cache_age = 0.0
+	return _villagers_cache
+
+
+## Change-only display writes (see the Slice 50 block above).
+func _set_text(node: Node, text: String) -> void:
+	if node != null and str(node.get("text")) != text:
+		node.set("text", text)
+
+
+func _set_visible(node: Node, v: bool) -> void:
+	if node != null and bool(node.get("visible")) != v:
+		node.set("visible", v)
+
+
+func _set_bar_value(bar: Node, v: float) -> void:
+	if bar != null and float(bar.get("value")) != v:
+		bar.set("value", v)
 # Slice 34: waypoint guidance HUD (completes the Slice 28 map waypoint).
 # Nodes live in the real scene (JoystickLayer/GuidePanel34) and are
 # found lazily like the other HUD controls. The panel is a plain
@@ -294,6 +370,7 @@ func apply_graphics_quality() -> void:
 		last_saved_stage = mm.stage
 
 func _physics_process(delta: float) -> void:
+	_villagers_cache_age += delta
 	if exit_blocked_timer > 0.0:
 		exit_blocked_timer -= delta
 	_apply_deferred_load()
@@ -395,7 +472,7 @@ func _physics_process(delta: float) -> void:
 	# Slice 13 quest stage 6: walk through the village gate arch.
 	# The arch is two posts + a beam (no blocking collision), so a
 	# player can actually pass under it — unlike a solid-wall gate.
-	var beam := get_node_or_null("../GateBeam12") as Node3D
+	var beam := _n("../GateBeam12") as Node3D
 	if beam != null:
 		var dx := global_position.x - beam.global_position.x
 		var dz := global_position.z - beam.global_position.z
@@ -405,7 +482,7 @@ func _physics_process(delta: float) -> void:
 	# Slice 14 quest stage 8: cross the bamboo footbridge over the
 	# river. The bridge midpoint is its root node; horizontal
 	# distance < 2.5 m counts, so deck height never blocks it.
-	var br := get_node_or_null("../BambooBridge14") as Node3D
+	var br := _n("../BambooBridge14") as Node3D
 	if br != null:
 		var bdx := global_position.x - br.global_position.x
 		var bdz := global_position.z - br.global_position.z
@@ -413,7 +490,7 @@ func _physics_process(delta: float) -> void:
 			if _mm().advance("cross_bridge")["advanced"]:
 				_update_quest_label()
 	# Slice 19 quest stage 30: walk within 5 m of the lakeside hut.
-	var hut := get_node_or_null("../LakesideHut19") as Node3D
+	var hut := _n("../LakesideHut19") as Node3D
 	if hut != null and global_position.distance_to(hut.global_position) < 5.0:
 		var res = _mm().advance("visit_hut")
 		if res["reward"] != "":
@@ -421,17 +498,17 @@ func _physics_process(delta: float) -> void:
 		if res["advanced"]:
 			_update_quest_label()
 	# Slice 10 quest stage 1: walk within 8 m of the pagoda.
-	var pag := get_node_or_null("../Pagoda")
+	var pag := _n("../Pagoda")
 	if pag != null and global_position.distance_to(pag.global_position) < 8.0:
 		if _mm().advance("visit_pagoda")["advanced"]:
 			_update_quest_label()
 	# Slice 11 quest stage 3: walk within 3.5 m of the monastery
 	# bell to ring it. The bell label shows on any ring (with a 4 s
 	# cooldown); the quest advances only once stage 2 (ride) is done.
-	var bell := get_node_or_null("../MonasteryBell") as Node3D
+	var bell := _n("../MonasteryBell") as Node3D
 	if bell != null and global_position.distance_to(bell.global_position) < 3.5 and bell_label_timer <= 0.0:
 		bell_label_timer = 4.0
-		var bl := get_node_or_null("../MonasteryBell/BellLabel") as Label3D
+		var bl := _n("../MonasteryBell/BellLabel") as Label3D
 		if bl != null:
 			bl.visible = true
 		var res = _mm().advance("ring_bell")
@@ -442,19 +519,19 @@ func _physics_process(delta: float) -> void:
 	if bell_label_timer > 0.0:
 		bell_label_timer -= delta
 		if bell_label_timer <= 0.0:
-			var bl2 := get_node_or_null("../MonasteryBell/BellLabel") as Label3D
+			var bl2 := _n("../MonasteryBell/BellLabel") as Label3D
 			if bl2 != null:
 				bl2.visible = false
 	if drum_timer > 0.0:
 		drum_timer -= delta
 		if drum_timer <= 0.0:
-			var dl2 := get_node_or_null("../FestivalDrum16/DrumLabel") as Label3D
+			var dl2 := _n("../FestivalDrum16/DrumLabel") as Label3D
 			if dl2 != null:
 				dl2.visible = false
 	if sleep_timer > 0.0:
 		sleep_timer -= delta
 		if sleep_timer <= 0.0:
-			var sl2 := get_node_or_null("../GuestHouse20/SleepLabel20") as Label3D
+			var sl2 := _n("../GuestHouse20/SleepLabel20") as Label3D
 			if sl2 != null:
 				sl2.visible = false
 	if Input.is_action_just_pressed("ui_accept"):
@@ -574,7 +651,7 @@ func _update_action_buttons() -> void:
 			jump_button.visible = false
 		if vehicle_button != null:
 			vehicle_button.visible = true
-			vehicle_button.text = "ဆင်းမည်"
+			_set_text(vehicle_button, "ဆင်းမည်")
 		var flying := driving_vehicle != null and driving_vehicle.name in ["Airplane", "Helicopter"]
 		if throttle_up_button != null:
 			throttle_up_button.visible = flying
@@ -612,7 +689,7 @@ func _update_action_buttons() -> void:
 		var near := _nearest_vehicle()
 		vehicle_button.visible = near != null
 		if near != null:
-			vehicle_button.text = "စီးမည်"
+			_set_text(vehicle_button, "စီးမည်")
 	if yaw_left_button != null:
 		yaw_left_button.visible = false
 	if yaw_right_button != null:
@@ -654,9 +731,9 @@ func _update_speed_label() -> void:
 	if speed_label == null:
 		return
 	if not driving or driving_vehicle == null:
-		speed_label.visible = false
+		_set_visible(speed_label, false)
 		if speed_bar != null:
-			speed_bar.visible = false
+			_set_visible(speed_bar, false)
 		return
 	var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
 		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း", "Boat2": "လှေ", "Horse2": "မြင်း"}
@@ -668,32 +745,32 @@ func _update_speed_label() -> void:
 		spd = absf(float(driving_vehicle.get("speed")))
 	elif driving_vehicle.get("velocity") != null:
 		spd = (driving_vehicle.get("velocity") as Vector3).length()
-	speed_label.text = vname + " — " + ("%d km/h" % int(spd * 3.6))
-	speed_label.visible = true
+	_set_text(speed_label, vname + " — " + ("%d km/h" % int(spd * 3.6)))
+	_set_visible(speed_label, true)
 	if speed_bar != null:
 		var top: float = float(vmax.get(driving_vehicle.name, 14.0))
-		speed_bar.value = clampf(spd / top * 100.0, 0.0, 100.0)
-		speed_bar.visible = true
+		_set_bar_value(speed_bar, clampf(spd / top * 100.0, 0.0, 100.0))
+		_set_visible(speed_bar, true)
 
 ## Slice 9 clock: in-game time from DayNight.time (120 s = 1 day).
 ## Guarded: an older scene without DayNight just shows no clock.
 func _update_clock_label() -> void:
 	if clock_label == null:
-		clock_label = get_node_or_null("../JoystickLayer/ClockLabel") as Label
+		clock_label = _n("../JoystickLayer/ClockLabel") as Label
 	if clock_label == null:
 		return
-	var dn := get_node_or_null("../DayNight")
+	var dn := _n("../DayNight")
 	if dn == null or dn.get("time") == null or dn.get("day_length_seconds") == null:
-		clock_label.visible = false
+		_set_visible(clock_label, false)
 		return
 	var day_len := float(dn.get("day_length_seconds"))
 	if day_len <= 0.0:
-		clock_label.visible = false
+		_set_visible(clock_label, false)
 		return
 	var frac := fmod(float(dn.get("time")) / day_len, 1.0)
 	var total_min := int(frac * 24.0 * 60.0)
-	clock_label.text = "အချိန် %02d:%02d" % [total_min / 60, total_min % 60]
-	clock_label.visible = true
+	_set_text(clock_label, "အချိန် %02d:%02d" % [total_min / 60, total_min % 60])
+	_set_visible(clock_label, true)
 
 func _on_throttle_up_down() -> void:
 	touch_throttle_up = true
@@ -730,25 +807,25 @@ func record_talk(villager: Node) -> void:
 ## tracker text, then the stage-change chime.
 func _update_quest_label() -> void:
 	if quest_label == null:
-		quest_label = get_node_or_null("../JoystickLayer/QuestLabel") as Label
+		quest_label = _n("../JoystickLayer/QuestLabel") as Label
 	if quest_label == null:
 		return
 	var mm = _mm()
 	if mm == null:
 		return
-	var villagers := get_tree().get_nodes_in_group("villagers")
+	var villagers := _villagers()
 	var total := villagers.size()
 	mm.promote_talk_all(talked_ids.size(), total)
-	quest_label.text = mm.label_text(talked_ids.size(), total, mm.get_count("banana"))
+	_set_text(quest_label, mm.label_text(talked_ids.size(), total, mm.get_count("banana")))
 	# Preserved old quirk: while stage 0 is incomplete the function
 	# returns here, so the tracker keeps its scene text until stage 1.
 	if mm.stage == 0:
 		return
 	if quest_tracker_label == null:
-		quest_tracker_label = get_node_or_null("../JoystickLayer/QuestTrackerLabel") as Label
+		quest_tracker_label = _n("../JoystickLayer/QuestTrackerLabel") as Label
 	if quest_tracker_label != null:
-		quest_tracker_label.text = mm.tracker_text()
-		quest_tracker_label.visible = true
+		_set_text(quest_tracker_label, mm.tracker_text())
+		_set_visible(quest_tracker_label, true)
 	# Slice 17 quest chime: a short generated tone whenever the stage
 	# actually advances (not on every label refresh).
 	if mm.stage != last_chime_stage:
@@ -766,7 +843,7 @@ func _nearest_vehicle() -> Node:
 	var best: Node = null
 	var best_dist: float = 4.0
 	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2"]:
-		var v := get_node_or_null("../" + name)
+		var v := _n("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
 			if d < best_dist:
@@ -777,7 +854,7 @@ func _nearest_vehicle() -> Node:
 func _nearest_villager() -> Node:
 	var best: Node = null
 	var best_dist: float = 3.5
-	for villager in get_tree().get_nodes_in_group("villagers"):
+	for villager in _villagers():
 		var d := global_position.distance_to(villager.global_position)
 		if d < best_dist:
 			best_dist = d
@@ -1069,26 +1146,26 @@ func _update_stamina(delta: float) -> void:
 	else:
 		stamina = minf(stamina + regen * delta, 100.0)
 	if stamina_bar != null:
-		stamina_bar.value = stamina
-		stamina_bar.visible = not driving
+		_set_bar_value(stamina_bar, stamina)
+		_set_visible(stamina_bar, not driving)
 
 ## Slice 10 day counter from DayNight time (120 s = 1 day).
 func _update_day_label() -> void:
 	if day_label == null:
-		day_label = get_node_or_null("../JoystickLayer/DayLabel") as Label
+		day_label = _n("../JoystickLayer/DayLabel") as Label
 	if day_label == null:
 		return
-	var dn := get_node_or_null("../DayNight")
+	var dn := _n("../DayNight")
 	if dn == null or dn.get("time") == null or dn.get("day_length_seconds") == null:
-		day_label.visible = false
+		_set_visible(day_label, false)
 		return
 	var day_len := float(dn.get("day_length_seconds"))
 	if day_len <= 0.0:
-		day_label.visible = false
+		_set_visible(day_label, false)
 		return
 	var day := int(float(dn.get("time")) / day_len) + 1
-	day_label.text = "နေ့ %d" % day
-	day_label.visible = true
+	_set_text(day_label, "နေ့ %d" % day)
+	_set_visible(day_label, true)
 
 ## Slice 10 compass: heading from the facing rotation. Facing -Z
 ## is north (rotation.y = 180 deg there), so heading = 180 - rot.
@@ -1119,8 +1196,8 @@ func _update_compass() -> void:
 	if driving and driving_vehicle != null:
 		facing = driving_vehicle
 	var deg := wrapf(180.0 - rad_to_deg(facing.rotation.y), 0.0, 360.0)
-	compass_label.text = "%d° %s" % [int(deg), _cardinal(deg)]
-	compass_label.visible = true
+	_set_text(compass_label, "%d° %s" % [int(deg), _cardinal(deg)])
+	_set_visible(compass_label, true)
 
 ## Slice 34: waypoint guidance HUD. The Slice 28 map owns the
 ## waypoint (WorldMapPanel has_waypoint/waypoint, x/z metres); this
@@ -1155,7 +1232,7 @@ func _guide_arrow_for(rel_deg: float) -> String:
 	return "↖"
 
 func _guide_camera_forward() -> Vector2:
-	var cam := get_node_or_null("../FollowCamera") as Camera3D
+	var cam := _n("../FollowCamera") as Camera3D
 	var ref: Node3D = self
 	if driving and driving_vehicle != null:
 		ref = driving_vehicle as Node3D
@@ -1168,14 +1245,14 @@ func _guide_camera_forward() -> Vector2:
 
 func _update_waypoint_guide() -> void:
 	if guide_panel == null:
-		guide_panel = get_node_or_null("../JoystickLayer/GuidePanel34") as Control
-		guide_arrow = get_node_or_null("../JoystickLayer/GuidePanel34/GuideArrow") as Label
-		guide_dist = get_node_or_null("../JoystickLayer/GuidePanel34/GuideDist") as Label
+		guide_panel = _n("../JoystickLayer/GuidePanel34") as Control
+		guide_arrow = _n("../JoystickLayer/GuidePanel34/GuideArrow") as Label
+		guide_dist = _n("../JoystickLayer/GuidePanel34/GuideDist") as Label
 	if guide_panel == null:
 		return
-	var wm := get_node_or_null("../JoystickLayer/WorldMapPanel")
+	var wm := _n("../JoystickLayer/WorldMapPanel")
 	if wm == null or not bool(wm.get("has_waypoint")):
-		guide_panel.visible = false
+		_set_visible(guide_panel, false)
 		return
 	var wp: Vector2 = wm.get("waypoint")
 	var from: Vector3 = global_position
@@ -1184,21 +1261,21 @@ func _update_waypoint_guide() -> void:
 	var dx := wp.x - from.x
 	var dz := wp.y - from.z
 	var dist := sqrt(dx * dx + dz * dz)
-	guide_panel.visible = true
+	_set_visible(guide_panel, true)
 	if dist <= GUIDE_ARRIVED_RADIUS:
 		if guide_arrow != null:
-			guide_arrow.visible = false
+			_set_visible(guide_arrow, false)
 		if guide_dist != null:
-			guide_dist.text = "✓ ရောက်ပါပြီ"
+			_set_text(guide_dist, "✓ ရောက်ပါပြီ")
 		return
 	if guide_arrow != null:
-		guide_arrow.visible = true
+		_set_visible(guide_arrow, true)
 		var fwd := _guide_camera_forward()
 		var to := Vector2(dx, dz).normalized()
 		var rel := rad_to_deg(atan2(fwd.y * to.x - fwd.x * to.y, fwd.dot(to)))
-		guide_arrow.text = _guide_arrow_for(rel)
+		_set_text(guide_arrow, _guide_arrow_for(rel))
 	if guide_dist != null:
-		guide_dist.text = "%d m" % int(dist)
+		_set_text(guide_dist, "%d m" % int(dist))
 
 ## Slice 10 REAL minimap, Slice 49 transform: dots positioned from
 ## real world positions through the SHARED MapTransform (bounds read
@@ -1214,7 +1291,7 @@ func _update_waypoint_guide() -> void:
 ## (gold), vehicles (white).
 func _update_minimap() -> void:
 	if minimap_dots.is_empty():
-		var panel := get_node_or_null("../JoystickLayer/MinimapPanel")
+		var panel := _n("../JoystickLayer/MinimapPanel")
 		if panel == null:
 			return
 		minimap_panel = panel as Control
@@ -1236,33 +1313,35 @@ func _update_minimap() -> void:
 	var put := func(dot_name: String, wpos: Vector3) -> void:
 		var dot: ColorRect = minimap_dots.get(dot_name)
 		if dot != null and minimap_panel != null:
-			dot.position = MapTransform.clamp_dot(
+			var p := MapTransform.clamp_dot(
 				MapTransform.world_to_panel(wpos.x, wpos.z, minimap_panel.size),
 				minimap_panel.size, dot.size)
+			if dot.position != p:
+				dot.position = p
 	put.call("PlayerDot", global_position)
-	var villagers := get_tree().get_nodes_in_group("villagers")
+	var villagers := _villagers()
 	for i in range(min(villagers.size(), 10)):
 		put.call("VillagerDot%d" % (i + 1), (villagers[i] as Node3D).global_position)
-	var pag := get_node_or_null("../Pagoda")
+	var pag := _n("../Pagoda")
 	if pag != null:
 		put.call("PagodaDot", (pag as Node3D).global_position)
 	# Slice 11 landmark dots: bell (bronze), zayat (brown), grove
 	# (green, tracked at the first palm trunk).
-	var bellm := get_node_or_null("../MonasteryBell")
+	var bellm := _n("../MonasteryBell")
 	if bellm != null:
 		put.call("BellDot", (bellm as Node3D).global_position)
-	var zay := get_node_or_null("../Zayat")
+	var zay := _n("../Zayat")
 	if zay != null:
 		put.call("ZayatDot", (zay as Node3D).global_position)
-	var palm := get_node_or_null("../PalmTrunk_s11_1")
+	var palm := _n("../PalmTrunk_s11_1")
 	if palm != null:
 		put.call("GroveDot", (palm as Node3D).global_position)
 	# Slice 12 market + well dots: the market square and the brick
 	# well are tracked like the other landmarks.
-	var stall := get_node_or_null("../MarketStallA")
+	var stall := _n("../MarketStallA")
 	if stall != null:
 		put.call("MarketDot", (stall as Node3D).global_position)
-	var well := get_node_or_null("../BrickWell")
+	var well := _n("../BrickWell")
 	if well != null:
 		put.call("WellDot", (well as Node3D).global_position)
 	# Slice 13 landmark dots: gate (gold), grove (green), school
@@ -1270,26 +1349,26 @@ func _update_minimap() -> void:
 	for pair in [["GateBeam12", "GateDot13"], ["BananaGrove13", "GroveDot13"],
 			["School13", "SchoolDot13"], ["TeaShop13", "TeaShopDot13"],
 			["Football13", "FootballDot13"]]:
-		var lm := get_node_or_null("../" + pair[0]) as Node3D
+		var lm := _n("../" + pair[0]) as Node3D
 		if lm != null:
 			put.call(pair[1], lm.global_position)
 	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2"]:
-		var v := get_node_or_null("../" + vname)
+		var v := _n("../" + vname)
 		if v != null:
 			put.call("VehicleDot" + vname, (v as Node3D).global_position)
 	# Slice 14 landmark dots: bamboo bridge (bamboo brown) and the
 	# two golden hinthar statues (gold).
-	var br14 := get_node_or_null("../BambooBridge14")
+	var br14 := _n("../BambooBridge14")
 	if br14 != null:
 		put.call("BridgeDot14", (br14 as Node3D).global_position)
-	var hsL := get_node_or_null("../HintharStatue14L")
+	var hsL := _n("../HintharStatue14L")
 	if hsL != null:
 		put.call("HintharDot14L", (hsL as Node3D).global_position)
-	var hsR := get_node_or_null("../HintharStatue14R")
+	var hsR := _n("../HintharStatue14R")
 	if hsR != null:
 		put.call("HintharDot14R", (hsR as Node3D).global_position)
 	# Slice 16 festival dot: the festival ground slab.
-	var fest16 := get_node_or_null("../FestivalGround16")
+	var fest16 := _n("../FestivalGround16")
 	if fest16 != null:
 		put.call("FestivalDot16", fest16.global_position)
 	# Slice 17 dots: fishing spot, donation box, stall E, well #2,
@@ -1300,14 +1379,14 @@ func _update_minimap() -> void:
 			["House7_17", "HouseDot17"], ["Cow2", "VehicleDotCow2"],
 			["FootballBall17", "BallDot17"], ["Villager11", "VillagerDot11"],
 			["Villager12", "VillagerDot12"]]:
-		var lm17 := get_node_or_null("../" + pair[0]) as Node3D
+		var lm17 := _n("../" + pair[0]) as Node3D
 		if lm17 != null:
 			put.call(pair[1], lm17.global_position)
 	# Slice 18 dots: villagers 13/14 by node name (the group loop
 	# above only covers the first 10), pavilion + paddy landmarks.
 	for pair in [["Villager13", "VillagerDot13"], ["Villager14", "VillagerDot14"],
 			["Pavilion18", "PavilionDot18"], ["Paddy18", "PaddyDot18"]]:
-		var lm18 := get_node_or_null("../" + pair[0]) as Node3D
+		var lm18 := _n("../" + pair[0]) as Node3D
 		if lm18 != null:
 			put.call(pair[1], lm18.global_position)
 	# Slice 19 dots: villagers 15/16 by node name, lakeside hut,
@@ -1316,7 +1395,7 @@ func _update_minimap() -> void:
 	for pair in [["Villager15", "VillagerDot15"], ["Villager16", "VillagerDot16"],
 			["LakesideHut19", "HutDot19"], ["GoldStall19", "GoldStallDot19"],
 			["Workshop19", "WorkshopDot19"]]:
-		var lm19 := get_node_or_null("../" + pair[0]) as Node3D
+		var lm19 := _n("../" + pair[0]) as Node3D
 		if lm19 != null:
 			put.call(pair[1], lm19.global_position)
 	# Slice 20 dots: villagers 17/18 by node name, night market,
@@ -1324,7 +1403,7 @@ func _update_minimap() -> void:
 	for pair in [["Villager17", "VillagerDot17"], ["Villager18", "VillagerDot18"],
 			["NightMarket20", "NightMarketDot20"], ["GuestHouse20", "GuestHouseDot20"],
 			["Pier20", "PierDot20"]]:
-		var lm20 := get_node_or_null("../" + pair[0]) as Node3D
+		var lm20 := _n("../" + pair[0]) as Node3D
 		if lm20 != null:
 			put.call(pair[1], lm20.global_position)
 	# Slice 37 dots: Mindon district landmarks + Oo village cluster.
@@ -1334,50 +1413,50 @@ func _update_minimap() -> void:
 			["MindonPost", "MindonPostDot"], ["MindonHospital", "MindonHospitalDot"],
 			["MindonEdu", "MindonEduDot"], ["MindonMRTV", "MindonMRTVDot"],
 			["MindonShops", "MindonShopsDot"], ["OoHouse1", "OoVillageDot"]]:
-		var lm37 := get_node_or_null("../" + pair[0]) as Node3D
+		var lm37 := _n("../" + pair[0]) as Node3D
 		if lm37 != null:
 			put.call(pair[1], lm37.global_position)
 	# Slice 28 world-map waypoint dot on the minimap: the overlay owns
 	# the waypoint; the minimap only mirrors it (same transform family).
-	var wm28 := get_node_or_null("../JoystickLayer/WorldMapPanel")
+	var wm28 := _n("../JoystickLayer/WorldMapPanel")
 	var wp_dot: ColorRect = minimap_dots.get("WaypointDot")
 	if wp_dot != null:
 		if wm28 != null and bool(wm28.get("has_waypoint")):
 			var wpv: Vector2 = wm28.get("waypoint")
 			put.call("WaypointDot", Vector3(wpv.x, 0.0, wpv.y))
-			wp_dot.visible = true
+			_set_visible(wp_dot, true)
 		else:
-			wp_dot.visible = false
+			_set_visible(wp_dot, false)
 
 ## Slice 10 nearby prompt: what is close enough to use, on foot.
 func _update_prompt_label() -> void:
 	if prompt_label == null:
-		prompt_label = get_node_or_null("../JoystickLayer/PromptLabel") as Label
+		prompt_label = _n("../JoystickLayer/PromptLabel") as Label
 	# Slice 38: a refused vehicle exit owns the prompt for a few
 	# seconds so the player knows WHY they stayed in the vehicle.
 	if exit_blocked_timer > 0.0 and prompt_label != null:
-		prompt_label.text = "ထွက်လို့မရပါ — ဘေးမှာ နေရာကျပ်နေသည်"
-		prompt_label.visible = true
+		_set_text(prompt_label, "ထွက်လို့မရပါ — ဘေးမှာ နေရာကျပ်နေသည်")
+		_set_visible(prompt_label, true)
 		return
 	if prompt_label == null:
 		return
 	if driving:
-		prompt_label.visible = false
+		_set_visible(prompt_label, false)
 		return
 	var vill := _nearest_villager()
 	if vill != null:
 		var vname := str(vill.get("villager_name"))
 		if vname == "":
 			vname = "ရွာသား"
-		prompt_label.text = "အနီး: " + vname + " — စကားပြော"
-		prompt_label.visible = true
+		_set_text(prompt_label, "အနီး: " + vname + " — စကားပြော")
+		_set_visible(prompt_label, true)
 		return
 	var veh := _nearest_vehicle()
 	if veh != null:
 		var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
 			"Airplane": "လေယာဉ်", "Cow": "နွား", "Cow2": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း", "Boat2": "လှေ", "Horse2": "မြင်း"}
-		prompt_label.text = "အနီး: " + names.get(veh.name, veh.name) + " — စီးမည်"
-		prompt_label.visible = true
+		_set_text(prompt_label, "အနီး: " + names.get(veh.name, veh.name) + " — စီးမည်")
+		_set_visible(prompt_label, true)
 		return
 	# Slice 11 landmark prompts: bell, zayat, grove.
 	# Slice 12: market + well prompts added; village sign prompt
@@ -1433,12 +1512,12 @@ func _update_prompt_label() -> void:
 			["MindonShops", "ဈေးဆိုင်", 5.0],
 			["OoHouse1", "အိုးရွာ", 5.0],
 			["MindonBridge", "တံတား", 5.0]]:
-		var lm := get_node_or_null("../" + pair[0]) as Node3D
+		var lm := _n("../" + pair[0]) as Node3D
 		if lm != null and global_position.distance_to(lm.global_position) < float(pair[2]):
-			prompt_label.text = "အနီး: " + str(pair[1])
-			prompt_label.visible = true
+			_set_text(prompt_label, "အနီး: " + str(pair[1]))
+			_set_visible(prompt_label, true)
 			return
-	prompt_label.visible = false
+	_set_visible(prompt_label, false)
 
 func _on_yaw_left_down() -> void:
 	touch_yaw_left = true
@@ -1485,12 +1564,12 @@ func _on_camera_reset() -> void:
 ## Talk button, and are hidden while driving.
 func _update_market_buttons() -> void:
 	if fruit_button == null:
-		fruit_button = get_node_or_null("../JoystickLayer/FruitButton") as Button
+		fruit_button = _n("../JoystickLayer/FruitButton") as Button
 		if fruit_button != null and not fruit_button_connected:
 			fruit_button.pressed.connect(_on_buy_fruit)
 			fruit_button_connected = true
 	if water_button == null:
-		water_button = get_node_or_null("../JoystickLayer/WaterButton") as Button
+		water_button = _n("../JoystickLayer/WaterButton") as Button
 		if water_button != null and not water_button_connected:
 			water_button.pressed.connect(_on_draw_water)
 			water_button_connected = true
@@ -1500,9 +1579,9 @@ func _update_market_buttons() -> void:
 		if water_button != null:
 			water_button.visible = false
 		return
-	var stall := get_node_or_null("../MarketStallA") as Node3D
+	var stall := _n("../MarketStallA") as Node3D
 	var near_stall := stall != null and global_position.distance_to(stall.global_position) < 4.0
-	var well := get_node_or_null("../BrickWell") as Node3D
+	var well := _n("../BrickWell") as Node3D
 	var near_well := well != null and global_position.distance_to(well.global_position) < 4.0
 	if fruit_button != null:
 		fruit_button.visible = near_stall
@@ -1530,14 +1609,14 @@ func _update_fruit_water_label() -> void:
 	var mm = _mm()
 	if mm == null:
 		return
-	fruit_water_label.text = mm.counter_text()
-	fruit_water_label.visible = true
+	_set_text(fruit_water_label, mm.counter_text())
+	_set_visible(fruit_water_label, true)
 
 func _update_draw_animation(delta: float) -> void:
 	if draw_timer <= 0.0:
 		return
 	draw_timer -= delta
-	var bucket := get_node_or_null("../BrickWell/WellBucket12") as Node3D
+	var bucket := _n("../BrickWell/WellBucket12") as Node3D
 	if bucket != null:
 		var phase := 1.0 - maxf(draw_timer, 0.0) / 1.5
 		var y := 1.6
@@ -1564,14 +1643,14 @@ func _update_draw_animation(delta: float) -> void:
 ## third reward: +5% walk speed, applied exactly once.
 func _banana_bunch_visible() -> bool:
 	for i in range(3):
-		var b := get_node_or_null("../BananaGrove13/BananaBunch13_%d" % i) as Node3D
+		var b := _n("../BananaGrove13/BananaBunch13_%d" % i) as Node3D
 		if b != null and b.visible:
 			return true
 	return false
 
 func _update_banana_button() -> void:
 	if banana_button == null:
-		banana_button = get_node_or_null("../JoystickLayer/BananaButton") as Button
+		banana_button = _n("../JoystickLayer/BananaButton") as Button
 		if banana_button != null and not banana_button_connected:
 			banana_button.pressed.connect(_on_pick_banana)
 			banana_button_connected = true
@@ -1580,7 +1659,7 @@ func _update_banana_button() -> void:
 	if driving:
 		banana_button.visible = false
 		return
-	var grove := get_node_or_null("../BananaGrove13") as Node3D
+	var grove := _n("../BananaGrove13") as Node3D
 	banana_button.visible = grove != null and global_position.distance_to(grove.global_position) < 3.5 and _banana_bunch_visible()
 
 func _on_pick_banana() -> void:
@@ -1618,20 +1697,20 @@ func _update_banana_regrow(delta: float) -> void:
 ## headlight meshes' visibility (the car has two, the motorcycle
 ## one). No keyboard path is needed for it.
 func _apply_lights() -> void:
-	var car := get_node_or_null("../Car")
+	var car := _n("../Car")
 	if car != null:
 		for hn in ["Headlight_R", "Headlight_L"]:
-			var h := car.get_node_or_null(hn) as Node3D
+			var h := _child_cached(car, hn, "car/" + hn) as Node3D
 			if h != null:
 				h.visible = lights_on
-	var bike := get_node_or_null("../Motorcycle")
+	var bike := _n("../Motorcycle")
 	if bike != null:
-		var bh := bike.get_node_or_null("BikeHeadlight") as Node3D
+		var bh := _child_cached(bike, "BikeHeadlight", "bike/BikeHeadlight") as Node3D
 		if bh != null:
 			bh.visible = lights_on
-	var tuk := get_node_or_null("../TukTuk")
+	var tuk := _n("../TukTuk")
 	if tuk != null:
-		var th := tuk.get_node_or_null("TukHeadlight") as Node3D
+		var th := _child_cached(tuk, "TukHeadlight", "tuk/TukHeadlight") as Node3D
 		if th != null:
 			th.visible = lights_on
 
@@ -1661,7 +1740,7 @@ func _nearest_statue() -> Node:
 	var best: Node = null
 	var best_dist: float = 4.0
 	for sname in ["HintharStatue14L", "HintharStatue14R"]:
-		var s := get_node_or_null("../" + sname) as Node3D
+		var s := _n("../" + sname) as Node3D
 		if s != null:
 			var d := global_position.distance_to(s.global_position)
 			if d < best_dist:
@@ -1718,12 +1797,12 @@ func _update_blessing(delta: float) -> void:
 ## (sprint +10%, applied exactly once).
 func _update_tea_book_buttons() -> void:
 	if tea_button == null:
-		tea_button = get_node_or_null("../JoystickLayer/TeaButton15") as Button
+		tea_button = _n("../JoystickLayer/TeaButton15") as Button
 		if tea_button != null and not tea_button_connected:
 			tea_button.pressed.connect(_on_order_tea)
 			tea_button_connected = true
 	if book_button == null:
-		book_button = get_node_or_null("../JoystickLayer/BookButton15") as Button
+		book_button = _n("../JoystickLayer/BookButton15") as Button
 		if book_button != null and not book_button_connected:
 			book_button.pressed.connect(_on_donate_book)
 			book_button_connected = true
@@ -1733,9 +1812,9 @@ func _update_tea_book_buttons() -> void:
 		if book_button != null:
 			book_button.visible = false
 		return
-	var shop := get_node_or_null("../TeaShop13") as Node3D
+	var shop := _n("../TeaShop13") as Node3D
 	var near_shop := shop != null and global_position.distance_to(shop.global_position) < 4.0
-	var school := get_node_or_null("../School13") as Node3D
+	var school := _n("../School13") as Node3D
 	var near_school := school != null and global_position.distance_to(school.global_position) < 4.0
 	if tea_button != null:
 		tea_button.visible = near_shop
@@ -1768,17 +1847,17 @@ func _on_donate_book() -> void:
 ## (+5% walk speed, applied exactly once, +10% jump).
 func _update_festival_buttons() -> void:
 	if drum_button == null:
-		drum_button = get_node_or_null("../JoystickLayer/DrumButton16") as Button
+		drum_button = _n("../JoystickLayer/DrumButton16") as Button
 		if drum_button != null and not drum_button_connected:
 			drum_button.pressed.connect(_on_beat_drum)
 			drum_button_connected = true
 	if lantern_button == null:
-		lantern_button = get_node_or_null("../JoystickLayer/LanternButton16") as Button
+		lantern_button = _n("../JoystickLayer/LanternButton16") as Button
 		if lantern_button != null and not lantern_button_connected:
 			lantern_button.pressed.connect(_on_light_lantern)
 			lantern_button_connected = true
 	if snack_button == null:
-		snack_button = get_node_or_null("../JoystickLayer/SnackButton16") as Button
+		snack_button = _n("../JoystickLayer/SnackButton16") as Button
 		if snack_button != null and not snack_button_connected:
 			snack_button.pressed.connect(_on_buy_snack)
 			snack_button_connected = true
@@ -1790,12 +1869,12 @@ func _update_festival_buttons() -> void:
 		if snack_button != null:
 			snack_button.visible = false
 		return
-	var drum := get_node_or_null("../FestivalDrum16") as Node3D
+	var drum := _n("../FestivalDrum16") as Node3D
 	if drum_button != null:
 		drum_button.visible = drum != null and global_position.distance_to(drum.global_position) < 4.0
 	if lantern_button != null:
 		lantern_button.visible = _nearest_unlit_lantern() != null
-	var stall := get_node_or_null("../FestivalStall16") as Node3D
+	var stall := _n("../FestivalStall16") as Node3D
 	if snack_button != null:
 		snack_button.visible = stall != null and global_position.distance_to(stall.global_position) < 4.0
 
@@ -1803,10 +1882,10 @@ func _nearest_unlit_lantern() -> Node:
 	var best: Node = null
 	var best_dist: float = 4.0
 	for lname in ["FestivalLantern16A", "FestivalLantern16B", "FestivalLantern16C"]:
-		var l := get_node_or_null("../" + lname) as Node3D
+		var l := _n("../" + lname) as Node3D
 		if l == null:
 			continue
-		var glow := l.get_node_or_null("LanternGlow") as Node3D
+		var glow := _child_cached(l, "LanternGlow", "lantern/" + lname) as Node3D
 		if glow != null and glow.visible:
 			continue
 		var d := global_position.distance_to(l.global_position)
@@ -1926,26 +2005,26 @@ func _update_slice17_buttons() -> void:
 			if b != null:
 				b.visible = false
 		return
-	var spot := get_node_or_null("../FishingSpot17") as Node3D
+	var spot := _n("../FishingSpot17") as Node3D
 	if fish_button != null:
 		fish_button.visible = spot != null and global_position.distance_to(spot.global_position) < 4.0
-	var box := get_node_or_null("../DonationBox17") as Node3D
+	var box := _n("../DonationBox17") as Node3D
 	if donate_button != null:
 		donate_button.visible = box != null and global_position.distance_to(box.global_position) < 4.0
-	var cow := get_node_or_null("../Cow") as Node3D
+	var cow := _n("../Cow") as Node3D
 	if milk_button != null:
 		milk_button.visible = cow != null and global_position.distance_to(cow.global_position) < 3.5
-	var field := get_node_or_null("../SesameField15") as Node3D
+	var field := _n("../SesameField15") as Node3D
 	if water17_button != null:
 		water17_button.visible = field != null and global_position.distance_to(field.global_position) < 4.0
-	var coop := get_node_or_null("../ChickenCoop17") as Node3D
+	var coop := _n("../ChickenCoop17") as Node3D
 	if feed_button != null:
 		feed_button.visible = coop != null and global_position.distance_to(coop.global_position) < 4.0
 	if photo_button != null:
 		photo_button.visible = true
 	if rain_button != null:
 		rain_button.visible = true
-		rain_button.text = "မိုးပိတ်" if rain_on else "မိုး"
+		_set_text(rain_button, "မိုးပိတ်" if rain_on else "မိုး")
 	if horn_button != null:
 		horn_button.visible = false
 	if bell17_button != null:
@@ -2023,7 +2102,7 @@ func _on_rain() -> void:
 ## it and rolls with decay; entering either goal (24,-20) or (36,-20)
 ## scores, resets the ball to centre, and bumps the goal counter.
 func _update_football(delta: float) -> void:
-	var ball := get_node_or_null("../FootballBall17") as Node3D
+	var ball := _n("../FootballBall17") as Node3D
 	if ball == null:
 		return
 	if not driving:
@@ -2070,7 +2149,7 @@ func _update_slice18_buttons() -> void:
 		if sm_mute != null:
 			sound_on = not bool(sm_mute.get("muted"))
 		mute_button.visible = true
-		mute_button.text = "အသံပိတ်" if sound_on else "အသံဖွင့်"
+		_set_text(mute_button, "အသံပိတ်" if sound_on else "အသံဖွင့်")
 	if driving:
 		if trumpet_button != null:
 			trumpet_button.visible = driving_vehicle != null and driving_vehicle.name == "Elephant"
@@ -2080,10 +2159,10 @@ func _update_slice18_buttons() -> void:
 		return
 	if trumpet_button != null:
 		trumpet_button.visible = false
-	var ele := get_node_or_null("../Elephant") as Node3D
+	var ele := _n("../Elephant") as Node3D
 	if feed18_button != null:
 		feed18_button.visible = ele != null and global_position.distance_to(ele.global_position) < 4.0
-	var pag := get_node_or_null("../Pagoda") as Node3D
+	var pag := _n("../Pagoda") as Node3D
 	if offer_button != null:
 		# Slice 38 fix: the pre-existing Slice 18 range (5.0 m) was
 		# unreachable — the pagoda base cylinder (Slice 4, radius
@@ -2093,12 +2172,12 @@ func _update_slice18_buttons() -> void:
 		# base without touching the collision; nothing else about
 		# the interaction changes.
 		offer_button.visible = pag != null and global_position.distance_to(pag.global_position) < 8.0
-	var paddy := get_node_or_null("../Paddy18") as Node3D
+	var paddy := _n("../Paddy18") as Node3D
 	if plant_button != null:
 		plant_button.visible = paddy != null and global_position.distance_to(paddy.global_position) < 4.0
 	var rest_spot: Node3D = null
 	for rname in ["RestBench18A", "RestBench18B"]:
-		var rb := get_node_or_null("../" + rname) as Node3D
+		var rb := _n("../" + rname) as Node3D
 		if rb != null and global_position.distance_to(rb.global_position) < 4.0:
 			rest_spot = rb
 			break
@@ -2145,7 +2224,10 @@ func _on_mute() -> void:
 
 
 func _sm():
-	return get_node_or_null("/root/SaveManager")
+	if _sm_cached != null and is_instance_valid(_sm_cached):
+		return _sm_cached
+	_sm_cached = get_node_or_null("/root/SaveManager")
+	return _sm_cached
 
 
 ## Slice 30 outfit: apply the saved Character-screen choice at spawn.
@@ -2256,7 +2338,10 @@ func _recolor_part(part_name: String, color: Color) -> void:
 ## The manager is a required autoload in-game; callers that run
 ## before it exists (none in normal play) get null and degrade.
 func _mm():
-	return get_node_or_null("/root/MissionManager")
+	if _mm_cached != null and is_instance_valid(_mm_cached):
+		return _mm_cached
+	_mm_cached = get_node_or_null("/root/MissionManager")
+	return _mm_cached
 
 
 ## Slice 27: apply a newly granted reward's incremental effect.
@@ -2544,13 +2629,13 @@ func _update_slice19_buttons() -> void:
 		return
 	if whistle_button != null:
 		whistle_button.visible = false
-	var stall := get_node_or_null("../GoldStall19") as Node3D
+	var stall := _n("../GoldStall19") as Node3D
 	if gold_button != null:
 		gold_button.visible = stall != null and global_position.distance_to(stall.global_position) < 4.0
-	var desk := get_node_or_null("../TeacherDesk18") as Node3D
+	var desk := _n("../TeacherDesk18") as Node3D
 	if lesson_button != null:
 		lesson_button.visible = desk != null and global_position.distance_to(desk.global_position) < 4.0
-	var horse := get_node_or_null("../Horse") as Node3D
+	var horse := _n("../Horse") as Node3D
 	if feed_horse_button != null:
 		feed_horse_button.visible = horse != null and global_position.distance_to(horse.global_position) < 4.0
 
@@ -2603,12 +2688,12 @@ func _update_slice20_buttons() -> void:
 			if b != null:
 				b.visible = false
 		return
-	var market := get_node_or_null("../NightMarket20") as Node3D
+	var market := _n("../NightMarket20") as Node3D
 	if noodle_button != null:
 		noodle_button.visible = market != null and global_position.distance_to(market.global_position) < 5.0
 	if drink_button != null:
 		drink_button.visible = market != null and global_position.distance_to(market.global_position) < 5.0
-	var house := get_node_or_null("../GuestHouse20") as Node3D
+	var house := _n("../GuestHouse20") as Node3D
 	if sleep_button != null:
 		sleep_button.visible = house != null and global_position.distance_to(house.global_position) < 4.0
 	if guestbook_button != null:
