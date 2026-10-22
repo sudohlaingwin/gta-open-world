@@ -3,32 +3,32 @@
 [ext_resource type="Script" path="res://scripts/football_pitch.gd" id="1_pitch"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_field"]
-size = Vector3(32.0, 0.4, 22.0)
+size = Vector3(48.0, 0.5, 32.0)
 
 [sub_resource type="BoxMesh" id="BoxMesh_grass"]
-size = Vector3(32.0, 0.2, 22.0)
+size = Vector3(48.0, 0.25, 32.0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pitch_green"]
 albedo_color = Color(0.18, 0.48, 0.16, 1)
 roughness = 0.9
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_post"]
-top_radius = 0.06
-bottom_radius = 0.06
-height = 2.4
+top_radius = 0.08
+bottom_radius = 0.08
+height = 3.2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_white"]
 albedo_color = Color(0.95, 0.95, 0.95, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_crossbar"]
-size = Vector3(0.12, 0.12, 4.2)
+size = Vector3(0.16, 0.16, 6.2)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ball"]
-radius = 0.35
+radius = 0.45
 
 [sub_resource type="SphereMesh" id="SphereMesh_ball"]
-radius = 0.35
-height = 0.7
+radius = 0.45
+height = 0.9
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ball"]
 albedo_color = Color(0.98, 0.98, 0.98, 1)
@@ -38,48 +38,48 @@ roughness = 0.4
 script = ExtResource("1_pitch")
 
 [node name="FieldCollision" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
 shape = SubResource("BoxShape3D_field")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="GrassPitch" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
 mesh = SubResource("BoxMesh_grass")
 surface_material_override/0 = SubResource("StandardMaterial3D_pitch_green")
 
 [node name="GoalPostL1" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0, 1.2, -2.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.5, 1.6, -3.0)
 mesh = SubResource("CylinderMesh_post")
 surface_material_override/0 = SubResource("StandardMaterial3D_white")
 
 [node name="GoalPostL2" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0, 1.2, 2.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.5, 1.6, 3.0)
 mesh = SubResource("CylinderMesh_post")
 surface_material_override/0 = SubResource("StandardMaterial3D_white")
 
 [node name="GoalBarL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0, 2.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.5, 3.2, 0)
 mesh = SubResource("BoxMesh_crossbar")
 surface_material_override/0 = SubResource("StandardMaterial3D_white")
 
 [node name="GoalPostR1" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0, 1.2, -2.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5, 1.6, -3.0)
 mesh = SubResource("CylinderMesh_post")
 surface_material_override/0 = SubResource("StandardMaterial3D_white")
 
 [node name="GoalPostR2" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0, 1.2, 2.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5, 1.6, 3.0)
 mesh = SubResource("CylinderMesh_post")
 surface_material_override/0 = SubResource("StandardMaterial3D_white")
 
 [node name="GoalBarR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0, 2.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5, 3.2, 0)
 mesh = SubResource("BoxMesh_crossbar")
 surface_material_override/0 = SubResource("StandardMaterial3D_white")
 
 [node name="FootballRigid" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 mass = 0.45
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FootballRigid"]
@@ -90,8 +90,8 @@ mesh = SubResource("SphereMesh_ball")
 surface_material_override/0 = SubResource("StandardMaterial3D_ball")
 
 [node name="PitchSign" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 11.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 16.2)
 text = "ရွာဦး ဘောလုံးအားကစားကွင်းကြီး ⚽"
-font_size = 28
-outline_size = 8
+font_size = 40
+outline_size = 12
 modulate = Color(1.0, 0.95, 0.3, 1)
