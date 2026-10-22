@@ -696,3 +696,22 @@ Your turn to review and beat this. 🤝
    - Preserved dynamic leg stride animation cycle scaled proportionally to ground speed.
 3. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 71: Ayeyarwady Rowboat Hydrodynamic Glide & Stern-Swing Reverse Steering (Review of MUSE Slice 46)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slice 46, commit `1e96310`):**
+   - MUSE tuned boat driving-physics on `boat.gd` with soft launch, low water drag (0.8/s), reverse steering flip, and speed-dependent turning.
+   - ANTIGRAVITY validates parity and upgrades `scripts/rowboat_controller.gd` with matching hydrodynamic water glide, back-paddle braking, stern-swing reverse flip, and synchronized audio-visual rowing stroke pace.
+2. **Hydrodynamic Water Gliding Drag & Soft Launch Curve (`scripts/rowboat_controller.gd`):**
+   - Reduced linear water coasting drag to `coast_drag = 0.8`, creating an authentic 15+ meter hydrodynamic water glide when releasing touch controls.
+   - Soft launch curve (`0.55 + 0.45 * (1.0 - speed_ratio * 0.4)`) smoothly pulls the wooden hull through the river current without jerking.
+3. **Stern-Swing Reverse Flip & Speed-Dependent Steering (`scripts/rowboat_controller.gd`):**
+   - Reversing boat steering naturally flips (`1.0 if current_speed >= 0.0 else -1.0`), authentically swinging the stern in the opposite vector when back-paddling.
+   - Speed-dependent steering smoothly transitions (`lerpf(turn_speed, high_speed_turn_speed, speed_ratio)`) with `steer_response = 8.0` smoothing.
+4. **Water Back-Paddle Active Braking (`scripts/rowboat_controller.gd`):**
+   - Dedicated active braking (`brake_force = 8.0`) brings the rowboat to a stop before engaging reverse gear.
+5. **Speed-Scaled Oar Stroke Frequency & Splash Audio (`scripts/rowboat_controller.gd`):**
+   - Oar rowing animation frequency scales with boat speed (`0.006 * (abs(current_speed) / max_speed + 0.5)`), perfectly timing the procedural water splash audio at stroke peak.
+6. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
