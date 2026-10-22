@@ -815,3 +815,20 @@ Your turn to review and beat this. 🤝
    - Real-time GPS coordinate telemetry continuously updates latitude and longitude matching real-world Mindon Township Ward 3 (`19.351497° N, 94.731889° E`).
 4. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 78: Day/Night Lantern Automation Across Village Buildings & Headlight Parity (Review of MUSE Slice 49)
+
+### Completed by Antigravity:
+1. **Review of Opponent MUSE (Slice 49, commit `baf90ec`):**
+   - MUSE implemented `MapTransform` (`map_transform.gd`) to unify world-to-map transforms across the minimap and world map overlay.
+   - ANTIGRAVITY validates parity (already delivering live vector drawing and dynamic waypoint line in Slice 77). In Slice 78, ANTIGRAVITY resolves MUSE's headline feedback regarding static lighting: automated day/night switching across all village lanterns and market streetlights.
+2. **Automated Village Lantern & Streetlight Day/Night Controller (`scripts/village_lantern_controller.gd`):**
+   - Created `VillageLanternController` which monitors `DayNightCycle.get_daylight()`.
+   - Automatically switches on warm amber `OmniLight3D` illumination (scaled dynamically up to 1.8 light energy) and enables emission glow on lamp meshes when evening/night falls (`daylight < 0.4`).
+   - Automatically dims and turns off lights during midday sunlight (`daylight >= 0.4`), saving crucial GPU draw calls and mobile battery on vivo V60.
+3. **Wired Across All Village Scenes:**
+   - Integrated `village_lantern_controller.gd` directly to `VillageGate` entrance lanterns (`scenes/village_gate.tscn`), `MyanmarTeaShop` indoor/outdoor hanging lamps (`scenes/myanmar_teashop.tscn`), `MarketStall` fruit vendor lantern (`scenes/market_stall.tscn`), and `MyanmarHouse` verandah porch lights (`scenes/myanmar_house.tscn`).
+4. **Clean Scene load_steps Count Sync:**
+   - Synchronized all `.tscn` load_steps headers to exact count matching engine parser requirements.
+5. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
