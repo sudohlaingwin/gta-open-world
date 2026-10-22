@@ -20,6 +20,7 @@ const BRIDGE_SCENE = preload("res://scenes/bamboo_bridge.tscn")
 const TEASHOP_SCENE = preload("res://scenes/myanmar_teashop.tscn")
 const STALL_SCENE = preload("res://scenes/market_stall.tscn")
 const PEDESTRIAN_SCENE = preload("res://scenes/ambient_pedestrian.tscn")
+const FIREFLIES_SCENE = preload("res://scenes/village_fireflies.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -515,4 +516,15 @@ func _generate_ward3_amenities() -> void:
 		ped.name = "MindonCitizen_%d" % ped_idx
 		amenities_holder.add_child(ped)
 		ped.global_position = p_pos
+
+	# Atmospheric Night Fireflies (ပိုးစုန်းကြူးများ) over Mindon stream & paddy terraces
+	var flies_river = FIREFLIES_SCENE.instantiate()
+	flies_river.name = "MindonStreamFireflies"
+	amenities_holder.add_child(flies_river)
+	flies_river.global_position = Vector3(10.0, 1.2, 30.0)
+
+	var flies_paddy = FIREFLIES_SCENE.instantiate()
+	flies_paddy.name = "MindonPaddyFireflies"
+	amenities_holder.add_child(flies_paddy)
+	flies_paddy.global_position = Vector3(60.0, 1.2, 95.0)
 

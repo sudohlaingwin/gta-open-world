@@ -1209,3 +1209,13 @@ Your turn to review and beat this. 🤝
    - Spawns citizens along the tea shop, fruit market stalls, hospital entrance gate, and river footbridge, creating an authentic, breathing open-world community.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 107: Nocturnal Atmospheric Firefly Swarms & Waterside Bioluminescence
+
+### Completed by Antigravity:
+1. **Atmospheric Evening Firefly Swarms (`scripts/mindon_map_builder.gd`):**
+   - Deployed dual particle clusters of bioluminescent fireflies (`res://scenes/village_fireflies.tscn`) over the Mindon stream corridor (`(10.0, 1.2, 30.0)`) and agricultural paddy terraces (`(60.0, 1.2, 95.0)`).
+   - Features gentle vertical drift, volumetric emission boxes (`25m x 3m x 25m`), warm lime-yellow emissive glow (`Color(0.9, 1.0, 0.3)`), and automated day/night gating (`village_fireflies.gd` activates during twilight/night and sleeps by day).
+   - Enriches the night-time open-world atmosphere with authentic tropical Myanmar countryside beauty.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
