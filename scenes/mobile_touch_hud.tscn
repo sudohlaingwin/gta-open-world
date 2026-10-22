@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/mobile_touch_hud.gd" id="1_hud"]
 [ext_resource type="Script" path="res://scripts/virtual_joystick.gd" id="2_joy"]
 [ext_resource type="PackedScene" path="res://scenes/full_map_overlay.tscn" id="3_map_overlay"]
+[ext_resource type="PackedScene" path="res://scenes/settings_panel.tscn" id="4_settings"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_minimap"]
 bg_color = Color(0.08, 0.12, 0.18, 0.8)
@@ -407,9 +408,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -180.0
-offset_top = -140.0
+offset_top = -165.0
 offset_right = 180.0
-offset_bottom = 140.0
+offset_bottom = 165.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pause")
@@ -461,6 +462,22 @@ grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "💾 အခြေအနေသိမ်းဆည်း (Save)"
 
+[node name="SettingsBtn" type="Button" parent="PauseMenu/PauseBox"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = 74.0
+offset_right = 140.0
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "⚙️ ဆက်တင်များ (Settings)"
+
 [node name="QuitToMenuBtn" type="Button" parent="PauseMenu/PauseBox"]
 layout_mode = 1
 anchors_preset = 8
@@ -469,10 +486,12 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -140.0
-offset_top = 82.0
+offset_top = 120.0
 offset_right = 140.0
-offset_bottom = 126.0
+offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "🏠 ပင်မစာမျက်နှာ (Menu)"
+
+[node name="SettingsPanel" parent="." instance=ExtResource("4_settings")]

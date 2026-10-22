@@ -43,11 +43,16 @@ func _gui_input(event: InputEvent) -> void:
 		_update_handle_position(diff)
 		
 		# Analog Deadzone calculation
+		var effective_deadzone = deadzone
+		var sm = get_node_or_null("/root/SaveManager")
+		if sm and sm.get("joystick_deadzone") != null:
+			effective_deadzone = sm.joystick_deadzone
+			
 		var normalized_dist = dist / joystick_radius
-		if normalized_dist < deadzone:
+		if normalized_dist < effective_deadzone:
 			output_vector = Vector2.ZERO
 		else:
-			var scaled_dist = (normalized_dist - deadzone) / (1.0 - deadzone)
+			var scaled_dist = (normalized_dist - effective_deadzone) / maxf(0.01, (1.0 - effective_deadzone))
 			output_vector = diff.normalized() * scaled_dist
 			
 		joystick_moved.emit(output_vector)

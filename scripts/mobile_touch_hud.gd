@@ -24,8 +24,10 @@ extends CanvasLayer
 @onready var pause_menu: Control = $PauseMenu
 @onready var resume_btn: Button = $PauseMenu/PauseBox/ResumeBtn
 @onready var save_btn: Button = $PauseMenu/PauseBox/SaveBtn
+@onready var settings_btn: Button = $PauseMenu/PauseBox/SettingsBtn
 @onready var quit_to_menu_btn: Button = $PauseMenu/PauseBox/QuitToMenuBtn
 @onready var full_map_overlay: Control = $FullMapOverlay
+@onready var settings_panel: Control = $SettingsPanel
 @onready var prompt_banner: Label = $PromptBanner
 
 var player: CharacterBody3D = null
@@ -37,6 +39,7 @@ var teashop_node: Node3D = null
 
 func _ready() -> void:
 	layer = 15
+	add_to_group("hud")
 	player = get_tree().get_first_node_in_group("player") as CharacterBody3D
 	pagoda_node = get_parent().get_node_or_null("GoldenPagoda")
 	bell_node = get_parent().get_node_or_null("MonasteryBell")
@@ -71,8 +74,14 @@ func _ready() -> void:
 		resume_btn.pressed.connect(_on_resume_pressed)
 	if save_btn:
 		save_btn.pressed.connect(_on_save_pressed)
+	if settings_btn:
+		settings_btn.pressed.connect(_on_settings_pressed)
 	if quit_to_menu_btn:
 		quit_to_menu_btn.pressed.connect(_on_quit_to_menu_pressed)
+
+	var sm = get_node_or_null("/root/SaveManager")
+	if sm and sm.get("hud_scale") != null:
+		apply_hud_scale(sm.hud_scale)
 
 	_update_quest_text()
 
@@ -293,6 +302,24 @@ func _on_save_pressed() -> void:
 			_show_prompt("ဂိမ်းအခြေအနေကို အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ! ✓")
 		else:
 			_show_prompt("ဂိမ်းသိမ်းဆည်းမှု မအောင်မြင်ပါ!")
+
+func _on_settings_pressed() -> void:
+	if settings_panel:
+		settings_panel.visible = true
+		if settings_panel.has_method("refresh"):
+			settings_panel.refresh()
+
+func apply_hud_scale(scale_val: float) -> void:
+	var s = clampf(scale_val, 0.8, 1.25)
+	var scaled_nodes = [
+		$VirtualJoystick,
+		$ActionContainer,
+		$TopLeftHUD,
+		$FlightControls
+	]
+	for n in scaled_nodes:
+		if n:
+			n.scale = Vector2(s, s)
 
 func _on_quit_to_menu_pressed() -> void:
 	get_tree().paused = false

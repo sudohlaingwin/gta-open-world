@@ -51,6 +51,10 @@ func _physics_process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenDrag:
 		if event.position.x > get_viewport().size.x * 0.4:
-			rotation.y -= event.relative.x * touch_sensitivity
-			rotation.x -= event.relative.y * touch_sensitivity
+			var sens = touch_sensitivity
+			var sm = get_node_or_null("/root/SaveManager")
+			if sm and sm.get("camera_sensitivity") != null:
+				sens *= sm.camera_sensitivity
+			rotation.y -= event.relative.x * sens
+			rotation.x -= event.relative.y * sens
 			rotation.x = clamp(rotation.x, deg_to_rad(-65), deg_to_rad(30))
