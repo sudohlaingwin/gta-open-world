@@ -10,12 +10,79 @@ var footstep_player: AudioStreamPlayer
 var teashop_chime_player: AudioStreamPlayer
 var river_stream_player: AudioStreamPlayer
 var birds_stream_player: AudioStreamPlayer
+var bgm_music_player: AudioStreamPlayer
 var bird_ambient_timer: float = 3.0
 var river_ambient_timer: float = 1.0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	add_to_group("audio_manager")
 	_setup_audio_players()
+	_start_background_music()
+
+func _start_background_music() -> void:
+	if not bgm_music_player:
+		bgm_music_player = AudioStreamPlayer.new()
+		bgm_music_player.name = "BackgroundMusicAudio"
+		add_child(bgm_music_player)
+
+	var sm = get_node_or_null("/root/SaveManager")
+	var m_vol = 0.8
+	if sm and sm.get("music_volume") != null:
+		m_vol = float(sm.music_volume)
+	if sm and sm.get("muted"):
+		m_vol = 0.0
+
+	bgm_music_player.volume_db = linear_to_db(clampf(m_vol * 0.4, 0.0001, 1.0))
+	_synthesize_myanmar_harp_song()
+
+func _synthesize_myanmar_harp_song() -> void:
+	# Generates a serene pentatonic Myanmar Saung-gauk (စောင်းကောက်) harp melody loop
+	var sample_hz = 22050
+	var duration = 12.0 # 12-second peaceful pentatonic loop
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	stream.loop_begin = 0
+	stream.loop_end = total_frames
+
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+
+	# Burmese Classical Pentatonic scale frequencies: C4, D4, F4, G4, A4, C5
+	var scale = [261.63, 293.66, 349.23, 392.00, 440.00, 523.25]
+	var notes = [
+		{"t": 0.0, "f": 261.63, "dur": 1.4},
+		{"t": 1.5, "f": 349.23, "dur": 1.2},
+		{"t": 3.0, "f": 392.00, "dur": 1.5},
+		{"t": 4.5, "f": 440.00, "dur": 1.8},
+		{"t": 6.0, "f": 392.00, "dur": 1.4},
+		{"t": 7.5, "f": 349.23, "dur": 1.2},
+		{"t": 9.0, "f": 293.66, "dur": 1.4},
+		{"t": 10.5, "f": 261.63, "dur": 1.5}
+	]
+
+	for i in range(total_frames):
+		var cur_t = float(i) / float(sample_hz)
+		var total_sample = 0.0
+		for n in notes:
+			var note_start = n["t"]
+			var note_dur = n["dur"]
+			if cur_t >= note_start and cur_t < (note_start + note_dur):
+				var nt = cur_t - note_start
+				var env = exp(-nt * 3.2)
+				var f = n["f"]
+				# Authentic warm harp pluck harmonics
+				var pluck = sin(nt * f * TAU) * 0.7 + sin(nt * f * 2.0 * TAU) * 0.22 + sin(nt * f * 3.0 * TAU) * 0.08
+				total_sample += pluck * env * 0.45
+		var int_sample = int(clamp(total_sample, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+
+	stream.data = data
+	bgm_music_player.stream = stream
+	bgm_music_player.play()
 
 func _process(delta: float) -> void:
 	if is_muted:

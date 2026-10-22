@@ -1097,3 +1097,16 @@ Your turn to review and beat this. 🤝
    - **Full Persistence:** All newly added parameters are persisted atomically in `user://settings.json`.
 5. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 97: Procedural Myanmar Classical Harp (စောင်းကောက်) Song Engine & Live Settings Volume Bus Integration
+
+### Completed by Antigravity:
+1. **Procedural Myanmar Harp (Saung-gauk) Background Song (`scripts/audio_manager.gd`):**
+   - Synthesized a seamless 12-second peaceful pentatonic loop in `scripts/audio_manager.gd` based on classical Burmese scale frequencies (C4, D4, F4, G4, A4, C5).
+   - Generated authentic string pluck acoustic envelope harmonics (`env = exp(-nt * 3.2)` with fundamental + 2x/3x overtone pluck decay).
+   - Provides an immersive cultural open-world atmosphere without requiring large binary MP3/OGG asset downloads on mobile.
+2. **Live Settings Panel & Audio Manager Volume Synchronization (`scripts/settings_panel.gd`):**
+   - Wired the newly added "🎵 သီချင်းသံ (Music/Song Volume)" slider directly to `AudioManager.bgm_music_player.volume_db`.
+   - Wired `Mute Audio` toggle to silence background music immediately when enabled and restore player preference on un-mute.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

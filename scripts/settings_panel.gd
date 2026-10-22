@@ -147,12 +147,32 @@ func _on_music_changed(val: float) -> void:
 		sm.save_settings()
 		if music_label:
 			music_label.text = "🎵 သီချင်းသံ (Music/Song Volume): %d%%" % int(round(val))
+		var am = get_node_or_null("/root/AudioManager")
+		if not am:
+			am = get_tree().get_first_node_in_group("audio_manager")
+		if not am:
+			var world = get_node_or_null("/root/World")
+			if world:
+				am = world.get_node_or_null("AudioManager")
+		if am and am.get("bgm_music_player"):
+			am.bgm_music_player.volume_db = linear_to_db(clampf(sm.music_volume * 0.4, 0.0001, 1.0))
 
 func _on_mute_toggled(pressed: bool) -> void:
 	var sm = _sm()
 	if sm:
 		sm.muted = pressed
 		sm.save_settings()
+		var am = get_node_or_null("/root/AudioManager")
+		if not am:
+			am = get_tree().get_first_node_in_group("audio_manager")
+		if not am:
+			var world = get_node_or_null("/root/World")
+			if world:
+				am = world.get_node_or_null("AudioManager")
+		if am:
+			am.is_muted = pressed
+			if am.get("bgm_music_player"):
+				am.bgm_music_player.volume_db = -80.0 if pressed else linear_to_db(clampf(sm.music_volume * 0.4, 0.0001, 1.0))
 
 func _on_fps_toggled(pressed: bool) -> void:
 	var sm = _sm()
