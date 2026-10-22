@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/helicopter_controller.gd" id="1_heli"]
 
@@ -15,8 +15,19 @@ size = Vector3(0.4, 0.4, 3.5)
 [sub_resource type="BoxMesh" id="BoxMesh_rotor_blade"]
 size = Vector3(6.5, 0.05, 0.4)
 
+[sub_resource type="BoxMesh" id="BoxMesh_tail_rotor"]
+size = Vector3(0.05, 1.2, 0.15)
+
+[sub_resource type="BoxMesh" id="BoxMesh_skid"]
+size = Vector3(0.12, 0.12, 3.8)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_heli"]
 albedo_color = Color(0.18, 0.30, 0.22, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skid"]
+albedo_color = Color(0.2, 0.2, 0.22, 1)
+metallic = 0.8
+roughness = 0.3
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_interact"]
 radius = 4.0
@@ -44,6 +55,21 @@ surface_material_override/0 = SubResource("StandardMaterial3D_heli")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 mesh = SubResource("BoxMesh_rotor_blade")
 surface_material_override/0 = SubResource("StandardMaterial3D_heli")
+
+[node name="TailRotor" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.4, 4.0)
+mesh = SubResource("BoxMesh_tail_rotor")
+surface_material_override/0 = SubResource("StandardMaterial3D_heli")
+
+[node name="SkidL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0.1, 0)
+mesh = SubResource("BoxMesh_skid")
+surface_material_override/0 = SubResource("StandardMaterial3D_skid")
+
+[node name="SkidR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0.1, 0)
+mesh = SubResource("BoxMesh_skid")
+surface_material_override/0 = SubResource("StandardMaterial3D_skid")
 
 [node name="CockpitSeat" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -0.2)

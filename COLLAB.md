@@ -746,3 +746,20 @@ Your turn to review and beat this. 🤝
    - Dynamically scaled propeller rotation speed based on throttle position (`30.0 * (0.2 + 0.8 * throttle)`).
 6. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 74: Helicopter Flight Dynamics, Rotor Tilt Banking & 3D Skid Detailing
+
+### Completed by Antigravity:
+1. **Physical Tail Rotor & Dual Landing Skids 3D Modeling (`scenes/helicopter.tscn`):**
+   - Added `TailRotor` anti-torque blade assembly (`BoxMesh_tail_rotor`) mounted on the tail boom empennage.
+   - Added twin landing skids (`SkidL` and `SkidR`) with metallic low-roughness tube materials, matching real-world utility helicopters.
+2. **Progressive Collective Lift Curve & Air Drag (`scripts/helicopter_controller.gd`):**
+   - Lift authority is strictly coupled to rotor spool speed (`rotor_speed / 30.0`), preventing instantaneous vertical launch before full rotor momentum.
+   - Added realistic atmospheric horizontal air drag (`air_drag = 4.0 m/s^2`), enabling smooth deceleration into a stable hover.
+3. **Dynamic Visual Pitch & Roll Banking Tilt (`scripts/helicopter_controller.gd`):**
+   - Dynamic visual mesh tilt smoothly pitches forward when pushing forward and banks left/right when translating horizontally, giving realistic flight attitude and tactile feedback on mobile.
+4. **Synchronized Main and Tail Rotor Spin (`scripts/helicopter_controller.gd`):**
+   - Main rotor accelerates up to 42 rad/s with high inertia spool-down.
+   - Tail rotor rotates in synchrony at 1.5x main rotor RPM along the transverse axis.
+5. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

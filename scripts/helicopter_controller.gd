@@ -2,17 +2,24 @@ extends CharacterBody3D
 
 # --- Traditional Myanmar Helicopter (မြန်မာ့ရဟတ်ယာဉ်) ---
 
-@export var max_lift_speed: float = 8.0
-@export var max_horizontal_speed: float = 16.0
+@export var max_lift_speed: float = 9.0
+@export var max_horizontal_speed: float = 18.0
 @export var turn_speed: float = 1.8
+@export var lift_accel: float = 8.0
+@export var horiz_accel: float = 14.0
+@export var air_drag: float = 4.0
 
 var current_pilot: Node3D = null
 var is_flying: bool = false
 var rotor_speed: float = 0.0
+var current_pitch: float = 0.0
+var current_roll: float = 0.0
 
 @onready var cockpit_seat: Marker3D = $CockpitSeat
 @onready var interaction_area: Area3D = $InteractionArea
 @onready var rotor_mesh: MeshInstance3D = $VisualMesh/Rotor
+@onready var tail_rotor_mesh: MeshInstance3D = $VisualMesh/TailRotor
+@onready var visual_mesh: Node3D = $VisualMesh
 
 signal pilot_entered(pilot)
 signal pilot_exited()
@@ -24,7 +31,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if is_flying and current_pilot:
-		rotor_speed = move_toward(rotor_speed, 35.0, delta * 12.0)
+		rotor_speed = move_toward(rotor_speed, 42.0, delta * 15.0)
 		
 		# Flight controls via touch joystick or arrow keys
 		var input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
@@ -39,7 +46,7 @@ func _physics_process(delta: float) -> void:
 			vertical_input = -1.0 # Descend
 
 		# Yaw turning
-		var yaw_input: float = -input_dir.x
+		var yaw_input: float = -input_dir.x * 0.75
 		if current_pilot.get("touch_yaw") != null and current_pilot.touch_yaw != 0.0:
 			yaw_input = current_pilot.touch_yaw
 		rotate_y(yaw_input * turn_speed * delta)
@@ -51,24 +58,43 @@ func _physics_process(delta: float) -> void:
 		right.y = 0.0
 		right = right.normalized()
 
-		# Horizontal velocity
+		# Horizontal velocity with smooth acceleration and air drag
 		var target_vel_x = (right.x * input_dir.x + forward.x * -input_dir.y) * max_horizontal_speed
 		var target_vel_z = (right.z * input_dir.x + forward.z * -input_dir.y) * max_horizontal_speed
-		velocity.x = move_toward(velocity.x, target_vel_x, delta * 15.0)
-		velocity.z = move_toward(velocity.z, target_vel_z, delta * 15.0)
+		velocity.x = move_toward(velocity.x, target_vel_x, delta * horiz_accel)
+		velocity.z = move_toward(velocity.z, target_vel_z, delta * horiz_accel)
 
-		# Hover stabilization
-		velocity.y = move_toward(velocity.y, vertical_input * max_lift_speed, delta * 10.0)
+		# Vertical lift with progressive spool-dependent climb
+		var lift_authority = clampf(rotor_speed / 30.0, 0.0, 1.0)
+		var target_lift = vertical_input * max_lift_speed * lift_authority
+		velocity.y = move_toward(velocity.y, target_lift, delta * lift_accel)
+
+		# Dynamic visual pitch and roll tilt for realistic flight posture
+		var target_pitch = clampf(input_dir.y * 0.25, -0.3, 0.3)
+		var target_roll = clampf(-input_dir.x * 0.25, -0.3, 0.3)
+		current_pitch = move_toward(current_pitch, target_pitch, delta * 2.5)
+		current_roll = move_toward(current_roll, target_roll, delta * 2.5)
+		if visual_mesh:
+			visual_mesh.rotation.x = current_pitch
+			visual_mesh.rotation.z = current_roll
 
 	else:
-		rotor_speed = move_toward(rotor_speed, 0.0, delta * 5.0)
+		rotor_speed = move_toward(rotor_speed, 0.0, delta * 6.0)
+		current_pitch = move_toward(current_pitch, 0.0, delta * 3.0)
+		current_roll = move_toward(current_roll, 0.0, delta * 3.0)
+		if visual_mesh:
+			visual_mesh.rotation.x = current_pitch
+			visual_mesh.rotation.z = current_roll
+
 		if not is_on_floor():
 			velocity.y -= 9.8 * delta
-		velocity.x = move_toward(velocity.x, 0.0, delta * 8.0)
-		velocity.z = move_toward(velocity.z, 0.0, delta * 8.0)
+		velocity.x = move_toward(velocity.x, 0.0, delta * air_drag)
+		velocity.z = move_toward(velocity.z, 0.0, delta * air_drag)
 
 	if rotor_mesh and rotor_speed > 0.1:
 		rotor_mesh.rotate_y(rotor_speed * delta)
+	if tail_rotor_mesh and rotor_speed > 0.1:
+		tail_rotor_mesh.rotate_x(rotor_speed * 1.5 * delta)
 
 	move_and_slide()
 
