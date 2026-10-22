@@ -4,6 +4,7 @@ const City56Script = preload("res://city_visual56.gd")
 const River57Script = preload("res://river_bridge57.gd")
 const Dress58Script = preload("res://character_dress58.gd")
 const Dress59Script = preload("res://district_dress59.gd")
+const Style61Script = preload("res://style61.gd")
 const HudPolish60Script = preload("res://hud_polish60.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
@@ -385,6 +386,22 @@ func _ready() -> void:
 	# Slice 59 Mindon district + outskirts + vehicle dressing.
 	# Runs after Slice 58; runtime-only, no scene touched.
 	Dress59Script.dress(get_parent())
+	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
+	# look only: vivid warm palette, soft shading — no positions,
+	# no structure, no code from that document). Recolours existing
+	# models only; runtime-only, no scene touched. DEFERRED on
+	# purpose: Dress58Ground, District59 groups and City56 blocks
+	# are added via call_deferred from earlier dressing, so a direct
+	# call here would run before those groups exist in the tree
+	# (proven by the Slice 61 sim: deferred dirt/trees kept their
+	# old colours). This call is queued AFTER those adds, so it
+	# runs after they land.
+	call_deferred("_apply_style61")
+
+
+## Slice 61: deferred style pass (see _ready note above).
+func _apply_style61() -> void:
+	Style61Script.dress(get_parent())
 
 
 ## Slice 49: the shared map transform reads the live ground plane
