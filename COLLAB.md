@@ -1259,3 +1259,13 @@ Your turn to review and beat this. 🤝
    - Provides vibrant recreational gameplay matching authentic Myanmar youth village culture.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 111: Shwe Bon Thar Hilltop Pagoda Sanctuary — Sacred Bronze Monastery Bell (ခေါင်းလောင်းတော်) Integration
+
+### Completed by Antigravity:
+1. **Sacred Bronze Monastery Bell Stand (`scripts/mindon_map_builder.gd`):**
+   - Installed an authentic carved timber bell gallows and cast bronze bell (`res://scenes/monastery_bell.tscn`) on the elevated hilltop terrace of Shwe Bon Thar Pagoda (`global_position = Vector3(-98.0, 8.0, 178.0)`, rotation `-30 deg`).
+   - Features 3.2m teak support pillars, crossbeam gallows, and a 1.2m flared bronze Kyone bell body (`StandardMaterial3D_bronze`, metallic `0.88`, roughness `0.25`).
+   - Pairs with the engine's synthesized acoustic bell strike audio (`AudioManager.play_bell_strike()`, 216Hz fundamental Kyone resonance + 432Hz golden overtone), creating a complete cultural sanctuary experience atop the Mindon hill ridge.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

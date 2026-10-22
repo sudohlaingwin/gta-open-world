@@ -23,6 +23,7 @@ const PEDESTRIAN_SCENE = preload("res://scenes/ambient_pedestrian.tscn")
 const FIREFLIES_SCENE = preload("res://scenes/village_fireflies.tscn")
 const HINTHAR_SCENE = preload("res://scenes/hinthar_statue.tscn")
 const PITCH_SCENE = preload("res://scenes/football_pitch.tscn")
+const BELL_SCENE = preload("res://scenes/monastery_bell.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -589,4 +590,11 @@ func _generate_ward3_amenities() -> void:
 	amenities_holder.add_child(pitch)
 	pitch.global_position = Vector3(-45.0, 0.0, 150.0)
 	pitch.rotation.y = deg_to_rad(-10.0)
+
+	# Sacred Bronze Monastery Bell (ရွှေဘုံသာ ခေါင်းလောင်းတော်) on Pagoda Hilltop Terrace
+	var bell = BELL_SCENE.instantiate()
+	bell.name = "MindonPagodaBell"
+	amenities_holder.add_child(bell)
+	bell.global_position = Vector3(-98.0, 8.0, 178.0)
+	bell.rotation.y = deg_to_rad(-30.0)
 
