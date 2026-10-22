@@ -198,6 +198,14 @@ var camera_reset_button: Button = null
 var camera_reset_connected: bool = false
 # Slice 28: world-map button (touch-first; lives in the real scene).
 var map_button: Button = null
+# Slice 54 sightseeing: runtime HUD (created in _ready, like
+# world_map.gd _build_ui — no scene edit, so main.tscn load_steps
+# is untouched). Button toggles start/cancel/restart; label shows
+# the tour status line. Both are stored directly, not via _n(),
+# because they do not exist in the scene file.
+var sightseeing_button: Button = null
+var sightseeing_button_connected: bool = false
+var sightseeing_label: Label = null
 var map_button_connected: bool = false
 # Slice 16: parachute + festival. The parachute deploys itself on
 # a mid-air vehicle exit and stows itself on landing (no button
@@ -323,6 +331,8 @@ func _ready() -> void:
 	_apply_pending_load()
 	_apply_outfit()
 	_apply_hud_scale()
+	_create_sightseeing_hud()
+	_apply_hud_scale()
 	apply_graphics_quality()
 	_configure_map_bounds()
 	# Slice 53 graphics: village dressing (walls/windows/doors for
@@ -394,6 +404,7 @@ func _physics_process(delta: float) -> void:
 	_update_minimap()
 	_update_compass()
 	_update_waypoint_guide()
+	_update_sightseeing()
 	_update_stamina(delta)
 	_update_prompt_label()
 	_update_fruit_water_label()
@@ -1579,6 +1590,137 @@ func _on_map_button_pressed() -> void:
 		wm.call("open_map")
 
 
+## Slice 54, audit item 8 — sightseeing tour HUD + logic.
+## The button sits in the free left-column slot between the FPS
+## label (top 0.50–0.55) and the joystick base (canvas y 540+,
+## i.e. top ~0.75): anchors 0.02–0.14 / 0.56–0.62, so it overlaps
+## no scene button. The status label sits below the quest tracker
+## (0.075–0.12) and the parachute label (0.12–0.17): 0.18–0.23.
+## Both are created at runtime, so main.tscn is untouched.
+## Button behaviour, touch-first, no keyboard path: inactive ->
+## start the tour (or restart after a completion); active ->
+## cancel the tour and clear its waypoint. While active, the
+## Slice 28/34 waypoint (WorldMapPanel waypoint + GuidePanel34
+## strip + minimap mirror + WaypointBeacon28) points at the
+## current stop, because _update_waypoint_guide reads that
+## waypoint directly — no second guidance system is built.
+## Arrival is checked in _physics_process from the on-foot
+## position, or the driven vehicle's position while driving, so
+## the tour works on foot AND in a vehicle. Completion refills
+## stamina to 100 (the tour's only reward; stamina is capped,
+## so it cannot stack) and saves immediately, like a stage
+## change — every tour state change saves, never just in memory.
+func _create_sightseeing_hud() -> void:
+	var layer := get_node_or_null("../JoystickLayer") as CanvasLayer
+	if layer == null:
+		return
+	if sightseeing_button == null:
+		sightseeing_button = Button.new()
+		sightseeing_button.name = "SightseeingButton54"
+		sightseeing_button.text = "🏛 လည်ပတ်"
+		sightseeing_button.anchor_left = 0.02
+		sightseeing_button.anchor_top = 0.56
+		sightseeing_button.anchor_right = 0.14
+		sightseeing_button.anchor_bottom = 0.62
+		layer.add_child(sightseeing_button)
+		sightseeing_button.pressed.connect(_on_sightseeing_button_pressed)
+		sightseeing_button_connected = true
+	if sightseeing_label == null:
+		sightseeing_label = Label.new()
+		sightseeing_label.name = "SightseeingLabel54"
+		sightseeing_label.anchor_left = 0.30
+		sightseeing_label.anchor_top = 0.18
+		sightseeing_label.anchor_right = 0.70
+		sightseeing_label.anchor_bottom = 0.23
+		sightseeing_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		sightseeing_label.text = ""
+		layer.add_child(sightseeing_label)
+	# Restored tour (saved mid-tour): re-point the waypoint at
+	# the saved current stop and show its status line at once;
+	# _update_sightseeing keeps both fresh from here on.
+	var mm0 = _mm()
+	if mm0 != null and bool(mm0.get("sightseeing_active")):
+		_set_sightseeing_waypoint()
+	_update_sightseeing_label()
+
+
+func _on_sightseeing_button_pressed() -> void:
+	var mm = _mm()
+	if mm == null:
+		return
+	if bool(mm.get("sightseeing_active")):
+		mm.call("sightseeing_cancel")
+		_clear_sightseeing_waypoint()
+	else:
+		mm.call("sightseeing_start")
+		_set_sightseeing_waypoint()
+	_update_sightseeing_label()
+	var sm = _sm()
+	if sm != null:
+		sm.call("save_game", collect_save_data())
+
+
+func _set_sightseeing_waypoint() -> void:
+	var mm = _mm()
+	if mm == null:
+		return
+	var cur: Dictionary = mm.call("sightseeing_current")
+	if cur.is_empty():
+		return
+	var pos: Vector2 = cur.get("pos", Vector2.ZERO)
+	var wm := _n("../JoystickLayer/WorldMapPanel")
+	if wm != null:
+		wm.set("has_waypoint", true)
+		wm.set("waypoint", pos)
+	var beacon := _n("../WaypointBeacon28") as MeshInstance3D
+	if beacon != null:
+		beacon.visible = true
+		beacon.global_position = Vector3(pos.x, 2.5, pos.y)
+
+
+func _clear_sightseeing_waypoint() -> void:
+	var wm := _n("../JoystickLayer/WorldMapPanel")
+	if wm != null and wm.has_method("clear_waypoint"):
+		wm.call("clear_waypoint")
+
+
+func _update_sightseeing_label() -> void:
+	if sightseeing_label == null:
+		return
+	var mm = _mm()
+	if mm == null:
+		return
+	var text: String = mm.call("sightseeing_label")
+	_set_text(sightseeing_label, text)
+	_set_visible(sightseeing_label, text != "")
+
+
+func _update_sightseeing() -> void:
+	var mm = _mm()
+	if mm == null:
+		return
+	if not bool(mm.get("sightseeing_active")):
+		_update_sightseeing_label()
+		return
+	var ref: Vector3 = global_position
+	if driving and driving_vehicle != null:
+		ref = (driving_vehicle as Node3D).global_position
+	var result: Dictionary = mm.call("sightseeing_check", Vector2(ref.x, ref.z))
+	if not bool(result.get("visited", false)):
+		_update_sightseeing_label()
+		return
+	_play_tone(660.0, 0.25)
+	if bool(result.get("completed", false)):
+		stamina = 100.0
+		_clear_sightseeing_waypoint()
+	else:
+		_set_sightseeing_waypoint()
+	_update_sightseeing_label()
+	var sm = _sm()
+	if sm != null:
+		sm.call("save_game", collect_save_data())
+
+
 func _on_camera_reset() -> void:
 	var cam := get_node_or_null("../FollowCamera")
 	if cam != null:
@@ -2416,6 +2558,11 @@ func _apply_pending_load() -> void:
 		if not (counters_data is Dictionary):
 			counters_data = {}
 		mm.load_state(int(data.get("quest_stage", 0)), rewards_data, counters_data)
+		# Slice 54 sightseeing: optional key — a pre-54 save has no
+		# "sightseeing" entry and loads as inactive, never an error.
+		var sight_data = data.get("sightseeing", {})
+		if sight_data is Dictionary:
+			mm.call("sightseeing_load_state", sight_data)
 	if data.has("stamina"):
 		stamina = clampf(float(data.get("stamina")), 0.0, 100.0)
 	var growth = data.get("growth", {})
@@ -2504,6 +2651,12 @@ func collect_save_data() -> Dictionary:
 		stage_now = mm.stage
 		rewards_now = mm.rewards_dict()
 		counters_now = mm.counters_dict()
+	# Slice 54 sightseeing: optional side-mission state. A pre-54
+	# save has no such key; a Slice 54 save round-trips it, and
+	# loading it is guarded in _apply_pending_load.
+	var sight_now := {}
+	if mm != null:
+		sight_now = mm.call("sightseeing_state")
 	return {
 		"player": {"pos": [global_position.x, global_position.y, global_position.z], "rot_y": rotation.y},
 		"quest_stage": stage_now,
@@ -2511,6 +2664,7 @@ func collect_save_data() -> Dictionary:
 		"stamina": stamina,
 		"rewards": rewards_now,
 		"counters": counters_now,
+		"sightseeing": sight_now,
 		"growth": {"crop": crop_growth, "rice": rice_growth},
 		"settings": {"muted": muted_now, "volume": volume_now},
 	}

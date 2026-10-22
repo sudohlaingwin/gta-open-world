@@ -121,6 +121,88 @@ func counters_dict() -> Dictionary:
 	return counters.duplicate()
 
 
+## Slice 54, audit item 8 — sightseeing side mission (see
+## mission_data.gd SIGHTSEEING_STOPS). Parallel to the main chain:
+## it never touches stage/rewards/counters, so an old save loads
+## with sightseeing inactive and zero completions, and a main-chain
+## save round-trips unchanged. State is saved under the optional
+## "sightseeing" key in the save file (player.gd); a save without
+## that key loads as inactive, never as an error.
+var sightseeing_active: bool = false
+var sightseeing_index: int = 0
+var sightseeing_completed: int = 0
+
+
+func sightseeing_stop_count() -> int:
+	return Data.SIGHTSEEING_STOPS.size()
+
+
+func sightseeing_current() -> Dictionary:
+	if not sightseeing_active:
+		return {}
+	if sightseeing_index < 0 or sightseeing_index >= Data.SIGHTSEEING_STOPS.size():
+		return {}
+	return Data.SIGHTSEEING_STOPS[sightseeing_index]
+
+
+func sightseeing_start() -> void:
+	sightseeing_active = true
+	sightseeing_index = 0
+
+
+func sightseeing_cancel() -> void:
+	sightseeing_active = false
+	sightseeing_index = 0
+
+
+## Check the given world-x/z position against the current stop.
+## Returns {"visited": bool, "completed": bool}. A visit only counts
+## in stop order; standing at a later stop early is a no-op, and
+## calling with no active tour is a no-op. Completion ends the
+## tour (active=false) and increments the completed count, so the
+## tour is restartable but the count only grows on real completion.
+func sightseeing_check(pos: Vector2) -> Dictionary:
+	if not sightseeing_active:
+		return {"visited": false, "completed": false}
+	var cur := sightseeing_current()
+	if cur.is_empty():
+		return {"visited": false, "completed": false}
+	var target: Vector2 = cur.get("pos", Vector2.ZERO)
+	if pos.distance_to(target) > Data.SIGHTSEEING_RADIUS:
+		return {"visited": false, "completed": false}
+	sightseeing_index += 1
+	if sightseeing_index >= Data.SIGHTSEEING_STOPS.size():
+		sightseeing_active = false
+		sightseeing_index = 0
+		sightseeing_completed += 1
+		return {"visited": true, "completed": true}
+	return {"visited": true, "completed": false}
+
+
+func sightseeing_label() -> String:
+	if sightseeing_active:
+		var cur := sightseeing_current()
+		if cur.is_empty():
+			return ""
+		return "လည်ပတ် (%d/%d): %s" % [sightseeing_index + 1, Data.SIGHTSEEING_STOPS.size(), str(cur.get("label", ""))]
+	if sightseeing_completed > 0:
+		return "လည်ပတ် ပြီးပါပြီ (%d ကြိမ်) — အား ပြည့်သွားပါပြီ" % sightseeing_completed
+	return ""
+
+
+func sightseeing_state() -> Dictionary:
+	return {"active": sightseeing_active, "index": sightseeing_index, "completed": sightseeing_completed}
+
+
+func sightseeing_load_state(data: Dictionary) -> void:
+	sightseeing_active = bool(data.get("active", false))
+	sightseeing_index = clampi(int(data.get("index", 0)), 0, Data.SIGHTSEEING_STOPS.size())
+	sightseeing_completed = maxi(int(data.get("completed", 0)), 0)
+	if sightseeing_index >= Data.SIGHTSEEING_STOPS.size():
+		sightseeing_active = false
+		sightseeing_index = 0
+
+
 ## Load mission state from a save dictionary (old saves use the same
 ## keys, so a Slice 26 save maps onto this manager unchanged).
 func load_state(stage_value: int, rewards_data: Dictionary, counters_data: Dictionary) -> void:

@@ -177,6 +177,26 @@ const REWARD_ORDER: Array[String] = ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "
 # Counter keys, in save-file order. HUD label order is separate.
 const COUNTER_KEYS: Array[String] = ["fruit", "water", "banana", "snack", "lantern", "fish", "donation", "milk", "egg", "goal", "photo", "tea", "book", "flower", "rice", "gold", "lesson", "horse_feed", "elephant_feed", "noodle", "drink", "guestbook"]
 
+# Slice 54, audit item 8 — sightseeing tour (FIRST new mission type).
+# A side mission, separate from the 36-stage main chain: it never
+# advances quest_stage, never grants r1..r10, and never gates
+# movement, driving, or dialogue. Stops are REAL scene positions
+# (read from main.tscn transforms, not invented): Pagoda (-20,-25),
+# MonasteryBell (-6,-32), MarketStallA (16,12), Zayat (28,2).
+# Arrival radius 9.0 m: the pagoda base cylinder (r=6.5) stops the
+# player at ~6.9 m, so a smaller radius would make stop 1
+# unreachable on foot — the same lesson as Slice 38's 8.0 m
+# offer-flowers range. Reward is a stamina refill to 100 on
+# completion only; it does not stack (stamina is capped at 100),
+# so repeating the tour cannot farm stats.
+const SIGHTSEEING_RADIUS: float = 9.0
+const SIGHTSEEING_STOPS: Array = [
+	{"id": "sight_pagoda", "title": "ဘုရား", "label": "ဘုရားကို သွားပါ", "pos": Vector2(-20.0, -25.0)},
+	{"id": "sight_bell", "title": "ခေါင်းလောင်း", "label": "ခေါင်းလောင်းကို သွားပါ", "pos": Vector2(-6.0, -32.0)},
+	{"id": "sight_market", "title": "ဈေး", "label": "ဈေးကို သွားပါ", "pos": Vector2(16.0, 12.0)},
+	{"id": "sight_zayat", "title": "ဇရပ်", "label": "ဇရပ်ကို သွားပါ", "pos": Vector2(28.0, 2.0)},
+]
+
 static func label_for(stage: int, rewards: Dictionary, talked: int, total: int, banana: int) -> String:
 	if stage == 0:
 		return TALK_LABEL_PREFIX + str(talked) + "/" + str(total) + ")"
