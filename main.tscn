@@ -1,4 +1,4 @@
-[gd_scene load_steps=431 format=3]
+[gd_scene load_steps=440 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Script" path="res://car.gd" id="1_car"]
@@ -22,10 +22,10 @@
 [ext_resource type="Script" path="res://world_map.gd" id="1_worldmap"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
-size = Vector3(100, 1, 100)
+size = Vector3(320, 1, 220)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
-size = Vector2(100, 100)
+size = Vector2(320, 220)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
 radius = 0.4
@@ -1454,6 +1454,33 @@ size = Vector3(1.2, 1.0, 0.06)
 [sub_resource type="BoxMesh" id="BoxMesh_atmos_window_small"]
 size = Vector3(0.7, 0.5, 0.06)
 
+[sub_resource type="BoxMesh" id="BoxMesh_mindon_road"]
+size = Vector3(24, 0.1, 5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mindon_street"]
+size = Vector3(24, 0.1, 6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mindon_bridge_deck"]
+size = Vector3(14, 0.15, 7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mindon_bridge_deck"]
+size = Vector3(14, 0.15, 7)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mindon_bridge_ramp"]
+size = Vector3(4.5, 0.15, 7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mindon_bridge_ramp"]
+size = Vector3(4.5, 0.15, 7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mindon_block_house"]
+size = Vector3(6, 3.0, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mindon_block_temple"]
+size = Vector3(9, 3.6, 7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mindon_block_hospital"]
+size = Vector3(10.8, 3.8, 8)
+
 [node name="Main" type="Node3D"]
 
 [node name="DayNight" type="Node3D" parent="."]
@@ -1466,12 +1493,13 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
 
 [node name="GroundBody" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90, -0.5, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GroundBody"]
 shape = SubResource("BoxShape3D_ground")
 
 [node name="GroundMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90, 0, 0)
 mesh = SubResource("PlaneMesh_ground")
 surface_material_override/0 = SubResource("StandardMaterial3D_ground")
 
@@ -9550,3 +9578,978 @@ offset_top = 0.0
 offset_right = 0.0
 offset_bottom = 0.0
 text = "လမ်းညွှန်သာ — လမ်းကြောင်းရှာခြင်း မပါ"
+
+[node name="MindonWaterNS" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 27.5, 88, 0.03, -7.5)
+mesh = SubResource("PlaneMesh_pond")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_water")
+
+[node name="MindonWaterNorth" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 27, 0, 1, 0, -0.875, 0, 0, 169, 0.03, -90)
+mesh = SubResource("PlaneMesh_pond")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_water")
+
+[node name="MindonWaterSW" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.529999, 0, -6.66667, 0, 1, 0, 0.847998, 0, 4.16667, 68, 0.03, 82.5)
+mesh = SubResource("PlaneMesh_pond")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_water")
+
+[node name="MindonBankW" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 27.5, 80, 0.02, -7.5)
+mesh = SubResource("PlaneMesh_pond")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBankE" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 27.5, 96, 0.02, -7.5)
+mesh = SubResource("PlaneMesh_pond")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBankN1" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 27, 0, 1, 0, -0.375, 0, 0, 169, 0.02, -85)
+mesh = SubResource("PlaneMesh_pond")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBankN2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 27, 0, 1, 0, -0.375, 0, 0, 169, 0.02, -95)
+mesh = SubResource("PlaneMesh_pond")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonLinkRoad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67, 0.11, 0)
+mesh = SubResource("BoxMesh_mindon_road")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonStreet1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 109, 0.11, 0)
+mesh = SubResource("BoxMesh_mindon_street")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonStreet2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 133, 0.11, 0)
+mesh = SubResource("BoxMesh_mindon_street")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonStreet3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 157, 0.11, 0)
+mesh = SubResource("BoxMesh_mindon_street")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonStreet4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 181, 0.11, 0)
+mesh = SubResource("BoxMesh_mindon_street")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonStreet5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 205, 0.11, 0)
+mesh = SubResource("BoxMesh_mindon_street")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonStreet6" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.75, 0, 0, 0, 1, 0, 0, 0, 1, 226, 0.11, 0)
+mesh = SubResource("BoxMesh_mindon_street")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBranch140_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 1, 0, 0, 0, 1, 140, 0.12, -48)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBranch140_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 1, 0, 0, 0, 1, 140, 0.12, -24)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBranch140_3" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 1, 0, 0, 0, 1, 140, 0.12, 0)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBranch140_4" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 1, 0, 0, 0, 1, 140, 0.12, 24)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBranch140_5" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 1, 0, 0, 0, 1, 140, 0.12, 48)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBranch190_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 1, 0, 0, 0, 1, 190, 0.12, -43)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBranch190_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 1, 0, 0, 0, 1, 190, 0.12, -19)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBranch190_3" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 1, 0, 0, 0, 1, 190, 0.12, 5)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBranch190_4" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 1, 0, 0, 0, 1, 190, 0.12, 29)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBranch190_5" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 1, 0, 0, 0, 0.583333, 190, 0.12, 48)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonDiagRoad" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1.85824, 0, 1.875, 0, 1, 0, -1.67241, 0, -2.08333, 162.5, 0.12, -45)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonSouthStub" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.17061, 0, 0.833333, 0, 1, 0, -1.24035, 0, 1.45833, 200, 0.12, 47.5)
+mesh = SubResource("BoxMesh_path")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_dirt")
+
+[node name="MindonBridge" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0, 0)
+
+[node name="DeckCollision" type="CollisionShape3D" parent="MindonBridge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("BoxShape3D_mindon_bridge_deck")
+
+[node name="DeckMesh" type="MeshInstance3D" parent="MindonBridge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("BoxMesh_mindon_bridge_deck")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="RampCollisionW" type="CollisionShape3D" parent="MindonBridge"]
+transform = Transform3D(0.996917, -0.0784591, 0, 0.0784591, 0.996917, 0, 0, 0, 1, -9.245, 0.0232, 0)
+shape = SubResource("BoxShape3D_mindon_bridge_ramp")
+
+[node name="RampCollisionE" type="CollisionShape3D" parent="MindonBridge"]
+transform = Transform3D(0.996917, 0.0784591, 0, -0.0784591, 0.996917, 0, 0, 0, 1, 9.245, 0.0232, 0)
+shape = SubResource("BoxShape3D_mindon_bridge_ramp")
+
+[node name="RampMeshW" type="MeshInstance3D" parent="MindonBridge"]
+transform = Transform3D(0.996917, -0.0784591, 0, 0.0784591, 0.996917, 0, 0, 0, 1, -9.245, 0.0232, 0)
+mesh = SubResource("BoxMesh_mindon_bridge_ramp")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="RampMeshE" type="MeshInstance3D" parent="MindonBridge"]
+transform = Transform3D(0.996917, 0.0784591, 0, -0.0784591, 0.996917, 0, 0, 0, 1, 9.245, 0.0232, 0)
+mesh = SubResource("BoxMesh_mindon_bridge_ramp")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="MDHouse1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 125, 0, -14)
+
+[node name="MDHouse1Walls" type="MeshInstance3D" parent="MDHouse1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse1Roof" type="MeshInstance3D" parent="MDHouse1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse1CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 125, 1.4, -14)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse1CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 125, 0, 14)
+
+[node name="MDHouse2Walls" type="MeshInstance3D" parent="MDHouse2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse2Roof" type="MeshInstance3D" parent="MDHouse2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse2CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 125, 1.4, 14)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse2CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 155, 0, -14)
+
+[node name="MDHouse3Walls" type="MeshInstance3D" parent="MDHouse3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse3Roof" type="MeshInstance3D" parent="MDHouse3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse3CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 155, 1.4, -14)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse3CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse4" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 155, 0, 16)
+
+[node name="MDHouse4Walls" type="MeshInstance3D" parent="MDHouse4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse4Roof" type="MeshInstance3D" parent="MDHouse4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse4CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 155, 1.4, 16)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse4CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse5" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170, 0, -16)
+
+[node name="MDHouse5Walls" type="MeshInstance3D" parent="MDHouse5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse5Roof" type="MeshInstance3D" parent="MDHouse5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse5CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170, 1.4, -16)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse5CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse6" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170, 0, 14)
+
+[node name="MDHouse6Walls" type="MeshInstance3D" parent="MDHouse6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse6Roof" type="MeshInstance3D" parent="MDHouse6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse6CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170, 1.4, 14)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse6CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse7" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 148, 0, -32)
+
+[node name="MDHouse7Walls" type="MeshInstance3D" parent="MDHouse7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse7Roof" type="MeshInstance3D" parent="MDHouse7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse7CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 148, 1.4, -32)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse7CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse8" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 148, 0, 32)
+
+[node name="MDHouse8Walls" type="MeshInstance3D" parent="MDHouse8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse8Roof" type="MeshInstance3D" parent="MDHouse8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse8CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 148, 1.4, 32)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse8CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse9" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 0, -14)
+
+[node name="MDHouse9Walls" type="MeshInstance3D" parent="MDHouse9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse9Roof" type="MeshInstance3D" parent="MDHouse9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse9CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 1.4, -14)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse9CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse10" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 0, 16)
+
+[node name="MDHouse10Walls" type="MeshInstance3D" parent="MDHouse10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse10Roof" type="MeshInstance3D" parent="MDHouse10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse10CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 1.4, 16)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse10CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse11" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 220, 0, 30)
+
+[node name="MDHouse11Walls" type="MeshInstance3D" parent="MDHouse11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse11Roof" type="MeshInstance3D" parent="MDHouse11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse11CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 220, 1.4, 30)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse11CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse12" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 215, 0, -35)
+
+[node name="MDHouse12Walls" type="MeshInstance3D" parent="MDHouse12"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse12Roof" type="MeshInstance3D" parent="MDHouse12"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse12CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 215, 1.4, -35)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse12CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse13" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 0, 60)
+
+[node name="MDHouse13Walls" type="MeshInstance3D" parent="MDHouse13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse13Roof" type="MeshInstance3D" parent="MDHouse13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse13CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 1.4, 60)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse13CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MDHouse14" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 195, 0, 62)
+
+[node name="MDHouse14Walls" type="MeshInstance3D" parent="MDHouse14"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MDHouse14Roof" type="MeshInstance3D" parent="MDHouse14"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MDHouse14CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 195, 1.4, 62)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MDHouse14CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="OoHouse1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 66, 0, -16)
+
+[node name="OoHouse1Walls" type="MeshInstance3D" parent="OoHouse1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="OoHouse1Roof" type="MeshInstance3D" parent="OoHouse1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="OoHouse1CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 66, 1.4, -16)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="OoHouse1CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="OoHouse2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 66, 0, 16)
+
+[node name="OoHouse2Walls" type="MeshInstance3D" parent="OoHouse2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="OoHouse2Roof" type="MeshInstance3D" parent="OoHouse2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="OoHouse2CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 66, 1.4, 16)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="OoHouse2CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="OoHouse3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 74, 0, -10)
+
+[node name="OoHouse3Walls" type="MeshInstance3D" parent="OoHouse3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="OoHouse3Roof" type="MeshInstance3D" parent="OoHouse3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="OoHouse3CamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 74, 1.4, -10)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="OoHouse3CamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MindonPagoda" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0, -62)
+
+[node name="CollisionBase" type="CollisionShape3D" parent="MindonPagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+shape = SubResource("CylinderShape3D_pag_base")
+
+[node name="CollisionBell" type="CollisionShape3D" parent="MindonPagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.15, 0)
+shape = SubResource("CylinderShape3D_pag_bell")
+
+[node name="Platform" type="MeshInstance3D" parent="MindonPagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("CylinderMesh_pag_platform")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="Plinth" type="MeshInstance3D" parent="MindonPagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CylinderMesh_pag_plinth")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="Terrace" type="MeshInstance3D" parent="MindonPagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, 0)
+mesh = SubResource("CylinderMesh_pag_terrace")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="Terrace2" type="MeshInstance3D" parent="MindonPagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+mesh = SubResource("CylinderMesh_pag_terrace2")
+surface_material_override/0 = SubResource("StandardMaterial3D_stone")
+
+[node name="Bell" type="MeshInstance3D" parent="MindonPagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.15, 0)
+mesh = SubResource("CylinderMesh_pag_bell")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="Spire" type="MeshInstance3D" parent="MindonPagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.4, 0)
+mesh = SubResource("CylinderMesh_pag_spire")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="Hti" type="MeshInstance3D" parent="MindonPagoda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.2, 0)
+mesh = SubResource("SphereMesh_pag_hti")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="MindonTemple" type="Node3D" parent="."]
+transform = Transform3D(1.5, 0, 0, 0, 1.2, 0, 0, 0, 1.4, 218, 0, -22)
+
+[node name="MindonTempleWalls" type="MeshInstance3D" parent="MindonTemple"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MindonTempleRoof" type="MeshInstance3D" parent="MindonTemple"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MindonTempleCamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 218, 1.8, -22)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MindonTempleCamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_temple")
+
+[node name="MindonHospital" type="Node3D" parent="."]
+transform = Transform3D(1.8, 0, 0, 0, 1.3, 0, 0, 0, 1.6, 122, 0, 58)
+
+[node name="MindonHospitalWalls" type="MeshInstance3D" parent="MindonHospital"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MindonHospitalRoof" type="MeshInstance3D" parent="MindonHospital"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_s16_tuk_blue")
+
+[node name="MindonHospitalCamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 122, 1.9, 58)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MindonHospitalCamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_hospital")
+
+[node name="MindonPost" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 148, 0, 26)
+
+[node name="MindonPostWalls" type="MeshInstance3D" parent="MindonPost"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MindonPostRoof" type="MeshInstance3D" parent="MindonPost"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MindonPostCamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 148, 1.4, 26)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MindonPostCamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MindonEdu" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 102, 0, 62)
+
+[node name="MindonEduWalls" type="MeshInstance3D" parent="MindonEdu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MindonEduRoof" type="MeshInstance3D" parent="MindonEdu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MindonEduCamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 102, 1.4, 62)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MindonEduCamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MindonMRTV" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0, 42)
+
+[node name="MindonMRTVWalls" type="MeshInstance3D" parent="MindonMRTV"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MindonMRTVRoof" type="MeshInstance3D" parent="MindonMRTV"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MindonMRTVCamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 1.4, 42)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MindonMRTVCamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="MindonShops" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 205, 0, 38)
+
+[node name="MindonShopsWalls" type="MeshInstance3D" parent="MindonShops"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_s15_house6_walls")
+surface_material_override/0 = SubResource("StandardMaterial3D_s15_house_wall")
+
+[node name="MindonShopsRoof" type="MeshInstance3D" parent="MindonShops"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_s15_house6_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_atmos_roof")
+
+[node name="MindonShopsCamBlock" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 205, 1.4, 38)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CamShape" type="CollisionShape3D" parent="MindonShopsCamBlock"]
+shape = SubResource("BoxShape3D_mindon_block_house")
+
+[node name="FieldNorth" type="MeshInstance3D" parent="."]
+transform = Transform3D(22.5, 0, 0, 0, 1, 0, 0, 0, 2.16667, 150, 0.02, -100.5)
+mesh = SubResource("PlaneMesh_pond")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_paddy")
+
+[node name="FieldSouth" type="MeshInstance3D" parent="."]
+transform = Transform3D(21.25, 0, 0, 0, 1, 0, 0, 0, 3.66667, 155, 0.02, 96)
+mesh = SubResource("PlaneMesh_pond")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_paddy")
+
+[node name="FieldEast" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.75, 0, 0, 0, 1, 0, 0, 0, 20, 243, 0.02, 0)
+mesh = SubResource("PlaneMesh_pond")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_paddy")
+
+[node name="FieldWest" type="MeshInstance3D" parent="."]
+transform = Transform3D(3.125, 0, 0, 0, 1, 0, 0, 0, 6.66667, 69.5, 0.02, -55)
+mesh = SubResource("PlaneMesh_pond")
+surface_material_override/0 = SubResource("StandardMaterial3D_s12_paddy")
+
+[node name="TreeTrunk_MD1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, 1.25, -105)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, 3.2, -105)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 1.25, -105)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 3.2, -105)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 130, 1.25, -105)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 130, 3.2, -105)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 160, 1.25, -105)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 160, 3.2, -105)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 190, 1.25, -105)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 190, 3.2, -105)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 220, 1.25, -105)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 220, 3.2, -105)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 1.25, 88)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 3.2, 88)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 130, 1.25, 88)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 130, 3.2, 88)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD9" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 160, 1.25, 88)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD9" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 160, 3.2, 88)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD10" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 190, 1.25, 88)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD10" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 190, 3.2, 88)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD11" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 220, 1.25, 88)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD11" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 220, 3.2, 88)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD12" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 238, 1.25, -40)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD12" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 238, 3.2, -40)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD13" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 238, 1.25, -20)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD13" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 238, 3.2, -20)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD14" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 238, 1.25, 20)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD14" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 238, 3.2, 20)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD15" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 238, 1.25, 40)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD15" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 238, 3.2, 40)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD16" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 110, 1.25, -8)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD16" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 110, 3.2, -8)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD17" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 1.25, -8)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD17" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 3.2, -8)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD18" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 182, 1.25, -8)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD18" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 182, 3.2, -8)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD19" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 130, 1.25, 8)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD19" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 130, 3.2, 8)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD20" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170, 1.25, 8)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD20" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170, 3.2, 8)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="TreeTrunk_MD21" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 210, 1.25, 8)
+mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_trunk")
+
+[node name="TreeTop_MD21" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 210, 3.2, 8)
+mesh = SubResource("SphereMesh_foliage")
+surface_material_override/0 = SubResource("StandardMaterial3D_leaf")
+
+[node name="MindonPagodaDot" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(1, 0.8, 0.1, 1)
+
+[node name="MindonTempleDot" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.9, 0.7, 0.2, 1)
+
+[node name="MindonPostDot" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.6, 1, 1)
+
+[node name="MindonHospitalDot" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(1, 0.2, 0.3, 1)
+
+[node name="MindonEduDot" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.7, 1, 1)
+
+[node name="MindonMRTVDot" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.8, 0.4, 1, 1)
+
+[node name="MindonShopsDot" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(1, 0.55, 0.1, 1)
+
+[node name="OoVillageDot" type="ColorRect" parent="JoystickLayer/MinimapPanel"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.85, 0.8, 0.7, 1)

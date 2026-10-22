@@ -949,7 +949,7 @@ func _update_minimap() -> void:
 			"VillagerDot7", "VillagerDot8", "VehicleDotBicycle", "VehicleDotTukTuk",
 			"FestivalDot16", "VillagerDot9", "VillagerDot10",
 			"FishDot17", "DonateDot17", "VillagerDot11", "VillagerDot12", "StallDot17", "WellDot17", "VehicleDotCow2", "BallDot17", "HouseDot17", "VehicleDotElephant", "VillagerDot13", "VillagerDot14", "PavilionDot18", "PaddyDot18",
-			"VehicleDotHorse", "VillagerDot15", "VillagerDot16", "HutDot19", "GoldStallDot19", "WorkshopDot19", "NightMarketDot20", "GuestHouseDot20", "PierDot20", "VehicleDotBoat2", "VehicleDotHorse2", "VillagerDot17", "VillagerDot18", "WaypointDot"]:
+			"VehicleDotHorse", "VillagerDot15", "VillagerDot16", "HutDot19", "GoldStallDot19", "WorkshopDot19", "NightMarketDot20", "GuestHouseDot20", "PierDot20", "VehicleDotBoat2", "VehicleDotHorse2", "VillagerDot17", "VillagerDot18", "WaypointDot", "MindonPagodaDot", "MindonTempleDot", "MindonPostDot", "MindonHospitalDot", "MindonEduDot", "MindonMRTVDot", "MindonShopsDot", "OoVillageDot"]:
 			var dot := panel.get_node_or_null(name) as ColorRect
 			if dot != null:
 				minimap_dots[name] = dot
@@ -958,8 +958,8 @@ func _update_minimap() -> void:
 	var put := func(dot_name: String, wpos: Vector3) -> void:
 		var dot: ColorRect = minimap_dots.get(dot_name)
 		if dot != null:
-			var mx := clampf((wpos.x + 50.0) / 100.0 * 170.0, 0.0, 162.0)
-			var my := clampf((wpos.z + 50.0) / 100.0 * 170.0, 0.0, 162.0)
+			var mx := clampf((wpos.x + 70.0) / 320.0 * 170.0, 0.0, 162.0)
+			var my := clampf((wpos.z + 70.0) / 320.0 * 170.0, 0.0, 162.0)
 			dot.position = Vector2(mx, my)
 	put.call("PlayerDot", global_position)
 	var villagers := get_tree().get_nodes_in_group("villagers")
@@ -1049,6 +1049,16 @@ func _update_minimap() -> void:
 		var lm20 := get_node_or_null("../" + pair[0]) as Node3D
 		if lm20 != null:
 			put.call(pair[1], lm20.global_position)
+	# Slice 37 dots: Mindon district landmarks + Oo village cluster.
+	# The minimap transform above now spans the enlarged world
+	# (centre x 90, span 320), so village and district share one map.
+	for pair in [["MindonPagoda", "MindonPagodaDot"], ["MindonTemple", "MindonTempleDot"],
+			["MindonPost", "MindonPostDot"], ["MindonHospital", "MindonHospitalDot"],
+			["MindonEdu", "MindonEduDot"], ["MindonMRTV", "MindonMRTVDot"],
+			["MindonShops", "MindonShopsDot"], ["OoHouse1", "OoVillageDot"]]:
+		var lm37 := get_node_or_null("../" + pair[0]) as Node3D
+		if lm37 != null:
+			put.call(pair[1], lm37.global_position)
 	# Slice 28 world-map waypoint dot on the minimap: the overlay owns
 	# the waypoint; the minimap only mirrors it (same transform family).
 	var wm28 := get_node_or_null("../JoystickLayer/WorldMapPanel")
@@ -1129,7 +1139,16 @@ func _update_prompt_label() -> void:
 			["NightMarket20", "ညဈေး", 5.0],
 			["GuestHouse20", "တည်းခိုခန်း", 5.0],
 			["Pier20", "ရေကန်ဆိပ်", 4.0],
-			["HorsePen20", "မြင်းခြံ ၂", 4.0]]:
+			["HorsePen20", "မြင်းခြံ ၂", 4.0],
+			["MindonPagoda", "စုတောင်ပြည် ဘုရား", 6.0],
+			["MindonTemple", "ဘုန်းကြီးကျောင်း", 5.0],
+			["MindonPost", "စာတိုက်", 5.0],
+			["MindonHospital", "ဆေးရုံ", 5.0],
+			["MindonEdu", "ပညာရေးရုံး", 5.0],
+			["MindonMRTV", "MRTV", 5.0],
+			["MindonShops", "ဈေးဆိုင်", 5.0],
+			["OoHouse1", "အိုးရွာ", 5.0],
+			["MindonBridge", "တံတား", 5.0]]:
 		var lm := get_node_or_null("../" + pair[0]) as Node3D
 		if lm != null and global_position.distance_to(lm.global_position) < float(pair[2]):
 			prompt_label.text = "အနီး: " + str(pair[1])

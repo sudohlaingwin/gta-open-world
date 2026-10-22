@@ -16,8 +16,9 @@
 ## so its buttons work while the tree is paused.
 extends Control
 
-const WORLD_HALF: float = 50.0
-const WORLD_SPAN: float = 100.0
+const WORLD_HALF: float = 160.0
+const WORLD_SPAN: float = 320.0
+const WORLD_CENTER_X: float = 90.0
 const MIN_ZOOM: float = 0.5
 const MAX_ZOOM: float = 3.0
 const TAP_SLOP_PX: float = 14.0
@@ -56,6 +57,14 @@ const LANDMARKS: Array = [
 	["School13", "ကျောင်း", Color(0.2, 0.7, 1.0, 1.0)],
 	["GuestHouse20", "တည်းခိုခန်း", Color(0.8, 0.4, 1.0, 1.0)],
 	["FestivalStage16", "ပွဲ", Color(1.0, 0.2, 0.3, 1.0)],
+	["MindonPagoda", "စုတောင်ပြည် ဘုရား", Color(1.0, 0.8, 0.1, 1.0)],
+	["MindonTemple", "ဘုန်းကြီးကျောင်း", Color(0.9, 0.7, 0.2, 1.0)],
+	["MindonPost", "စာတိုက်", Color(0.2, 0.6, 1.0, 1.0)],
+	["MindonHospital", "ဆေးရုံ", Color(1.0, 0.2, 0.3, 1.0)],
+	["MindonEdu", "ပညာရေးရုံး", Color(0.2, 0.7, 1.0, 1.0)],
+	["MindonMRTV", "MRTV", Color(0.8, 0.4, 1.0, 1.0)],
+	["MindonShops", "ဈေးဆိုင်", Color(1.0, 0.55, 0.1, 1.0)],
+	["OoHouse1", "အိုးရွာ", Color(0.85, 0.8, 0.7, 1.0)],
 ]
 
 
@@ -182,7 +191,7 @@ func world_to_map(wx: float, wz: float) -> Vector2:
 		return Vector2.ZERO
 	var scale := (_map_area.size.x / WORLD_SPAN) * zoom
 	var center := _map_area.position + _map_area.size * 0.5
-	return center + Vector2(wx, wz) * scale + pan
+	return center + Vector2(wx - WORLD_CENTER_X, wz) * scale + pan
 
 
 func map_to_world(screen_pos: Vector2) -> Vector2:
@@ -193,7 +202,7 @@ func map_to_world(screen_pos: Vector2) -> Vector2:
 		return Vector2.ZERO
 	var center := _map_area.position + _map_area.size * 0.5
 	var w := (screen_pos - center - pan) / scale
-	return Vector2(clampf(w.x, -WORLD_HALF, WORLD_HALF), clampf(w.y, -WORLD_HALF, WORLD_HALF))
+	return Vector2(clampf(w.x + WORLD_CENTER_X, WORLD_CENTER_X - WORLD_HALF, WORLD_CENTER_X + WORLD_HALF), clampf(w.y, -WORLD_HALF, WORLD_HALF))
 
 
 func _world_root() -> Node:
