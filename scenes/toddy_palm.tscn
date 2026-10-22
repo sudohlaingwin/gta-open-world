@@ -47,3 +47,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_palm_bark")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.2, 0)
 mesh = SubResource("SphereMesh_fronds")
 surface_material_override/0 = SubResource("ShaderMaterial_palm_fronds")
+
+[node name="PalmSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 1.4)
+text = "မြန်မာ့ အညာဒေသ ထန်းတောကြီး 🌴"
+font_size = 36
+outline_size = 10
+modulate = Color(1.0, 0.90, 0.40, 1)
