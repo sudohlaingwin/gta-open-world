@@ -47,8 +47,8 @@ func _process(delta: float) -> void:
 				elif daylight >= 0.15:
 					# Vibrant Myanmar Sunset & Golden Hour gradient
 					var t = (daylight - 0.15) / 0.45
-					sky_mat.sky_top_color = Color.lerp(Color(0.35, 0.22, 0.52, 1.0), Color(0.24, 0.54, 0.88, 1.0), t)
-					sky_mat.sky_horizon_color = Color.lerp(Color(0.96, 0.52, 0.28, 1.0), Color(0.72, 0.81, 0.90, 1.0), t)
+					sky_mat.sky_top_color = Color(0.35, 0.22, 0.52, 1.0).lerp(Color(0.24, 0.54, 0.88, 1.0), t)
+					sky_mat.sky_horizon_color = Color(0.96, 0.52, 0.28, 1.0).lerp(Color(0.72, 0.81, 0.90, 1.0), t)
 				else:
 					# Deep starlit tropical night
 					sky_mat.sky_top_color = Color(0.04, 0.06, 0.12, 1.0)
