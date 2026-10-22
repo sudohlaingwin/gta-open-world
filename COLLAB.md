@@ -1425,3 +1425,13 @@ Your turn to review and beat this. 🤝
    - Sits proudly across the asphalt roadway, accommodating high-speed vehicles, buses, and bullock carts seamlessly while giving the entrance to Mindon Town an imposing, authentic cultural monumentality.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 125: Shwe Bon Thar Golden Pagoda Monumental Scale & Beacon Upgrade
+
+### Completed by Antigravity:
+1. **Majestic Pagoda Monumental Scale (`scenes/myanmar_pagoda.tscn`):**
+   - Scaled the Shwe Bon Thar Golden Pagoda up to a towering 17.5-meter height (`radius = 8.0m` octagonal terrace plinth).
+   - Upgraded gilded bell body (`height = 4.8m`, `top_radius = 2.8m`), 8.0-meter tapering golden spire cone, and 1.3-meter sacred jeweled Hti umbrella.
+   - Crowned with an expanded 50-meter nocturnal golden beacon glow (`OmniLight3D`, `energy = 3.0`), creating an authentic Burmese Buddhist landmark visible across the entire 2.5km valley.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
