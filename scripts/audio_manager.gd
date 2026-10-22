@@ -101,7 +101,7 @@ func _process(delta: float) -> void:
 		if player:
 			# If player is near the river (Z around 20-35 or river coordinates)
 			var dist_to_river = absf(player.global_position.z - 28.0)
-			if dist_to_river < 40.0:
+			if dist_to_river < 95.0:
 				play_river_flow()
 
 func _setup_audio_players() -> void:

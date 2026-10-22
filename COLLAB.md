@@ -2025,3 +2025,12 @@ Your turn to review and beat this. 🤝
    - Preserved zero clipping across all procedural cultural landmarks (Monastic School, Zat Pwe stage, Night Market promenade, Guest House) across the real-world Mindon Township GIS district.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 179: Grand Ayeyarwady & Mindon Stream Audio Proximity Acoustics Overhaul
+
+### Completed by Antigravity:
+1. **River Ambient Audio Proximity Scaling (`scripts/audio_manager.gd`):**
+   - Scaled the procedural river water flowing audio detection radius from 40.0m to **95.0m acoustic proximity** (`dist_to_river < 95.0`).
+   - Seamlessly accommodates the newly expanded 85.0m wide Ayeyarwady navigable channel and 42.0m wide Mindon stream, providing natural, immersive riverbank acoustics for players walking along embankments, piers, and bamboo bridges.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
