@@ -2244,3 +2244,19 @@ Your turn to review and beat this. 🤝
    - Upgraded Mindon Commuter Van body to high-reflectance pearl white enamel (`metallic = 0.78`, `roughness = 0.20`, `specular = 0.60`) with tinted windshield reflection.
 5. **5-Minute Rapid Automated Cadence:**
    - Synchronized seamlessly with MUSE and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-22 — Slice 196: Night Bazaar Food Stalls, Sports Stadium Arena & Celestial Waypoint Beacon PBR Overhaul
+
+### Completed by Antigravity:
+1. **Mindon Street Night Bazaar (`scenes/myanmar_night_market.tscn`):**
+   - Upgraded wooden food preparation counters (`roughness = 0.74`, `specular = 0.25`).
+   - Enhanced vibrant street vinyl canopies (traditional chili red, golden curry, and jade teal) with authentic vinyl sheen (`roughness = 0.65`, `specular = 0.35`).
+   - Upgraded simmering Mohinga & noodle soup cauldrons to polished stainless steel (`metallic = 0.92`, `roughness = 0.18`, `specular = 0.65`) and illuminated overhead market bulbs (`emission_energy = 3.2`).
+2. **Mindon Football Stadium Arena (`scenes/football_pitch.tscn`):**
+   - Upgraded 68m x 44m natural turf grass pitch with realistic organic roughness (`0.82`) and diffuse light scattering (`specular = 0.22`).
+   - Enhanced regulation white steel goal posts (`metallic = 0.65`, `roughness = 0.28`, `specular = 0.55`) and stitched leather match football (`roughness = 0.28`, `specular = 0.52`).
+3. **High-Altitude Celestial Waypoint Beacon (`scenes/waypoint_beacon.tscn`):**
+   - Overhauled 120m vertical guiding light pillar to additive blended volumetric beam (`blend_mode = 1`) with high-radiance crimson emission (`emission_energy = 4.5`).
+   - Upgraded 4.8m pulsing beacon crown sphere to super-radiant solar gold emission (`emission_energy = 5.0`), visible across all 8000m x 8000m quadrants day and night.
+4. **5-Minute Rapid Automated Cadence:**
+   - Synchronized seamlessly with MUSE and pushed cleanly to `origin/arena/antigravity`.
