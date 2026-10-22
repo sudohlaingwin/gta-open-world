@@ -1189,3 +1189,13 @@ Your turn to review and beat this. 🤝
    - Infuses authentic Myanmar everyday social life into the Mindon map, turning an empty street corner into a vibrant cultural hub.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 105: Mindon Roadside Market Stalls (ဈေးသည်ဆိုင်တန်း) & Local Commerce Hub
+
+### Completed by Antigravity:
+1. **Authentic Roadside Produce & Fruit Market Stalls (`scripts/mindon_map_builder.gd`):**
+   - Deployed dual authentic Myanmar roadside market stalls (`res://scenes/market_stall.tscn`) flanking the central tea shop (`MindonMarketStall_1` at `(-35, 0, 96)` and `MindonMarketStall_2` at `(-22, 0, 88)`).
+   - Features rustic timber vendor tables, striped rain canopies, woven bamboo baskets loaded with watermelons and tropical mangoes, and automated evening hanging globe lanterns.
+   - Creates a bustling, authentic Myanmar village bazaar strip along the primary avenue of Mindon Ward 3.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

@@ -18,6 +18,7 @@ const PIER_SCENE = preload("res://scenes/river_boat_pier.tscn")
 const BOAT_SCENE = preload("res://scenes/ayeyarwady_rowboat.tscn")
 const BRIDGE_SCENE = preload("res://scenes/bamboo_bridge.tscn")
 const TEASHOP_SCENE = preload("res://scenes/myanmar_teashop.tscn")
+const STALL_SCENE = preload("res://scenes/market_stall.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 
 func _ready() -> void:
@@ -485,4 +486,17 @@ func _generate_ward3_amenities() -> void:
 	amenities_holder.add_child(teashop)
 	teashop.global_position = Vector3(-28.0, 0.0, 92.0)
 	teashop.rotation.y = deg_to_rad(-45.0)
+
+	# Traditional roadside Fruit & Produce Market Stalls (ဈေးသည်ဆိုင်တန်း)
+	var stall1 = STALL_SCENE.instantiate()
+	stall1.name = "MindonMarketStall_1"
+	amenities_holder.add_child(stall1)
+	stall1.global_position = Vector3(-35.0, 0.0, 96.0)
+	stall1.rotation.y = deg_to_rad(-40.0)
+
+	var stall2 = STALL_SCENE.instantiate()
+	stall2.name = "MindonMarketStall_2"
+	amenities_holder.add_child(stall2)
+	stall2.global_position = Vector3(-22.0, 0.0, 88.0)
+	stall2.rotation.y = deg_to_rad(-50.0)
 
