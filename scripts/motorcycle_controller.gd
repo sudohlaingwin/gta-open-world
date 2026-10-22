@@ -1,8 +1,8 @@
 extends CharacterBody3D
 
-@export var max_speed: float = 16.0
-@export var acceleration: float = 14.0
-@export var brake_decel: float = 24.0
+@export var max_speed: float = 26.0
+@export var acceleration: float = 22.0
+@export var brake_decel: float = 35.0
 @export var low_speed_turn: float = 3.2
 @export var high_speed_turn: float = 1.4
 @export var max_lean_deg: float = 28.0
