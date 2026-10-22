@@ -2512,3 +2512,12 @@ Your turn to review and beat this. 🤝
    - Accentuates indigenous flora along irrigation dikes, village margins, and flooded alluvial paddy borders with authentic regional Burmese botanical signboards.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-22 — Slice 217: Waypoint Beacon 3D Celestial Landmark Title Overhaul
+
+### Completed by Antigravity:
+1. **Celestial Waypoint Guide 3D Identification (`scenes/waypoint_beacon.tscn`):**
+   - Added billboard `BeaconSign` (`📍 လမ်းညွှန် ပန်းတိုင် (Waypoint Target)`) with 48pt luminous gold typography and 14px high-contrast outline perched at 126m altitude atop the celestial light pillar.
+   - Ensures unmistakable navigational visibility across open terrain, forests, and flooded paddy field biomes when marked via the full-map overlay.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly to `origin/arena/antigravity`.

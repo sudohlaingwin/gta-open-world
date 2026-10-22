@@ -38,3 +38,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_beam_glow")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 120.0, 0)
 mesh = SubResource("SphereMesh_beacon_head")
 surface_material_override/0 = SubResource("StandardMaterial3D_head_glow")
+
+[node name="BeaconSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 126.0, 0)
+billboard = 1
+text = "📍 လမ်းညွှန် ပန်းတိုင် (Waypoint Target)"
+font_size = 48
+outline_size = 14
+modulate = Color(1.0, 0.90, 0.40, 1)
