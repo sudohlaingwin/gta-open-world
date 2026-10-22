@@ -149,3 +149,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -0.6)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
 shape = SubResource("SphereShape3D_cart_interact")
+
+[node name="CartSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, -0.6)
+text = "မြန်မာ့ရိုးရာ နွားလှည်းယာဉ် 🐂"
+font_size = 38
+outline_size = 10
+modulate = Color(1.0, 0.90, 0.40, 1)

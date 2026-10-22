@@ -2452,3 +2452,14 @@ Your turn to review and beat this. 🤝
    - Ensures the 200px prominent `InteractBtn` ("⚡ လုပ်ဆောင်"), 125px `SprintBtn`, 125px `JumpBtn`, and 85px `ChuteBtn` reside within an unconstrained, non-clipping horizontal container across both compact and wide 20:9 aspect-ratio mobile viewports (vivo V60).
 3. **5-Minute Rapid Automated Cadence:**
    - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-22 — Slice 212: Authentic Traditional Mount & Rivercraft 3D Cultural Signage Overhaul
+
+### Completed by Antigravity:
+1. **Sacred Royal War Elephant Cultural Label (`scenes/myanmar_elephant.tscn`):**
+   - Added `ElephantSign` (`မင်းတုန်း မင်္ဂလာ ဆင်ဖြူတော်ကြီး 🐘`) with 42pt high-radiance gold typography above the royal gilded howdah saddle.
+2. **Traditional Bullock Cart & Ayeyarwady Rivercraft Signage Overhaul:**
+   - `scenes/bullock_cart.tscn`: Added `CartSign` (`မြန်မာ့ရိုးရာ နွားလှည်းယာဉ် 🐂`) with 38pt Burmese lettering for traditional ox-drawn transport.
+   - `scenes/ayeyarwady_rowboat.tscn`: Added `BoatSign` (`ဧရာဝတီ သမ္ဗာန်လှေငယ် 🚣`) with 36pt high-contrast typography along the Mindon stream and river pier waterways.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly to `origin/arena/antigravity`.

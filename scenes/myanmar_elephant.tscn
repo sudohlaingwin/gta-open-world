@@ -93,3 +93,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.3, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7, 0)
 shape = SubResource("BoxShape3D_interact")
+
+[node name="ElephantSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.2, 0)
+text = "မင်းတုန်း မင်္ဂလာ ဆင်ဖြူတော်ကြီး 🐘"
+font_size = 42
+outline_size = 12
+modulate = Color(1.0, 0.90, 0.40, 1)
