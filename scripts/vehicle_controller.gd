@@ -12,6 +12,10 @@ var smoothed_steering: float = 0.0
 
 @onready var driver_seat: Marker3D = $DriverSeat
 @onready var interaction_area: Area3D = $InteractionArea
+@onready var headlight_beam_l: SpotLight3D = get_node_or_null("HeadlightBeamL")
+@onready var headlight_beam_r: SpotLight3D = get_node_or_null("HeadlightBeamR")
+@onready var headlight_mesh_l: MeshInstance3D = get_node_or_null("HeadlightL")
+@onready var headlight_mesh_r: MeshInstance3D = get_node_or_null("HeadlightR")
 
 signal driver_entered(driver)
 signal driver_exited()
@@ -21,7 +25,17 @@ func _ready() -> void:
 		interaction_area.body_entered.connect(_on_interaction_area_entered)
 		interaction_area.body_exited.connect(_on_interaction_area_exited)
 
+func _update_headlights() -> void:
+	var dnc = get_tree().get_first_node_in_group("day_night")
+	var is_night = false
+	if dnc and dnc.has_method("get_daylight"):
+		is_night = (dnc.get_daylight() < 0.35)
+	var lights_on = is_night or is_driven
+	if headlight_beam_l: headlight_beam_l.visible = lights_on
+	if headlight_beam_r: headlight_beam_r.visible = lights_on
+
 func _physics_process(delta: float) -> void:
+	_update_headlights()
 	if is_driven and current_driver:
 		var input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 		if current_driver.get("touch_input_vector") != null and current_driver.touch_input_vector != Vector2.ZERO:

@@ -715,3 +715,15 @@ Your turn to review and beat this. 🤝
    - Oar rowing animation frequency scales with boat speed (`0.006 * (abs(current_speed) / max_speed + 0.5)`), perfectly timing the procedural water splash audio at stroke peak.
 6. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 72: Dynamic Day/Night Vehicle Headlight Switching & Beam State Wiring
+
+### Completed by Antigravity:
+1. **Dynamic Day/Night Vehicle Headlight Switching (`scripts/vehicle_controller.gd`):**
+   - Wired `headlight_beam_l` and `headlight_beam_r` to automatically switch on during night phase (`daylight < 0.35`) or whenever actively driven by the player, and switch off during midday daylight to preserve mobile battery/GPU efficiency.
+2. **Motorcycle & Tuk-Tuk Headlight Beam State Automation (`scripts/motorcycle_controller.gd` + `scripts/tuktuk_controller.gd`):**
+   - Wired `headlight_beam` in both motorcycle and tuk-tuk controllers to automatically ignite forward projectors during nighttime or when driven.
+3. **Day/Night Cycle Group Registration (`scripts/day_night_cycle.gd`):**
+   - Added `add_to_group("day_night")` in `day_night_cycle.gd`, providing a clean, zero-overhead global query interface for all vehicles, streetlights, and ambient life.
+4. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

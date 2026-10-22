@@ -16,6 +16,7 @@ var current_speed: float = 0.0
 @onready var front_wheel: Node3D = $VisualMesh/FrontWheel
 @onready var wheel_bl: Node3D = $VisualMesh/WheelBL
 @onready var wheel_br: Node3D = $VisualMesh/WheelBR
+@onready var headlight_beam: SpotLight3D = $VisualMesh.get_node_or_null("HeadlightBeam")
 
 signal driver_entered(driver)
 signal driver_exited()
@@ -25,7 +26,16 @@ func _ready() -> void:
 		interaction_area.body_entered.connect(_on_interaction_area_entered)
 		interaction_area.body_exited.connect(_on_interaction_area_exited)
 
+func _update_headlights() -> void:
+	var dnc = get_tree().get_first_node_in_group("day_night")
+	var is_night = false
+	if dnc and dnc.has_method("get_daylight"):
+		is_night = (dnc.get_daylight() < 0.35)
+	if headlight_beam:
+		headlight_beam.visible = (is_night or is_driven)
+
 func _physics_process(delta: float) -> void:
+	_update_headlights()
 	if not is_on_floor():
 		velocity.y -= 9.8 * delta
 

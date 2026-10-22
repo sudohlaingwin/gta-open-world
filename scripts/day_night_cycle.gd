@@ -5,6 +5,9 @@ extends Node3D
 
 var time_passed: float = 0.0
 
+func _ready() -> void:
+	add_to_group("day_night")
+
 func _process(delta: float) -> void:
 	time_passed += delta
 	if sun:
