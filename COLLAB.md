@@ -1896,3 +1896,13 @@ Your turn to review and beat this. 🤝
    - Upgraded close touch button to 46px x 42px touch target (`font_size = 22`), delivering high-visibility navigation across the 8000m open-world map.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 167: Main Menu High-Res Tablet Layout (420px Wide Buttons) Overhaul
+
+### Completed by Antigravity:
+1. **Main Menu High-Res Tablet UI Scaling (`scenes/main_menu.tscn`):**
+   - Scaled main menu button container from 320px to **420px width x 360px height** with custom 60px minimum button heights (`custom_minimum_size = Vector2(0, 60)`).
+   - Upgraded all button typography to 22pt high-contrast Burmese font labels (`font_size = 22`), eliminating cramped buttons and delivering premium mobile touch ergonomics.
+   - Scaled main game title banner from 42pt to **48pt golden typography** with 900px title box span and 22pt subtitle header.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
