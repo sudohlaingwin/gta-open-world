@@ -68,6 +68,19 @@ func tracker_text() -> String:
 
 ## HUD counter line, in the exact old order and emoji order.
 ## (elephant_feed is saved but was never displayed — preserved.)
+func nonzero_summary() -> String:
+	# Slice 61 addendum: the phone screenshot showed a bare grid of
+	# 21 zero counters (emoji glyphs the default font cannot render).
+	# Empty string when everything is zero (caller hides the label);
+	# otherwise only nonzero counters, Burmese text, no emoji.
+	var labels := {"fruit": "သီး", "water": "ရေ", "banana": "ငှက်ပျော", "tea": "လက်ဖက်", "book": "စာအုပ်", "snack": "မုန့်", "lantern": "မီးပုံး", "fish": "ငါး", "donation": "အလှူ", "milk": "နို့", "egg": "ဥ", "goal": "ဂိုး", "flower": "ပန်း", "photo": "ဓာတ်ပုံ", "rice": "စပါး", "gold": "ရွှေ", "lesson": "သင်ခန်း", "horse_feed": "မြင်းစာ", "noodle": "ခေါက်ဆွဲ", "drink": "အအေး", "guestbook": "ဧည့်စာရင်း"}
+	var parts: Array = []
+	for k in labels:
+		var v := int(counters.get(k, 0))
+		if v > 0:
+			parts.append("%s %d" % [labels[k], v])
+	return "  ".join(parts)
+
 func counter_text() -> String:
 	return "🍎 %d 💧 %d 🍌 %d 🍵 %d 📚 %d 🍡 %d 🪔 %d 🐟 %d 💰 %d 🥛 %d 🥚 %d ⚽ %d 🌸 %d 📸 %d 🌾 %d 🪙 %d 📖 %d 🐴 %d 🍜 %d 🥤 %d 📝 %d" % [counters.get("fruit", 0), counters.get("water", 0), counters.get("banana", 0), counters.get("tea", 0), counters.get("book", 0), counters.get("snack", 0), counters.get("lantern", 0), counters.get("fish", 0), counters.get("donation", 0), counters.get("milk", 0), counters.get("egg", 0), counters.get("goal", 0), counters.get("flower", 0), counters.get("photo", 0), counters.get("rice", 0), counters.get("gold", 0), counters.get("lesson", 0), counters.get("horse_feed", 0), counters.get("noodle", 0), counters.get("drink", 0), counters.get("guestbook", 0)]
 

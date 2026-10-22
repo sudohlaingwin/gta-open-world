@@ -9,6 +9,7 @@ extends Node
 ## never touches velocity, position, or collision.
 
 var _phase: float = 0.0
+var _idle_phase: float = 0.0  # Slice 61 addendum: idle breathing phase.
 var _amp: float = 0.0
 var _arm_r: Node3D = null
 var _arm_l: Node3D = null
@@ -38,6 +39,25 @@ func _process(delta: float) -> void:
 		speed = Vector2(v.x, v.z).length()
 	var driving: Variant = parent.get("driving")
 	var target := 0.0
+	if driving == true or speed <= 0.2:
+		# Slice 61 addendum (owner 00:03: "dry/stiff"): idle breathing
+		# — arms sway gently, longyi hem moves slightly, legs still.
+		# This runs ONLY when not walking/driving, so walk swing and
+		# idle sway never fight (walking branch below is untouched).
+		_idle_phase += delta * 1.5
+		var ib := sin(_idle_phase) * 0.06
+		if _arm_r != null:
+			_arm_r.rotation.x = ib
+		if _arm_l != null:
+			_arm_l.rotation.x = -ib
+		if _leg_r != null:
+			_leg_r.rotation.x = 0.0
+		if _leg_l != null:
+			_leg_l.rotation.x = 0.0
+		if _longyi != null:
+			_longyi.rotation.x = sin(_idle_phase) * 0.01
+		_amp = move_toward(_amp, 0.0, delta * 4.0)
+		return
 	if driving != true and speed > 0.2:
 		_phase += delta * (4.0 + speed * 1.8)
 		target = 1.0

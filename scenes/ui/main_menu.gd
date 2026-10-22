@@ -23,6 +23,16 @@ var character_panel: Node = null
 var vehicle_panel: Node = null
 var loading_label: Label = null
 var loading: bool = false
+# Slice 61 addendum (owner 00:03: menu "no animation, dry/stiff"):
+# code-only animation, no scene change. Title gently pulses,
+# background colour drifts warm, every menu button punches on
+# press (scale 1.0 -> 1.08 -> 1.0), panels scale in 0.92 -> 1.0
+# when opened. All values are measured in the addendum sim.
+var _menu_time: float = 0.0
+var _pulse: float = 0.0
+var _pulse_button: Button = null
+var _title_label: Label = null
+var _bg_rect: ColorRect = null
 
 
 func _ready() -> void:
@@ -62,7 +72,36 @@ func _ready() -> void:
 	loading_label.visible = false
 	add_child(loading_label)
 	_refresh_continue()
+	_title_label = get_node_or_null("TitleLabel") as Label
+	_bg_rect = get_node_or_null("Background") as ColorRect
+	for b in [continue_button, new_game_button, settings_button, character_button, vehicle_button]:
+		if b != null:
+			b.button_down.connect(_on_menu_button_down.bind(b))
 
+
+func _on_menu_button_down(b: Button) -> void:
+	_pulse_button = b
+	_pulse = 1.0
+
+func _process(delta: float) -> void:
+	_menu_time += delta
+	if _title_label != null:
+		var sc := 1.0 + 0.03 * sin(_menu_time * 2.0)
+		_title_label.scale = Vector2(sc, sc)
+	if _bg_rect != null:
+		var t := 0.5 + 0.5 * sin(_menu_time * 0.25)
+		_bg_rect.color = Color(0.05, 0.07, 0.14, 1.0).lerp(Color(0.12, 0.08, 0.10, 1.0), t)
+	if _pulse_button != null and _pulse > 0.0:
+		_pulse = maxf(_pulse - delta * 4.0, 0.0)
+		var ps := 1.0 + 0.08 * _pulse
+		_pulse_button.scale = Vector2(ps, ps)
+		if _pulse <= 0.0:
+			_pulse_button.scale = Vector2.ONE
+			_pulse_button = null
+	for pnl in [settings_panel, character_panel, vehicle_panel]:
+		if pnl != null and pnl.visible and pnl.scale.x < 1.0:
+			var ns := minf(pnl.scale.x + delta * 3.0, 1.0)
+			pnl.scale = Vector2(ns, ns)
 
 func _show_loading() -> void:
 	if loading:
@@ -125,6 +164,7 @@ func _on_settings_pressed() -> void:
 	if settings_panel == null:
 		return
 	settings_panel.visible = true
+	settings_panel.scale = Vector2(0.92, 0.92)
 	if settings_panel.has_method("refresh"):
 		settings_panel.call("refresh")
 
@@ -135,6 +175,7 @@ func _on_character_pressed() -> void:
 	if character_panel == null:
 		return
 	character_panel.visible = true
+	character_panel.scale = Vector2(0.92, 0.92)
 	if character_panel.has_method("refresh"):
 		character_panel.call("refresh")
 
@@ -145,5 +186,6 @@ func _on_vehicle_pressed() -> void:
 	if vehicle_panel == null:
 		return
 	vehicle_panel.visible = true
+	vehicle_panel.scale = Vector2(0.92, 0.92)
 	if vehicle_panel.has_method("refresh"):
 		vehicle_panel.call("refresh")

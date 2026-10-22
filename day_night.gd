@@ -55,7 +55,7 @@ func _process(delta: float) -> void:
 		return
 	sun.rotation_degrees.x = angle - 90.0
 	var day: float = daylight()
-	sun.light_energy = 0.05 + day * 1.15
+	sun.light_energy = 0.35 + day * 0.85  # Slice 61 addendum: night floor 0.05 -> 0.35 so the world reads at night; noon stays 1.20, daylight value (and the <0.15 dark rule) unchanged.
 	# Visual atmosphere part 1: sun COLOUR follows time of day.
 	# Noon is neutral white; low sun goes warm gold (golden hour);
 	# night is a cool dim tint. Energy is unchanged, so the < 0.15

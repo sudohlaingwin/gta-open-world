@@ -38,11 +38,16 @@ const RECOVER_RATE: float = 2.5
 # to the desired distance on the first frame only.
 var cur_dist: float = -1.0
 
+# Slice 61 addendum (owner order 2026-10-23 00:02): NO zoom controls.
+# One standard PUBG-style third-person view only: zoom_in/zoom_out
+# are no-ops and the process distance is fixed, so even a stale
+# button press cannot change the view. Orbit (drag / Orbit button)
+# is unchanged; a TPP/FPP toggle is next-round scope, not this.
 func zoom_in() -> void:
-	zoom = clamp(zoom - 0.2, 0.6, 1.8)
+	zoom = 1.0
 
 func zoom_out() -> void:
-	zoom = clamp(zoom + 0.2, 0.6, 1.8)
+	zoom = 1.0
 
 # Slice 32 camera sensitivity: scales touch-drag orbit speed only
 # (zoom buttons keep their fixed 0.2 step; Q/E desktop fallbacks
@@ -115,19 +120,19 @@ func _process(delta: float) -> void:
 		orbit_angle += 0.02
 	if Input.is_physical_key_pressed(KEY_E):
 		orbit_angle -= 0.02
-	var desired := 10.0 * zoom
+	var desired := 10.0  # Slice 61 addendum: fixed standard view (zoom locked at 1.0).
 	if cur_dist < 0.0:
 		cur_dist = desired
 	var dir_h := Vector3(sin(orbit_angle), 0.0, cos(orbit_angle))
 	var eye: Vector3 = t.global_position + Vector3(0.0, EYE_HEIGHT, 0.0)
-	var desired_pos: Vector3 = t.global_position + Vector3(dir_h.x * desired, 10.0 * zoom, dir_h.z * desired)
+	var desired_pos: Vector3 = t.global_position + Vector3(dir_h.x * desired, 10.0, dir_h.z * desired)
 	var allowed := _blocked_distance(eye, desired_pos, desired)
 	if allowed < cur_dist:
 		cur_dist = max(allowed, cur_dist - SHORTEN_RATE * delta)
 	else:
 		cur_dist = min(allowed, cur_dist + RECOVER_RATE * delta)
 	var f := cur_dist / desired if desired > 0.0 else 1.0
-	var pos: Vector3 = t.global_position + Vector3(dir_h.x * cur_dist, 10.0 * zoom * f, dir_h.z * cur_dist)
+	var pos: Vector3 = t.global_position + Vector3(dir_h.x * cur_dist, 10.0 * f, dir_h.z * cur_dist)
 	if pos.y < t.global_position.y + 0.5:
 		pos.y = t.global_position.y + 0.5
 	global_position = pos

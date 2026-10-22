@@ -6,6 +6,7 @@ const Dress58Script = preload("res://character_dress58.gd")
 const Dress59Script = preload("res://district_dress59.gd")
 const Style61Script = preload("res://style61.gd")
 const HudPolish60Script = preload("res://hud_polish60.gd")
+const HudFix61bScript = preload("res://hud_fix61b.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -223,6 +224,10 @@ var garage_vehicle_name: String = ""
 var garage_notice_text: String = ""
 var garage_notice_timer: float = 0.0
 var garage_button: Button = null
+# Slice 61 addendum: More-gate for secondary HUD buttons (Map, Camera
+# reset, Garage, Mute, Photo, Rain). False = only the PUBG cluster
+# + joystick + More button show; true = the secondary stack shows.
+var hud_more_open: bool = false
 var garage_label: Label = null
 var district_label: Label = null
 var map_button_connected: bool = false
@@ -358,6 +363,7 @@ func _ready() -> void:
 	var _layer60 := get_node_or_null("../JoystickLayer") as CanvasLayer
 	if _layer60 != null:
 		HudPolish60Script.polish(_layer60, self)
+		HudFix61bScript.dress(_layer60, self)
 	apply_graphics_quality()
 	_configure_map_bounds()
 	# Slice 53 graphics: village dressing (walls/windows/doors for
@@ -402,6 +408,12 @@ func _ready() -> void:
 ## Slice 61: deferred style pass (see _ready note above).
 func _apply_style61() -> void:
 	Style61Script.dress(get_parent())
+
+## Slice 61 addendum: More toggle (see hud_fix61b.gd). Visibility of
+## the six secondary buttons is re-applied by the per-frame button
+## updates, so this only flips the flag; the next frame applies it.
+func _on_more_toggle() -> void:
+	hud_more_open = not hud_more_open
 
 
 ## Slice 49: the shared map transform reads the live ground plane
@@ -728,7 +740,7 @@ func _update_action_buttons() -> void:
 			camera_reset_button.pressed.connect(_on_camera_reset)
 			camera_reset_connected = true
 	if camera_reset_button != null:
-		camera_reset_button.visible = true
+		camera_reset_button.visible = hud_more_open
 	# Slice 28 world-map button: tap to open the full-screen map.
 	# Wired lazily like every other HUD button, so the button is
 	# ACTUALLY CONNECTED (the opponent's slice-35 MapBtn never was).
@@ -738,7 +750,7 @@ func _update_action_buttons() -> void:
 			map_button.pressed.connect(_on_map_button_pressed)
 			map_button_connected = true
 	if map_button != null:
-		map_button.visible = true
+		map_button.visible = hud_more_open
 	if help_label == null:
 		help_label = get_node_or_null("../JoystickLayer/HelpLabel") as Label
 	if driving:
@@ -759,9 +771,9 @@ func _update_action_buttons() -> void:
 		if yaw_right_button != null:
 			yaw_right_button.visible = flying
 		if zoom_in_button != null:
-			zoom_in_button.visible = true
+			zoom_in_button.visible = false
 		if zoom_out_button != null:
-			zoom_out_button.visible = true
+			zoom_out_button.visible = false
 		if help_button != null:
 			help_button.visible = true
 		return
@@ -792,9 +804,9 @@ func _update_action_buttons() -> void:
 	if yaw_right_button != null:
 		yaw_right_button.visible = false
 	if zoom_in_button != null:
-		zoom_in_button.visible = true
+		zoom_in_button.visible = false
 	if zoom_out_button != null:
-		zoom_out_button.visible = true
+		zoom_out_button.visible = false
 	if help_button != null:
 		help_button.visible = true
 
@@ -1826,7 +1838,7 @@ func _update_garage_notice(delta: float) -> void:
 	if garage_button == null:
 		garage_button = _n("../JoystickLayer/GarageButton60") as Button
 	if garage_button != null:
-		_set_visible(garage_button, not driving)
+		_set_visible(garage_button, not driving and hud_more_open)
 	if garage_label == null:
 		garage_label = _n("../JoystickLayer/GarageLabel60") as Label
 	if garage_label == null:
@@ -1969,8 +1981,12 @@ func _update_fruit_water_label() -> void:
 	var mm = _mm()
 	if mm == null:
 		return
-	_set_text(fruit_water_label, mm.counter_text())
-	_set_visible(fruit_water_label, true)
+# Slice 61 addendum: hide the label entirely when every counter
+	# is zero (the screenshot's bare "0 0 0..." grid); otherwise show
+	# only nonzero counters in Burmese text, no emoji.
+	var summary: String = mm.nonzero_summary() if mm.has_method("nonzero_summary") else mm.counter_text()
+	_set_text(fruit_water_label, summary)
+	_set_visible(fruit_water_label, summary != "")
 
 func _update_draw_animation(delta: float) -> void:
 	if draw_timer <= 0.0:
@@ -2381,9 +2397,9 @@ func _update_slice17_buttons() -> void:
 	if feed_button != null:
 		feed_button.visible = coop != null and global_position.distance_to(coop.global_position) < 4.0
 	if photo_button != null:
-		photo_button.visible = true
+		photo_button.visible = hud_more_open
 	if rain_button != null:
-		rain_button.visible = true
+		rain_button.visible = hud_more_open
 		_set_text(rain_button, "မိုးပိတ်" if rain_on else "မိုး")
 	if horn_button != null:
 		horn_button.visible = false
@@ -2508,7 +2524,7 @@ func _update_slice18_buttons() -> void:
 		var sm_mute = _sm()
 		if sm_mute != null:
 			sound_on = not bool(sm_mute.get("muted"))
-		mute_button.visible = true
+		mute_button.visible = hud_more_open
 		_set_text(mute_button, "အသံပိတ်" if sound_on else "အသံဖွင့်")
 	if driving:
 		if trumpet_button != null:
