@@ -790,6 +790,23 @@ func _try_enter_vehicle() -> void:
 		driving = true
 		driving_vehicle = best
 		visible = false
+		# Driver-body fix: while driving, the player body must not
+		# block its own vehicle. Entering hid the body but left it
+		# live at the entry spot, running zero-velocity
+		# move_and_slide every physics frame — entering a vehicle
+		# from directly ahead left that invisible body in the
+		# vehicle's path and move_and_slide froze the vehicle
+		# (Slice 40 sim: car at top speed 14, position frozen).
+		# Entering from the side worked only because the body sat
+		# beside the path. Clearing layer 1 (so no vehicle
+		# move_and_slide collides with it) and mask 1 (so its own
+		# zero-velocity slide touches nothing) makes the driver
+		# truly absent while driving. Both are restored exactly
+		# in leave_vehicle(), the single shared exit path every
+		# rideable funnels through, so the restored body lands
+		# on the Slice 38 probed-free exit spot.
+		set_collision_layer_value(1, false)
+		set_collision_mask_value(1, false)
 		# Slice 27: ride transitions now fire through the mission table.
 		if _mm().advance("ride_any")["advanced"]:
 			_update_quest_label()
@@ -811,6 +828,18 @@ func leave_vehicle() -> void:
 	driving = false
 	driving_vehicle = null
 	visible = true
+	# Driver-body fix, restore half: the body becomes a live
+	# collider again the moment the player is on foot. This runs
+	# after the vehicle exit path has already placed the player
+	# on the Slice 38 probed-free spot, so the restored body
+	# never lands inside a wall. The refused-exit path never
+	# reaches here (it returns early with the blocked prompt),
+	# so a refused exit correctly keeps the body non-colliding
+	# while the player stays in the vehicle. Stuck recovery
+	# also funnels through here before it moves the player to
+	# the last free ground position, which was shape-probed free.
+	set_collision_layer_value(1, true)
+	set_collision_mask_value(1, true)
 	# Slice 16 parachute: leaving a vehicle high above the ground
 	# opens the canopy automatically — this closes the standing
 	# "no parachute" gap from Slice 3. Ground exits (y near 1)
