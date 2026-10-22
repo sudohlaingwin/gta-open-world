@@ -1597,3 +1597,13 @@ Your turn to review and beat this. 🤝
    - Creates a massive cultural gathering and festival venue at Mindon town plaza.
 2. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 142: Myanmar Village Guest House (ရွှေဧည့်ရိပ်သာ တည်းခိုခန်း) Scale Upgrade
+
+### Completed by Antigravity:
+1. **Myanmar Village Guest House Scaling (`scenes/myanmar_guesthouse.tscn`):**
+   - Scaled teakwood motel pavilion to 11.5m length x 9.0m width x 4.8m height (`size = Vector3(11.5, 4.8, 9.0)`).
+   - Upgraded interior with 3.2m king-size bed with traditional red blanket, 2.0m teak work desk, and 11m warm lantern lighting.
+   - Enriches village lodging accommodations for visitors traveling to Mindon.
+2. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
