@@ -1783,3 +1783,16 @@ Your turn to review and beat this. 🤝
    - Upgraded living verandah deck to 7.2m length x 3.8m width, 2.6m wooden entry ladder staircase, 14.2m thatch roof, and 15m warm porch lantern.
 3. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 158: Night Market Promenade (28m) & Ayeyarwady Harbor Wharf Pier (32m) Scaling
+
+### Completed by Antigravity:
+1. **Myanmar Night Market Bazaar Promenade Scaling (`scenes/myanmar_night_market.tscn`):**
+   - Scaled village bazaar from 19.5m to grand 28.0m length x 10.5m depth avenue (`size = Vector3(28.0, 5.8, 10.5)`).
+   - Upgraded 3 major vendor sections (Shan Noodle broth stall with 1.1m steaming cauldron, Burmese Tea & Cold Drinks stall with golden canopy, Village Toy & Souvenir stall with teal canopy).
+   - Added 14m omni night market lighting across 3 overhead globes and a prominent 50pt golden market sign.
+2. **Ayeyarwady Riverboat Harbor Pier (Thamban Seik) Scaling (`scenes/river_boat_pier.tscn`):**
+   - Scaled river landing wharf from 22.0m to 32.0m harbor length x 10.5m beam width (`size = Vector3(10.5, 2.2, 32.0)`).
+   - Upgraded 6 heavy submerged teak pilings (7.5m height), heavy iron mooring bollards, 16m maritime navigation lantern, and 48pt Burmese harbor signboard.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
