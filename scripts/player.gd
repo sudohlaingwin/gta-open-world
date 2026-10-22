@@ -38,6 +38,20 @@ var footstep_timer: float = 0.0
 func _ready() -> void:
 	add_to_group("player")
 	_apply_saved_outfit()
+	_apply_game_mode()
+
+func _apply_game_mode() -> void:
+	var sm = get_node_or_null("/root/SaveManager")
+	if not sm or not camera_pivot:
+		return
+	if sm.get("game_mode") == "mlbb":
+		camera_pivot.target_arm_length = 6.5
+		camera_pivot.current_arm_length = 6.5
+		camera_pivot.rotation.x = deg_to_rad(-45.0)
+	else:
+		camera_pivot.target_arm_length = 2.4
+		camera_pivot.current_arm_length = 2.4
+		camera_pivot.rotation.x = deg_to_rad(-10.0)
 
 var highest_fall_speed: float = 0.0
 

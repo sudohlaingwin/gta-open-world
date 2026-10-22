@@ -2,16 +2,16 @@ extends Node3D
 
 @export var touch_sensitivity: float = 0.005
 @export var zoom_speed: float = 0.5
-@export var min_zoom: float = 1.2
-@export var max_zoom: float = 5.5
+@export var min_zoom: float = 0.8
+@export var max_zoom: float = 4.0
 @export var shorten_speed: float = 24.0
 @export var recovery_speed: float = 4.0
 
 @onready var spring_arm: SpringArm3D = $SpringArm3D
 @onready var camera: Camera3D = $SpringArm3D/Camera3D
 
-var target_arm_length: float = 4.5
-var current_arm_length: float = 4.5
+var target_arm_length: float = 2.4
+var current_arm_length: float = 2.4
 
 func _ready() -> void:
 	if spring_arm:
@@ -57,4 +57,9 @@ func _input(event: InputEvent) -> void:
 				sens *= sm.camera_sensitivity
 			rotation.y -= event.relative.x * sens
 			rotation.x -= event.relative.y * sens
-			rotation.x = clamp(rotation.x, deg_to_rad(-65), deg_to_rad(30))
+			var pitch_min = -70.0
+			var pitch_max = 25.0
+			if sm and sm.get("game_mode") == "mlbb":
+				pitch_min = -60.0
+				pitch_max = -20.0
+			rotation.x = clamp(rotation.x, deg_to_rad(pitch_min), deg_to_rad(pitch_max))

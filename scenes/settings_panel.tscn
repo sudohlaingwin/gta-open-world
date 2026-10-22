@@ -46,10 +46,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -260.0
-offset_top = -220.0
-offset_right = 260.0
-offset_bottom = 220.0
+offset_left = -300.0
+offset_top = -280.0
+offset_right = 300.0
+offset_bottom = 280.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_settings_bg")
@@ -59,14 +59,14 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -180.0
+offset_left = -220.0
 offset_top = 16.0
-offset_right = 180.0
+offset_right = 220.0
 offset_bottom = 50.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
 theme_override_font_sizes/font_size = 24
-text = "⚙️ ဆက်တင်များ (Settings)"
+text = "⚙️ ဆက်တင်များ (PUBG Mobile Settings)"
 horizontal_alignment = 1
 
 [node name="CloseBtn" type="Button" parent="Panel"]
@@ -89,28 +89,55 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -220.0
-offset_top = -145.0
-offset_right = 220.0
-offset_bottom = 195.0
+offset_left = -260.0
+offset_top = -215.0
+offset_right = 260.0
+offset_bottom = 255.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 8
+
+[node name="ModeLabel" type="Label" parent="Panel/ScrollBox"]
+layout_mode = 2
+text = "🎮 ဂိမ်းကစားနည်းပုံစံ (Game Mode):"
+
+[node name="ModeOption" type="OptionButton" parent="Panel/ScrollBox"]
+layout_mode = 2
+
+[node name="LangLabel" type="Label" parent="Panel/ScrollBox"]
+layout_mode = 2
+text = "🌐 ဘာသာစကား (Language):"
+
+[node name="LangOption" type="OptionButton" parent="Panel/ScrollBox"]
+layout_mode = 2
+
+[node name="GraphicsLabel" type="Label" parent="Panel/ScrollBox"]
+layout_mode = 2
+text = "🖥️ ရုပ်ထွက်အရည်အသွေး (Display / Graphics):"
+
+[node name="GraphicsOption" type="OptionButton" parent="Panel/ScrollBox"]
+layout_mode = 2
+
+[node name="VibrateCheck" type="CheckButton" parent="Panel/ScrollBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+button_pressed = true
+text = "📳 တုန်ခါမှုစနစ် (Haptic Vibration)"
 
 [node name="MuteCheck" type="CheckButton" parent="Panel/ScrollBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "🔇 အသံတိတ်စနစ် (Mute Audio)"
 
 [node name="FpsCheck" type="CheckButton" parent="Panel/ScrollBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 button_pressed = true
 text = "📊 FPS စောင့်ကြည့်ပြသမှု (FPS Readout)"
 
 [node name="VolumeLabel" type="Label" parent="Panel/ScrollBox"]
 layout_mode = 2
-text = "🔊 အသံအတိုးအကျယ် (Volume): 100%"
+text = "🔊 အသံအတိုးအကျယ် (SFX Volume): 100%"
 
 [node name="VolumeSlider" type="HSlider" parent="Panel/ScrollBox"]
 layout_mode = 2
@@ -118,6 +145,17 @@ min_value = 0.0
 max_value = 100.0
 step = 1.0
 value = 100.0
+
+[node name="MusicLabel" type="Label" parent="Panel/ScrollBox"]
+layout_mode = 2
+text = "🎵 သီချင်းသံ (Music/Song Volume): 80%"
+
+[node name="MusicSlider" type="HSlider" parent="Panel/ScrollBox"]
+layout_mode = 2
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+value = 80.0
 
 [node name="CameraLabel" type="Label" parent="Panel/ScrollBox"]
 layout_mode = 2
@@ -132,7 +170,7 @@ value = 100.0
 
 [node name="HudLabel" type="Label" parent="Panel/ScrollBox"]
 layout_mode = 2
-text = "🎮 ခလုတ်အရွယ်အစား (HUD Scale): 100%"
+text = "🕹️ ခလုတ်အရွယ်အစား (HUD Scale): 100%"
 
 [node name="HudSlider" type="HSlider" parent="Panel/ScrollBox"]
 layout_mode = 2
@@ -143,7 +181,7 @@ value = 100.0
 
 [node name="DeadzoneLabel" type="Label" parent="Panel/ScrollBox"]
 layout_mode = 2
-text = "🕹️ Joystick အသေဇုန် (Deadzone): 15%"
+text = "🎯 Joystick အသေဇုန် (Deadzone): 15%"
 
 [node name="DeadzoneSlider" type="HSlider" parent="Panel/ScrollBox"]
 layout_mode = 2
@@ -153,7 +191,7 @@ step = 5.0
 value = 15.0
 
 [node name="ResetBtn" type="Button" parent="Panel/ScrollBox"]
-custom_minimum_size = Vector2(0, 42)
+custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "🔄 မူလအတိုင်းပြန်ထားပါ (Reset Defaults)"

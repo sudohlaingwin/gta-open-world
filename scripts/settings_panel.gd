@@ -3,10 +3,16 @@ extends Control
 # --- Mobile Settings System (Genuinely Wired & Persistent) ---
 
 @onready var close_btn: Button = $Panel/CloseBtn
+@onready var mode_option: OptionButton = $Panel/ScrollBox/ModeOption
+@onready var lang_option: OptionButton = $Panel/ScrollBox/LangOption
+@onready var graphics_option: OptionButton = $Panel/ScrollBox/GraphicsOption
 @onready var mute_check: CheckButton = $Panel/ScrollBox/MuteCheck
+@onready var vibrate_check: CheckButton = $Panel/ScrollBox/VibrateCheck
 @onready var fps_check: CheckButton = $Panel/ScrollBox/FpsCheck
 @onready var volume_slider: HSlider = $Panel/ScrollBox/VolumeSlider
 @onready var volume_label: Label = $Panel/ScrollBox/VolumeLabel
+@onready var music_slider: HSlider = $Panel/ScrollBox/MusicSlider
+@onready var music_label: Label = $Panel/ScrollBox/MusicLabel
 @onready var camera_slider: HSlider = $Panel/ScrollBox/CameraSlider
 @onready var camera_label: Label = $Panel/ScrollBox/CameraLabel
 @onready var hud_slider: HSlider = $Panel/ScrollBox/HudSlider
@@ -18,12 +24,22 @@ extends Control
 func _ready() -> void:
 	if close_btn:
 		close_btn.pressed.connect(func(): visible = false)
+	if mode_option:
+		mode_option.item_selected.connect(_on_mode_selected)
+	if lang_option:
+		lang_option.item_selected.connect(_on_lang_selected)
+	if graphics_option:
+		graphics_option.item_selected.connect(_on_graphics_selected)
 	if mute_check:
 		mute_check.toggled.connect(_on_mute_toggled)
+	if vibrate_check:
+		vibrate_check.toggled.connect(_on_vibrate_toggled)
 	if fps_check:
 		fps_check.toggled.connect(_on_fps_toggled)
 	if volume_slider:
 		volume_slider.value_changed.connect(_on_volume_changed)
+	if music_slider:
+		music_slider.value_changed.connect(_on_music_changed)
 	if camera_slider:
 		camera_slider.value_changed.connect(_on_camera_changed)
 	if hud_slider:
@@ -42,13 +58,36 @@ func refresh() -> void:
 	var sm = _sm()
 	if not sm:
 		return
+	if mode_option:
+		mode_option.clear()
+		mode_option.add_item("🎯 PUBG Mode (Tactical TPP)", 0)
+		mode_option.add_item("⚔️ MLBB Mode (Strategic Aerial View)", 1)
+		mode_option.selected = 1 if sm.get("game_mode") == "mlbb" else 0
+	if lang_option:
+		lang_option.clear()
+		lang_option.add_item("🇲🇲 မြန်မာစာ (Myanmar)", 0)
+		lang_option.add_item("🌐 English (UK/US)", 1)
+		lang_option.selected = 1 if sm.get("language") == "en" else 0
+	if graphics_option:
+		graphics_option.clear()
+		graphics_option.add_item("⚡ ချောမွေ့ (Smooth - 60 FPS)", 0)
+		graphics_option.add_item("⚖️ မျှတ (Balanced)", 1)
+		graphics_option.add_item("✨ အမြင့် (HD / PBR)", 2)
+		graphics_option.add_item("💎 အလွန်မြင့် (Ultra HDR)", 3)
+		var gq = sm.get("graphics_quality")
+		graphics_option.selected = 0 if gq == "smooth" else (2 if gq == "hd" else (3 if gq == "ultra" else 1))
 	if mute_check and sm.get("muted") != null:
 		mute_check.button_pressed = bool(sm.muted)
+	if vibrate_check and sm.get("vibration_enabled") != null:
+		vibrate_check.button_pressed = bool(sm.vibration_enabled)
 	if fps_check and sm.get("show_fps") != null:
 		fps_check.button_pressed = bool(sm.show_fps)
 	if volume_slider and sm.get("volume") != null:
 		volume_slider.value = float(sm.volume) * 100.0
-		if volume_label: volume_label.text = "🔊 အသံအတိုးအကျယ် (Volume): %d%%" % int(round(volume_slider.value))
+		if volume_label: volume_label.text = "🔊 အသံအတိုးအကျယ် (SFX Volume): %d%%" % int(round(volume_slider.value))
+	if music_slider and sm.get("music_volume") != null:
+		music_slider.value = float(sm.music_volume) * 100.0
+		if music_label: music_label.text = "🎵 သီချင်းသံ (Music/Song Volume): %d%%" % int(round(music_slider.value))
 	if camera_slider and sm.get("camera_sensitivity") != null:
 		camera_slider.value = float(sm.camera_sensitivity) * 100.0
 		if camera_label: camera_label.text = "🎥 ကင်မရာလှည့်နှုန်း (Sensitivity): %d%%" % int(round(camera_slider.value))
@@ -58,6 +97,56 @@ func refresh() -> void:
 	if deadzone_slider and sm.get("joystick_deadzone") != null:
 		deadzone_slider.value = float(sm.joystick_deadzone) * 100.0
 		if deadzone_label: deadzone_label.text = "🕹️ Joystick အသေဇုန် (Deadzone): %d%%" % int(round(deadzone_slider.value))
+
+func _on_mode_selected(index: int) -> void:
+	var sm = _sm()
+	if sm:
+		sm.game_mode = "mlbb" if index == 1 else "pubg"
+		sm.save_settings()
+		# Live update camera perspective if player exists
+		var player = get_tree().get_first_node_in_group("player")
+		if player:
+			var pivot = player.get_node_or_null("CameraPivot")
+			if pivot:
+				if sm.game_mode == "mlbb":
+					pivot.target_arm_length = 6.5
+					pivot.rotation.x = deg_to_rad(-45.0)
+				else:
+					pivot.target_arm_length = 2.4
+					pivot.rotation.x = deg_to_rad(-10.0)
+
+func _on_lang_selected(index: int) -> void:
+	var sm = _sm()
+	if sm:
+		sm.language = "en" if index == 1 else "my"
+		sm.save_settings()
+
+func _on_graphics_selected(index: int) -> void:
+	var sm = _sm()
+	if sm:
+		var modes = ["smooth", "balanced", "hd", "ultra"]
+		sm.graphics_quality = modes[clamp(index, 0, 3)]
+		sm.save_settings()
+		if sm.graphics_quality == "smooth":
+			RenderingServer.viewport_set_msaa_3d(get_viewport().get_viewport_rid(), RenderingServer.VIEWPORT_MSAA_DISABLED)
+		elif sm.graphics_quality in ["hd", "ultra"]:
+			RenderingServer.viewport_set_msaa_3d(get_viewport().get_viewport_rid(), RenderingServer.VIEWPORT_MSAA_2X)
+
+func _on_vibrate_toggled(pressed: bool) -> void:
+	var sm = _sm()
+	if sm:
+		sm.vibration_enabled = pressed
+		sm.save_settings()
+		if pressed:
+			Input.vibrate_handheld(60)
+
+func _on_music_changed(val: float) -> void:
+	var sm = _sm()
+	if sm:
+		sm.music_volume = clampf(val / 100.0, 0.0, 1.0)
+		sm.save_settings()
+		if music_label:
+			music_label.text = "🎵 သီချင်းသံ (Music/Song Volume): %d%%" % int(round(val))
 
 func _on_mute_toggled(pressed: bool) -> void:
 	var sm = _sm()
@@ -73,7 +162,6 @@ func _on_fps_toggled(pressed: bool) -> void:
 		var hud = get_tree().get_first_node_in_group("hud")
 		if hud and hud.has_method("set_fps_visible"):
 			hud.set_fps_visible(pressed)
-		sm.save_settings()
 
 func _on_volume_changed(val: float) -> void:
 	var sm = _sm()
@@ -81,7 +169,7 @@ func _on_volume_changed(val: float) -> void:
 		sm.volume = clampf(val / 100.0, 0.0, 1.0)
 		sm.save_settings()
 		if volume_label:
-			volume_label.text = "🔊 အသံအတိုးအကျယ် (Volume): %d%%" % int(round(val))
+			volume_label.text = "🔊 အသံအတိုးအကျယ် (SFX Volume): %d%%" % int(round(val))
 
 func _on_camera_changed(val: float) -> void:
 	var sm = _sm()

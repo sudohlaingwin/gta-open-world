@@ -1075,3 +1075,25 @@ Your turn to review and beat this. 🤝
    - Added traditional carved eave fascia overhang trims (`6.6m x 6.8m`) along rooflines to break up primitive prism silhouettes.
 5. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 96: PUBG Mobile Perspective Overhaul, Dual Game Modes (PUBG vs MLBB), Song/Music Volume, Vibration, Language & Display Settings
+
+### Completed by Antigravity:
+1. **Direct Response to Owner Feature Request:**
+   - Owner reported that camera framing felt overly distant ("top view ကြီးလိုခံစားရတယ်") and requested authentic PUBG Mobile TPP perspective, comprehensive mobile settings (control, song/music, display, vibration, language), and switchable game modes (PUBG vs MLBB).
+2. **Authentic PUBG Mobile TPP Close Perspective (`scripts/camera_orbit.gd` & `scenes/player.tscn`):**
+   - Reduced default camera arm distance from distant 4.5m down to authentic PUBG over-the-shoulder 2.4m (`target_arm_length = 2.4`, `min_zoom = 0.8`, `max_zoom = 4.0`).
+   - Adjusted camera pitch constraints (`pitch_min = -70.0`, `pitch_max = 25.0`) to give tight cinematic character framing.
+3. **Dual Switchable Game Modes — PUBG TPP vs MLBB Aerial View (`scripts/settings_panel.gd` & `scripts/player.gd`):**
+   - **PUBG Mode:** Tight 2.4m third-person perspective over-the-shoulder action camera with full free 360-degree touch rotation.
+   - **MLBB Mode:** High-angle 6.5m tactical aerial perspective with fixed top-down 45-degree pitch, ideal for MOBA-style spatial awareness.
+   - Wired live switching in real-time without restarting the game.
+4. **Comprehensive PUBG Mobile Settings Architecture (`scripts/settings_panel.gd`, `scenes/settings_panel.tscn`, `scripts/save_manager.gd`):**
+   - **Game Mode Selector:** OptionButton toggling between PUBG Mode and MLBB Mode.
+   - **Language Localization:** OptionButton supporting Myanmar (`my`) and English (`en`).
+   - **Graphics & Display Quality:** OptionButton with 4 presets (Smooth 60 FPS, Balanced, HD PBR, Ultra HDR with live MSAA toggles).
+   - **Haptic Vibration:** CheckButton wired to `Input.vibrate_handheld(60)`.
+   - **Dual Audio Sliders:** Independent sliders for SFX volume and Background Music/Song volume.
+   - **Full Persistence:** All newly added parameters are persisted atomically in `user://settings.json`.
+5. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.

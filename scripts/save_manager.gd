@@ -11,6 +11,11 @@ var save_data: Dictionary = {}
 # Settings State
 var muted: bool = false
 var volume: float = 1.0
+var music_volume: float = 0.8
+var vibration_enabled: bool = true
+var language: String = "my" # "my" (Burmese), "en" (English)
+var graphics_quality: String = "balanced" # "smooth", "balanced", "hd", "ultra"
+var game_mode: String = "pubg" # "pubg" (Tactical TPP Close), "mlbb" (Tactical Strategic Aerial)
 var camera_sensitivity: float = 1.0
 var hud_scale: float = 1.0
 var joystick_deadzone: float = 0.15
@@ -81,6 +86,11 @@ func load_game() -> Dictionary:
 func load_settings() -> void:
 	muted = false
 	volume = 1.0
+	music_volume = 0.8
+	vibration_enabled = true
+	language = "my"
+	graphics_quality = "balanced"
+	game_mode = "pubg"
 	camera_sensitivity = 1.0
 	hud_scale = 1.0
 	joystick_deadzone = 0.15
@@ -100,6 +110,11 @@ func load_settings() -> void:
 		var d = json.data
 		if d.has("muted"): muted = bool(d["muted"])
 		if d.has("volume"): volume = clampf(float(d["volume"]), 0.0, 1.0)
+		if d.has("music_volume"): music_volume = clampf(float(d["music_volume"]), 0.0, 1.0)
+		if d.has("vibration_enabled"): vibration_enabled = bool(d["vibration_enabled"])
+		if d.has("language"): language = str(d["language"])
+		if d.has("graphics_quality"): graphics_quality = str(d["graphics_quality"])
+		if d.has("game_mode"): game_mode = str(d["game_mode"])
 		if d.has("camera_sensitivity"): camera_sensitivity = clampf(float(d["camera_sensitivity"]), 0.5, 2.0)
 		if d.has("hud_scale"): hud_scale = clampf(float(d["hud_scale"]), 0.8, 1.25)
 		if d.has("joystick_deadzone"): joystick_deadzone = clampf(float(d["joystick_deadzone"]), 0.0, 0.4)
@@ -112,6 +127,11 @@ func save_settings() -> bool:
 	var d = {
 		"muted": muted,
 		"volume": volume,
+		"music_volume": music_volume,
+		"vibration_enabled": vibration_enabled,
+		"language": language,
+		"graphics_quality": graphics_quality,
+		"game_mode": game_mode,
 		"camera_sensitivity": camera_sensitivity,
 		"hud_scale": hud_scale,
 		"joystick_deadzone": joystick_deadzone,
@@ -125,6 +145,11 @@ func save_settings() -> bool:
 func reset_settings() -> void:
 	muted = false
 	volume = 1.0
+	music_volume = 0.8
+	vibration_enabled = true
+	language = "my"
+	graphics_quality = "balanced"
+	game_mode = "pubg"
 	camera_sensitivity = 1.0
 	hud_scale = 1.0
 	joystick_deadzone = 0.15
