@@ -43,6 +43,9 @@ var _map_area: Control = null
 var _map_bg: ColorRect = null
 var _title_label: Label = null
 var _info_label: Label = null
+var _legend_label: Label = null
+var _district_nodes: Dictionary = {}
+var _water_nodes: Dictionary = {}
 var _close_btn: Button = null
 var _zoom_in_btn: Button = null
 var _zoom_out_btn: Button = null
@@ -76,6 +79,46 @@ const LANDMARKS: Array = [
 	["MindonShops", "ဈေးဆိုင်", Color(1.0, 0.55, 0.1, 1.0)],
 	["OoHouse1", "အိုးရွာ", Color(0.85, 0.8, 0.7, 1.0)],
 ]
+
+## Slice 67 — district region titles. Unlike LANDMARKS, a region has
+## no single scene node, so its centre is a documented band centre
+## in WORLD metres (mapped through world_to_map like everything
+## else — never a canvas offset): Village spans the Slice 37 ground
+## west of the village/Mindon bridge at x 88 (centre x 9, the middle
+## of -70..88); Mindon spans x 88..250 (centre x 169); East Fields
+## spans the Slice 62 ground x 250..450 (centre x 350, z -50, the
+## middle of -210..110). Titles render larger (22 pt) and centred
+## above their anchor so they read as region titles, not dot labels.
+const DISTRICTS: Array = [
+	["ရွာ", Vector2(9.0, 0.0), Color(0.6, 1.0, 0.6, 1.0)],
+	["မင်းတုန်း", Vector2(169.0, 0.0), Color(1.0, 0.85, 0.5, 1.0)],
+	["လယ်ကွင်း", Vector2(350.0, -50.0), Color(0.7, 1.0, 0.7, 1.0)],
+]
+
+## Slice 67 — East Fields water labels. Pond62A/Pond62B and the
+## Slice 62 stream are runtime children of EastDistrict62, not scene
+## nodes, so the world map cannot read them live like LANDMARKS;
+## their positions are the real Slice 62 build coordinates (Pond62A
+## centre (300,-60) r 6, Pond62B centre (415,45) r 5, stream slab
+## x 350 with its north segment centre z -59 and south segment
+## centre z 34 — the label sits on the north segment at (350,-80),
+## clear of the လယ်ကွင်း region title at (350,-50) by 30 m).
+const WATER_LABELS: Array = [
+	["ရေကန်", Vector2(300.0, -60.0)],
+	["ရေကန်", Vector2(415.0, 45.0)],
+	["ချောင်း", Vector2(350.0, -80.0)],
+]
+
+## Slice 67 — district bands for the current-district readout.
+## x 88 is the Slice 37 village/Mindon bridge line, x 250 is the
+## Slice 62 road start (Mindon/East Fields boundary). Bands, not
+## exact borders — stated plainly, since no border geometry exists.
+static func district_name_for(wx: float) -> String:
+	if wx >= 250.0:
+		return "လယ်ကွင်း"
+	if wx >= 88.0:
+		return "မင်းတုန်း"
+	return "ရွာ"
 
 
 func _ready() -> void:
@@ -118,6 +161,25 @@ func _build_ui() -> void:
 		lab.position = Vector2.ZERO
 		_map_area.add_child(lab)
 		_marker_nodes[str(lm[0])] = [dot, lab]
+	for d in DISTRICTS:
+		var dlab := Label.new()
+		dlab.name = "District_" + str(d[0])
+		dlab.text = str(d[0])
+		dlab.add_theme_font_size_override("font_size", 22)
+		dlab.add_theme_color_override("font_color", d[2])
+		_map_area.add_child(dlab)
+		_district_nodes[str(d[0])] = dlab
+	for w in WATER_LABELS:
+		var wdot := ColorRect.new()
+		wdot.name = "WaterDot_" + str(w[0]) + "_" + str(int(w[1].x)) + "_" + str(int(w[1].y))
+		wdot.size = Vector2(10.0, 10.0)
+		wdot.color = Color(0.2, 0.6, 1.0, 1.0)
+		_map_area.add_child(wdot)
+		var wlab := Label.new()
+		wlab.name = "WaterLabel_" + str(w[0]) + "_" + str(int(w[1].x)) + "_" + str(int(w[1].y))
+		wlab.text = str(w[0])
+		_map_area.add_child(wlab)
+		_water_nodes[wdot.name] = [wdot, wlab, w[1]]
 	_player_dot = ColorRect.new()
 	_player_dot.name = "PlayerDot"
 	_player_dot.size = Vector2(18.0, 18.0)
@@ -168,6 +230,14 @@ func _build_ui() -> void:
 	_clear_btn.size = Vector2(220.0, 64.0)
 	_clear_btn.pressed.connect(clear_waypoint)
 	add_child(_clear_btn)
+	# Slice 67 legend: one bottom strip, a child of the overlay so it
+	# opens/closes with the map itself (no separate toggle needed).
+	# Plain words only — no symbol glyphs the default font may lack.
+	_legend_label = Label.new()
+	_legend_label.name = "MapLegend"
+	_legend_label.text = "အညွှန်း — အဝါ: ကစားသူ • အနီ: လမ်းကြောင်း • အဝါရောင်မျဉ်း: လမ်း • စာတန်း: ခရိုင် / နေရာအမည်"
+	_legend_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	add_child(_legend_label)
 	_layout()
 
 
@@ -181,6 +251,9 @@ func _layout() -> void:
 	if _map_area != null:
 		_map_area.position = Vector2((vp.x - side) * 0.5, top)
 		_map_area.size = Vector2(side, side)
+	if _legend_label != null:
+		_legend_label.position = Vector2(16.0, vp.y - 40.0)
+		_legend_label.size = Vector2(vp.x - 32.0, 32.0)
 
 
 func _process(_delta: float) -> void:
@@ -257,7 +330,27 @@ func _update_markers() -> void:
 		(pair[0] as ColorRect).position = p - Vector2(7.0, 7.0)
 		(pair[1] as Label).visible = true
 		(pair[1] as Label).position = p + Vector2(10.0, -6.0)
+	# Slice 67 region titles + water labels, through the same
+	# world_to_map (zoom/pan) as the landmark dots. Titles are
+	# centred above their anchor so they read as region titles.
+	for d in DISTRICTS:
+		var dlab := _district_nodes.get(str(d[0])) as Label
+		if dlab == null:
+			continue
+		var dp := world_to_map(float(d[1].x), float(d[1].y))
+		var dw := dlab.get_minimum_size().x
+		dlab.position = dp + Vector2(-dw * 0.5, -34.0)
+	for key in _water_nodes:
+		var trio: Array = _water_nodes.get(key, [])
+		if trio.size() < 3:
+			continue
+		var wp2 := world_to_map(float(trio[2].x), float(trio[2].y))
+		(trio[0] as ColorRect).position = wp2 - Vector2(5.0, 5.0)
+		(trio[1] as Label).position = wp2 + Vector2(10.0, -6.0)
 	var player := world.get_node_or_null("Player") as Node3D
+	var area_suffix := ""
+	if player != null:
+		area_suffix = " • လက်ရှိ: " + district_name_for(player.global_position.x)
 	if player != null and _player_dot != null:
 		var pp := world_to_map(player.global_position.x, player.global_position.z)
 		pp = MapTransform.clamp_dot(pp, _map_area.size, _player_dot.size)
@@ -274,9 +367,9 @@ func _update_markers() -> void:
 				var dz := waypoint.y - player.global_position.z
 				var dist := sqrt(dx * dx + dz * dz)
 				var deg := wrapf(180.0 - rad_to_deg(atan2(-dx, -dz)), 0.0, 360.0)
-				_info_label.text = "လမ်းကြောင်း: %d° • %d m (လမ်းညွှန်သာ — လမ်းကြောင်းရှာခြင်း မပါ)" % [int(deg), int(dist)]
+				_info_label.text = "လမ်းကြောင်း: %d° • %d m (လမ်းညွှန်သာ — လမ်းကြောင်းရှာခြင်း မပါ)%s" % [int(deg), int(dist), area_suffix]
 		else:
-			_info_label.text = "လမ်းကြောင်း မရှိသေးပါ"
+			_info_label.text = "လမ်းကြောင်း မရှိသေးပါ%s" % area_suffix
 	_update_beacon(world)
 
 

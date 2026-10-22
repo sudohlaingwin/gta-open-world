@@ -193,13 +193,19 @@ func sightseeing_check(pos: Vector2) -> Dictionary:
 
 
 func sightseeing_label() -> String:
+	# Slice 67: district prefix. All four stops are village landmarks
+	# (Pagoda (-20,-25), MonasteryBell (-6,-32), MarketStallA (16,12),
+	# Zayat (28,2) — all x < 88, the village/Mindon bridge line), so
+	# "ရွာ" is exact, and every quest-tracker line now carries its
+	# district (district60_label already says မင်းတုန်း, eastfields64
+	# already says လယ်ကွင်း) instead of reading as village quests.
 	if sightseeing_active:
 		var cur := sightseeing_current()
 		if cur.is_empty():
 			return ""
-		return "လည်ပတ် (%d/%d): %s" % [sightseeing_index + 1, Data.SIGHTSEEING_STOPS.size(), str(cur.get("label", ""))]
+		return "ရွာ လည်ပတ် (%d/%d): %s" % [sightseeing_index + 1, Data.SIGHTSEEING_STOPS.size(), str(cur.get("label", ""))]
 	if sightseeing_completed > 0:
-		return "လည်ပတ် ပြီးပါပြီ (%d ကြိမ်) — အား ပြည့်သွားပါပြီ" % sightseeing_completed
+		return "ရွာ လည်ပတ် ပြီးပါပြီ (%d ကြိမ်) — အား ပြည့်သွားပါပြီ" % sightseeing_completed
 	return ""
 
 
