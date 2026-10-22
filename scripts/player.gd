@@ -27,6 +27,7 @@ var is_parachuting: bool = false
 @export var parachute_glide_speed: float = 8.0
 var touch_input_vector: Vector2 = Vector2.ZERO
 var touch_yaw: float = 0.0
+var footstep_timer: float = 0.0
 
 @onready var visual_mesh: Node3D = $VisualMesh
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
@@ -85,9 +86,22 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_direction.z * current_speed
 		var target_angle = atan2(move_direction.x, move_direction.z)
 		visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, target_angle, rotation_speed * delta)
+		
+		# Footstep audio trigger on ground
+		if is_on_floor():
+			footstep_timer -= delta
+			var step_interval = 0.28 if is_sprinting else 0.45
+			if footstep_timer <= 0.0:
+				footstep_timer = step_interval
+				var audio_mgr = get_node_or_null("/root/World/MyanmarAudioManager")
+				if not audio_mgr:
+					audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
+				if audio_mgr and audio_mgr.has_method("play_footstep"):
+					audio_mgr.play_footstep()
 	elif not is_parachuting:
 		velocity.x = move_toward(velocity.x, 0, current_speed)
 		velocity.z = move_toward(velocity.z, 0, current_speed)
+		footstep_timer = 0.1
 
 	move_and_slide()
 

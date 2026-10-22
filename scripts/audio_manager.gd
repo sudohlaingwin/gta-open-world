@@ -117,6 +117,32 @@ func play_teashop_chime() -> void:
 	teashop_chime_player.stream = stream
 	teashop_chime_player.play()
 
+func play_footstep() -> void:
+	if is_muted: return
+	if not footstep_player:
+		footstep_player = AudioStreamPlayer.new()
+		footstep_player.name = "FootstepAudio"
+		footstep_player.volume_db = -10.0
+		add_child(footstep_player)
+	var sample_hz = 22050
+	var duration = 0.12
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env = exp(-t * 35.0)
+		var crunch = (sin(t * 180.0 * TAU) * 0.5 + sin(t * 360.0 * TAU) * 0.3 + sin(t * 720.0 * TAU) * 0.2)
+		var val = crunch * env
+		var int_sample = int(clamp(val, -1.0, 1.0) * 24000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	footstep_player.stream = stream
+	footstep_player.play()
+
 var is_muted: bool = false
 var horn_player: AudioStreamPlayer
 var bicycle_bell_player: AudioStreamPlayer
