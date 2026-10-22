@@ -3,10 +3,10 @@
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_house"]
-size = Vector3(8.0, 5.0, 7.0)
+size = Vector3(5.8, 5.0, 6.0)
 
 [sub_resource type="BoxMesh" id="BoxMesh_floor"]
-size = Vector3(7.5, 0.4, 6.5)
+size = Vector3(5.8, 0.4, 6.0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak"]
 albedo_color = Color(0.35, 0.20, 0.10, 1)
@@ -21,7 +21,7 @@ roughness = 0.9
 
 [sub_resource type="PrismMesh" id="PrismMesh_roof"]
 left_to_right = 0.5
-size = Vector3(8.2, 2.2, 7.2)
+size = Vector3(6.4, 2.2, 6.6)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thatch"]
 albedo_color = Color(0.48, 0.40, 0.25, 1)
@@ -51,13 +51,13 @@ emission_energy_multiplier = 2.0
 script = ExtResource("1_lantern")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 2.5, 0)
 shape = SubResource("BoxShape3D_house")
 
 [node name="VisualMesh" type="Node3D" parent="."]
 
 [node name="Floor" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.8, 0)
 mesh = SubResource("BoxMesh_floor")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 

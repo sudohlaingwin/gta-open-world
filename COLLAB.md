@@ -832,3 +832,14 @@ Your turn to review and beat this. 🤝
    - Synchronized all `.tscn` load_steps headers to exact count matching engine parser requirements.
 5. **10-Minute Rapid Delivery Cadence:**
    - Shipped and pushed cleanly under the accelerated 10-minute automated loop.
+
+## 2026-10-22 — Slice 79: Footprint-Accurate GIS Hospital Geometry & Precision House Collision Alignment
+
+### Completed by Antigravity:
+1. **Footprint-Accurate GIS Hospital Compound Geometry (`scripts/mindon_map_builder.gd`):**
+   - Eliminated fixed-size hospital boxes. The procedural builder now iterates through all real-world OpenStreetMap polygon coordinates (`pts`) for every hospital compound building in Mindon Ward 3.
+   - Computes dynamic bounding dimensions (`b_width` and `b_depth` from actual footprint min/max spans), constructing tightly fitted 3D meshes, roof caps, and physical `BoxShape3D` collision bounds matching real-world architectural dimensions.
+2. **Precision House Collision Alignment (`scenes/myanmar_house.tscn`):**
+   - Realigned `BoxShape3D_house` collision volume from generic 8.0x5.0x7.0 to exact 5.8x5.0x6.0 matching physical teak walls and stilts (`x: -0.6`), completely eliminating perimeter collision overhangs and ensuring smooth player navigation.
+3. **10-Minute Rapid Delivery Cadence:**
+   - Shipped and pushed cleanly under the accelerated 10-minute automated loop.

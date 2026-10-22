@@ -121,13 +121,22 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 		if pts.is_empty():
 			continue
 
-		var cx = 0.0
-		var cz = 0.0
+		var min_x = 99999.0
+		var max_x = -99999.0
+		var min_z = 99999.0
+		var max_z = -99999.0
 		for p in pts:
 			cx += p["x"]
 			cz += p["z"]
+			if p["x"] < min_x: min_x = p["x"]
+			if p["x"] > max_x: max_x = p["x"]
+			if p["z"] < min_z: min_z = p["z"]
+			if p["z"] > max_z: max_z = p["z"]
 		cx /= float(pts.size())
 		cz /= float(pts.size())
+
+		var b_width = maxf(max_x - min_x, 6.0)
+		var b_depth = maxf(max_z - min_z, 6.0)
 
 		var b_type = str(b.get("type", "house"))
 		if b_type == "hospital":
@@ -137,14 +146,14 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 
 			var col = CollisionShape3D.new()
 			var col_box = BoxShape3D.new()
-			col_box.size = Vector3(13.0, 5.0, 11.0)
+			col_box.size = Vector3(b_width + 0.5, 4.5, b_depth + 0.5)
 			col.shape = col_box
-			col.position = Vector3(0.0, 2.5, 0.0)
+			col.position = Vector3(0.0, 2.25, 0.0)
 			hosp.add_child(col)
 
 			var body_mesh = MeshInstance3D.new()
 			var box = BoxMesh.new()
-			box.size = Vector3(12.0, 4.0, 10.0)
+			box.size = Vector3(b_width, 4.0, b_depth)
 			body_mesh.mesh = box
 			body_mesh.position = Vector3(0.0, 2.0, 0.0)
 			body_mesh.set_surface_override_material(0, hospital_wall_mat)
@@ -152,7 +161,7 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 
 			var roof_mesh = MeshInstance3D.new()
 			var roof_box = BoxMesh.new()
-			roof_box.size = Vector3(13.0, 0.6, 11.0)
+			roof_box.size = Vector3(b_width + 1.0, 0.6, b_depth + 1.0)
 			roof_mesh.mesh = roof_box
 			roof_mesh.position = Vector3(0.0, 4.3, 0.0)
 			roof_mesh.set_surface_override_material(0, hospital_roof_mat)
