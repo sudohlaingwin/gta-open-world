@@ -5,9 +5,10 @@ extends Node3D
 # and dims them during bright midday to optimize mobile GPU performance.
 
 @export var max_light_energy: float = 1.8
-@export var night_threshold: float = 0.4
+@export var night_threshold: float = 0.35
 
 var omni_lights: Array[OmniLight3D] = []
+var omni_base_energies: Dictionary = {}
 var emissive_meshes: Array[MeshInstance3D] = []
 var day_night_node: Node = null
 
@@ -21,6 +22,7 @@ func _find_lights_and_lanterns(parent: Node) -> void:
 	for child in parent.get_children():
 		if child is OmniLight3D:
 			omni_lights.append(child)
+			omni_base_energies[child] = child.light_energy
 		elif child is MeshInstance3D and ("Lamp" in child.name or "Lantern" in child.name or "Cross" in child.name):
 			emissive_meshes.append(child)
 		_find_lights_and_lanterns(child)
@@ -39,12 +41,12 @@ func _process(_delta: float) -> void:
 
 func _update_lighting_state(daylight: float) -> void:
 	var is_night = daylight < night_threshold
-	var target_energy = max_light_energy * (1.0 - daylight) if is_night else 0.0
 
 	for light in omni_lights:
 		light.visible = is_night
 		if is_night:
-			light.light_energy = target_energy
+			var base_e = float(omni_base_energies.get(light, max_light_energy))
+			light.light_energy = base_e * (1.0 - daylight)
 
 	for mesh in emissive_meshes:
 		var mat = mesh.get_surface_override_material(0)
