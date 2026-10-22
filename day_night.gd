@@ -5,6 +5,7 @@ extends Node3D
 
 @export var day_length_seconds: float = 120.0
 @export var sun_path: NodePath
+@export var window_material: StandardMaterial3D
 var time: float = 0.0
 
 ## Milestone 6 (part 2): one shared daylight value for every system
@@ -18,6 +19,14 @@ func daylight() -> float:
 	var angle := fmod(time / day_length_seconds * 360.0, 360.0)
 	return clampf(sin(deg_to_rad(angle)), 0.0, 1.0)
 
+func _sun_color_for_daylight(day: float) -> Color:
+	if day >= 0.6:
+		return Color(1.0, 1.0, 1.0)
+	if day >= 0.15:
+		var t := (day - 0.15) / 0.45
+		return Color(1.0, 0.75, 0.45).lerp(Color(1.0, 1.0, 1.0), t)
+	return Color(0.45, 0.55, 0.85)
+
 func _process(delta: float) -> void:
 	time += delta
 	var angle := fmod(time / day_length_seconds * 360.0, 360.0)
@@ -27,6 +36,18 @@ func _process(delta: float) -> void:
 	sun.rotation_degrees.x = angle - 90.0
 	var day: float = daylight()
 	sun.light_energy = 0.05 + day * 1.15
+	# Visual atmosphere part 1: sun COLOUR follows time of day.
+	# Noon is neutral white; low sun goes warm gold (golden hour);
+	# night is a cool dim tint. Energy is unchanged, so the < 0.15
+	# dark rule used by moon/stars/fireflies/headlights still holds.
+	var dl := sun as DirectionalLight3D
+	if dl != null:
+		dl.light_color = _sun_color_for_daylight(day)
+	# Night window lights: one shared emissive material on every
+	# window mesh, toggled by the same < 0.15 dark rule. No new
+	# lights per window, so this costs one material flag flip.
+	if window_material != null:
+		window_material.emission_enabled = day < 0.15
 	# Slice 17 night sky: the moon and stars show only when dark.
 	var moon := get_node_or_null("../Moon17")
 	if moon != null:
