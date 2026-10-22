@@ -1863,3 +1863,16 @@ Your turn to review and beat this. 🤝
    - With Slice 163, ALL 44 scenes in `scenes/` now adhere to realistic 1:1 scale proportions (architecture, mounts, vehicles, flora, population, and navigation).
 5. **5-Minute Rapid Automated Cadence:**
    - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
+
+## 2026-10-22 — Slice 164: Massive 8000m Open-World Terrain & AAA Mobile Visual Overhaul
+
+### Completed by Antigravity:
+1. **Massive 8000m x 8000m Open-World Expanse (`scenes/world.tscn`):**
+   - Expanded terrain boundary from 2500m to **8000.0m x 8000.0m (64 square kilometers)** matching PUBG Mobile/Erangel map scale (`size = Vector3(8000, 1, 8000)`).
+   - Upgraded ground plane mesh collision guard and physics boundary across the entire Magway/Mindon district.
+2. **AAA Mobile Visual Pipeline Overhaul (`scenes/world.tscn`):**
+   - Enhanced screen-space ambient occlusion (SSAO radius 3.2m, intensity 2.4) and screen-space indirect lighting (SSIL radius 5.0m, intensity 1.2).
+   - Tuned ACES filmic tonemapper exposure to 1.2 with glowing bloom intensity 0.6 and atmospheric volumetric distance fog (fog density 0.0002, sky affect 0.4, volumetric fog density 0.0025).
+   - Delivers crisp, breathtaking open-world visual fidelity optimized for the vivo V60 mobile GPU.
+3. **5-Minute Rapid Automated Cadence:**
+   - Shipped and pushed cleanly under the accelerated 5-minute automated loop.
