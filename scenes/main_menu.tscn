@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_menu"]
 [ext_resource type="PackedScene" path="res://scenes/character_customizer.tscn" id="2_customizer"]
 [ext_resource type="PackedScene" path="res://scenes/settings_panel.tscn" id="3_settings"]
+[ext_resource type="PackedScene" path="res://scenes/vehicle_customizer.tscn" id="4_vehicle_customizer"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.06, 0.08, 0.12, 1)
@@ -79,9 +80,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -160.0
-offset_top = -20.0
+offset_top = -60.0
 offset_right = 160.0
-offset_bottom = 220.0
+offset_bottom = 260.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 16
@@ -106,6 +107,13 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "🇲🇲 ဝတ်စုံရွေးချယ် (Outfit)"
+[node name="VehicleBtn" type="Button" parent="ButtonContainer"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "🚗 ယာဉ်ဆေးရောင် (Vehicle)"
+
 [node name="SettingsBtn" type="Button" parent="ButtonContainer"]
 custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
@@ -123,3 +131,5 @@ text = "🚪 ထွက်မည် (Quit)"
 [node name="CharacterCustomizer" parent="." instance=ExtResource("2_customizer")]
 
 [node name="SettingsPanel" parent="." instance=ExtResource("3_settings")]
+
+[node name="VehicleCustomizer" parent="." instance=ExtResource("4_vehicle_customizer")]

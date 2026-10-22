@@ -5,9 +5,11 @@ extends Control
 @onready var continue_btn: Button = $ButtonContainer/ContinueBtn
 @onready var new_game_btn: Button = $ButtonContainer/NewGameBtn
 @onready var outfit_btn: Button = $ButtonContainer/OutfitBtn
+@onready var vehicle_btn: Button = $ButtonContainer/VehicleBtn
 @onready var settings_btn: Button = $ButtonContainer/SettingsBtn
 @onready var quit_btn: Button = $ButtonContainer/QuitBtn
 @onready var character_customizer: Control = $CharacterCustomizer
+@onready var vehicle_customizer: Control = $VehicleCustomizer
 @onready var settings_panel: Control = $SettingsPanel
 
 func _ready() -> void:
@@ -19,6 +21,8 @@ func _ready() -> void:
 		new_game_btn.pressed.connect(_on_new_game_pressed)
 	if outfit_btn:
 		outfit_btn.pressed.connect(_on_outfit_pressed)
+	if vehicle_btn:
+		vehicle_btn.pressed.connect(_on_vehicle_pressed)
 	if settings_btn:
 		settings_btn.pressed.connect(_on_settings_pressed)
 	if quit_btn:
@@ -27,6 +31,12 @@ func _ready() -> void:
 func _on_outfit_pressed() -> void:
 	if character_customizer:
 		character_customizer.visible = true
+
+func _on_vehicle_pressed() -> void:
+	if vehicle_customizer:
+		vehicle_customizer.visible = true
+		if vehicle_customizer.has_method("refresh"):
+			vehicle_customizer.refresh()
 
 func _on_settings_pressed() -> void:
 	if settings_panel:
