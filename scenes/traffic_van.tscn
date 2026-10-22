@@ -86,3 +86,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_glow")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.84, 0, 0)
 mesh = SubResource("SphereMesh_headlight")
 surface_material_override/0 = SubResource("StandardMaterial3D_glow")
+
+[node name="TrafficVanSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7, 0)
+text = "မင်းတုန်း အဝေးပြေး မီနီဘတ်စ်ကား 🚐"
+font_size = 36
+outline_size = 10
+modulate = Color(1.0, 0.90, 0.40, 1)
