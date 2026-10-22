@@ -93,6 +93,9 @@ func enter_mount(rider: Node3D) -> void:
 	rider.rotation = Vector3.ZERO
 	if rider.has_method("set_riding_state"):
 		rider.set_riding_state(true, self)
+	var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
+	if audio_mgr and audio_mgr.has_method("play_elephant_trumpet"):
+		audio_mgr.play_elephant_trumpet()
 	rider_entered.emit(rider)
 
 func exit_mount() -> void:
