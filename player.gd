@@ -50,6 +50,19 @@ var touch_yaw_left: bool = false
 var touch_yaw_right: bool = false
 var minimap_dots: Dictionary = {}
 var compass_label: Label = null
+# Slice 34: waypoint guidance HUD (completes the Slice 28 map waypoint).
+# Nodes live in the real scene (JoystickLayer/GuidePanel34) and are
+# found lazily like the other HUD controls. The panel is a plain
+# Control child of JoystickLayer, so the Slice 32 _apply_hud_scale
+# pass scales it with every other HUD control automatically.
+var guide_panel: Control = null
+var guide_arrow: Label = null
+var guide_dist: Label = null
+# Arrived radius in metres: inside this the arrow hides and the
+# arrived label shows. The waypoint is NOT auto-cleared — it stays
+# set (beacon + minimap dot stay) until the player clears it from
+# the map, so arrival never silently deletes the player's marker.
+const GUIDE_ARRIVED_RADIUS: float = 5.0
 var day_label: Label = null
 var stamina_bar: ProgressBar = null
 var speed_bar: ProgressBar = null
@@ -225,6 +238,7 @@ func _physics_process(delta: float) -> void:
 	_update_day_label()
 	_update_minimap()
 	_update_compass()
+	_update_waypoint_guide()
 	_update_stamina(delta)
 	_update_prompt_label()
 	_update_fruit_water_label()
@@ -834,6 +848,84 @@ func _update_compass() -> void:
 	var deg := wrapf(180.0 - rad_to_deg(facing.rotation.y), 0.0, 360.0)
 	compass_label.text = "%d° %s" % [int(deg), _cardinal(deg)]
 	compass_label.visible = true
+
+## Slice 34: waypoint guidance HUD. The Slice 28 map owns the
+## waypoint (WorldMapPanel has_waypoint/waypoint, x/z metres); this
+## only READS it, exactly like the minimap mirror. The panel shows
+## ONLY while a waypoint is set: an 8-way arrow pointing toward the
+## waypoint relative to the CAMERA's view direction (so turning the
+## camera swings the arrow), plus a live distance in metres. On
+## foot the camera looks from the player; while driving it looks
+## from the vehicle, so the reference point follows the driving
+## camera target too — the arrow follows the driving camera's
+## facing, never the player's body facing. Guidance ONLY: no
+## routing, no pathfinding, no auto-driving, no road following —
+## the panel itself says so (GuideNote), and so does the README.
+## Pure math lives in _guide_arrow_for so it is testable without a
+## scene: rel_deg is 0 ahead, -90 right, +90 left, +/-180 behind.
+func _guide_arrow_for(rel_deg: float) -> String:
+	var d := wrapf(rel_deg, -180.0, 180.0)
+	if d >= -22.5 and d < 22.5:
+		return "↑"
+	if d >= -67.5 and d < -22.5:
+		return "↗"
+	if d >= -112.5 and d < -67.5:
+		return "→"
+	if d >= -157.5 and d < -112.5:
+		return "↘"
+	if d >= 157.5 or d < -157.5:
+		return "↓"
+	if d >= 112.5 and d < 157.5:
+		return "↙"
+	if d >= 67.5 and d < 112.5:
+		return "←"
+	return "↖"
+
+func _guide_camera_forward() -> Vector2:
+	var cam := get_node_or_null("../FollowCamera") as Camera3D
+	var ref: Node3D = self
+	if driving and driving_vehicle != null:
+		ref = driving_vehicle as Node3D
+	if cam != null:
+		var f := Vector2(ref.global_position.x - cam.global_position.x, ref.global_position.z - cam.global_position.z)
+		if f.length() > 0.001:
+			return f.normalized()
+	var ry := ref.rotation.y
+	return Vector2(-sin(ry), -cos(ry))
+
+func _update_waypoint_guide() -> void:
+	if guide_panel == null:
+		guide_panel = get_node_or_null("../JoystickLayer/GuidePanel34") as Control
+		guide_arrow = get_node_or_null("../JoystickLayer/GuidePanel34/GuideArrow") as Label
+		guide_dist = get_node_or_null("../JoystickLayer/GuidePanel34/GuideDist") as Label
+	if guide_panel == null:
+		return
+	var wm := get_node_or_null("../JoystickLayer/WorldMapPanel")
+	if wm == null or not bool(wm.get("has_waypoint")):
+		guide_panel.visible = false
+		return
+	var wp: Vector2 = wm.get("waypoint")
+	var from: Vector3 = global_position
+	if driving and driving_vehicle != null:
+		from = (driving_vehicle as Node3D).global_position
+	var dx := wp.x - from.x
+	var dz := wp.y - from.z
+	var dist := sqrt(dx * dx + dz * dz)
+	guide_panel.visible = true
+	if dist <= GUIDE_ARRIVED_RADIUS:
+		if guide_arrow != null:
+			guide_arrow.visible = false
+		if guide_dist != null:
+			guide_dist.text = "✓ ရောက်ပါပြီ"
+		return
+	if guide_arrow != null:
+		guide_arrow.visible = true
+		var fwd := _guide_camera_forward()
+		var to := Vector2(dx, dz).normalized()
+		var rel := rad_to_deg(atan2(fwd.y * to.x - fwd.x * to.y, fwd.dot(to)))
+		guide_arrow.text = _guide_arrow_for(rel)
+	if guide_dist != null:
+		guide_dist.text = "%d m" % int(dist)
 
 ## Slice 10 REAL minimap: dots positioned from real world positions
 ## (world spans roughly -50..50 on x/z; the panel is ~170 px, so
