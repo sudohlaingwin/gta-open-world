@@ -119,7 +119,11 @@ func _waiting_bools(world: Node3D) -> Array:
 			if grp != null:
 				var w := grp.get_node_or_null("Waiting74_%d_%d" % [si, wi]) as Node3D
 				if w != null:
-					vis = w.visible
+					# Slice 78: a rider mid-walk to the bus is
+					# still visible but already counted
+					# onboard — saving them as waiting would
+					# duplicate them on load.
+					vis = w.visible and not bool(w.get_meta("walking78", false))
 			out.append(vis)
 	return out
 
@@ -184,6 +188,10 @@ func _respawn_waiting(world: Node3D) -> void:
 			var w := grp.get_node_or_null("Waiting74_%d_%d" % [si, wi]) as Node3D
 			if w != null:
 				w.visible = true
+				# Slice 78: clear any stale walk flag so the
+				# respawned rider reseats on the bench.
+				w.set_meta("walking78", false)
+				w.set_meta("walk_started78", false)
 
 
 func _update_route_guidance(world: Node3D) -> void:
@@ -264,8 +272,12 @@ func _serve_stop(world: Node3D, bus: Node3D, stop_idx: int) -> void:
 	if grp != null:
 		for wi in range(2):
 			var w := grp.get_node_or_null("Waiting74_%d_%d" % [stop_idx, wi]) as Node3D
-			if w != null and w.visible and int(w.get_meta("dir75", -1)) == direction:
-				w.visible = false
+			if w != null and w.visible and not bool(w.get_meta("walking78", false)) and int(w.get_meta("dir75", -1)) == direction:
+				# Slice 78: do NOT hide on the spot — flag the
+				# rider and let BusSim78 walk them to the bus
+				# flank, then hide them there. The count is
+				# recorded now; the visual follows.
+				w.set_meta("walking78", true)
 				onboard_dests.append(int(w.get_meta("dest75", stop_idx)))
 				boarded_total += 1
 		boarded = onboard_dests.size()
