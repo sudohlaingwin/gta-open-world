@@ -11,6 +11,7 @@ const Chill62Script = preload("res://chill_world62.gd")
 const EastFields64Script = preload("res://eastfields64.gd")
 const Signboards69Script = preload("res://signboards69.gd")
 const BusSim74Script = preload("res://bus_sim74.gd")
+const BusRoute75Script = preload("res://bus_route75.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -510,6 +511,11 @@ func _ready() -> void:
 	# Slice 62). The bus node itself is added deferred by
 	# dress(), like every deferred district node above.
 	BusSim74Script.dress(get_parent())
+	# Slice 75 BUS SIMULATION part 2 (route system +
+	# destinations + curved sections + bus polish): runs
+	# after Slice 74, same deferred pattern — its node
+	# queues behind the bus, so bus polish finds the bus.
+	BusRoute75Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
@@ -3139,6 +3145,16 @@ func collect_save_data() -> Dictionary:
 	var east_now := {}
 	if mm != null:
 		east_now = mm.call("eastfields64_state")
+	# Slice 75 bus route: optional key, same guard pattern —
+	# the controller owns the state; a pre-75 save (or a
+	# world without the bus yet) saves an empty dict, and
+	# the controller restores from the file itself.
+	var busroute_now := {}
+	var w75 := get_parent() as Node3D
+	if w75 != null:
+		var bc := w75.get_node_or_null("BusSim74")
+		if bc != null and bc.has_method("busroute75_state"):
+			busroute_now = bc.call("busroute75_state")
 	return {
 		"player": {"pos": [global_position.x, global_position.y, global_position.z], "rot_y": rotation.y},
 		"quest_stage": stage_now,
@@ -3150,6 +3166,7 @@ func collect_save_data() -> Dictionary:
 		"garage": garage_now,
 		"district60": district_now,
 		"eastfields64": east_now,
+		"busroute75": busroute_now,
 		"growth": {"crop": crop_growth, "rice": rice_growth},
 		"settings": {"muted": muted_now, "volume": volume_now},
 	}
