@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/elephant_controller.gd" id="1_elephant"]
 
@@ -40,6 +40,9 @@ metallic = 0.88
 roughness = 0.22
 specular = 0.5
 
+[sub_resource type="BoxMesh" id="BoxMesh_ear"]
+size = Vector3(0.12, 1.8, 1.4)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
 size = Vector3(6.8, 5.8, 8.0)
 
@@ -60,6 +63,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
 [node name="Head" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, -3.1)
 mesh = SubResource("BoxMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
+
+[node name="EarL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -1.35, 3.8, -2.8)
+mesh = SubResource("BoxMesh_ear")
+surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
+
+[node name="EarR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 1.35, 3.8, -2.8)
+mesh = SubResource("BoxMesh_ear")
 surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
 
 [node name="Trunk" type="Node3D" parent="VisualMesh"]
