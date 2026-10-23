@@ -3661,3 +3661,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=20` matching 1 ext_resource + 18 sub_resources + 1) for zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 313: Mindon River Bamboo Bridge Cross-Bracing, Coir Lashings & Night Lanterns Realism
+### Completed by Antigravity:
+1. **Fluvial Bamboo Bridge Infrastructure Realism (`scenes/bamboo_bridge.tscn`):**
+   - **Transverse Bamboo Substructure Cross-Braces (`CrossBrace1`, `CrossBrace2`):** Modelled heavy horizontal bamboo tie-beams (`BoxMesh_cross_brace`, `StandardMaterial3D_bamboo`) locking the vertical stilt posts under the 36-meter pedestrian deck.
+   - **Traditional Coir Rope Joint Lashings (`RopeL1`, `RopeR1`):** Added dense fibrous coconut coir lashings (`CylinderMesh_coir_rope`, `StandardMaterial3D_rope`, `roughness = 0.95`) binding the bamboo stanchions and guardrails.
+   - **Elevated Mid-Span River Crossing Lanterns (`BridgeLanternL`, `BridgeLanternR`):** Mounted warm amber hanging lanterns (`CylinderMesh_bridge_lantern`, `StandardMaterial3D_lantern_amber`) on central bridge posts at Y=2.6m with atmospheric night glow (`OmniLight3D`, `light_energy = 2.2`, `omni_range = 8.5m`).
+   - Verified canonical TSCN format (`load_steps=13` matching 12 `[sub_resource]` entries) for 100% Godot engine and parser integrity.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

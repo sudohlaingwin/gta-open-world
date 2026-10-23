@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=13 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(5.2, 0.45, 36.0)
@@ -24,6 +24,29 @@ height = 4.2
 
 [sub_resource type="BoxMesh" id="BoxMesh_rail"]
 size = Vector3(0.2, 0.2, 35.8)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_coir_rope"]
+top_radius = 0.22
+bottom_radius = 0.22
+height = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rope"]
+albedo_color = Color(0.48, 0.36, 0.22, 1)
+roughness = 0.95
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_bridge_lantern"]
+top_radius = 0.2
+bottom_radius = 0.25
+height = 0.55
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lantern_amber"]
+albedo_color = Color(1.0, 0.82, 0.35, 1)
+emission_enabled = true
+emission = Color(1.0, 0.76, 0.25, 1)
+emission_energy_multiplier = 2.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_cross_brace"]
+size = Vector3(5.2, 0.2, 0.2)
 
 [node name="BambooBridge" type="StaticBody3D"]
 
@@ -75,6 +98,48 @@ surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.8, 14.5)
 mesh = SubResource("CylinderMesh_post")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="CrossBrace1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, -14.5)
+mesh = SubResource("BoxMesh_cross_brace")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="CrossBrace2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 14.5)
+mesh = SubResource("BoxMesh_cross_brace")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="RopeL1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.1, -14.5)
+mesh = SubResource("CylinderMesh_coir_rope")
+surface_material_override/0 = SubResource("StandardMaterial3D_rope")
+
+[node name="RopeR1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.1, -14.5)
+mesh = SubResource("CylinderMesh_coir_rope")
+surface_material_override/0 = SubResource("StandardMaterial3D_rope")
+
+[node name="BridgeLanternL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.6, 0)
+mesh = SubResource("CylinderMesh_bridge_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_lantern_amber")
+
+[node name="BridgeLightL" type="OmniLight3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.7, 0)
+light_color = Color(1.0, 0.85, 0.45, 1)
+light_energy = 2.2
+omni_range = 8.5
+
+[node name="BridgeLanternR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2.6, 0)
+mesh = SubResource("CylinderMesh_bridge_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_lantern_amber")
+
+[node name="BridgeLightR" type="OmniLight3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2.7, 0)
+light_color = Color(1.0, 0.85, 0.45, 1)
+light_energy = 2.2
+omni_range = 8.5
 
 [node name="BridgeSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 17.5)
