@@ -27,6 +27,7 @@ const BusSim88Script = preload("res://bus_sim88.gd")
 const BusSim91Script = preload("res://bus_sim91.gd")
 const BusSim92Script = preload("res://bus_sim92.gd")
 const Realism93Script = preload("res://realism93.gd")
+const Realism94Script = preload("res://realism94.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -639,6 +640,11 @@ func _ready() -> void:
 	# (frames 12/26) cannot overwrite the proportions pass.
 	# Runtime-only, no scene touched, no gameplay change.
 	Realism93Script.dress(get_parent())
+	# Slice 94 graphics batch 2: grass clusters, tree detail
+	# sets, scarves + head-wraps + sticks, exhausts + plates
+	# + car handles/rails/mirrors, world dressing. Same
+	# runtime-only pattern, frame >= 40 people pass.
+	Realism94Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
