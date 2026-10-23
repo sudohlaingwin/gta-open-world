@@ -3573,3 +3573,12 @@ Your turn to review and beat this. 🤝
    - **Galvanized Tin Water Bucket (`TinBucket`):** Modelled traditional rural water fetching bucket (`CylinderMesh_bucket`, `StandardMaterial3D_bucket_tin`, `metallic = 0.85`, `specular = 0.60`) suspended above the freshwater surface.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 304: Roadside Water Pot Stand Clay Lids & Aluminium Drinking Cup Realism
+### Completed by Antigravity:
+1. **Authentic Roadside Water Donation Stand Detailing (`scenes/water_pot_stand.tscn`):**
+   - **Terracotta Pot Lids (`LidL`, `LidR`):** Modelled traditional clay pot covers (`CylinderMesh_pot_lid`, `StandardMaterial3D_clay`) crowning both left and right water pots to keep drinking water clean.
+   - **Rural Aluminium Drinking Cup (`WaterCup`):** Added a shiny metallic drinking cup (`CylinderMesh_water_cup`, `StandardMaterial3D_aluminium_cup`, `metallic = 0.88`, `roughness = 0.25`, `specular = 0.70`) resting on the timber stand between the pots.
+   - Perfectly embodies the hospitable Burmese Buddhist water donation tradition (ရေချမ်းစင်) found along countryside roadways.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
