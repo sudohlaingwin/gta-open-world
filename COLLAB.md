@@ -4313,3 +4313,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=28` matching 1 ext_resource + 26 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 376: Country Guesthouse Suspended Mosquito Net Canopy & Carved Teak Stool Realism
+### Completed by Antigravity:
+1. **Rural Myanmar Hospitality & Traditional Rest Lodge Realism (`scenes/myanmar_guesthouse.tscn`):**
+   - **Suspended White Sheer Mosquito Net Canopy (`MosquitoNetCanopy`):** Modelled an authentic traditional box-framed cotton/nylon mosquito bed netting canopy (`BoxMesh_mosquito_net`, `StandardMaterial3D_netting_white`, `albedo = Color(0.94, 0.96, 0.98, 0.45)`, `transparency = 1`) suspended over the traveler's sleeping quarters (ခြင်ထောင်).
+   - **Carved Teakwood Desk Sitting Stool (`TeakSittingStool`):** Modelled an authentic rustic four-legged Burmese teak wood sitting stool (`BoxMesh_teak_stool`, `StandardMaterial3D_teak_stool`, `albedo = Color(0.36, 0.22, 0.12, 1)`, `roughness = 0.70`) tucked neatly before the writing desk.
+   - Strictly verified canonical TSCN format (`load_steps=28` matching 1 ext_resource + 26 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

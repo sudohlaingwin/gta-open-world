@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=28 format=3]
 
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
@@ -92,6 +92,22 @@ albedo_color = Color(0.92, 0.32, 0.38, 1)
 metallic = 0.75
 roughness = 0.28
 
+[sub_resource type="BoxMesh" id="BoxMesh_mosquito_net"]
+size = Vector3(4.6, 2.4, 2.9)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_netting_white"]
+albedo_color = Color(0.94, 0.96, 0.98, 0.45)
+roughness = 0.35
+specular = 0.20
+transparency = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_teak_stool"]
+size = Vector3(0.65, 0.55, 0.65)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak_stool"]
+albedo_color = Color(0.36, 0.22, 0.12, 1)
+roughness = 0.70
+
 [node name="MyanmarGuestHouse" type="StaticBody3D"]
 script = ExtResource("1_lantern")
 
@@ -116,6 +132,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.85, -3.2)
 mesh = SubResource("BoxMesh_bed")
 surface_material_override/0 = SubResource("StandardMaterial3D_blanket")
 
+[node name="MosquitoNetCanopy" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 2.05, -3.2)
+mesh = SubResource("BoxMesh_mosquito_net")
+surface_material_override/0 = SubResource("StandardMaterial3D_netting_white")
+
 [node name="Pillow" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 1.45, -4.1)
 mesh = SubResource("CylinderMesh_pillow")
@@ -125,6 +146,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_pillow_white")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.9, -3.2)
 mesh = SubResource("BoxMesh_desk")
 surface_material_override/0 = SubResource("StandardMaterial3D_desk_wood")
+
+[node name="TeakSittingStool" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.55, -1.8)
+mesh = SubResource("BoxMesh_teak_stool")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak_stool")
 
 [node name="TeaThermos" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 1.75, -3.2)
