@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=16 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pier"]
 size = Vector3(10.5, 2.2, 32.0)
@@ -36,6 +36,24 @@ albedo_color = Color(1.0, 0.88, 0.40, 1)
 emission_enabled = true
 emission = Color(1.0, 0.84, 0.32, 1)
 emission_energy_multiplier = 2.8
+
+[sub_resource type="TorusMesh" id="TorusMesh_lifebuoy"]
+inner_radius = 0.45
+outer_radius = 0.85
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lifebuoy_orange"]
+albedo_color = Color(0.96, 0.35, 0.12, 1)
+roughness = 0.42
+specular = 0.45
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rope_coil"]
+top_radius = 0.65
+bottom_radius = 0.72
+height = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pier_rope"]
+albedo_color = Color(0.58, 0.46, 0.30, 1)
+roughness = 0.92
 
 [node name="RiverBoatPier" type="StaticBody3D"]
 
@@ -95,6 +113,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, 2.2, 13.5)
 light_color = Color(1.0, 0.85, 0.45, 1)
 light_energy = 3.0
 omni_range = 16.0
+
+[node name="LifebuoyRing" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -3.8, 1.4, 8.5)
+mesh = SubResource("TorusMesh_lifebuoy")
+surface_material_override/0 = SubResource("StandardMaterial3D_lifebuoy_orange")
+
+[node name="MooringRopeCoil" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0.45, 12.0)
+mesh = SubResource("CylinderMesh_rope_coil")
+surface_material_override/0 = SubResource("StandardMaterial3D_pier_rope")
 
 [node name="PierSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, -14.0)

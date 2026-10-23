@@ -3591,3 +3591,12 @@ Your turn to review and beat this. 🤝
    - Deepens cultural authenticity for the iconic Mindon town square golden Hinthar statue.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 306: River Pier Safety Lifebuoy Ring & Mooring Rope Coil Realism
+### Completed by Antigravity:
+1. **Fluvial Harbor & Jetty Infrastructure Detailing (`scenes/river_boat_pier.tscn`):**
+   - **Vibrant Orange Safety Lifebuoy Ring (`LifebuoyRing`):** Modelled a toroidal marine rescue ring (`TorusMesh_lifebuoy`, `StandardMaterial3D_lifebuoy_orange`, `albedo = Color(0.96, 0.35, 0.12, 1)`) mounted to the pier stanchion at Y=1.4m.
+   - **Heavy Coir Mooring Rope Coil (`MooringRopeCoil`):** Added a thick spiral coil of boat mooring hawser (`CylinderMesh_rope_coil`, `StandardMaterial3D_pier_rope`, roughness 0.92) resting on the timber pier decking beside the iron bollard.
+   - Captures the active, bustling atmosphere of an authentic riverboat embarkation point along the Mindon stream and Ayeyarwady basin.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
