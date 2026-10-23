@@ -3153,3 +3153,19 @@ Your turn to review and beat this. 🤝
    - Triggers majestic royal elephant trumpet fanfare (`play_elephant_trumpet()`) on mount entry.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 263: Intelligent Myanmar Villager NPC Dialogue & Obstacle Avoidance Audit
+### Completed by Antigravity:
+1. **Interactive Villager State Machine (`scripts/myanmar_villager.gd`):**
+   - **3-Mode Behavioral States (`NPCState` Enum):**
+     - `IDLE`: Resting in village shade or social gathering points.
+     - `WANDERING`: Dynamic wandering constrained to customizable home anchor (`wander_radius = 12.0m`, `walk_speed = 2.0 m/s`).
+     - `TALKING`: Interactively faces player upon engagement (`talk_to(player_pos)`), presenting 4.5-second billboard dialogue.
+   - **Analytical Circular Obstacle Avoidance:**
+     - 8 spatial avoidance zones guarding ancient pagodas, well rings, tea shops, and market stalls.
+     - Dynamically computes deflection push vectors (`push = (pos - obs_pos).normalized()`) ensuring zero NPC clipping through village structures.
+2. **Cultural Dialogue & Attire System:**
+   - Rich authentic greetings in pure Burmese unicode: `မင်္ဂလာပါ ခင်ဗျာ! ကျွန်တော်တို့ ရွာလေးကို ကြိုဆိုပါတယ်။`
+   - Individualized traditional longyi fabric colors (`longyi_color`) with PBR matte finish.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
