@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
@@ -69,6 +69,22 @@ size = Vector3(0.12, 0.9, 7.0)
 albedo_color = Color(0.42, 0.26, 0.15, 1)
 roughness = 0.78
 
+[sub_resource type="BoxMesh" id="BoxMesh_window_shutter"]
+size = Vector3(0.08, 1.45, 1.25)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak_shutter"]
+albedo_color = Color(0.38, 0.22, 0.12, 1)
+roughness = 0.68
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ridge_spire"]
+top_radius = 0.04
+bottom_radius = 0.16
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carved_finial"]
+albedo_color = Color(0.48, 0.28, 0.14, 1)
+roughness = 0.65
+
 [node name="MyanmarHouse" type="StaticBody3D"]
 script = ExtResource("1_lantern")
 
@@ -87,6 +103,26 @@ surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 4.4, 0)
 mesh = SubResource("BoxMesh_walls")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="WindowShutterNorth" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.22, 4.6, 2.8)
+mesh = SubResource("BoxMesh_window_shutter")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak_shutter")
+
+[node name="WindowShutterSouth" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.22, 4.6, -2.8)
+mesh = SubResource("BoxMesh_window_shutter")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak_shutter")
+
+[node name="RoofRidgeFinialF" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.2, 6.8)
+mesh = SubResource("CylinderMesh_ridge_spire")
+surface_material_override/0 = SubResource("StandardMaterial3D_carved_finial")
+
+[node name="RoofRidgeFinialB" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.2, -6.8)
+mesh = SubResource("CylinderMesh_ridge_spire")
+surface_material_override/0 = SubResource("StandardMaterial3D_carved_finial")
 
 [node name="VerandahPorch" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 1.85, 0)

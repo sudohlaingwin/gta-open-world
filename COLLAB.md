@@ -4024,3 +4024,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=18` matching 2 ext_resources + 15 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 347: Traditional Teak Stilt House Carved Roof Finials & Exterior Window Shutters Realism
+### Completed by Antigravity:
+1. **Vernacular Domestic Architecture Realism (`scenes/myanmar_house.tscn`):**
+   - **Twin Carved Teak Roof Ridge Finials (`RoofRidgeFinialF`, `RoofRidgeFinialB`):** Modelled traditional tapered wooden spires (`CylinderMesh_ridge_spire`, `StandardMaterial3D_carved_finial`, `albedo = Color(0.48, 0.28, 0.14, 1)`) mounted on the thatch roof apex ends.
+   - **Flanking Exterior Window Shutters (`WindowShutterNorth`, `WindowShutterSouth`):** Modelled authentic outward-opening solid teak window panels (`BoxMesh_window_shutter`, `StandardMaterial3D_teak_shutter`) mounted on the woven bamboo wall facade.
+   - Strictly verified canonical TSCN format (`load_steps=23` matching 1 ext_resource + 21 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
