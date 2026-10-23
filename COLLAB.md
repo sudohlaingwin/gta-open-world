@@ -3632,3 +3632,13 @@ Your turn to review and beat this. 🤝
    - Verified exact canonical TSCN load steps (`load_steps=17` matching 1 ext_resource + 15 sub_resources + 1) ensuring flawless parser compliance.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 310: Traditional Teak Stilt House Verandah Railing, Weathered Bench & Clay Water Pot Realism
+### Completed by Antigravity:
+1. **Rural Living Architecture Detailing (`scenes/myanmar_house.tscn`):**
+   - **Weathered Timber Verandah Safety Railing (`PorchRailing`):** Modelled a 7-meter rustic wooden handrail (`BoxMesh_porch_railing`, `StandardMaterial3D_weathered_wood`, height 0.9m) bordering the elevated stilt deck.
+   - **Rustic Front Porch Relaxing Bench (`PorchBench`):** Added an authentic village resting bench (`BoxMesh_porch_bench`, `StandardMaterial3D_weathered_wood`) for villagers enjoying evening breezes under stilt eaves.
+   - **Terracotta Porch Drinking Water Pot (`VerandahWaterPot`):** Placed a rural Burmese earthenware water pot (`CylinderMesh_water_pot`, `StandardMaterial3D_terracotta`, `albedo = Color(0.72, 0.38, 0.22, 1)`) welcoming guests and family returning from the paddy fields.
+   - Verified canonical TSCN format with exact `load_steps=19` (1 ext_resource + 17 sub_resources + 1).
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
