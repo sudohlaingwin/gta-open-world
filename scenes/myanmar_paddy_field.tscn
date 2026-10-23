@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Shader" path="res://scripts/foliage_sway.gdshader" id="1_sway"]
 
@@ -28,6 +28,35 @@ shader_parameter/flutter_strength = 0.08
 [sub_resource type="BoxMesh" id="BoxMesh_crops"]
 size = Vector3(35.2, 1.1, 27.2)
 
+[sub_resource type="BoxMesh" id="BoxMesh_bund_long"]
+size = Vector3(36.4, 0.45, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bund_short"]
+size = Vector3(0.75, 0.45, 28.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_earthen_bund"]
+albedo_color = Color(0.36, 0.26, 0.16, 1)
+roughness = 0.92
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sluice_pipe"]
+top_radius = 0.20
+bottom_radius = 0.20
+height = 1.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_sluice"]
+albedo_color = Color(0.62, 0.52, 0.28, 1)
+roughness = 0.74
+
+[sub_resource type="BoxMesh" id="BoxMesh_water_sheet"]
+size = Vector3(35.2, 0.02, 27.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_irrigation_water"]
+transparency = 1
+albedo_color = Color(0.28, 0.42, 0.32, 0.55)
+roughness = 0.08
+metallic = 0.15
+specular = 0.85
+
 [node name="MyanmarPaddyField" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -41,10 +70,40 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 mesh = SubResource("BoxMesh_mud_bed")
 surface_material_override/0 = SubResource("StandardMaterial3D_mud")
 
+[node name="IrrigationWater" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26, 0)
+mesh = SubResource("BoxMesh_water_sheet")
+surface_material_override/0 = SubResource("StandardMaterial3D_irrigation_water")
+
 [node name="RiceCrops" type="MeshInstance3D" parent="VisualMesh" groups=["foliage"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 mesh = SubResource("BoxMesh_crops")
 surface_material_override/0 = SubResource("ShaderMaterial_crops")
+
+[node name="BundNorth" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 13.8)
+mesh = SubResource("BoxMesh_bund_long")
+surface_material_override/0 = SubResource("StandardMaterial3D_earthen_bund")
+
+[node name="BundSouth" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, -13.8)
+mesh = SubResource("BoxMesh_bund_long")
+surface_material_override/0 = SubResource("StandardMaterial3D_earthen_bund")
+
+[node name="BundEast" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.8, 0.22, 0)
+mesh = SubResource("BoxMesh_bund_short")
+surface_material_override/0 = SubResource("StandardMaterial3D_earthen_bund")
+
+[node name="BundWest" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.8, 0.22, 0)
+mesh = SubResource("BoxMesh_bund_short")
+surface_material_override/0 = SubResource("StandardMaterial3D_earthen_bund")
+
+[node name="BambooSluicePipe" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 17.8, 0.18, 8.0)
+mesh = SubResource("CylinderMesh_sluice_pipe")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_sluice")
 
 [node name="FieldSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 14.2)

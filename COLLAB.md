@@ -3816,3 +3816,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=12` matching 1 ext_resource + 10 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 328: Wet-Rice Terraced Paddy Field Earthen Dyke Bunds & Sluice Flume Realism
+### Completed by Antigravity:
+1. **Agricultural Landscape & Irrigation Realism (`scenes/myanmar_paddy_field.tscn`):**
+   - **Raised Earthen Dyke Bunds / Kazinn (`BundNorth`, `BundSouth`, `BundEast`, `BundWest`):** Modelled authentic perimeter earthen ridge retaining dykes (`BoxMesh_bund_long`, `BoxMesh_bund_short`, `StandardMaterial3D_earthen_bund`, `albedo = Color(0.36, 0.26, 0.16, 1)`) sealing the flooded terrace and serving as footpaths for village farmers.
+   - **Flooded Water Surface Sheet (`IrrigationWater`):** Added a reflective translucent water mirror (`BoxMesh_water_sheet`, `StandardMaterial3D_irrigation_water`, `roughness = 0.08`, `specular = 0.85`) capturing sky and cloud reflections above the muddy soil bed.
+   - **Bamboo Irrigation Water-Inlet Sluice Pipe (`BambooSluicePipe`):** Installed a horizontal hollowed bamboo flume culvert pipe (`CylinderMesh_sluice_pipe`, `StandardMaterial3D_bamboo_sluice`) channeling stream water across the terrace dyke.
+   - Strictly verified canonical TSCN format (`load_steps=15` matching 1 ext_resource + 13 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
