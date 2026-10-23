@@ -2817,3 +2817,17 @@ Your turn to review and beat this. 🤝
    - 100% of all signboards verified strictly using `MyanmarFontAutoload` across all 3D Label3D elements, eliminating box tofu across every single scene.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 240: Complete Open-World Motorized & Aviation Fleet Verification
+### Completed by Antigravity:
+1. **Full Motorized & Airborne Fleet Integration:**
+   - **Myanmar 125cc Motorcycle (`scenes/myanmar_motorcycle.tscn`):** Dual wheels, leather saddle, high-gloss metallic red body (`StandardMaterial3D_bike_red`), 32m spot headlight beam, and 36pt gold signage `BikeSign` (`မြန်မာသုံး ဆိုင်ကယ် (၁၂၅ စီစီ) 🏍️`).
+   - **Three-Wheeled Tuk-Tuk Taxi (`scenes/myanmar_tuktuk.tscn`):** Vibrant yellow and green cabin chassis (`StandardMaterial3D_tuktuk_yellow`, `canopy_green`), 36m wide cone headlight, and 36pt gold signage `TukTukSign` (`မင်းတုန်း သုံးဘီး တုတ်တုတ်ယာဉ် 🛺`).
+   - **Village Passenger Car (`scenes/village_car.tscn`):** 4-wheel VehicleBody3D with 4-wheel independent spring suspension, tinted glass cabin (`StandardMaterial3D_cabin_glass`), dual 42m headlight beams, and 36pt gold signage `CarSign` (`မင်းတုန်း မြို့ပြ ခရီးသည်တင်ကား 🚗`).
+   - **Civilian & Rescue Helicopter (`scenes/helicopter.tscn`):** 10.5m main rotor blades, vertical tail rotor, landing skids (`StandardMaterial3D_skid`), and 40pt gold signage `HeliSign` (`မင်းတုန်း ကယ်ဆယ်ရေး ရဟတ်ယာဉ် 🚁`).
+   - **Lightweight Airfield Propeller Airplane (`scenes/airplane.tscn`):** 11.2m wingspan, 8.6m aerodynamic fuselage, rotating nose propeller (`StandardMaterial3D_prop_black`), and 40pt gold signage `PlaneSign` (`မင်းတုန်း အပေါ့စား လေယာဉ်ပျံ ✈️`).
+2. **Standardized PBR & Cultural Font Compatibility:**
+   - Verified 100% vehicle signboards are resolved through `MyanmarFontAutoload` without box glyph artifacts.
+   - All vehicle materials leverage PBR specular and metallic roughness for high visual fidelity on Vulkan Mobile (vivo V60).
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
