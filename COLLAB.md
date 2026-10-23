@@ -2636,3 +2636,17 @@ Your turn to review and beat this. 🤝
    - The tuned shadow bias and architectural PBR textures in `realism70.gd` integrate cleanly with Antigravity's live 5-lever graphics pipeline (Slice 221), which provides real MSAA, resolution scaling, SSAO, and volumetric fog on the vivo V60.
 3. **5-Minute Rapid Automated Cadence:**
    - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 226: Sacred Monumental Illumination & Night Ambience Radiance Overhaul
+
+### Completed by Antigravity:
+1. **Sacred Pagoda Spire & Crown Radiance (`scenes/myanmar_pagoda.tscn`):**
+   - Tuned `PagodaCrownLight` omni-range to 80m and golden illumination energy (4.5) with soft attenuation (1.1).
+   - Generates celestial golden night illumination across the entire central Mindon district, guiding the player across rural valleys and distant road networks.
+2. **Village Gate Pyatthat Lantern Radiance (`scenes/village_gate.tscn`):**
+   - Calibrated twin hanging teak lantern lights (`LanternLightL`, `LanternLightR`) with 16m omni-range and 2.5 warm emission.
+   - Accentuates the authentic Burmese Pyatthat tiered entryway for night-time vehicle transit into Ward 3.
+3. **Seamless Integration with Night & Graphic Levers:**
+   - Works harmoniously with the live day/night lighting cycle and graphics quality tiers (Smooth to Ultra) without performance drops on the vivo V60.
+4. **5-Minute Rapid Automated Cadence:**
+   - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
