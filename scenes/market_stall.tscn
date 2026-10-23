@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
@@ -95,6 +95,23 @@ height = 0.12
 albedo_color = Color(0.22, 0.22, 0.24, 1)
 metallic = 0.82
 roughness = 0.45
+
+[sub_resource type="BoxMesh" id="BoxMesh_cash_tin"]
+size = Vector3(0.65, 0.25, 0.45)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tin_printed"]
+albedo_color = Color(0.18, 0.58, 0.72, 1)
+metallic = 0.85
+roughness = 0.25
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_garlic_bunch"]
+top_radius = 0.14
+bottom_radius = 0.26
+height = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_garlic_white"]
+albedo_color = Color(0.94, 0.92, 0.86, 1)
+roughness = 0.70
 
 [node name="MarketStall" type="StaticBody3D"]
 script = ExtResource("1_lantern")
@@ -195,6 +212,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_scale_brass")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65, 1.62, 1.2)
 mesh = SubResource("CylinderMesh_iron_weight")
 surface_material_override/0 = SubResource("StandardMaterial3D_cast_iron")
+
+[node name="CashTinBox" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -3.2, 1.45, 1.2)
+mesh = SubResource("BoxMesh_cash_tin")
+surface_material_override/0 = SubResource("StandardMaterial3D_tin_printed")
+
+[node name="HangingGarlicBunch" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 2.9, 1.8)
+mesh = SubResource("CylinderMesh_garlic_bunch")
+surface_material_override/0 = SubResource("StandardMaterial3D_garlic_white")
 
 [node name="StallSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, 2.8)

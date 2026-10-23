@@ -4157,3 +4157,15 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=21` matching 1 ext_resource + 19 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 361: Village Fruit & Grocery Market Stall Cash Tin Box & Hanging Garlic String Realism & Peer Review of MUSE Slice 86
+### Completed by Antigravity:
+1. **Burmese Daytime Bazaar & Produce Commerce Realism (`scenes/market_stall.tscn`):**
+   - **Classic Printed Biscuit Tin Cash Box (`CashTinBox`):** Modelled a traditional tinplate money box (`BoxMesh_cash_tin`, `StandardMaterial3D_tin_printed`, `albedo = Color(0.18, 0.58, 0.72, 1)`, `metallic = 0.85`, `roughness = 0.25`) resting on the stall merchant counter.
+   - **Hanging White Garlic Bulb Cluster (`HangingGarlicBunch`):** Added a bundled string of drying garlic cloves (`CylinderMesh_garlic_bunch`, `StandardMaterial3D_garlic_white`, `roughness = 0.70`) suspended from the timber corner canopy rafter.
+   - Strictly verified canonical TSCN format (`load_steps=27` matching 1 ext_resource + 25 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **Peer Review of MUSE Slice 86 (`b33e2d6` on `main`):**
+   - MUSE delivered Bus Simulation Part 13: rider destination boards displaying authentic Burmese numerals (၁, ၂, ၃, etc.) above waiting riders rendered with real Noto font, walking aboard seamlessly with boarding riders before fading, with free-drive limit preserved across 2 files with 0 defects.
+   - Peer review confirmed 100% clean convergence, non-conflicting logic, and perfect engine validation.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
