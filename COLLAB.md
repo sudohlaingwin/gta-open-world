@@ -3730,3 +3730,14 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=16` matching 15 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 320: River Pier Angled Boarding Gangway Ramp, Safety Railing & Cargo Rice Sacks Realism
+### Completed by Antigravity:
+1. **Harbor Transport & Freight Realism (`scenes/river_boat_pier.tscn`):**
+   - **Angled Riverboat Boarding Gangway Ramp (`GangwayRamp`):** Modelled a 6.5m timber boarding ramp (`BoxMesh_gangway`, `StandardMaterial3D_pier_wood`) descending 15 degrees from the pier platform directly down to the water surface for sampan passenger embarkation.
+   - **Full-Length Teak Safety Handrail (`SafetyRailingL`):** Modelled a 26-meter wooden perimeter safety railing (`BoxMesh_pier_railing`, `StandardMaterial3D_pier_wood`, height 0.95m) along the pier's landward edge.
+   - **Timber Freight Cargo Crates (`CargoCrate1`, `CargoCrate2`):** Staged stacked wooden shipping crates (`BoxMesh_cargo_crate`, `StandardMaterial3D_crate_wood`) loaded for river transport.
+   - **Woven Burlap Rice Sack (`RiceSack`):** Modelled a traditional coarse jute rice sack (`SphereMesh_rice_sack`, `StandardMaterial3D_burlap`, `albedo = Color(0.72, 0.64, 0.48, 1)`) resting on the dock staging area.
+   - Strictly verified canonical TSCN format (`load_steps=19` matching 18 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
