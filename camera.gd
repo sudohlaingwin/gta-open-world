@@ -15,6 +15,27 @@ extends Camera3D
 
 @export var target: NodePath
 @export var orbit_angle: float = 0.0
+# Slice 93 PUBG view + free-look pitch (owner orders 2026-10-23):
+# the standard TPP is now a close over-shoulder view: 3D distance
+# 6.0 m (was 10.0 m back + 10.0 m up, ~14.1 m away, which made the
+# player read tiny), camera height 6.0*sin(0.38) = 2.22 m above the
+# player origin (was 10.0 m), look_at the chest (player origin +
+# 0.4 m, was the origin itself). orbit_pitch is the camera
+# elevation angle, driven by vertical drag on the right half (the
+# left half stays the joystick zone, PUBG-style): drag UP
+# (relative.y negative) LOWERS the pitch so the camera drops and
+# the view tilts UP; drag DOWN raises the pitch so the view tilts
+# DOWN. Clamped so the camera never goes under the ground (min
+# height 0.60 m above the origin, and the existing player+0.5
+# floor guard still applies) and never flips over the top. Yaw
+# stays full 360 degrees. Zoom stays locked (zoom_in/zoom_out
+# are no-ops); FPP/cart-top View toggle untouched; the
+# collision-avoidance raycast still runs at every pitch.
+const TPP_DIST: float = 6.0
+const PITCH_DEFAULT: float = 0.38
+const PITCH_MIN: float = 0.10
+const PITCH_MAX: float = 1.25
+var orbit_pitch: float = PITCH_DEFAULT
 # Slice 10 camera controls (touch-first): zoom factor for the
 # Zoom + / - buttons, and touch-drag orbit on the right half of
 # the screen (the joystick lives on the left, so the halves do not
@@ -93,6 +114,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var vp := get_viewport().get_visible_rect().size
 		if event.position.x > vp.x * 0.5:
 			orbit_angle += event.relative.x * 0.005 * _sensitivity()
+			orbit_pitch = clampf(orbit_pitch + event.relative.y * 0.005 * _sensitivity(), PITCH_MIN, PITCH_MAX)
 
 # Physics bodies the camera ray must ignore. Everything on the
 # default layer that is NOT a StaticBody3D is a character, a
@@ -177,20 +199,22 @@ func _process(delta: float) -> void:
 		global_position = pos
 		look_at(pos + fwd, Vector3.UP)
 		return
-	var desired := 10.0  # Slice 61 addendum: fixed standard view (zoom locked at 1.0).
+	var desired := TPP_DIST  # Slice 93 PUBG view: 6.0 m, zoom locked at 1.0.
 	if cur_dist < 0.0:
 		cur_dist = desired
 	var dir_h := Vector3(sin(orbit_angle), 0.0, cos(orbit_angle))
 	var eye: Vector3 = t.global_position + Vector3(0.0, EYE_HEIGHT, 0.0)
-	var desired_pos: Vector3 = t.global_position + Vector3(dir_h.x * desired, 10.0, dir_h.z * desired)
+	var hdist := desired * cos(orbit_pitch)
+	var vdist := desired * sin(orbit_pitch)
+	var desired_pos: Vector3 = t.global_position + Vector3(dir_h.x * hdist, vdist, dir_h.z * hdist)
 	var allowed := _blocked_distance(eye, desired_pos, desired)
 	if allowed < cur_dist:
 		cur_dist = max(allowed, cur_dist - SHORTEN_RATE * delta)
 	else:
 		cur_dist = min(allowed, cur_dist + RECOVER_RATE * delta)
 	var f := cur_dist / desired if desired > 0.0 else 1.0
-	var pos: Vector3 = t.global_position + Vector3(dir_h.x * cur_dist, 10.0 * f, dir_h.z * cur_dist)
+	var pos: Vector3 = t.global_position + Vector3(dir_h.x * hdist * f, vdist * f, dir_h.z * hdist * f)
 	if pos.y < t.global_position.y + 0.5:
 		pos.y = t.global_position.y + 0.5
 	global_position = pos
-	look_at(t.global_position, Vector3.UP)
+	look_at(t.global_position + Vector3(0.0, 0.4, 0.0), Vector3.UP)

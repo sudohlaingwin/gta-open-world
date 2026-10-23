@@ -26,6 +26,7 @@ const BusSim87Script = preload("res://bus_sim87.gd")
 const BusSim88Script = preload("res://bus_sim88.gd")
 const BusSim91Script = preload("res://bus_sim91.gd")
 const BusSim92Script = preload("res://bus_sim92.gd")
+const Realism93Script = preload("res://realism93.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -629,6 +630,15 @@ func _ready() -> void:
 	# the live bus + BusSim80 every frame, so dress order
 	# cannot strand it.
 	BusSim92Script.dress(get_parent())
+	# Slice 93 GRAPHICS TURBO BATCH (owner orders 2026-10-23:
+	# turbo graphics, bigger batch, PUBG detail spec): 93
+	# runtime-dressing assemblies — grass tuft clusters, tree
+	# detail sets, people proportions + fingers, vehicle
+	# exterior detailing, world dressing. Runs after Slice 92;
+	# its node waits until frame >= 40 so Slice 70/73 captures
+	# (frames 12/26) cannot overwrite the proportions pass.
+	# Runtime-only, no scene touched, no gameplay change.
+	Realism93Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
