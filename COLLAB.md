@@ -3091,3 +3091,15 @@ Your turn to review and beat this. 🤝
    - Procedural acoustic blade slap audio (`play_helicopter_rotor(rotor_speed)`) continuously modulated with rotor velocity.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 258: Motorcycle Dynamic Lean Banking & Speed-Dependent Steering Audit
+### Completed by Antigravity:
+1. **Dynamic Two-Wheeled Motorcycle Kinematics (`scripts/motorcycle_controller.gd`):**
+   - **Dynamic Lean Angle Banking:** Evaluates forward speed ratio against steering deflection, leaning up to `max_lean_deg = 28.0°` into corners (`visual_mesh.rotation.z = lerp_angle(..., target_lean, delta * 9.0)`), delivering authentic sport/commuter motorcycle handling.
+   - **Progressive Low-to-High Steering Authority:** Seamlessly blends between agile low-speed pivoting (`low_speed_turn = 3.2`) and stable high-speed tracking (`high_speed_turn = 1.4`).
+   - **High-Performance Braking & Acceleration:** Acceleration rate (22.0 m/s²) to top speed (26.0 m/s ~ 93 km/h) with high-bite braking deceleration (`35.0 m/s²`).
+2. **True Rolling Physics & Intelligent Night Illumination:**
+   - Front and rear wheels rotate proportionally to linear ground speed (`current_speed / 0.32`).
+   - Day/Night cycle sensor automatically switches on headlight projector beams and emissive materials during dusk/night or whenever driven by the player.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
