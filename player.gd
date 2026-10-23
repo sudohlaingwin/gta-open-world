@@ -19,6 +19,7 @@ const BusSim79Script = preload("res://bus_sim79.gd")
 const BusSim80Script = preload("res://bus_sim80.gd")
 const BusSim81Script = preload("res://bus_sim81.gd")
 const BusSim82Script = preload("res://bus_sim82.gd")
+const BusSim83Script = preload("res://bus_sim83.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -570,6 +571,12 @@ func _ready() -> void:
 	# Slice 81, same deferred pattern — its group node queues
 	# behind the depot buses and sign it dresses around.
 	BusSim82Script.dress(get_parent())
+	# Slice 83 BUS SIMULATION part 10 (peak hours: fleet
+	# density + third waiting rider + 45 s peak legs by time
+	# band): runs after Slice 82, same deferred pattern —
+	# its node queues behind the stops and traffic it
+	# adjusts, and retries until the stop groups exist.
+	BusSim83Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing

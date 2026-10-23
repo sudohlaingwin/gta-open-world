@@ -7,7 +7,10 @@ extends Node3D
 ##   village fleet) looping the Slice 74 long road in
 ##   both directions (eastbound lane z -3, westbound
 ##   lane z +3, x 600..2400), so the road no longer
-##   feels empty. Obstacles include the bus as THREE
+##   feels empty. Slice 83 adds two more cars (6 total)
+##   parked at the depot by default, unparked by the
+##   Slice 83 time band (peak 6 / off-peak 4 / night 2
+##   on the road). Obstacles include the bus as THREE
 ##   points (centre + front + rear, 4.5 m each way, the
 ##   bus is 9 m long): the Slice 22 stop distance is
 ##   tuned for car/van lengths, so a bare bus-centre
@@ -66,6 +69,18 @@ const STUCK_RESPAWN_S: float = 30.0
 const FEEDBACK_S: float = 3.5
 const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0]
 const MY_DIGITS: Array = ["၁", "၂", "၃", "၄"]
+# Slice 83 depot park spots, one per car that can ever
+# park (night parks 1, 3, 4, 5 — four cars, four spots).
+# All sit inside the Slice 82 fence lines, clear of both
+# depot buses (30,16 / 30,26), the office (30,6), the
+# fuel pump (40,32) and both depot lamps (22,10 / 38,30).
+# Parked cars are visual only here (the loop below skips
+# them entirely, so a parked car never drives, never
+# counts as stuck, and never blocks).
+const PARK83: Array = [
+	Vector3(22.0, 0.0, 20.0), Vector3(38.0, 0.0, 20.0),
+	Vector3(22.0, 0.0, 30.0), Vector3(38.0, 0.0, 10.0),
+]
 
 var traffic_cars: Array = []
 var junction_cleared: Array = [false, false]
@@ -213,13 +228,19 @@ func _spawn_traffic() -> void:
 	# Spawn table: [x, z, next waypoint index]. Two cars per
 	# direction, spread along the road so no two share a
 	# spawn point (Slice 22 lesson: shared spawns jam).
+	# Slice 83 adds two more cars (indices 4, 5), one per
+	# direction, parked at the depot by default so the
+	# pre-83 road still runs 4 cars until the Slice 83 band
+	# logic unparks them at peak (or at night, parks more).
 	var spawns: Array = [
 		[900.0, -3.0, 1], [1800.0, -3.0, 1],
 		[1500.0, 3.0, 3], [2100.0, 3.0, 3],
+		[600.0, -3.0, 1], [2400.0, 3.0, 3],
 	]
 	var colors: Array = [
 		Color(0.8, 0.2, 0.2, 1), Color(0.2, 0.4, 0.8, 1),
 		Color(0.9, 0.85, 0.2, 1), Color(0.25, 0.7, 0.3, 1),
+		Color(0.55, 0.2, 0.7, 1), Color(0.9, 0.5, 0.15, 1),
 	]
 	var day := _daylight()
 	for ci in range(spawns.size()):
@@ -238,6 +259,11 @@ func _spawn_traffic() -> void:
 		car.set("speed", 0.0)
 		car.set("speed_factor", _speed_factor_for_day(day))
 		traffic_cars.append(car)
+		# Slice 83: the two extra cars start parked at the
+		# depot (the pre-83 road baseline of 4 driving cars
+		# is preserved until the band logic unparks them).
+		if ci >= 4:
+			park_car83(ci)
 
 
 func _respawn_car(car: Node3D, bus_pos: Vector3) -> void:
@@ -260,6 +286,61 @@ func _respawn_car(car: Node3D, bus_pos: Vector3) -> void:
 	car.set("waypoint_index", (best + 1) % LONG_ROUTE.size())
 	car.set("speed", 0.0)
 	car.set("stuck_time", 0.0)
+
+
+func park_car83(idx: int) -> void:
+	# Slice 83: park one fleet car at the depot. The meta
+	# flag is what the loop skips on and what BusSim83
+	# reads; headlights go off so a parked car never
+	# glows at night like a driving one.
+	if idx < 0 or idx >= traffic_cars.size():
+		return
+	var car := traffic_cars[idx] as Node3D
+	if car == null:
+		return
+	car.set_meta("parked83", true)
+	# One spot per parked car, never shared: 1 -> 0,
+	# 3 -> 1, 4 -> 2, 5 -> 3 (any other index -> 0).
+	var spot := 0
+	match idx:
+		1:
+			spot = 0
+		3:
+			spot = 1
+		4:
+			spot = 2
+		5:
+			spot = 3
+	car.global_position = PARK83[spot]
+	car.rotation.y = PI / 2.0
+	car.set("speed", 0.0)
+	car.call("set_headlights", false)
+
+
+func unpark_car83(idx: int, bus_pos: Vector3) -> void:
+	# Slice 83: return a parked car to the road via the
+	# same farthest-waypoint respawn as a stuck car, so
+	# it rejoins traffic instead of popping onto the road
+	# at the depot (where it would have to drive cross-
+	# country to reach the long road).
+	if idx < 0 or idx >= traffic_cars.size():
+		return
+	var car := traffic_cars[idx] as Node3D
+	if car == null:
+		return
+	car.set_meta("parked83", false)
+	_respawn_car(car, bus_pos)
+
+
+func road_count83() -> int:
+	# Slice 83: driving cars on the road right now
+	# (parked depot cars excluded). Used by SIM83 and by
+	# any later HUD that wants the live fleet count.
+	var n := 0
+	for car in traffic_cars:
+		if car != null and not bool((car as Node3D).get_meta("parked83", false)):
+			n += 1
+	return n
 
 
 func _try_hud(world: Node3D) -> bool:
@@ -406,6 +487,11 @@ func _physics_process(delta: float) -> void:
 		bus_fwd = Vector3(-sin(bus.rotation.y), 0.0, -cos(bus.rotation.y))
 	for car in traffic_cars:
 		if car == null:
+			continue
+		# Slice 83: parked depot cars never drive, never
+		# count as stuck, and never get headlight/speed
+		# updates — they sit until BusSim83 unparks them.
+		if bool((car as Node3D).get_meta("parked83", false)):
 			continue
 		var obs: Array = []
 		if player != null:

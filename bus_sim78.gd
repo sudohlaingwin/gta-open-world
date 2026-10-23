@@ -43,7 +43,9 @@ extends Node3D
 const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0]
 const DEPOT_POS: Vector3 = Vector3(30.0, 0.0, 16.0)
 const DEPOT_R: float = 12.0
-const SEAT_X: Array = [-0.7, 0.7]
+# Slice 83: seat 2 sits in the middle of the bench (x 0.0).
+# Seats 0 and 1 keep their proven +-0.7 poses exactly.
+const SEAT_X: Array = [-0.7, 0.7, 0.0]
 const SEAT_Z: float = 12.5
 const SEAT_BODY_Y: float = 0.98
 const SEAT_HEAD_Y: float = 1.62
@@ -184,7 +186,7 @@ func _physics_process(delta: float) -> void:
 		var grp := _stop_group(world, si)
 		if grp == null:
 			continue
-		for wi in range(2):
+		for wi in range(3):
 			var w := grp.get_node_or_null("Waiting74_%d_%d" % [si, wi]) as Node3D
 			if w == null:
 				continue

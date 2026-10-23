@@ -52,12 +52,25 @@ extends Node3D
 ## Local spacing. The feedback sequence counter lets the
 ## Slice 79 summary count on-time stops without reading
 ## label text.
+##
+## Slice 83 — PEAK LEGS (part 10). A leg starting during
+## a peak band runs 45 s per stop instead of 60 s; night
+## still wins over peak (evening peak overlaps night, and
+## a night leg stays 90 s). The band rule is the same
+## rule as bus_sim83.gd (night first, then the 120 s day
+## clock: morning [0, 15), evening [45, 60)) — keep the
+## two copies in sync; SIM83 proves they agree at every
+## band. Duration is fixed at leg start like Slice 79, so
+## a band change mid-leg does NOT stretch the leg already
+## running, and the first-observation estimate uses
+## current daylight + current band for the same choice.
 
 const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0]
 const STOP_ZONE_R: float = 9.0
 const STOP_SPEED: float = 0.5
 const LEG_S: float = 60.0
 const NIGHT_LEG_S: float = 90.0
+const PEAK_LEG_S: float = 45.0
 const ON_TIME_S: float = 15.0
 const FEEDBACK_S: float = 5.0
 const MY_DIGITS: Array = ["၁", "၂", "၃", "၄"]
@@ -156,6 +169,28 @@ func _daylight() -> float:
 	if dn != null and dn.has_method("daylight"):
 		return float(dn.call("daylight"))
 	return 1.0
+
+
+func _leg_duration_now() -> float:
+	# Slice 83 band rule, mirrored from bus_sim83.gd:
+	# night (daylight < 0.15) first at 90 s, then peak
+	# bands on the 120 s day clock at 45 s, else 60 s.
+	if _daylight() < 0.15:
+		return NIGHT_LEG_S
+	var world := get_parent() as Node3D
+	var t := 0.0
+	if world != null:
+		var dn := world.get_node_or_null("DayNight")
+		if dn != null and dn.get("time") != null:
+			t = float(dn.get("time"))
+	t = fmod(t, 120.0)
+	if t < 0.0:
+		t += 120.0
+	if t < 15.0:
+		return PEAK_LEG_S
+	if t >= 45.0 and t < 60.0:
+		return PEAK_LEG_S
+	return LEG_S
 
 
 func _fmt_mmss(t: float) -> String:
@@ -326,8 +361,10 @@ func _physics_process(delta: float) -> void:
 	# already served on the current leg (a loaded mid-route
 	# save), and is the only estimated value here.
 	# Slice 79: the leg duration is fixed at leg start from
-	# daylight (night legs 90 s, day legs 60 s); the first
-	# observation uses current daylight for the same choice.
+	# daylight (night legs 90 s, day legs 60 s); Slice 83
+	# adds peak legs at 45 s (night still wins over peak).
+	# The first observation uses current daylight + band
+	# for the same choice.
 	if ctrl != null:
 		var dir := int(ctrl.get("direction"))
 		var nxt := int(ctrl.get("next_stop"))
@@ -338,7 +375,7 @@ func _physics_process(delta: float) -> void:
 				var p := int(ctrl.call("service_pos79", nxt, dir))
 				if p >= 0:
 					done_steps = p
-			_leg_s = NIGHT_LEG_S if _daylight() < 0.15 else LEG_S
+			_leg_s = _leg_duration_now()
 			_epoch = _service_t - float(done_steps) * _leg_s
 			_observed = true
 			_leg_key = key
@@ -358,7 +395,7 @@ func _physics_process(delta: float) -> void:
 				leg_start = true
 			if leg_start:
 				_epoch = _service_t
-				_leg_s = NIGHT_LEG_S if _daylight() < 0.15 else LEG_S
+				_leg_s = _leg_duration_now()
 			_leg_key = key
 	# Timetable label: service clock + countdown to the
 	# next stop's due time (or how late it already is).

@@ -93,11 +93,16 @@ const MY_DIGITS: Array = ["၁", "၂", "၃", "၄"]
 # direction]. Eastbound dests are always later stops, westbound
 # dests always earlier stops, so the boarding rule (direction
 # must match) can never board a rider going the wrong way.
+# Slice 83 adds seat 2 (the peak third rider, created by
+# BusSim83): stop 0 -> 3 east, stop 1 -> 3 east, stop 2 ->
+# 0 west, stop 3 -> 0 west. All four board Local; stop 1
+# never boards Express (not a service stop), the others
+# board Express when the direction matches.
 const DESTS: Array = [
-	[[2, DIR_EAST], [3, DIR_EAST]],
-	[[3, DIR_EAST], [2, DIR_EAST]],
-	[[3, DIR_EAST], [0, DIR_WEST]],
-	[[1, DIR_WEST], [0, DIR_WEST]],
+	[[2, DIR_EAST], [3, DIR_EAST], [3, DIR_EAST]],
+	[[3, DIR_EAST], [2, DIR_EAST], [3, DIR_EAST]],
+	[[3, DIR_EAST], [0, DIR_WEST], [0, DIR_WEST]],
+	[[1, DIR_WEST], [0, DIR_WEST], [0, DIR_WEST]],
 ]
 var next_stop: int = 0
 var direction: int = DIR_EAST
@@ -184,7 +189,7 @@ func _assign_destinations(world: Node3D) -> void:
 		var grp := _stop_group(world, si)
 		if grp == null:
 			continue
-		for wi in range(2):
+		for wi in range(3):
 			var w := grp.get_node_or_null("Waiting74_%d_%d" % [si, wi]) as Node3D
 			if w != null and not w.has_meta("dest75"):
 				w.set_meta("dest75", DESTS[si][wi][0])
@@ -195,7 +200,7 @@ func _waiting_bools(world: Node3D) -> Array:
 	var out: Array = []
 	for si in range(4):
 		var grp := _stop_group(world, si)
-		for wi in range(2):
+		for wi in range(3):
 			var vis := false
 			if grp != null:
 				var w := grp.get_node_or_null("Waiting74_%d_%d" % [si, wi]) as Node3D
@@ -206,6 +211,22 @@ func _waiting_bools(world: Node3D) -> Array:
 					# duplicate them on load.
 					vis = w.visible and not bool(w.get_meta("walking78", false))
 			out.append(vis)
+	return out
+
+
+func _peak_hidden_bools(world: Node3D) -> Array:
+	# Slice 83: seat 2's peak-hidden marker per stop, so
+	# the save can tell a band-hidden rider (resurrect at
+	# peak) from a boarded rider (stay hidden).
+	var out: Array = []
+	for si in range(4):
+		var grp := _stop_group(world, si)
+		var hidden := false
+		if grp != null:
+			var w := grp.get_node_or_null("Waiting74_%d_2" % si) as Node3D
+			if w != null:
+				hidden = bool(w.get_meta("peak83_hidden", false))
+		out.append(hidden)
 	return out
 
 
@@ -220,6 +241,13 @@ func busroute75_state() -> Dictionary:
 		"onboard": onboard_dests.duplicate(),
 		"leg_served": leg_served.duplicate(),
 		"waiting": _waiting_bools(world) if world != null else [],
+		# Slice 83: seat 2's peak-hidden marker, per stop.
+		# Without it a peak-hidden rider and a boarded rider
+		# both save as waiting=false and could not be told
+		# apart on load (the peak rule must resurrect only
+		# the peak-hidden one). Old saves lack the key and
+		# read as all-false, which is correct for them.
+		"peak83_hidden": _peak_hidden_bools(world) if world != null else [],
 	}
 
 
@@ -244,16 +272,28 @@ func _restore_state(world: Node3D) -> void:
 	boarded = onboard_dests.size()
 	leg_served = (br.get("leg_served", []) as Array).duplicate()
 	var waiting: Array = br.get("waiting", [])
+	var ph: Array = br.get("peak83_hidden", [])
+	# Slice 83: saves hold 12 waiting entries (3 seats x 4
+	# stops). Pre-83 saves hold 8 (2 seats x 4); reading
+	# those with the new stride would misalign every stop
+	# after the first, so old saves keep the old stride
+	# and seat 2 is left visible (the band rule then hides
+	# it off-peak on the next frame).
+	var seats := 3 if waiting.size() >= 12 else 2
 	for si in range(4):
 		var grp := _stop_group(world, si)
 		if grp == null:
 			continue
-		for wi in range(2):
-			var k := si * 2 + wi
+		for wi in range(seats):
+			var k := si * seats + wi
 			if k < waiting.size() and not bool(waiting[k]):
 				var w := grp.get_node_or_null("Waiting74_%d_%d" % [si, wi]) as Node3D
 				if w != null:
 					w.visible = false
+			if wi == 2 and si < ph.size() and bool(ph[si]):
+				var w2 := grp.get_node_or_null("Waiting74_%d_2" % si) as Node3D
+				if w2 != null:
+					w2.set_meta("peak83_hidden", true)
 
 
 func _respawn_waiting(world: Node3D) -> void:
@@ -265,7 +305,7 @@ func _respawn_waiting(world: Node3D) -> void:
 		var grp := _stop_group(world, si)
 		if grp == null:
 			continue
-		for wi in range(2):
+		for wi in range(3):
 			var w := grp.get_node_or_null("Waiting74_%d_%d" % [si, wi]) as Node3D
 			if w != null:
 				w.visible = true
@@ -358,7 +398,7 @@ func _serve_stop(world: Node3D, bus: Node3D, stop_idx: int) -> void:
 	# out-of-order serve at a skipped stop boards nobody.
 	var order79: Array = service_order79(direction)
 	if grp != null and order79.has(stop_idx):
-		for wi in range(2):
+		for wi in range(3):
 			var w := grp.get_node_or_null("Waiting74_%d_%d" % [stop_idx, wi]) as Node3D
 			if w != null and w.visible and not bool(w.get_meta("walking78", false)) and int(w.get_meta("dir75", -1)) == direction:
 				var dest79 := int(w.get_meta("dest75", stop_idx))
