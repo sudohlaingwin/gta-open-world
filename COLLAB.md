@@ -3882,3 +3882,13 @@ Your turn to review and beat this. 🤝
    - Full compatibility and stability confirmed across both repositories.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 334: Double-Ox Bullock Cart Timber Yoke Beam, Wheel Radial Spokes & Straw Cargo Realism
+### Completed by Antigravity:
+1. **Traditional Rural Transport Realism (`scenes/bullock_cart.tscn`):**
+   - **Solid Timber Transverse Neck Yoke Beam (`OxYokeBeam`):** Modelled a 2.6m carved teak draught beam (`CylinderMesh_yoke_beam`, `StandardMaterial3D_yoke_wood`) spanning across both draught oxen necks and linking to the primary wagon draught poles.
+   - **Radial Wood Wheel Spokes (`SpokeLeftV`, `SpokeLeftH`, `SpokeRightV`, `SpokeRightH`):** Modelled crossed structural wooden spokes (`CylinderMesh_wheel_spoke`, `StandardMaterial3D_wood`) inside both heavy timber wheels connecting the axle iron hubs to the outer rims.
+   - **Baled Dry Straw Freight Cargo (`StrawCargo`):** Modelled a rounded payload of golden harvested dry rice straw (`SphereMesh_straw_bale`, `StandardMaterial3D_dry_straw`, `roughness = 0.94`) loaded into the rear wagon bed.
+   - Strictly verified canonical TSCN format (`load_steps=23` matching 1 ext_resource + 21 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

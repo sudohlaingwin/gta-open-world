@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://scripts/mount_controller.gd" id="1_cart"]
 
@@ -70,6 +70,28 @@ height = 0.35
 [sub_resource type="SphereShape3D" id="SphereShape3D_cart_interact"]
 radius = 4.2
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_yoke_beam"]
+top_radius = 0.10
+bottom_radius = 0.10
+height = 2.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yoke_wood"]
+albedo_color = Color(0.38, 0.22, 0.10, 1)
+roughness = 0.65
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wheel_spoke"]
+top_radius = 0.03
+bottom_radius = 0.03
+height = 2.15
+
+[sub_resource type="SphereMesh" id="SphereMesh_straw_bale"]
+radius = 0.55
+height = 0.85
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dry_straw"]
+albedo_color = Color(0.76, 0.66, 0.38, 1)
+roughness = 0.94
+
 [node name="BullockCart" type="CharacterBody3D"]
 script = ExtResource("1_cart")
 mount_type = 1
@@ -87,6 +109,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
 mesh = SubResource("BoxMesh_cart_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_wood")
 
+[node name="StrawCargo" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0.4)
+mesh = SubResource("SphereMesh_straw_bale")
+surface_material_override/0 = SubResource("StandardMaterial3D_dry_straw")
+
 [node name="Canopy" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
 mesh = SubResource("PrismMesh_canopy")
@@ -101,6 +128,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_wood")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 0.85, -3.2)
 mesh = SubResource("BoxMesh_shaft")
 surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="OxYokeBeam" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 1.35, -4.6)
+mesh = SubResource("CylinderMesh_yoke_beam")
+surface_material_override/0 = SubResource("StandardMaterial3D_yoke_wood")
 
 [node name="OxLeft" type="Node3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 0, -3.6)
@@ -161,6 +193,15 @@ surface_material_override/0 = SubResource("StandardMaterial3D_iron_rim")
 mesh = SubResource("CylinderMesh_hub")
 surface_material_override/0 = SubResource("StandardMaterial3D_iron_rim")
 
+[node name="SpokeLeftV" type="MeshInstance3D" parent="VisualMesh/WheelLeft"]
+mesh = SubResource("CylinderMesh_wheel_spoke")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="SpokeLeftH" type="MeshInstance3D" parent="VisualMesh/WheelLeft"]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_wheel_spoke")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
 [node name="WheelRight" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.35, 1.1, 0)
 mesh = SubResource("CylinderMesh_wheel")
@@ -173,6 +214,15 @@ surface_material_override/0 = SubResource("StandardMaterial3D_iron_rim")
 [node name="HubRight" type="MeshInstance3D" parent="VisualMesh/WheelRight"]
 mesh = SubResource("CylinderMesh_hub")
 surface_material_override/0 = SubResource("StandardMaterial3D_iron_rim")
+
+[node name="SpokeRightV" type="MeshInstance3D" parent="VisualMesh/WheelRight"]
+mesh = SubResource("CylinderMesh_wheel_spoke")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="SpokeRightH" type="MeshInstance3D" parent="VisualMesh/WheelRight"]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_wheel_spoke")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
 
 [node name="SaddlePoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -0.6)
