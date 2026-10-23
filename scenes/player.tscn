@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/camera_orbit.gd" id="2_cam"]
@@ -38,6 +38,34 @@ albedo_color = Color(0.06, 0.38, 0.24, 1)
 roughness = 0.62
 specular = 0.35
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_player_gaungbaung"]
+top_radius = 0.24
+bottom_radius = 0.23
+height = 0.11
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_player_silk_gold"]
+albedo_color = Color(0.96, 0.84, 0.32, 1)
+roughness = 0.52
+specular = 0.45
+
+[sub_resource type="SphereMesh" id="SphereMesh_player_knot"]
+radius = 0.08
+height = 0.14
+
+[sub_resource type="BoxMesh" id="BoxMesh_player_bag"]
+size = Vector3(0.26, 0.30, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_player_bag_blue"]
+albedo_color = Color(0.18, 0.36, 0.65, 1)
+roughness = 0.80
+
+[sub_resource type="BoxMesh" id="BoxMesh_player_slipper"]
+size = Vector3(0.13, 0.04, 0.26)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_slipper_leather"]
+albedo_color = Color(0.32, 0.18, 0.10, 1)
+roughness = 0.75
+
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_player")
 
@@ -51,6 +79,11 @@ shape = SubResource("CapsuleShape3D_1")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58, 0)
 mesh = SubResource("SphereMesh_head")
 
+[node name="Gaungbaung" type="MeshInstance3D" parent="VisualMesh/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, 0)
+mesh = SubResource("CylinderMesh_player_gaungbaung")
+surface_material_override/0 = SubResource("StandardMaterial3D_player_silk_gold")
+
 [node name="ParachuteMesh" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
 visible = false
@@ -62,10 +95,30 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, 0)
 mesh = SubResource("BoxMesh_torso")
 surface_material_override/0 = SubResource("StandardMaterial3D_taikpon")
 
+[node name="PlayerShoulderBag" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.32, 1.05, 0.05)
+mesh = SubResource("BoxMesh_player_bag")
+surface_material_override/0 = SubResource("StandardMaterial3D_player_bag_blue")
+
 [node name="Longyi" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48, 0)
 mesh = SubResource("CylinderMesh_longyi")
 surface_material_override/0 = SubResource("StandardMaterial3D_longyi")
+
+[node name="LongyiKnot" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0.31)
+mesh = SubResource("SphereMesh_player_knot")
+surface_material_override/0 = SubResource("StandardMaterial3D_longyi")
+
+[node name="SlipperL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, 0.03, 0.04)
+mesh = SubResource("BoxMesh_player_slipper")
+surface_material_override/0 = SubResource("StandardMaterial3D_slipper_leather")
+
+[node name="SlipperR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0.03, 0.04)
+mesh = SubResource("BoxMesh_player_slipper")
+surface_material_override/0 = SubResource("StandardMaterial3D_slipper_leather")
 
 [node name="PlayerNameplate" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15, 0)
