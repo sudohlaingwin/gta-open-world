@@ -494,39 +494,53 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -620.0
-offset_top = -120.0
-offset_right = -30.0
-offset_bottom = -30.0
+offset_left = -860.0
+offset_top = -115.0
+offset_right = -20.0
+offset_bottom = -25.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_constants/separation = 16
+theme_override_constants/separation = 12
+
+[node name="RadioBtn" type="Button" parent="ActionContainer"]
+custom_minimum_size = Vector2(120, 75)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "📻 တေးသံ"
+
+[node name="ViewBtn" type="Button" parent="ActionContainer"]
+custom_minimum_size = Vector2(120, 75)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "👁️ အမြင်"
 
 [node name="SprintBtn" type="Button" parent="ActionContainer"]
-custom_minimum_size = Vector2(125, 75)
+custom_minimum_size = Vector2(115, 75)
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "🏃 အပြေး"
 
 [node name="ChuteBtn" type="Button" parent="ActionContainer"]
-custom_minimum_size = Vector2(85, 85)
+custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "🪂"
 
 [node name="JumpBtn" type="Button" parent="ActionContainer"]
-custom_minimum_size = Vector2(125, 75)
+custom_minimum_size = Vector2(115, 75)
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "🦘 ခုန်"
 
 [node name="InteractBtn" type="Button" parent="ActionContainer"]
-custom_minimum_size = Vector2(200, 75)
+custom_minimum_size = Vector2(175, 75)
 layout_mode = 2
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "⚡ လုပ်ဆောင်"
 

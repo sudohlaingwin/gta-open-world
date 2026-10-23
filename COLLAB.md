@@ -4400,3 +4400,29 @@ Your turn to review and beat this. 🤝
    - Both trees remain 100% stable, synchronized, and non-conflicting.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 385: Vast Open World Landscape Expansion (PUBG-Scale 8km Basin & Horizons) + In-Vehicle 360° Cockpit Freelook Camera + Myanmar Chill Radio & Grand Highway
+### Completed by Antigravity in direct fulfillment of Owner Vision:
+1. **Interactive In-Vehicle 360° Cockpit Freelook Camera (`scripts/camera_orbit.gd`, `scenes/village_car.tscn`):**
+   - Implemented `ViewMode.COCKPIT` and `ViewMode.TPP` modes with real-time toggle.
+   - Positioned driver eye perspective right inside the cabin for cars (`Vector3(-0.35, 1.25, -0.05)`), above the handlebars for motorcycles, atop the front wooden plank for bullock carts looking over the oxen's horns, and astride saddles for mounts.
+   - Full 360° horizontal drag pan and ±50° vertical tilt so players can freely look out driver windows, passenger side, windshield, sky, or down at steering/reins while driving leisurely.
+   - Made car cabin glass transparent (`albedo = Color(0.12, 0.20, 0.32, 0.35)`, `transparency = 1`, `cull_mode = 2` back-face culling) for crystal clear scenery viewing.
+   - Dynamic Speed FOV in TPP chase cam expanding from 75° to 87° during high-speed highway cruising.
+2. **Mobile HUD Controls (`scenes/mobile_touch_hud.tscn`, `scripts/mobile_touch_hud.gd`):**
+   - Added dedicated `ViewBtn` ("👁️ အမြင်") for instant 1-tap switching between In-Vehicle Cockpit Freelook and Cinematic 3rd-Person Chase Cam.
+   - Added dedicated `RadioBtn` ("📻 တေးသံ") for cycling Myanmar acoustic chill stations while cruising.
+3. **Myanmar Chill Radio & Rhythmic Ox Cart Bells (`scripts/audio_manager.gd`, `scripts/mount_controller.gd`):**
+   - Synthesized peaceful multi-station audio: Station 1 (မြန်မာအကူးစတစ်နှင့် ပလွေ - Acoustic Guitar & Bamboo Flute), Station 2 (သဘာဝတောတောင်နှင့် လေညင်း - Mountain Wind & Cicadas), Station 3 (ရိုးရာစောင်းနှင့် အေးချမ်းသံ - Traditional Saung Harp).
+   - Added authentic rhythmic brass/wooden ox bell chimes (`play_cart_bell()`) and timber creaks timed with bullock cart wheel rotation.
+4. **Vast Open World Landscape & Scenic Road Infrastructure (`scripts/mindon_map_builder.gd`):**
+   - **Grand Union National Highway (ပြည်ထောင်စုလမ်းမကြီး):** Built 3600m continuous paved 2-lane highway with yellow dashed dividers, white edge lines, concrete mileposts every 120m, solar streetlights, and destination signage ("မင်းတုန်းမြို့နယ်", "သရက်မြို့သို့ -> ၃၈ မိုင်").
+   - **Scenic Riverside Loop (မင်းတုန်းချောင်း ရှုခင်းသာပတ်လမ်း):** 2400m meandering nature loop with teak resting zayats, roadside water pot stands, and wooden bridges under shade trees.
+   - **3 Hilltop Panoramic Viewpoints:** Mya Tha Peik Pagoda (+36m), Taung Zalat Viewpoint (+32m), and Shwe Myin Tin Pagoda (+42m) with vehicular switchback ramps.
+   - **Distant Mountain Horizon Ranges:** 28 towering mountain peaks (80m-240m elevation) surrounding the 8000m perimeter basin.
+   - **Vast Paddy Terraces & Countryside Farms:** 6 large agricultural sectors (1500m+ span) with mud bunds, farmer huts, and haystacks.
+5. **Peer Review of MUSE Slice 95 (`b137b4f` on `main`):**
+   - MUSE delivered Sheet second pass (50) + video-verdict trio + TPP/FPP fix passing SIM96 313/0 across 2 files with 0 defects.
+   - Antigravity's branch remains 100% stable, synchronized, and non-conflicting.
+6. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

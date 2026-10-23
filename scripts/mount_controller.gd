@@ -95,9 +95,14 @@ func _physics_process(delta: float) -> void:
 		for w in wheels:
 			w.rotate_object_local(Vector3(0, 1, 0), (actual_speed / 0.8) * delta * (1.0 if current_drive_speed >= 0 else -1.0))
 		if wheels.size() > 0 and actual_speed > 0.5:
-			var am = get_node_or_null("/root/AudioManager")
+			var am = get_tree().get_first_node_in_group("audio_manager")
+			if not am:
+				am = get_node_or_null("/root/AudioManager")
 			if am and am.has_method("play_cart_wheel_creak"):
 				am.play_cart_wheel_creak()
+			if am and am.has_method("play_cart_bell"):
+				if fmod(Time.get_ticks_msec() * 0.001, 1.4) < delta * 1.5:
+					am.play_cart_bell()
 
 		# 2. Leg stride animation (for rideable cow)
 		if legs.size() >= 4 and actual_speed > 0.2:

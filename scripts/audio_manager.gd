@@ -13,6 +13,37 @@ var birds_stream_player: AudioStreamPlayer
 var bgm_music_player: AudioStreamPlayer
 var bird_ambient_timer: float = 3.0
 var river_ambient_timer: float = 1.0
+var radio_station_index: int = 1
+var cart_bell_player: AudioStreamPlayer = null
+var cart_bell_timer: float = 0.0
+
+const RADIO_STATIONS: Array[String] = [
+	"📻 ရေဒီယို: ပိတ်ထားသည် (Off)",
+	"📻 ရေဒီယို: မြန်မာအကူးစတစ်နှင့် ပလွေ (Acoustic & Flute)",
+	"📻 ရေဒီယို: သဘာဝတောတောင်နှင့် လေညင်း (Mountain Wind)",
+	"📻 ရေဒီယို: ရိုးရာစောင်းနှင့် အေးချမ်းသံ (Harp & Chimes)"
+]
+
+func cycle_radio_station() -> String:
+	radio_station_index = (radio_station_index + 1) % RADIO_STATIONS.size()
+	_apply_radio_station()
+	return RADIO_STATIONS[radio_station_index]
+
+func get_current_radio_station_name() -> String:
+	return RADIO_STATIONS[radio_station_index]
+
+func _apply_radio_station() -> void:
+	if not bgm_music_player:
+		return
+	match radio_station_index:
+		0:
+			bgm_music_player.stop()
+		1:
+			_synthesize_acoustic_flute_song()
+		2:
+			_synthesize_nature_ambience_loop()
+		3:
+			_synthesize_myanmar_harp_song()
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -33,8 +64,8 @@ func _start_background_music() -> void:
 	if sm and sm.get("muted"):
 		m_vol = 0.0
 
-	bgm_music_player.volume_db = linear_to_db(clampf(m_vol * 0.4, 0.0001, 1.0))
-	_synthesize_myanmar_harp_song()
+	bgm_music_player.volume_db = linear_to_db(clampf(m_vol * 0.45, 0.0001, 1.0))
+	_synthesize_acoustic_flute_song()
 
 func _synthesize_myanmar_harp_song() -> void:
 	# Generates a serene pentatonic Myanmar Saung-gauk (စောင်းကောက်) harp melody loop
@@ -669,3 +700,132 @@ func play_helicopter_rotor(rpm_factor: float = 1.0) -> void:
 	stream.data = data
 	helicopter_rotor_player.stream = stream
 	helicopter_rotor_player.play()
+
+func _synthesize_acoustic_flute_song() -> void:
+	# Soothing Myanmar countryside acoustic guitar chords & bamboo flute melody loop
+	var sample_hz = 22050
+	var duration = 16.0
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	stream.loop_begin = 0
+	stream.loop_end = total_frames
+
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+
+	# Peaceful Pentatonic flute notes
+	var flute_notes = [
+		{"t": 0.5, "f": 523.25, "dur": 2.2}, # C5
+		{"t": 3.0, "f": 587.33, "dur": 1.8}, # D5
+		{"t": 5.0, "f": 659.25, "dur": 2.5}, # E5
+		{"t": 8.0, "f": 783.99, "dur": 3.0}, # G5
+		{"t": 11.5, "f": 659.25, "dur": 1.8},
+		{"t": 13.5, "f": 523.25, "dur": 2.2}
+	]
+
+	# Acoustic guitar fingerpicking arpeggios
+	var guitar_arpeggio = [
+		130.81, 164.81, 196.0, 261.63, # C
+		146.83, 174.61, 220.0, 293.66, # Dm
+		164.81, 196.0, 246.94, 329.63, # Em
+		174.61, 220.0, 261.63, 349.23  # F
+	]
+
+	for i in range(total_frames):
+		var cur_t = float(i) / float(sample_hz)
+		var total_sample = 0.0
+
+		# Guitar arpeggio pattern every 0.35s
+		var beat = fmod(cur_t, 0.35)
+		var note_idx = int(cur_t / 0.35) % guitar_arpeggio.size()
+		var g_freq = guitar_arpeggio[note_idx]
+		var g_env = exp(-beat * 6.5)
+		var g_wave = sin(beat * g_freq * TAU) * 0.7 + sin(beat * g_freq * 2.0 * TAU) * 0.25
+		total_sample += g_wave * g_env * 0.35
+
+		# Bamboo flute breath & gentle vibrato
+		for fn in flute_notes:
+			var n_start = fn["t"]
+			var n_dur = fn["dur"]
+			if cur_t >= n_start and cur_t < (n_start + n_dur):
+				var nt = cur_t - n_start
+				var attack = clampf(nt / 0.3, 0.0, 1.0)
+				var release = clampf((n_dur - nt) / 0.4, 0.0, 1.0)
+				var vibrato = 1.0 + sin(nt * 5.2 * TAU) * 0.012
+				var flute_f = fn["f"] * vibrato
+				var flute_sound = sin(nt * flute_f * TAU) * 0.8 + sin(nt * flute_f * 3.0 * TAU) * 0.12
+				var breath_noise = (randf() * 2.0 - 1.0) * 0.04
+				total_sample += (flute_sound + breath_noise) * attack * release * 0.40
+
+		var int_sample = int(clamp(total_sample, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+
+	stream.data = data
+	bgm_music_player.stream = stream
+	bgm_music_player.play()
+
+func _synthesize_nature_ambience_loop() -> void:
+	# Gentle mountain wind, cicadas, and distant bamboo chimes
+	var sample_hz = 22050
+	var duration = 14.0
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	stream.loop_begin = 0
+	stream.loop_end = total_frames
+
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+
+	for i in range(total_frames):
+		var cur_t = float(i) / float(sample_hz)
+		# Low wind rumble & sweeping breeze
+		var wind_mod = (sin(cur_t * 0.45 * TAU) * 0.5 + 0.5)
+		var wind_noise = (sin(cur_t * 85.0 * TAU) + sin(cur_t * 142.0 * TAU) * 0.6) * wind_mod * 0.25
+		# Summer cicadas / crickets shimmer
+		var cicada = sin(cur_t * 4200.0 * TAU) * sin(cur_t * 18.0 * TAU) * 0.08
+		# Occasional bamboo chime ping
+		var chime = 0.0
+		var chime_time = fmod(cur_t, 3.5)
+		if chime_time < 0.8:
+			var c_env = exp(-chime_time * 4.5)
+			chime = (sin(chime_time * 1240.0 * TAU) * 0.6 + sin(chime_time * 2480.0 * TAU) * 0.3) * c_env * 0.18
+
+		var total_sample = wind_noise + cicada + chime
+		var int_sample = int(clamp(total_sample, -1.0, 1.0) * 20000.0)
+		data.encode_s16(i * 2, int_sample)
+
+	stream.data = data
+	bgm_music_player.stream = stream
+	bgm_music_player.play()
+
+func play_cart_bell() -> void:
+	if is_muted: return
+	if not cart_bell_player:
+		cart_bell_player = AudioStreamPlayer.new()
+		cart_bell_player.name = "CartBellAudio"
+		cart_bell_player.volume_db = -9.0
+		add_child(cart_bell_player)
+	if cart_bell_player.playing: return
+	var sample_hz = 22050
+	var duration = 0.4
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env = exp(-t * 11.0)
+		var bell = sin(t * 1520.0 * TAU) * 0.65 + sin(t * 2280.0 * TAU) * 0.35 + sin(t * 3040.0 * TAU) * 0.15
+		var int_sample = int(clamp(bell * env, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	cart_bell_player.stream = stream
+	cart_bell_player.play()

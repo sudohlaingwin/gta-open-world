@@ -7,6 +7,8 @@ extends CanvasLayer
 @onready var jump_btn: Button = $ActionContainer/JumpBtn
 @onready var chute_btn: Button = $ActionContainer/ChuteBtn
 @onready var sprint_btn: Button = $ActionContainer/SprintBtn
+@onready var view_btn: Button = $ActionContainer.get_node_or_null("ViewBtn")
+@onready var radio_btn: Button = $ActionContainer.get_node_or_null("RadioBtn")
 @onready var quest_banner: Label = $TopCenterHUD/QuestBanner
 @onready var player_icon: ColorRect = $TopLeftHUD/MiniMap/PlayerIcon
 @onready var pagoda_icon: ColorRect = $TopLeftHUD/MiniMap/PagodaIcon
@@ -64,6 +66,10 @@ func _ready() -> void:
 	if sprint_btn:
 		sprint_btn.button_down.connect(_on_sprint_down)
 		sprint_btn.button_up.connect(_on_sprint_up)
+	if view_btn:
+		view_btn.pressed.connect(_on_view_pressed)
+	if radio_btn:
+		radio_btn.pressed.connect(_on_radio_pressed)
 		
 	if yaw_left_btn:
 		yaw_left_btn.button_down.connect(func(): if player: player.touch_yaw = -1.0)
@@ -347,6 +353,21 @@ func _on_sprint_down() -> void:
 func _on_sprint_up() -> void:
 	if player:
 		player.set_sprint(false)
+
+func _on_view_pressed() -> void:
+	if player and player.get_node_or_null("CameraPivot"):
+		var cam_pivot = player.get_node("CameraPivot")
+		if cam_pivot.has_method("cycle_view_mode"):
+			var mode_name = cam_pivot.cycle_view_mode()
+			_show_prompt("ရှုထောင့်: %s" % mode_name)
+
+func _on_radio_pressed() -> void:
+	var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
+	if not audio_mgr:
+		audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
+	if audio_mgr and audio_mgr.has_method("cycle_radio_station"):
+		var st_name = audio_mgr.cycle_radio_station()
+		_show_prompt(st_name)
 
 func _on_pause_pressed() -> void:
 	if pause_menu:
