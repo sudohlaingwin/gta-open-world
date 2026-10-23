@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://scripts/myanmar_night_market.gd" id="1_market_script"]
 
@@ -83,6 +83,23 @@ roughness = 0.55
 albedo_color = Color(0.15, 0.38, 0.88, 1)
 roughness = 0.55
 
+[sub_resource type="BoxMesh" id="BoxMesh_grill_brazier"]
+size = Vector3(2.4, 0.5, 0.7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_grill_iron"]
+albedo_color = Color(0.22, 0.22, 0.24, 1)
+metallic = 0.88
+roughness = 0.40
+
+[sub_resource type="BoxMesh" id="BoxMesh_embers"]
+size = Vector3(2.2, 0.08, 0.55)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_embers_glowing"]
+albedo_color = Color(0.95, 0.35, 0.08, 1)
+emission_enabled = true
+emission = Color(1.0, 0.42, 0.05, 1)
+emission_energy_multiplier = 4.2
+
 [node name="MyanmarNightMarket" type="StaticBody3D"]
 script = ExtResource("1_market_script")
 
@@ -116,6 +133,22 @@ surface_material_override/0 = SubResource("StandardMaterial3D_fried_snack")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.4, 1.35, 0.4)
 mesh = SubResource("BoxMesh_food_tray")
 surface_material_override/0 = SubResource("StandardMaterial3D_fried_snack")
+
+[node name="SatayGrillBrazier" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4, 0.95, 0.3)
+mesh = SubResource("BoxMesh_grill_brazier")
+surface_material_override/0 = SubResource("StandardMaterial3D_grill_iron")
+
+[node name="GlowingEmbers" type="MeshInstance3D" parent="VisualMesh/SatayGrillBrazier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
+mesh = SubResource("BoxMesh_embers")
+surface_material_override/0 = SubResource("StandardMaterial3D_embers_glowing")
+
+[node name="GrillGlowLight" type="OmniLight3D" parent="VisualMesh/SatayGrillBrazier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+light_color = Color(1.0, 0.45, 0.12, 1)
+light_energy = 2.4
+omni_range = 6.0
 
 [node name="StallDrinks" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)

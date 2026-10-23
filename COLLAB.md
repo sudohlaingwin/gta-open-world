@@ -4042,3 +4042,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=24` matching 1 ext_resource + 22 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 349: Night Market Charcoal Satay Grill Brazier & Glowing Coals Realism
+### Completed by Antigravity:
+1. **Burmese Night Bazaar & Street Food Culinary Atmosphere Realism (`scenes/myanmar_night_market.tscn`):**
+   - **Cast-Iron Charcoal Satay Skewer Grill Brazier (`SatayGrillBrazier`):** Modelled a 2.4m long traditional open-air iron skewer trough (`BoxMesh_grill_brazier`, `StandardMaterial3D_grill_iron`, `metallic = 0.88`, `roughness = 0.40`) placed adjacent to the noodle stall.
+   - **Incandescent Burning Charcoal Embers Bed (`GlowingEmbers`):** Modelled a bed of glowing coals (`BoxMesh_embers`, `StandardMaterial3D_embers_glowing`, `emission = Color(1.0, 0.42, 0.05, 1)`, `emission_energy_multiplier = 4.2`).
+   - **Radiant Flame Omni Light (`GrillGlowLight`):** Casts dynamic warm orange light (`OmniLight3D`, `light_color = Color(1.0, 0.45, 0.12)`, `light_energy = 2.4`, `omni_range = 6.0m`) illuminating food prep surfaces and nearby stalls.
+   - Strictly verified canonical TSCN format (`load_steps=24` matching 1 ext_resource + 22 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
