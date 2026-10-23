@@ -3318,3 +3318,14 @@ Your turn to review and beat this. 🤝
    - Verified dynamic Speedometer transition and telemetry display across motorized and aviation mounts.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 277: Tactical TPP Player Kinematics, Fall Damage & Safe Unstuck Subsystem Audit
+### Completed by Antigravity:
+1. **Locomotion Kinematics & Parachute Glide Mechanics (`scripts/player.gd`):**
+   - Audited TPP locomotion physics: Walk (7.5 m/s), Sprint (12.0 m/s), and Jump (5.2 m/s).
+   - Validated authentic parachute airdrop flight envelope: terminal descent rate locked to `3.5 m/s` with directional steer glide speed at `8.0 m/s`.
+   - Verified fall impact damage equation triggering only above terminal threshold `velocity.y > 14.0 m/s` (`damage = (highest_fall_speed - 14.0) * 4.5`), preventing instant player death on minor village inclines while maintaining PUBG-style tactical landing consequences.
+2. **Safe Multi-State Unstuck Subsystem (`recover_from_stuck()`):**
+   - Gracefully detaches and resets collision state whether player is on foot, riding a mount, driving a ground vehicle, or piloting aircraft, repositioning to safe ground without physics clipping.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
