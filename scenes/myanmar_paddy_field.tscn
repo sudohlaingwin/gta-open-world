@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="Shader" path="res://scripts/foliage_sway.gdshader" id="1_sway"]
 
@@ -57,6 +57,23 @@ roughness = 0.08
 metallic = 0.15
 specular = 0.85
 
+[sub_resource type="BoxMesh" id="BoxMesh_scarecrow_cross"]
+size = Vector3(1.6, 0.1, 0.1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_scarecrow_pole"]
+top_radius = 0.05
+bottom_radius = 0.05
+height = 2.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_khamauk_hat"]
+top_radius = 0.04
+bottom_radius = 0.42
+height = 0.28
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_khamauk_straw"]
+albedo_color = Color(0.85, 0.74, 0.42, 1)
+roughness = 0.88
+
 [node name="MyanmarPaddyField" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -104,6 +121,21 @@ surface_material_override/0 = SubResource("StandardMaterial3D_earthen_bund")
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 17.8, 0.18, 8.0)
 mesh = SubResource("CylinderMesh_sluice_pipe")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_sluice")
+
+[node name="ScarecrowPole" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 1.2, 3.5)
+mesh = SubResource("CylinderMesh_scarecrow_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_sluice")
+
+[node name="ScarecrowCrossbar" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 1.9, 3.5)
+mesh = SubResource("BoxMesh_scarecrow_cross")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_sluice")
+
+[node name="KhamaukHat" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 2.45, 3.5)
+mesh = SubResource("CylinderMesh_khamauk_hat")
+surface_material_override/0 = SubResource("StandardMaterial3D_khamauk_straw")
 
 [node name="FieldSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 14.2)

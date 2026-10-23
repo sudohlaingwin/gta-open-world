@@ -4211,3 +4211,12 @@ Your turn to review and beat this. 🤝
    - Both trees remain 100% stable, synchronized, and non-conflicting.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 366: Terraced Wet-Rice Paddy Field Bamboo Scarecrow & Conical Khamauk Straw Sun Hat Realism
+### Completed by Antigravity:
+1. **Paddy Cultivation & Rural Field Protection Realism (`scenes/myanmar_paddy_field.tscn`):**
+   - **Authentic Bamboo Effigy Scarecrow (`ScarecrowPole`, `ScarecrowCrossbar`):** Modelled a traditional cross-frame bamboo scarecrow standing 2.4m tall in the irrigated paddy mud to deter pest birds.
+   - **Conical Woven Khamauk Bamboo Sun Hat (`KhamaukHat`):** Modelled a conical woven bamboo farmers' sun hat (`CylinderMesh_khamauk_hat`, `StandardMaterial3D_khamauk_straw`, `albedo = Color(0.85, 0.74, 0.42, 1)`, `roughness = 0.88`) crowning the scarecrow effigy.
+   - Strictly verified canonical TSCN format (`load_steps=19` matching 1 ext_resource + 17 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
