@@ -3141,3 +3141,15 @@ Your turn to review and beat this. 🤝
    - Directly modulates acoustic cadence with forward gallop velocity (`play_horse_gallop(speed_ratio)`), delivering realistic percussive ground impact without audio clipping.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 262: Royal War Elephant Howdah Mount & Sub-Bass Stride Audit
+### Completed by Antigravity:
+1. **Royal War Elephant Heavy Kinematics (`scripts/elephant_controller.gd`):**
+   - **Tuned Stride & Stomp Velocities:** Massive stride base speed (`max_speed = 6.0 m/s ~ 22 km/h`) and forceful charging sprint (`sprint_speed = 8.5 m/s ~ 31 km/h`).
+   - **High-Inertia Heavy Body Dynamics:** Heavy kinetic momentum coasting (`coast_drag = 1.2`) with progressive acceleration curves and powerful 10.0 brake force.
+   - **Kinematic Trunk Sway & Howdah Seating:** Elevated wooden canopy passenger howdah (`HowdahSeat`) with gentle harmonic trunk oscillation (`sin(t * sway_rate) * 0.3`).
+2. **Resonant Sub-Bass Stride & Trumpet Acoustic Synthesis:**
+   - Generates procedural 48Hz resonant sub-bass ground thud (`play_elephant_footstep()`) on each stride, shaking nearby environment acoustics without mobile distortion.
+   - Triggers majestic royal elephant trumpet fanfare (`play_elephant_trumpet()`) on mount entry.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
