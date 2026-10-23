@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="Script" path="res://scripts/football_pitch.gd" id="1_pitch"]
 
@@ -63,6 +63,20 @@ size = Vector3(0.5, 0.35, 0.04)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flag_red"]
 albedo_color = Color(0.92, 0.15, 0.12, 1)
 roughness = 0.65
+
+[sub_resource type="BoxMesh" id="BoxMesh_midfield_line"]
+size = Vector3(0.18, 0.02, 43.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chalk_white"]
+albedo_color = Color(0.96, 0.96, 0.94, 1)
+roughness = 0.90
+
+[sub_resource type="BoxMesh" id="BoxMesh_team_bench"]
+size = Vector3(4.8, 0.45, 0.65)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bench_teak"]
+albedo_color = Color(0.42, 0.28, 0.16, 1)
+roughness = 0.75
 
 [node name="MyanmarFootballPitch" type="StaticBody3D"]
 script = ExtResource("1_pitch")
@@ -157,6 +171,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.75, 1.45, 21.5)
 mesh = SubResource("PrismMesh_flag")
 surface_material_override/0 = SubResource("StandardMaterial3D_flag_red")
+
+[node name="HalfwayLine" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.31, 0)
+mesh = SubResource("BoxMesh_midfield_line")
+surface_material_override/0 = SubResource("StandardMaterial3D_chalk_white")
+
+[node name="TeamDugoutBench" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, -22.5)
+mesh = SubResource("BoxMesh_team_bench")
+surface_material_override/0 = SubResource("StandardMaterial3D_bench_teak")
 
 [node name="FootballRigid" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
