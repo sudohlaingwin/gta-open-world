@@ -3409,3 +3409,11 @@ Your turn to review and beat this. 🤝
    - **Thanaka Bark Paste Cosmetics (`ThanakaL`, `ThanakaR`):** Sculpted traditional circular Thanaka paste patches across left and right cheeks (`StandardMaterial3D_thanaka`, `roughness = 0.9`, `specular = 0.1`) reflecting authentic rural Myanmar daily attire.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 286: Traditional Bullock Cart Wheel Rim Ironwork & Spoke Hub Realism
+### Completed by Antigravity:
+1. **Authentic Bullock Cart Mechanical Detailing (`scenes/bullock_cart.tscn`):**
+   - **Iron Rim Tires (`CylinderMesh_wheel_rim`):** Modelled forge-iron protective wheel bands encircling the 2.2m wooden wheels (`StandardMaterial3D_iron_rim`, `metallic = 0.85`, `roughness = 0.38`, `specular = 0.55`).
+   - **Axle Spoke Hubs (`CylinderMesh_hub`):** Added cylindrical center axle hubs on left and right wheels (`WheelLeft`, `WheelRight`) terminating the wooden spoke array.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
