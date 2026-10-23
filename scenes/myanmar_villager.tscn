@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/myanmar_villager.gd" id="1_villager"]
 
@@ -28,6 +28,24 @@ albedo_color = Color(0.54, 0.12, 0.16, 1)
 roughness = 0.65
 specular = 0.32
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_gaungbaung"]
+top_radius = 0.24
+bottom_radius = 0.23
+height = 0.12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_silk_gold"]
+albedo_color = Color(0.95, 0.82, 0.35, 1)
+roughness = 0.55
+specular = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_thanaka"]
+size = Vector3(0.08, 0.08, 0.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thanaka"]
+albedo_color = Color(0.92, 0.88, 0.68, 1)
+roughness = 0.9
+specular = 0.1
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_talk"]
 radius = 3.6
 
@@ -43,6 +61,21 @@ shape = SubResource("CapsuleShape3D_npc")
 [node name="Head" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58, 0)
 mesh = SubResource("SphereMesh_head")
+
+[node name="Gaungbaung" type="MeshInstance3D" parent="VisualMesh/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, 0)
+mesh = SubResource("CylinderMesh_gaungbaung")
+surface_material_override/0 = SubResource("StandardMaterial3D_silk_gold")
+
+[node name="ThanakaL" type="MeshInstance3D" parent="VisualMesh/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14, -0.02, 0.18)
+mesh = SubResource("BoxMesh_thanaka")
+surface_material_override/0 = SubResource("StandardMaterial3D_thanaka")
+
+[node name="ThanakaR" type="MeshInstance3D" parent="VisualMesh/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, -0.02, 0.18)
+mesh = SubResource("BoxMesh_thanaka")
+surface_material_override/0 = SubResource("StandardMaterial3D_thanaka")
 
 [node name="Torso" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, 0)
