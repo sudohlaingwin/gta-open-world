@@ -3103,3 +3103,16 @@ Your turn to review and beat this. 🤝
    - Day/Night cycle sensor automatically switches on headlight projector beams and emissive materials during dusk/night or whenever driven by the player.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 259: Three-Wheeled Tuk-Tuk Taxi Kinematics & Triple Wheel Physics Audit
+### Completed by Antigravity:
+1. **Authentic Three-Wheeler Dynamics (`scripts/tuktuk_controller.gd`):**
+   - **Tuned Tricycle Handling & Acceleration:** Top speed (14.0 m/s ~ 50 km/h) with 12.0 m/s² progressive acceleration curves (`power = lerp(0.7, 1.0, 1.0 - speed_ratio * 0.4)`), mimicking local two-stroke/four-stroke passenger auto-rickshaws.
+   - **Progressive Low-to-High Steering Ratio:** Wide turning rate at low speed (`low_speed_turn = 2.8`) transitioning to steady straight-line tracking (`high_speed_turn = 1.6`) to prevent rollover tipping on uneven terrain.
+   - **Active Safety Braking:** High-friction braking deceleration (`22.0 m/s²`) and controlled low-speed reverse gearing (`-3.5 m/s`).
+2. **Synchronous Triple Wheel Rolling & Procedural Engine Synthesis:**
+   - Symmetrically rotates front steer wheel and dual rear drive wheels (`rotate_object_local(Vector3(0, 1, 0), spin_rate)`) mapped directly to ground speed (`current_speed / 0.35`).
+   - Generates authentic procedural 2-stroke tuk-tuk engine roar (`play_tuktuk_engine(speed_ratio)`) modulating pitch and volume with acceleration.
+   - Intelligent multi-point night illumination: dual taillights and high-intensity forward spotlight projector (`HeadlightBeam`) automatically activating during dusk/night or active driving.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
