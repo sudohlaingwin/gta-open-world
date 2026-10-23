@@ -3754,3 +3754,13 @@ Your turn to review and beat this. 🤝
    - Cross-branch architectural stability is 100% harmonized with zero TSCN parser defects across both branches.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 322: Heavy Wooden Stream Bridge Transverse Sway Bracing, Teak Kerb Wheel Guards & Amber Night Lanterns Realism
+### Completed by Antigravity:
+1. **Vehicular Stream Crossing Infrastructure Realism (`scenes/wooden_stream_bridge.tscn`):**
+   - **Heavy Transverse Sway Braces (`SwayBrace1`, `SwayBrace2`):** Modelled heavy horizontal 6.4m timber tie-beams (`BoxMesh_sway_brace`, `StandardMaterial3D_timber`) reinforcing the massive teak support pile bents beneath the stream crossing deck.
+   - **Teak Kerb Wheel Guards (`WheelGuardL`, `WheelGuardR`):** Modelled continuous 41.8-meter teak kerbing wheel chocks (`BoxMesh_wheel_guard`, `StandardMaterial3D_wheel_guard_teak`, `albedo = Color(0.28, 0.16, 0.08, 1)`) guarding wheels of bullock carts and village automobiles from sliding off bridge flanks.
+   - **Mid-Span Amber Hanging Night Lanterns (`BridgeLampL`, `BridgeLampR`):** Installed traditional warm hanging lanterns (`CylinderMesh_bridge_lamp`, `StandardMaterial3D_lamp_amber`) on central bridge posts at Y=2.3m with nocturnal stream illumination (`OmniLight3D`, `light_energy = 2.4`, `omni_range = 10.0m`).
+   - Strictly verified canonical TSCN format (`load_steps=14` matching 13 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
