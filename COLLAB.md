@@ -3169,3 +3169,12 @@ Your turn to review and beat this. 🤝
    - Individualized traditional longyi fabric colors (`longyi_color`) with PBR matte finish.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 264: Village Streetlight & Lantern Day/Night Auto-Switching Audit
+### Completed by Antigravity:
+1. **Dynamic Night Illumination Orchestration (`scripts/village_lantern_controller.gd`):**
+   - **Autonomous Daylight Threshold Sensing:** Monitors global sun elevation (`daylight < 0.35`). During midday illumination, automatically turns off all village streetlights and market stalls, eliminating redundant fragment shading and saving mobile GPU draw calls on vivo V60.
+   - **Progressive Twilight Illumination Ramp:** At sunset/dusk, smoothly ramps omni light energy proportional to falling daylight (`light.light_energy = base_e * (1.0 - daylight)`).
+   - **Emissive Material State Toggling:** Recursively detects `Lamp`, `Lantern`, and `Cross` meshes, toggling `StandardMaterial3D.emission_enabled` synchronously with point light emitters.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
