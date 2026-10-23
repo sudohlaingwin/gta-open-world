@@ -3547,3 +3547,12 @@ Your turn to review and beat this. 🤝
    - Visually crowns the village skyline, sparkling across the entire open-world valley both day and night.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 301: Village Gateway Multi-Tiered Pyatthat Roof & Golden Finial Spire
+### Completed by Antigravity:
+1. **Traditional Monumental Architecture Detailing (`scenes/village_gate.tscn`):**
+   - **Multi-Tiered Pyatthat Crown (`PyatthatTier2`):** Modelled upper tiered roof echelon (`PrismMesh_pyatthat_tier2`, `StandardMaterial3D_gold_trim`) crowning the primary 10.5m portal roof at elevation Y=12.8m.
+   - **Golden Finial Spire (`FinialSpire`):** Added tapered cylindrical gold finial spire (`CylinderMesh_gate_finial`, height 1.8m) ascending to Y=14.5m above the village welcome portal.
+   - Accurately captures traditional Myanmar royal township gateway architecture greeting arriving travelers.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
