@@ -4349,3 +4349,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=39` matching 0 ext_resources + 38 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 380: Roadside Water Pot Stand Wet Coir Insulation Wraps & Lacquered Cup Tray Realism
+### Completed by Antigravity:
+1. **Public Merit Charity & Rural Hydration Point Realism (`scenes/water_pot_stand.tscn`):**
+   - **Cooling Wet Coconut Coir Pot Wraps (`PotWrapLeft`, `PotWrapRight`):** Modelled authentic natural coir fiber insulation collars (`CylinderMesh_woven_collar`, `StandardMaterial3D_coir_wrap`, `albedo = Color(0.52, 0.38, 0.22, 1)`, `roughness = 0.92`) encasing the porous clay water urn bellies to maintain ice-cool water through evaporative cooling (အုန်းဆံကြိုး ရေအိုးပတ်).
+   - **Lacquered Cup Drainage Resting Tray (`CupTray`):** Modelled an authentic traditional dark red Burmese lacquer cup tray (`BoxMesh_cup_tray`, `StandardMaterial3D_tray_lacquer`, `albedo = Color(0.42, 0.12, 0.08, 1)`, `roughness = 0.42`, `specular = 0.45`) upon which the communal aluminium drinking cup rests inverted for sanitary drainage.
+   - Strictly verified canonical TSCN format (`load_steps=22` matching 0 ext_resources + 21 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

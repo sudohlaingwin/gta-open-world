@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=22 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pot"]
 size = Vector3(3.6, 3.4, 2.1)
@@ -77,6 +77,23 @@ size = Vector3(3.5, 0.08, 1.8)
 albedo_color = Color(0.48, 0.38, 0.20, 1)
 roughness = 0.45
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_woven_collar"]
+top_radius = 0.62
+bottom_radius = 0.62
+height = 0.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_coir_wrap"]
+albedo_color = Color(0.52, 0.38, 0.22, 1)
+roughness = 0.92
+
+[sub_resource type="BoxMesh" id="BoxMesh_cup_tray"]
+size = Vector3(0.58, 0.06, 0.38)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tray_lacquer"]
+albedo_color = Color(0.42, 0.12, 0.08, 1)
+roughness = 0.42
+specular = 0.45
+
 [node name="WaterPotStand" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -95,10 +112,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85, 1.95, 0)
 mesh = SubResource("SphereMesh_pot")
 surface_material_override/0 = SubResource("StandardMaterial3D_clay")
 
+[node name="PotWrapLeft" type="MeshInstance3D" parent="VisualMesh/PotLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_woven_collar")
+surface_material_override/0 = SubResource("StandardMaterial3D_coir_wrap")
+
 [node name="PotRight" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 1.95, 0)
 mesh = SubResource("SphereMesh_pot")
 surface_material_override/0 = SubResource("StandardMaterial3D_clay")
+
+[node name="PotWrapRight" type="MeshInstance3D" parent="VisualMesh/PotRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_woven_collar")
+surface_material_override/0 = SubResource("StandardMaterial3D_coir_wrap")
 
 [node name="LidL" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85, 2.52, 0)
@@ -110,8 +137,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 2.52, 0)
 mesh = SubResource("CylinderMesh_pot_lid")
 surface_material_override/0 = SubResource("StandardMaterial3D_clay")
 
+[node name="CupTray" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52, 0.45)
+mesh = SubResource("BoxMesh_cup_tray")
+surface_material_override/0 = SubResource("StandardMaterial3D_tray_lacquer")
+
 [node name="WaterCup" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, 0.45)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66, 0.45)
 mesh = SubResource("CylinderMesh_water_cup")
 surface_material_override/0 = SubResource("StandardMaterial3D_aluminium_cup")
 
