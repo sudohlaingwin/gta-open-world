@@ -43,6 +43,7 @@ const Realism104Script = preload("res://realism104.gd")
 const Realism105Script = preload("res://realism105.gd")
 const Realism106Script = preload("res://realism106.gd")
 const Realism107Script = preload("res://realism107.gd")
+const Realism108Script = preload("res://realism108.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -744,6 +745,14 @@ func _ready() -> void:
 	# each), west pond reed ring x8 clusters — 50 honest items
 	# (frame >= 320 pass, after realism106's 300).
 	Realism107Script.dress(get_parent())
+	# Slice 107: pond reed rings x2 (Pond62A/B — lotus only,
+	# no reeds), skyline completion (south + west bands,
+	# mirroring S99 north / S100 east), bicycle kickstand
+	# (motorcycle parity), MRTV antenna mast, EF stilt-house
+	# sheet details (clothesline + firewood x12 houses) —
+	# 30 honest items (frame >= 340 pass, after
+	# realism107's 320).
+	Realism108Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
