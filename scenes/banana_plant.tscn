@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Shader" path="res://scripts/foliage_sway.gdshader" id="1_sway"]
 
@@ -29,6 +29,32 @@ shader_parameter/wind_strength = 0.24
 shader_parameter/flutter_speed = 5.8
 shader_parameter/flutter_strength = 0.09
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_fruit_stalk"]
+top_radius = 0.08
+bottom_radius = 0.12
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stalk"]
+albedo_color = Color(0.32, 0.44, 0.16, 1)
+roughness = 0.70
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_banana_bunch"]
+top_radius = 0.28
+bottom_radius = 0.32
+height = 1.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_banana_gold"]
+albedo_color = Color(0.88, 0.78, 0.16, 1)
+roughness = 0.55
+
+[sub_resource type="SphereMesh" id="SphereMesh_blossom"]
+radius = 0.22
+height = 0.52
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blossom_purple"]
+albedo_color = Color(0.46, 0.12, 0.24, 1)
+roughness = 0.65
+
 [node name="BananaPlant" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -56,6 +82,21 @@ surface_material_override/0 = SubResource("ShaderMaterial_banana_leaf")
 transform = Transform3D(0.25, -0.25, -0.935, 0, 0.965, -0.258, 0.968, 0.065, 0.241, -0.9, 5.2, 1.8)
 mesh = SubResource("BoxMesh_leaf")
 surface_material_override/0 = SubResource("ShaderMaterial_banana_leaf")
+
+[node name="FruitStalk" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.866, 0.5, 0, -0.5, 0.866, 0.35, 4.2, 0.35)
+mesh = SubResource("CylinderMesh_fruit_stalk")
+surface_material_override/0 = SubResource("StandardMaterial3D_stalk")
+
+[node name="BananaBunch" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.866, 0.5, 0, -0.5, 0.866, 0.55, 3.8, 0.55)
+mesh = SubResource("CylinderMesh_banana_bunch")
+surface_material_override/0 = SubResource("StandardMaterial3D_banana_gold")
+
+[node name="BlossomHeart" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.866, 0.5, 0, -0.5, 0.866, 0.85, 3.1, 0.85)
+mesh = SubResource("SphereMesh_blossom")
+surface_material_override/0 = SubResource("StandardMaterial3D_blossom_purple")
 
 [node name="BananaSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 1.2)

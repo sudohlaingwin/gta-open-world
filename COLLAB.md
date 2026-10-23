@@ -3806,3 +3806,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=12` matching 1 ext_resource + 10 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 327: Rural Banana Plantation Pendulous Fruit Bunch & Purple Blossom Heart Realism
+### Completed by Antigravity:
+1. **Tropical Horticultural Realism (`scenes/banana_plant.tscn`):**
+   - **Curved Pendulous Fruit Stalk (`FruitStalk`):** Modelled a natural arching fruit-bearing stalk (`CylinderMesh_fruit_stalk`, `StandardMaterial3D_stalk`, `albedo = Color(0.32, 0.44, 0.16, 1)`) emerging from the central leaf crown.
+   - **Ripening Golden Banana Bunch (`BananaBunch`):** Modelled dense clustered banana hands (`CylinderMesh_banana_bunch`, `StandardMaterial3D_banana_gold`, `albedo = Color(0.88, 0.78, 0.16, 1)`) hanging along the rachis.
+   - **Deep Purple Banana Blossom Heart (`BlossomHeart`):** Modelled an authentic teardrop banana inflorescence blossom heart / Hnget Pyaw Bu (ငှက်ပျောဖူး) (`SphereMesh_blossom`, `StandardMaterial3D_blossom_purple`, `albedo = Color(0.46, 0.12, 0.24, 1)`) suspended at the distal tip of the stem.
+   - Strictly verified canonical TSCN format (`load_steps=12` matching 1 ext_resource + 10 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
