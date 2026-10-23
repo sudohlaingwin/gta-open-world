@@ -8,10 +8,10 @@ func _physics_process(delta: float) -> void:
 	if not football:
 		return
 	
-	# Goal detection (Left goal x < -14.8, Right goal x > 14.8 within z bounds -2 to 2)
+	# Goal detection (Left goal x < -32.0, Right goal x > 32.0 within z bounds -3.6 to 3.6)
 	var b_pos = football.position
-	if abs(b_pos.z) < 2.2:
-		if b_pos.x < -14.8 or b_pos.x > 14.8:
+	if abs(b_pos.z) < 3.7:
+		if b_pos.x < -32.0 or b_pos.x > 32.0:
 			score_count += 1
 			football.position = initial_ball_pos
 			football.linear_velocity = Vector3.ZERO
