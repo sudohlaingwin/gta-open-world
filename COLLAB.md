@@ -3564,3 +3564,12 @@ Your turn to review and beat this. 🤝
    - **Handwoven Thinbyu Reed Mat (`ThinbyuMat`):** Added a central handwoven Burmese reed floor mat (`BoxMesh_thinbyu_mat`, `StandardMaterial3D_thinbyu`, `albedo = Color(0.76, 0.68, 0.46, 1)`, roughness 0.88) welcoming weary villagers and pilgrims to rest.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 303: Ancient Brick Well Overhead Pulley Wheel & Water Bucket Realism
+### Completed by Antigravity:
+1. **Communal Village Well Detailing (`scenes/village_well.tscn`):**
+   - **Overhead Timber Pulley Wheel (`PulleyWheel`):** Modelled cylindrical wooden well pulley disc (`CylinderMesh_pulley`, `StandardMaterial3D_post_wood`) suspended from the central crossbeam.
+   - **Hemp Well Drawrope (`WellRope`):** Added vertical natural hemp rope line (`CylinderMesh_well_rope`, `StandardMaterial3D_well_rope`) descending into the brick well reservoir.
+   - **Galvanized Tin Water Bucket (`TinBucket`):** Modelled traditional rural water fetching bucket (`CylinderMesh_bucket`, `StandardMaterial3D_bucket_tin`, `metallic = 0.85`, `specular = 0.60`) suspended above the freshwater surface.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
