@@ -3178,3 +3178,14 @@ Your turn to review and beat this. 🤝
    - **Emissive Material State Toggling:** Recursively detects `Lamp`, `Lantern`, and `Cross` meshes, toggling `StandardMaterial3D.emission_enabled` synchronously with point light emitters.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 265: Diurnal Night Market Illuminators & Bioluminescent Firefly Particles Audit
+### Completed by Antigravity:
+1. **Diurnal Bioluminescent Particle Pipeline (`scripts/village_fireflies.gd`):**
+   - **Autonomous Solar State Detection:** Automatically synchronizes GPUParticles3D emission with global daylight (`daylight < 0.35`). During daylight hours, stops emitting particles (`emitting = false`), conserving mobile GPU vertex buffers on vivo V60.
+   - **Night Atmospheric Radiance:** At dusk, triggers 120 additive glowing bioluminescent embers hovering across 40m village radii with warm lime glow (`Color(0.92, 1.0, 0.35)`).
+2. **Shwe Mingalar Night Market Multi-Stall Illumination (`scripts/myanmar_night_market.gd`):**
+   - Directly toggles triple hanging incandescent bulb fixtures (`Bulb1`, `Bulb2`, `Bulb3`) on dusk trigger (`daylight < 0.35`).
+   - Ensures stalls radiate vibrant warm amber hues during evening hours while saving fill-rate during bright daylight exploration.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
