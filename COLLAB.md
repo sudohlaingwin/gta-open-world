@@ -3642,3 +3642,12 @@ Your turn to review and beat this. 🤝
    - Verified canonical TSCN format with exact `load_steps=19` (1 ext_resource + 17 sub_resources + 1).
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 311: Rural Guesthouse Traveler Leather Luggage & Vintage Ceiling Fan Realism
+### Completed by Antigravity:
+1. **Village Lodging Hospitality Realism (`scenes/myanmar_guesthouse.tscn`):**
+   - **Vintage Leather Travel Luggage (`LuggageSuitcase`):** Modelled a traveler's leather suitcase (`BoxMesh_suitcase`, `StandardMaterial3D_leather_brown`, `albedo = Color(0.55, 0.28, 0.12, 1)`) resting beside the guest bed.
+   - **Vintage Bronze Ceiling Fan (`CeilingFanHub`, `CeilingFanBlade1`, `CeilingFanBlade2`):** Modelled a colonial Burmese ceiling fan suspended from the rafters (`CylinderMesh_fan_hub`, `BoxMesh_fan_blade`, `StandardMaterial3D_fan_bronze`, `metallic = 0.85`) providing cooling relief in rural heat.
+   - Strictly verified canonical TSCN format (`load_steps=20` matching 1 ext_resource + 18 sub_resources + 1) for zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
