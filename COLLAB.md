@@ -3902,3 +3902,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=22` matching 1 ext_resource + 20 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 336: Myanmar 125cc Underbone Motorcycle Chrome Exhaust, Rear Carrier Rack & Kickstand Realism
+### Completed by Antigravity:
+1. **Rural Commuter Motorcycle Realism (`scenes/myanmar_motorcycle.tscn`):**
+   - **Polished Chrome Silencer Exhaust Pipe (`ChromeExhaustPipe`):** Modelled an authentic angled low-slung chrome exhaust muffler pipe (`CylinderMesh_exhaust_pipe`, `StandardMaterial3D_chrome`, `metallic = 0.95`, `roughness = 0.12`) running along the right chassis flank.
+   - **Tubular Iron Rear Cargo Carrier Rack (`RearCarrierRack`):** Modelled a durable black iron freight rack (`BoxMesh_rear_carrier`, `StandardMaterial3D_carrier_iron`, `metallic = 0.85`) over the rear fender for carrying village goods, market produce, or pillion passengers.
+   - **Angled Steel Parking Kickstand (`Kickstand`):** Modelled a deployable side kickstand arm (`BoxMesh_kickstand`, `StandardMaterial3D_carrier_iron`) angled down from the left lower frame.
+   - Strictly verified canonical TSCN format (`load_steps=23` matching 1 ext_resource + 21 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
