@@ -65,6 +65,18 @@ extends Node3D
 ## running, and the first-observation estimate uses
 ## current daylight + current band for the same choice.
 
+## Slice 85 — RAIN LEGS (part 12). A leg starting in the
+## rainy season (SaveManager season62 == 1) runs 75 s per
+## stop instead of 60 s. Precedence, stated plainly:
+## night 90 s wins over rain 75 s, rain wins over peak
+## 45 s, off-peak stays 60 s. Duration is fixed at leg
+## start like Slices 79/83, so a weather change mid-leg
+## does NOT stretch the leg already running. Rain does
+## NOT change the boards (they list Local minute marks;
+## the live timetable label gives the exact countdown).
+## The rain test reads SaveManager directly; a missing
+## SaveManager means dry, same default as bus.gd braking.
+##
 ## Slice 84 — FULL-LENGTH ROUTE (part 11). 6 stops, not 4:
 ## travel order east [4, 0, 1, 2, 3, 5], west [5, 3, 2, 1, 0,
 ## 4] (controller owns it). Leg-start latch is now generic
@@ -83,6 +95,7 @@ const STOP_SPEED: float = 0.5
 const LEG_S: float = 60.0
 const NIGHT_LEG_S: float = 90.0
 const PEAK_LEG_S: float = 45.0
+const RAIN_LEG_S: float = 75.0
 const ON_TIME_S: float = 15.0
 const FEEDBACK_S: float = 5.0
 const BOARD_TEXT: String = "ဘတ်စ်ဇယား\nမှတ်တိုင် ၁ ၀ မိနစ်\nမှတ်တိုင် ၂ ၁ မိနစ်\nမှတ်တိုင် ၃ ၂ မိနစ်\nမှတ်တိုင် ၄ ၃ မိနစ်\nမှတ်တိုင် ၅ ၄ မိနစ်\nမှတ်တိုင် ၆ ၅ မိနစ်"
@@ -182,12 +195,25 @@ func _daylight() -> float:
 	return 1.0
 
 
+func _is_rainy() -> bool:
+	# Slice 85: rainy season is SaveManager season62 == 1
+	# (same read as bus.gd rain braking and the Slice 62
+	# season controller). Missing SaveManager means dry.
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm == null or sm.get("season62") == null:
+		return false
+	return int(sm.get("season62")) == 1
+
+
 func _leg_duration_now() -> float:
-	# Slice 83 band rule, mirrored from bus_sim83.gd:
-	# night (daylight < 0.15) first at 90 s, then peak
+	# Slice 83 band rule, mirrored from bus_sim83.gd,
+	# plus Slice 85 rain precedence: night (daylight <
+	# 0.15) first at 90 s, then rain at 75 s, then peak
 	# bands on the 120 s day clock at 45 s, else 60 s.
 	if _daylight() < 0.15:
 		return NIGHT_LEG_S
+	if _is_rainy():
+		return RAIN_LEG_S
 	var world := get_parent() as Node3D
 	var t := 0.0
 	if world != null:

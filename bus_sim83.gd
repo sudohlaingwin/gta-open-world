@@ -50,6 +50,18 @@ extends Node3D
 ## with the same shape (group 4 -> 5 east, the Express
 ## endpoint; group 5 -> 4 west, the Express endpoint).
 ## Band visibility loops all 6 groups.
+##
+## Slice 85 — RAIN RIDERS (part 12). The third seat stays
+## hidden in rain even at peak: fewer people wait in the
+## rain, counts only, no money, no economy. The rule is
+## show = peak band AND dry; a rain-hidden rider keeps
+## the peak83_hidden marker, so it resurrects at the next
+## dry peak exactly like an off-peak-hidden rider (a
+## boarded rider is never resurrected — the walk hides
+## it without setting the marker, and the controller
+## boards visible riders only, so a hidden rider cannot
+## board while hidden). Rain braking (Slice 77, x 0.8)
+## is verified unchanged by SIM85, not touched here.
 
 const BAND_NIGHT: int = 0
 const BAND_PEAK: int = 1
@@ -138,6 +150,16 @@ func _day_time() -> float:
 
 func _band() -> int:
 	return band_for(_daylight(), _day_time())
+
+
+func _is_rainy() -> bool:
+	# Slice 85: rainy season is SaveManager season62 == 1
+	# (same read as bus.gd rain braking). Missing
+	# SaveManager means dry.
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm == null or sm.get("season62") == null:
+		return false
+	return int(sm.get("season62")) == 1
 
 
 func _mat(color: Color, rough: float = 0.9) -> StandardMaterial3D:
@@ -234,7 +256,11 @@ func _apply_band(world: Node3D, band: int) -> void:
 			continue
 		if bool(w.get_meta("walking78", false)):
 			continue
-		if band == BAND_PEAK:
+		# Slice 85: show the third seat at a DRY peak only.
+		# Rain hides it even at peak; the marker keeps
+		# rain-hidden distinct from boarded (see header).
+		var show_seat2 := band == BAND_PEAK and not _is_rainy()
+		if show_seat2:
 			if bool(w.get_meta("peak83_hidden", false)):
 				w.visible = true
 				w.set_meta("peak83_hidden", false)
