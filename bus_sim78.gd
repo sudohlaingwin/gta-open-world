@@ -214,16 +214,27 @@ func _physics_process(delta: float) -> void:
 				var dist := Vector2(cur.x - target.x, cur.z - target.z).length()
 				if dist <= maxf(step, 0.5):
 					w.global_position = Vector3(target.x, 0.0, target.z)
-					w.visible = false
 					w.set_meta("walking78", false)
 					w.set_meta("walk_started78", false)
+					# Slice 91: hand the arrived rider to
+					# BusSim91 for onboard seating instead
+					# of hiding them. Without a BusSim91
+					# node the old hide behaviour stands, so
+					# this file stays correct on its own.
+					if world.get_node_or_null("BusSim91") != null:
+						w.set_meta("arrived91", true)
+					else:
+						w.visible = false
 				else:
 					var dir := Vector2(target.x - cur.x, target.z - cur.z).normalized()
 					w.global_position = Vector3(cur.x + dir.x * step, 0.0, cur.z + dir.y * step)
-			elif w.visible:
+			elif w.visible and not bool(w.get_meta("seated91", false)) and not bool(w.get_meta("arrived91", false)):
 				# Seated on the bench (re-seats respawned
 				# riders too, so a round-trip respawn never
 				# leaves a rider standing in mid-air).
+				# Slice 91: onboard / just-arrived riders
+				# are owned by BusSim91 — reseating one
+				# here would teleport them out of the bus.
 				_seat_rider(w, wi)
 		# Alighted figures walk away south, then fade out.
 		for child in grp.get_children():

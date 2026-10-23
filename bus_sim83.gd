@@ -256,6 +256,11 @@ func _apply_band(world: Node3D, band: int) -> void:
 			continue
 		if bool(w.get_meta("walking78", false)):
 			continue
+		# Slice 91: a seated / just-arrived rider is owned
+		# by BusSim91 — the band rule must not hide them
+		# off-peak (or mark them peak83_hidden) mid-ride.
+		if bool(w.get_meta("seated91", false)) or bool(w.get_meta("arrived91", false)):
+			continue
 		# Slice 85: show the third seat at a DRY peak only.
 		# Rain hides it even at peak; the marker keeps
 		# rain-hidden distinct from boarded (see header).

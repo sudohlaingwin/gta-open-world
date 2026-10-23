@@ -293,8 +293,10 @@ func _waiting_bools(world: Node3D) -> Array:
 					# Slice 78: a rider mid-walk to the bus is
 					# still visible but already counted
 					# onboard — saving them as waiting would
-					# duplicate them on load.
-					vis = w.visible and not bool(w.get_meta("walking78", false))
+					# duplicate them on load. Slice 91: the
+					# same rule covers seated / just-arrived
+					# riders (visible, but already onboard).
+					vis = w.visible and not bool(w.get_meta("walking78", false)) and not bool(w.get_meta("seated91", false)) and not bool(w.get_meta("arrived91", false))
 			out.append(vis)
 	return out
 
