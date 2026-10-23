@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=18 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(6.4, 0.5, 42.0)
@@ -50,6 +50,18 @@ size = Vector3(0.24, 0.22, 41.8)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wheel_guard_teak"]
 albedo_color = Color(0.28, 0.16, 0.08, 1)
 roughness = 0.82
+
+[sub_resource type="BoxMesh" id="BoxMesh_approach_ramp"]
+size = Vector3(6.4, 0.28, 4.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gravel_ramp"]
+albedo_color = Color(0.52, 0.44, 0.34, 1)
+roughness = 0.92
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_iron_truss_tie"]
+top_radius = 0.04
+bottom_radius = 0.04
+height = 6.2
 
 [node name="WoodenStreamBridge" type="StaticBody3D"]
 
@@ -121,6 +133,21 @@ surface_material_override/0 = SubResource("StandardMaterial3D_timber")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.8, 16.0)
 mesh = SubResource("BoxMesh_sway_brace")
 surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="SwayBraceMid" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.8, 0.0)
+mesh = SubResource("BoxMesh_sway_brace")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="ApproachRampNorth" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871557, 0, 0.0871557, 0.996195, 0, 0.08, -23.0)
+mesh = SubResource("BoxMesh_approach_ramp")
+surface_material_override/0 = SubResource("StandardMaterial3D_gravel_ramp")
+
+[node name="ApproachRampSouth" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.996195, 0.0871557, 0, -0.0871557, 0.996195, 0, 0.08, 23.0)
+mesh = SubResource("BoxMesh_approach_ramp")
+surface_material_override/0 = SubResource("StandardMaterial3D_gravel_ramp")
 
 [node name="WheelGuardL" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0.48, 0)

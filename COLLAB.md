@@ -4118,3 +4118,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=16` matching 0 ext_resources + 15 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 357: Heavy Teak Stream Bridge Midspan Sway-Bracing & Gravel Approach Transition Ramps Realism
+### Completed by Antigravity:
+1. **Rural Vehicular & Bullock Cart Stream Infrastructure Realism (`scenes/wooden_stream_bridge.tscn`):**
+   - **Central Mid-Span Heavy Timber Sway-Brace (`SwayBraceMid`):** Added a horizontal 6.4m transverse timber strut (`BoxMesh_sway_brace`, `StandardMaterial3D_timber`, `roughness = 0.86`) connecting the central pylon pair `PillarL2` and `PillarR2` under the deck center.
+   - **Dual Gravel Abutment Transition Ramps (`ApproachRampNorth`, `ApproachRampSouth`):** Modelled 4.5m compact gravel approach inclines (`BoxMesh_approach_ramp`, `StandardMaterial3D_gravel_ramp`, `albedo = Color(0.52, 0.44, 0.34, 1)`, `roughness = 0.92`) providing smooth vehicular transitions between dirt village roads and the 42m timber bridge deck.
+   - Strictly verified canonical TSCN format (`load_steps=18` matching 0 ext_resources + 17 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
