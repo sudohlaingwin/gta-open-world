@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3]
+[gd_scene load_steps=34 format=3]
 
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
@@ -122,6 +122,32 @@ roughness = 0.12
 specular = 0.85
 transparency = 1
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_strainer_sock"]
+top_radius = 0.18
+bottom_radius = 0.06
+height = 0.65
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cotton_sock"]
+albedo_color = Color(0.58, 0.42, 0.28, 1)
+roughness = 0.92
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_milk_tin"]
+top_radius = 0.14
+bottom_radius = 0.14
+height = 0.28
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tin_can"]
+albedo_color = Color(0.92, 0.92, 0.95, 1)
+metallic = 0.92
+roughness = 0.18
+
+[sub_resource type="BoxMesh" id="BoxMesh_newspaper_rack"]
+size = Vector3(0.45, 1.4, 1.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_rack"]
+albedo_color = Color(0.62, 0.48, 0.28, 1)
+roughness = 0.82
+
 [node name="MyanmarTeaShop" type="StaticBody3D"]
 script = ExtResource("1_lantern")
 
@@ -227,6 +253,26 @@ surface_material_override/0 = SubResource("StandardMaterial3D_stool_red")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.52, 0)
 mesh = SubResource("BoxMesh_stool")
 surface_material_override/0 = SubResource("StandardMaterial3D_stool_red")
+
+[node name="TeaStrainerSock" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, -4.5)
+mesh = SubResource("CylinderMesh_strainer_sock")
+surface_material_override/0 = SubResource("StandardMaterial3D_cotton_sock")
+
+[node name="CondensedMilkTin1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 1.25, -4.5)
+mesh = SubResource("CylinderMesh_milk_tin")
+surface_material_override/0 = SubResource("StandardMaterial3D_tin_can")
+
+[node name="CondensedMilkTin2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 1.25, -4.5)
+mesh = SubResource("CylinderMesh_milk_tin")
+surface_material_override/0 = SubResource("StandardMaterial3D_tin_can")
+
+[node name="NewspaperStand" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 0.95, -4.5)
+mesh = SubResource("BoxMesh_newspaper_rack")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_rack")
 
 [node name="Signboard" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.2, 5.6)
