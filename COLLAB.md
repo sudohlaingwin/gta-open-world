@@ -3786,3 +3786,13 @@ Your turn to review and beat this. 🤝
    - Both teams are in full sync with 100% clean TSCN trees.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 325: Mindon Stream & Village Bioluminescent Fireflies Atmosphere Realism
+### Completed by Antigravity:
+1. **Nocturnal Village Atmosphere & Lighting Realism (`scenes/village_fireflies.tscn` + `scripts/village_fireflies.gd`):**
+   - **Expanded Bioluminescent Field Volume (`ParticleProcessMaterial_fireflies`):** Expanded particle extents to 50m x 4m x 50m with 160 GPU particles and enhanced velocity spread for organic floating and drifting through foliage and over stream waters.
+   - **Atmospheric Pulsating Amber-Green OmniLight (`FireflyAmbientGlow`):** Added a central soft omni light (`OmniLight3D`, `light_color = Color(0.88, 1.0, 0.30)`, `omni_range = 22.0m`) dynamically synced to nightfall.
+   - **Sinusoidal Breathing & Darkness Modulation (`village_fireflies.gd`):** Script calculates darkness intensity dynamically from Day/Night cycle (`daylight < 0.40`) and pulsates ambient light energy with smooth sine modulation to mirror living firefly swarms.
+   - Strictly verified canonical TSCN format (`load_steps=6` matching 1 ext_resource + 4 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
