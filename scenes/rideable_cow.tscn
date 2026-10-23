@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/mount_controller.gd" id="1_mount"]
 
@@ -40,6 +40,32 @@ specular = 0.35
 [sub_resource type="SphereShape3D" id="SphereShape3D_interact"]
 radius = 4.8
 
+[sub_resource type="TorusMesh" id="TorusMesh_neck_rope"]
+inner_radius = 0.38
+outer_radius = 0.46
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red_rope"]
+albedo_color = Color(0.82, 0.18, 0.14, 1)
+roughness = 0.85
+
+[sub_resource type="SphereMesh" id="SphereMesh_cow_bell"]
+radius = 0.14
+height = 0.28
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brass_cow_bell"]
+albedo_color = Color(0.88, 0.74, 0.22, 1)
+metallic = 0.92
+roughness = 0.24
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cow_tail"]
+top_radius = 0.04
+bottom_radius = 0.09
+height = 1.15
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tail_hair"]
+albedo_color = Color(0.24, 0.20, 0.18, 1)
+roughness = 0.88
+
 [node name="RideableCow" type="CharacterBody3D"]
 script = ExtResource("1_mount")
 mount_type = 0
@@ -77,6 +103,21 @@ surface_material_override/0 = SubResource("StandardMaterial3D_horn")
 transform = Transform3D(0.9, 0.4, 0, -0.4, 0.9, 0, 0, 0, 1, -0.45, 0.58, 0.16)
 mesh = SubResource("CylinderMesh_horn")
 surface_material_override/0 = SubResource("StandardMaterial3D_horn")
+
+[node name="NeckHarness" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.7, -1.35)
+mesh = SubResource("TorusMesh_neck_rope")
+surface_material_override/0 = SubResource("StandardMaterial3D_red_rope")
+
+[node name="NeckBrassBell" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, -1.35)
+mesh = SubResource("SphereMesh_cow_bell")
+surface_material_override/0 = SubResource("StandardMaterial3D_brass_cow_bell")
+
+[node name="Tail" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1.35, 1.62)
+mesh = SubResource("CylinderMesh_cow_tail")
+surface_material_override/0 = SubResource("StandardMaterial3D_tail_hair")
 
 [node name="LegFL" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.58, 0.65, -0.95)
