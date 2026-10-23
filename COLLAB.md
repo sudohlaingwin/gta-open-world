@@ -4109,3 +4109,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=23` matching 0 ext_resources + 22 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 356: Mindon Stream Bamboo Bridge Riverbed Piles & Diagonal Cross-Struts Realism
+### Completed by Antigravity:
+1. **Rural Stream Crossing Vernacular Engineering Realism (`scenes/bamboo_bridge.tscn`):**
+   - **Deep Riverbed Wet Bamboo Support Piles (`RiverbedPileL`, `RiverbedPileR`):** Modelled 6.8m vertical submerged bamboo pilings (`CylinderMesh_riverbed_pile`, `StandardMaterial3D_wet_bamboo_pile`, `albedo = Color(0.46, 0.40, 0.22, 1)`, `roughness = 0.50`, `specular = 0.35`) driving down directly into the stream bed under the 36m bridge mid-span.
+   - **Angled Lateral Stability Struts (`DiagonalStrutL`, `DiagonalStrutR`):** Added 4.2m diagonal timber bamboo braces (`BoxMesh_diagonal_strut`, `StandardMaterial3D_bamboo`) triangulating the bridge deck to prevent sway from seasonal monsoon river torrents.
+   - Strictly verified canonical TSCN format (`load_steps=16` matching 0 ext_resources + 15 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

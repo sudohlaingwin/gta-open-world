@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=16 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(5.2, 0.45, 36.0)
@@ -47,6 +47,19 @@ emission_energy_multiplier = 2.4
 
 [sub_resource type="BoxMesh" id="BoxMesh_cross_brace"]
 size = Vector3(5.2, 0.2, 0.2)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_riverbed_pile"]
+top_radius = 0.20
+bottom_radius = 0.26
+height = 6.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wet_bamboo_pile"]
+albedo_color = Color(0.46, 0.40, 0.22, 1)
+roughness = 0.50
+specular = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_diagonal_strut"]
+size = Vector3(0.16, 0.16, 4.2)
 
 [node name="BambooBridge" type="StaticBody3D"]
 
@@ -107,6 +120,26 @@ surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
 [node name="CrossBrace2" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 14.5)
 mesh = SubResource("BoxMesh_cross_brace")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="RiverbedPileL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, -2.6, 0.0)
+mesh = SubResource("CylinderMesh_riverbed_pile")
+surface_material_override/0 = SubResource("StandardMaterial3D_wet_bamboo_pile")
+
+[node name="RiverbedPileR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, -2.6, 0.0)
+mesh = SubResource("CylinderMesh_riverbed_pile")
+surface_material_override/0 = SubResource("StandardMaterial3D_wet_bamboo_pile")
+
+[node name="DiagonalStrutL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, -2.4, -1.2, 0.0)
+mesh = SubResource("BoxMesh_diagonal_strut")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="DiagonalStrutR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.906308, -0.422618, 0, 0.422618, 0.906308, 2.4, -1.2, 0.0)
+mesh = SubResource("BoxMesh_diagonal_strut")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
 
 [node name="RopeL1" type="MeshInstance3D" parent="VisualMesh"]
