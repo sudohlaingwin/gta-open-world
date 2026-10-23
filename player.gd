@@ -33,6 +33,7 @@ const Realism96Script = preload("res://realism96.gd")
 const Night97Script = preload("res://night97.gd")
 const Scale97Script = preload("res://scale97.gd")
 const Edge97Script = preload("res://edge97.gd")
+const Realism98Script = preload("res://realism98.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -674,6 +675,12 @@ func _ready() -> void:
 	Night97Script.dress(get_parent())
 	Scale97Script.dress(get_parent())
 	Edge97Script.dress(get_parent())
+	# Slice 97 (parent sequence): deferred tertiary
+	# sheet detail + night/scale/edge polish (frame >=
+	# 140 pass, after scale97's frame-120 pass).
+	# File numbering realism98 follows the *97 files
+	# of Slice 96; the slice itself is 97.
+	Realism98Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
