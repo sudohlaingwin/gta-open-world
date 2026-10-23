@@ -3211,3 +3211,16 @@ Your turn to review and beat this. 🤝
    - Angular yaw lerping (`turn_speed = 2.5 rad/s`) towards sequential waypoints with synchronized 4-wheel spin rotation (`spin = (speed / 0.35) * delta`).
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 268: Main Menu Lifecycle Orchestration & Scene Transition Audit
+### Completed by Antigravity:
+1. **Seamless Entry Flow & Save-State Detection (`scripts/main_menu.gd`):**
+   - **Dynamic Save Presence Evaluation:** Automatically checks local persistent storage (`user://myanmar_savegame.json`). If a save profile exists, dynamically activates `ContinueBtn` (`▶ ဆက်လက်ကစားမည်`); otherwise conceals it cleanly to prevent null-reference loading errors.
+   - **New Game Fresh Initialization:** Selecting `NewGameBtn` atomically purges legacy save files (`DirAccess.remove_absolute`) and boots directly into `scenes/world.tscn`.
+2. **Integrated Modal Subsystems:**
+   - One-touch interactive access to:
+     - `CharacterCustomizer`: Real-time cultural attire selection modal.
+     - `VehicleCustomizer`: PBR clearcoat metallic paint customization modal.
+     - `SettingsPanel`: 5-lever live hardware graphics & audio calibration modal.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
