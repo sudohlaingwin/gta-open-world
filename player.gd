@@ -39,6 +39,7 @@ const Realism100Script = preload("res://realism100.gd")
 const Realism101Script = preload("res://realism101.gd")
 const Realism102Script = preload("res://realism102.gd")
 const Realism103Script = preload("res://realism103.gd")
+const Realism104Script = preload("res://realism104.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -714,6 +715,11 @@ func _ready() -> void:
 	# z = -8 along x 445..2445 + 1 EF-road notch pool), zero colliders
 	# (frame >= 240 pass, after realism102's 220 pass).
 	Realism103Script.dress(get_parent())
+	# Slice 103 (parent sequence): night fill round 3 (Mindon west 3 +
+	# Mindon east 1 + EF south 1 + east track 10 + S-bend loop 14 +
+	# hamlet spur 1 = 30 pools) + MD1/2/3/6/10 stay-bare decision
+	# (frame >= 260 pass, after realism103's 240 pass).
+	Realism104Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
