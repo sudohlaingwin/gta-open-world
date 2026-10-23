@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://scripts/horse_controller.gd" id="1_horse"]
 
@@ -42,6 +42,27 @@ size = Vector3(0.12, 0.32, 0.15)
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
 size = Vector3(4.8, 3.4, 5.5)
 
+[sub_resource type="BoxMesh" id="BoxMesh_mane"]
+size = Vector3(0.16, 1.25, 0.45)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_hair"]
+albedo_color = Color(0.15, 0.08, 0.05, 1)
+roughness = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tail"]
+top_radius = 0.08
+bottom_radius = 0.16
+height = 1.25
+
+[sub_resource type="TorusMesh" id="TorusMesh_stirrup"]
+inner_radius = 0.08
+outer_radius = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brass_stirrup"]
+albedo_color = Color(0.85, 0.72, 0.25, 1)
+metallic = 0.92
+roughness = 0.22
+
 [node name="MyanmarHorse" type="CharacterBody3D"]
 script = ExtResource("1_horse")
 
@@ -61,6 +82,11 @@ transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 2.35, -
 mesh = SubResource("BoxMesh_neck")
 surface_material_override/0 = SubResource("StandardMaterial3D_chestnut")
 
+[node name="Mane" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 2.65, -1.15)
+mesh = SubResource("BoxMesh_mane")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_hair")
+
 [node name="Head" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, -1.95)
 mesh = SubResource("BoxMesh_head")
@@ -76,10 +102,25 @@ transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 
 mesh = SubResource("PrismMesh_horse_ear")
 surface_material_override/0 = SubResource("StandardMaterial3D_chestnut")
 
+[node name="Tail" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1.45, 1.55)
+mesh = SubResource("CylinderMesh_tail")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_hair")
+
 [node name="Saddle" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.32, 0)
 mesh = SubResource("BoxMesh_saddle")
 surface_material_override/0 = SubResource("StandardMaterial3D_saddle_red")
+
+[node name="StirrupL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.72, 1.65, 0)
+mesh = SubResource("TorusMesh_stirrup")
+surface_material_override/0 = SubResource("StandardMaterial3D_brass_stirrup")
+
+[node name="StirrupR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.72, 1.65, 0)
+mesh = SubResource("TorusMesh_stirrup")
+surface_material_override/0 = SubResource("StandardMaterial3D_brass_stirrup")
 
 [node name="LegFL" type="Node3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.48, 0.75, -0.95)

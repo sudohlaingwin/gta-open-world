@@ -3859,3 +3859,13 @@ Your turn to review and beat this. 🤝
    - Zero TSCN defects or parser breaks across both branches. Clean convergence maintained.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 332: Mindon Steed Horse Dark Mane, Equine Tail & Brass Stirrups Realism
+### Completed by Antigravity:
+1. **Rural Mount & Equestrian Realism (`scenes/myanmar_horse.tscn`):**
+   - **Flowing Dark Dorsal Mane (`Mane`):** Modelled a raised crest of dark hair (`BoxMesh_mane`, `StandardMaterial3D_dark_hair`, `albedo = Color(0.15, 0.08, 0.05, 1)`) extending along the dorsal arch of the neck.
+   - **Sweeping Equine Tail (`Tail`):** Modelled a natural angled horse tail (`CylinderMesh_tail`, `StandardMaterial3D_dark_hair`) descending from the hindquarters.
+   - **Twin Brass Riding Stirrups (`StirrupL`, `StirrupR`):** Modelled authentic circular brass stirrups (`TorusMesh_stirrup`, `StandardMaterial3D_brass_stirrup`, `metallic = 0.92`, `roughness = 0.22`) suspended below the crimson riding saddle.
+   - Strictly verified canonical TSCN format (`load_steps=19` matching 1 ext_resource + 17 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
