@@ -586,7 +586,14 @@ static func _sheet_pagodas(root: Node3D) -> void:
 	_box(p5, Vector3(1.5, 0.4, 1.5), white_m, Vector3(0.0, 2.7, 0.0), "Base94")
 	_sphere(p5, 0.8, white_m, Vector3(0.0, 3.4, 0.0), "Dome94", 1.1)
 	_cyl(p5, 0.02, 0.15, 1.0, gold, Vector3(0.0, 4.3, 0.0), "Spire94")
-	_box(p5, Vector3(9.0, 0.8, 0.4), wall_m, Vector3(0.0, 0.4, 4.5), "Wall94_N")
+	# Slice 95 gate gap: the north wall is split so the steps
+	# pass through a real 1.4 m gate opening (was one solid
+	# 9.0 m wall the steps merged through, Slice 94's
+	# disclosed approximation).
+	_box(p5, Vector3(3.8, 0.8, 0.4), wall_m, Vector3(-2.6, 0.4, 4.5), "Wall94_N_L")
+	_box(p5, Vector3(3.8, 0.8, 0.4), wall_m, Vector3(2.6, 0.4, 4.5), "Wall94_N_R")
+	_box(p5, Vector3(0.3, 1.1, 0.3), wall_m, Vector3(-0.85, 0.55, 4.5), "GatePost94_L")
+	_box(p5, Vector3(0.3, 1.1, 0.3), wall_m, Vector3(0.85, 0.55, 4.5), "GatePost94_R")
 	_box(p5, Vector3(9.0, 0.8, 0.4), wall_m, Vector3(0.0, 0.4, -4.5), "Wall94_S")
 	_box(p5, Vector3(0.4, 0.8, 9.0), wall_m, Vector3(4.5, 0.4, 0.0), "Wall94_E")
 	_box(p5, Vector3(0.4, 0.8, 9.0), wall_m, Vector3(-4.5, 0.4, 0.0), "Wall94_W")

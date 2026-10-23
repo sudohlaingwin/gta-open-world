@@ -150,8 +150,91 @@ func _physics_process(delta: float) -> void:
 	var fwd := Input.get_axis("ui_down", "ui_up")
 	var steer := Input.get_axis("ui_left", "ui_right")
 	if driver.get("touch_vector") != null and driver.touch_vector != Vector2.ZERO:
-		steer = driver.touch_vector.x
-		fwd = -driver.touch_vector.y
+		# Slice 96 JOYSTICK SMOOTHNESS FIX (owner video verdict
+		# 2026-10-23 ~19:56: driving felt jerky, not PUBG-smooth,
+		# camera swinging while driving). DIAGNOSIS, measured
+		# from the code, not guessed: the joystick itself is
+		# already analog and continuous across its deadzone
+		# (joystick.gd rescales past the deadzone, no jump at
+		# the edge), and steering smoothing already existed
+		# (move_toward at steer_response below). The real defect
+		# was the DIRECTION FRAME: on-foot movement has been
+		# CAMERA-relative since Slice 53 (player.gd rotates the
+		# joystick vector by the camera orbit_angle), but EVERY
+		# vehicle — this car included — used the joystick RAW,
+		# screen-fixed. So after any camera orbit the car drove
+		# sideways or backwards on screen while the player
+		# pushed "forward", and every orbit drag flipped the
+		# drive direction — that reads as jerk and unplayable
+		# even though no single frame snaps. FIX: the car now
+		# steers toward a CAMERA-relative desired direction,
+		# exactly like walking: joystick-up is the direction
+		# the camera looks. steer is PROPORTIONAL to the
+		# heading error via sin (full lock past ~30 deg
+		# off), then still smoothed by the existing move_toward
+		# (8.0/s Balanced, 10.0 Arcade, 6.0 Realistic — the
+		# smoothing rate is unchanged, the target is now
+		# stable). Throttle follows the desired direction's
+		# forward component, so the car turns toward the
+		# joystick direction and then accelerates into it
+		# instead of driving screen-up regardless of view.
+		# Keyboard fallback below is untouched; the other
+		# vehicles still use raw screen-fixed steering (their
+		# fix is next-round scope — stated, not hidden).
+		var tv: Vector2 = driver.touch_vector
+		var cam := get_node_or_null("../FollowCamera")
+		if cam != null and cam.get("orbit_angle") != null:
+			var o := float(cam.get("orbit_angle"))
+			var view_fwd := Vector3(-sin(o), 0.0, -cos(o))
+			var view_rgt := Vector3(cos(o), 0.0, -sin(o))
+			var desired := (view_rgt * tv.x + view_fwd * (-tv.y))
+			if desired.length() > 0.05:
+				desired = desired.normalized()
+				var want_rot := atan2(-desired.x, -desired.z)
+				var diff := want_rot - rotation.y
+				# Proportional steer via sin, NOT a wrapped
+				# angle: a wrapped error flips sign at
+				# +/-180 deg and the car would chatter in
+				# place instead of U-turning, while sin is
+				# continuous through the wrap (sin(180 deg)
+				# = sin(-180 deg) = 0) and keeps one turning
+				# direction. Sign: rotation.y DECREASES for
+				# positive steer when driving forward
+				# (joystick right turns the car right), so
+				# forward steer is -sin(diff); when reversing
+				# the rotation factor flips, so reverse steer
+				# is +sin of the REAR error (the rear, not
+				# the nose, follows the joystick while
+				# backing). Full lock past ~30 deg off
+				# (sin 0.5 x 2.0), gentle near alignment,
+				# zero at alignment. Exact 180.0 deg is a
+				# degenerate fixed point (sin = 0) — a real
+				# thumb is never exactly there, and any 1
+				# deg offset turns the car.
+				# Throttle rule (sim-caught, Slice 96): the
+				# first draft used dot(desired, car_fwd), so
+				# a joystick direction behind the car made it
+				# REVERSE — and the reverse turn-flip then
+				# drove it to the antipodal fixed point and
+				# stuck it there. Instead, joystick-up (or
+				# sideways) always drives FORWARD toward the
+				# desired direction — the car U-turns, it
+				# never backs away from a forward command.
+				# Joystick-down keeps the original brake /
+				# reverse behaviour.
+				if -tv.y >= 0.0:
+					steer = clampf(-sin(diff) * 2.0, -1.0, 1.0)
+					fwd = tv.length()
+				else:
+					var rear_want := atan2(desired.x, desired.z)
+					steer = clampf(sin(rear_want - rotation.y) * 2.0, -1.0, 1.0)
+					fwd = -tv.y
+			else:
+				steer = 0.0
+				fwd = 0.0
+		else:
+			steer = tv.x
+			fwd = -tv.y
 	var ratio := absf(speed) / max_speed
 	if fwd > 0.0:
 		speed += fwd * accel * _accel_curve(ratio) * delta

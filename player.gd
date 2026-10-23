@@ -28,6 +28,8 @@ const BusSim91Script = preload("res://bus_sim91.gd")
 const BusSim92Script = preload("res://bus_sim92.gd")
 const Realism93Script = preload("res://realism93.gd")
 const Realism94Script = preload("res://realism94.gd")
+const Realism95Script = preload("res://realism95.gd")
+const Realism96Script = preload("res://realism96.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -643,8 +645,24 @@ func _ready() -> void:
 	# Slice 94 graphics batch 2: grass clusters, tree detail
 	# sets, scarves + head-wraps + sticks, exhausts + plates
 	# + car handles/rails/mirrors, world dressing. Same
-	# runtime-only pattern, frame >= 40 people pass.
+	# runtime-only pattern, frame >= 60 people pass
+	# (Slice 96 comment fix: the old "frame >= 40" note was
+	# stale — realism94.gd itself uses frame >= 60).
 	Realism94Script.dress(get_parent())
+	# Slice 95 graphics batch 3: sheet programme second
+	# pass — people detail sets (eyebrows, sandal straps,
+	# placket/buttons, lace, waistband, hem), second sheet
+	# trees, pagoda details + hilltop gate gap, corrugated
+	# house roofs, pagoda-ground grass, world dressing.
+	# Same runtime-only pattern; its node waits until
+	# frame >= 80 so Slice 94's frame-60 pass is final.
+	Realism95Script.dress(get_parent())
+	# Slice 96 video-verdict + TPP/FPP batch: torso taper +
+	# car rebuild (frame >= 100 pass) + the dedicated visible
+	# ViewButton96 in the main HUD. Same runtime-only
+	# pattern; its node waits until frame >= 100 so Slice
+	# 95's frame-80 pass is final.
+	Realism96Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing

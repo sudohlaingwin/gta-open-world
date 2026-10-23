@@ -47,10 +47,29 @@ var zoom: float = 1.0
 # no zoom buttons); cycle_view() toggles to a first-person view
 # from inside a driven road vehicle (driver-seat eye height) or, on
 # the bullock cart, to a cart-top forward view over the road ahead.
-# view_mode resets to TPP the moment the player is not driving, so
-# a stale FPP can never strand the camera. V is a desktop fallback
-# only; the touch-first control is the View button in the More
-# stack (created by chill_world62.dress()).
+# V is a desktop fallback only.
+# Slice 96 MODE RULE (owner complaint 2026-10-23 ~20:00: FPP was
+# promised but never appeared — the old rule reset to TPP the
+# moment the player stopped driving AND the only touch control
+# was a tiny More-buried button, so from the owner's side it
+# genuinely was not there; the Slice 62 delivery oversold it).
+# The old reset rule is REPLACED by this one, exactly:
+#   - ON FOOT: cycle toggles TPP (0) <-> FPP (1). FPP puts the
+#     camera at the player's head height (1.6 m) looking along
+#     the player's facing direction (local +z, the Slice 73
+#     forward convention), PUBG-style.
+#   - IN A ROAD VEHICLE: cycle toggles TPP (0) <-> FPP (1),
+#     driver-seat eye 1.5 m, same as Slice 62.
+#   - ON THE CART: cycle toggles TPP (0) <-> cart-top (2),
+#     eye 2.0 m over the road ahead, same as Slice 62.
+#   - ENTERING a vehicle keeps the mode (FPP on foot becomes
+#     seat-eye/cart-top FPP; TPP stays TPP). EXITING keeps it
+#     too (vehicle FPP becomes on-foot FPP; cart-top becomes
+#     on-foot FPP, since a cart-top view has no meaning on
+#     foot). Nothing ever silently resets to TPP any more.
+# The touch-first control is now ViewButton96 (realism96.gd):
+# a dedicated visible button in the main HUD, NOT More-buried.
+# The old More-stack ViewButton62 is retired in Slice 96.
 var view_mode: int = 0
 var _v_held: bool = false
 
@@ -59,10 +78,13 @@ func cycle_view() -> void:
 	var player: Node = null
 	if parent != null:
 		player = parent.get_node_or_null("Player")
-	if player == null or player.get("driving_vehicle") == null:
-		view_mode = 0
+	if player == null:
 		return
-	var vname := str(player.get("driving_vehicle").name)
+	var veh = player.get("driving_vehicle")
+	if veh == null:
+		view_mode = 1 if view_mode != 1 else 0
+		return
+	var vname := str(veh.name)
 	if vname == "Cart":
 		view_mode = 2 if view_mode != 2 else 0
 	else:
@@ -185,8 +207,26 @@ func _process(delta: float) -> void:
 	var veh: Node = null
 	if player != null and player.get("driving_vehicle") != null:
 		veh = player.get("driving_vehicle")
-	if veh == null:
-		view_mode = 0
+	# Slice 96: cart-top (2) has no meaning on foot — it becomes
+	# on-foot FPP (1) instead of silently resetting to TPP.
+	if veh == null and view_mode == 2:
+		view_mode = 1
+	# Slice 96 on-foot FPP: camera at head height (1.6 m, the
+	# EYE_HEIGHT used for the TPP ray origin), looking along
+	# the player's facing direction (local +z). Orbit drag
+	# still updates orbit_angle, but FPP does not use it —
+	# returning to TPP restores the orbited view.
+	if view_mode == 1 and veh == null and player is Node3D:
+		var p3 := player as Node3D
+		var fwd := p3.global_transform.basis.z
+		fwd.y = 0.0
+		if fwd.length() < 0.001:
+			fwd = Vector3(0.0, 0.0, 1.0)
+		fwd = fwd.normalized()
+		var pos := p3.global_position + Vector3(0.0, EYE_HEIGHT, 0.0)
+		global_position = pos
+		look_at(pos + fwd, Vector3.UP)
+		return
 	if view_mode != 0 and veh is Node3D:
 		var v3 := veh as Node3D
 		var fwd := -v3.global_transform.basis.z

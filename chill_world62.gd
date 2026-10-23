@@ -332,18 +332,11 @@ static func dress(world: Node3D) -> void:
 		# from the cluster in every More × driving state; this
 		# row itself is clear of the stack and of cluster row 2
 		# in all states.
-		var cam := world.get_node_or_null("FollowCamera")
-		var view_btn := layer.get_node_or_null("ViewButton62") as Button
-		if view_btn == null:
-			view_btn = Button.new()
-			view_btn.name = "ViewButton62"
-			view_btn.text = "View"
-			view_btn.add_theme_font_size_override("font_size", 14)
-			layer.add_child(view_btn)
-			if cam != null and cam.has_method("cycle_view"):
-				view_btn.pressed.connect(Callable(cam, "cycle_view"))
-		_set_rect(view_btn, 1100.0, 560.0, 70.0, 36.0)
-		view_btn.visible = false
+		# Slice 96 RETIREMENT: ViewButton62 is gone — the tiny
+		# More-buried "View" button is replaced by the dedicated
+		# visible ViewButton96 (realism96.gd, main HUD). Nothing
+		# is created here any more; the controller force-hides
+		# any stale instance so two view buttons can never exist.
 		var season_btn := layer.get_node_or_null("SeasonButton62") as Button
 		if season_btn == null:
 			season_btn = Button.new()

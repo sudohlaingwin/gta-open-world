@@ -141,9 +141,11 @@ func _process(delta: float) -> void:
 		more = bool(player.get("hud_more_open"))
 	var layer := world.get_node_or_null("JoystickLayer") as CanvasLayer
 	if layer != null:
+		# Slice 96: ViewButton62 retired (replaced by the main-HUD
+		# ViewButton96) — force-hide any stale instance.
 		var vb := layer.get_node_or_null("ViewButton62") as Button
 		if vb != null:
-			vb.visible = more
+			vb.visible = false
 		var sb := layer.get_node_or_null("SeasonButton62") as Button
 		if sb != null:
 			sb.visible = more
