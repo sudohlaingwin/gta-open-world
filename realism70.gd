@@ -294,7 +294,16 @@ func _capture(world: Node3D) -> void:
 			continue
 		if nm == "GroundMesh":
 			if mat is StandardMaterial3D:
-				(mat as StandardMaterial3D).uv1_scale = Vector3(8.0, 8.0, 1.0)
+				# Slice 74: tile DENSITY is the invariant (one
+				# tile per ~65 m x ~40 m, as Slice 70 set for the
+				# 520 m plane), not the literal 8x8 — the ground
+				# plane is now 2520 m long, so 8x8 would blur
+				# the grass detail Slice 70 recovered.
+				var pm := mi.mesh as PlaneMesh
+				if pm != null:
+					(mat as StandardMaterial3D).uv1_scale = Vector3(pm.size.x / 65.0, pm.size.y / 40.0, 1.0)
+				else:
+					(mat as StandardMaterial3D).uv1_scale = Vector3(8.0, 8.0, 1.0)
 		elif nm == "DressWall53" or nm == "Walls62" or nm == "Floor62" or nm == "Veranda62" or nm.begins_with("StiltWalls") or nm.begins_with("StiltDeck"):
 			if not plank_mats.has(mat):
 				plank_mats.append(mat)

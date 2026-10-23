@@ -78,6 +78,12 @@ const LANDMARKS: Array = [
 	["MindonMRTV", "MRTV", Color(0.8, 0.4, 1.0, 1.0)],
 	["MindonShops", "ဈေးဆိုင်", Color(1.0, 0.55, 0.1, 1.0)],
 	["OoHouse1", "အိုးရွာ", Color(0.85, 0.8, 0.7, 1.0)],
+	# Slice 74 bus stops: group origins ARE the stop points,
+	# so these dots track the stops live like every landmark.
+	["BusStop74_0", "ဘတ်စ်ကား ၁", Color(0.2, 0.6, 1.0, 1.0)],
+	["BusStop74_1", "ဘတ်စ်ကား ၂", Color(0.2, 0.6, 1.0, 1.0)],
+	["BusStop74_2", "ဘတ်စ်ကား ၃", Color(0.2, 0.6, 1.0, 1.0)],
+	["BusStop74_3", "ဘတ်စ်ကား ၄", Color(0.2, 0.6, 1.0, 1.0)],
 ]
 
 ## Slice 67 — district region titles. Unlike LANDMARKS, a region has
@@ -93,6 +99,8 @@ const DISTRICTS: Array = [
 	["ရွာ", Vector2(9.0, 0.0), Color(0.6, 1.0, 0.6, 1.0)],
 	["မင်းတုန်း", Vector2(169.0, 0.0), Color(1.0, 0.85, 0.5, 1.0)],
 	["လယ်ကွင်း", Vector2(350.0, -50.0), Color(0.7, 1.0, 0.7, 1.0)],
+	# Slice 74 long road: x 450..2450 band centre (1447.5, -50).
+	["လမ်းရှည်", Vector2(1447.5, -50.0), Color(0.7, 0.85, 1.0, 1.0)],
 ]
 
 ## Slice 67 — East Fields water labels. Pond62A/Pond62B and the
@@ -114,6 +122,8 @@ const WATER_LABELS: Array = [
 ## Slice 62 road start (Mindon/East Fields boundary). Bands, not
 ## exact borders — stated plainly, since no border geometry exists.
 static func district_name_for(wx: float) -> String:
+	if wx >= 450.0:
+		return "လမ်းရှည်"
 	if wx >= 250.0:
 		return "လယ်ကွင်း"
 	if wx >= 88.0:

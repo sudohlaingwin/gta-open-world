@@ -10,6 +10,7 @@ const HudFix61bScript = preload("res://hud_fix61b.gd")
 const Chill62Script = preload("res://chill_world62.gd")
 const EastFields64Script = preload("res://eastfields64.gd")
 const Signboards69Script = preload("res://signboards69.gd")
+const BusSim74Script = preload("res://bus_sim74.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -157,7 +158,7 @@ const GUIDE_ARRIVED_RADIUS: float = 5.0
 # capsule CENTRE 0.5 m inside the edge so the body never hangs off
 # the plane; the edge label tells the player why they stopped.
 const WORLD_MIN_X: float = -69.5
-const WORLD_MAX_X: float = 449.5
+const WORLD_MAX_X: float = 2449.5
 const WORLD_MIN_Z: float = -209.5
 const WORLD_MAX_Z: float = 109.5
 # Last ground position where the player stood freely (on the floor
@@ -500,6 +501,15 @@ func _ready() -> void:
 		_real73.name = "Realism73"
 		_real73.set_script(load("res://realism73.gd"))
 		_world73.call_deferred("add_child", _real73)
+	# Slice 74 BUS SIMULATION (owner redirection 2026-10-23
+	# 11:31 + choice 11:32: BUS + STOPS + PASSENGERS): long
+	# scenic route x 445..2445 + drivable bus + 4 stops +
+	# waiting passengers + door/boarding controller + HUD.
+	# Runs after Slice 73; runtime-only except the ground-plane
+	# resize + bounds in main.tscn (same class of change as
+	# Slice 62). The bus node itself is added deferred by
+	# dress(), like every deferred district node above.
+	BusSim74Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
@@ -983,9 +993,9 @@ func _update_speed_label() -> void:
 			_set_visible(speed_bar, false)
 		return
 	var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
-		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း", "Boat2": "လှေ", "Horse2": "မြင်း"}
+		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း", "Boat2": "လှေ", "Horse2": "မြင်း", "Bus": "ဘတ်စ်ကား"}
 	var vmax := {"Car": 14.0, "Cart": 6.0, "Motorcycle": 18.0,
-		"Airplane": 50.0, "Cow": 4.5, "Helicopter": 12.0, "Boat": 5.0, "Bicycle": 7.0, "TukTuk": 11.0, "Elephant": 6.0, "Horse": 9.0, "Boat2": 5.0, "Horse2": 9.0}
+		"Airplane": 50.0, "Cow": 4.5, "Helicopter": 12.0, "Boat": 5.0, "Bicycle": 7.0, "TukTuk": 11.0, "Elephant": 6.0, "Horse": 9.0, "Boat2": 5.0, "Horse2": 9.0, "Bus": 16.0}
 	var vname: String = str(names.get(driving_vehicle.name, driving_vehicle.name))
 	var spd := 0.0
 	if driving_vehicle.get("speed") != null:
@@ -1089,7 +1099,7 @@ func _on_vehicle_button_pressed() -> void:
 func _nearest_vehicle() -> Node:
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2", "Bus"]:
 		var v := _n("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -1118,7 +1128,7 @@ func _try_enter_vehicle() -> void:
 	# list order, which could pick a farther vehicle over a nearer one).
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2", "Bus"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -1607,7 +1617,7 @@ func _update_minimap() -> void:
 		var lm := _n("../" + pair[0]) as Node3D
 		if lm != null:
 			put.call(pair[1], lm.global_position)
-	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2"]:
+	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2", "Bus"]:
 		var v := _n("../" + vname)
 		if v != null:
 			put.call("VehicleDot" + vname, (v as Node3D).global_position)
@@ -1718,7 +1728,7 @@ func _update_prompt_label() -> void:
 	var veh := _nearest_vehicle()
 	if veh != null:
 		var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
-			"Airplane": "လေယာဉ်", "Cow": "နွား", "Cow2": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း", "Boat2": "လှေ", "Horse2": "မြင်း"}
+			"Airplane": "လေယာဉ်", "Cow": "နွား", "Cow2": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း", "Boat2": "လှေ", "Horse2": "မြင်း", "Bus": "ဘတ်စ်ကား"}
 		_set_text(prompt_label, "အနီး: " + names.get(veh.name, veh.name) + " — စီးမည်")
 		_set_visible(prompt_label, true)
 		return
