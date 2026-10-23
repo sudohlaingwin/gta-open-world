@@ -25,6 +25,7 @@ const BusSim86Script = preload("res://bus_sim86.gd")
 const BusSim87Script = preload("res://bus_sim87.gd")
 const BusSim88Script = preload("res://bus_sim88.gd")
 const BusSim91Script = preload("res://bus_sim91.gd")
+const BusSim92Script = preload("res://bus_sim92.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -620,6 +621,14 @@ func _ready() -> void:
 	# deferred pattern — it reads the live bus + controller
 	# every frame, so dress order cannot strand it.
 	BusSim91Script.dress(get_parent())
+	# Slice 92 BUS SIMULATION part 19 (stop-request lamp
+	# on the bus: amber lamp above the door blinks while
+	# a Slice 80 request is active, dark otherwise, read
+	# straight from the Slice 80 flag every frame): runs
+	# after Slice 91, same deferred pattern — it reads
+	# the live bus + BusSim80 every frame, so dress order
+	# cannot strand it.
+	BusSim92Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
