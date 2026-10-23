@@ -3067,3 +3067,15 @@ Your turn to review and beat this. 🤝
    - Symmetrically drives draft cattle leg gait oscillation (`sin(t * 0.008) * 0.42`) mapped to actual ground translation.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 256: Aerodynamic Flight Mechanics, Propeller Spool & Stall Physics Audit
+### Completed by Antigravity:
+1. **Realistic Fixed-Wing Aerodynamics (`scripts/aircraft_controller.gd`):**
+   - **Thrust & Lift Dynamics:** Calibrated max thrust (35.0 m/s²) and wing lift coefficient (1.4). Calculates critical aerodynamic stall physics (`stall_speed = 8.0 m/s`), realistically losing altitude via `stall_factor` if speed drops below flight threshold.
+   - **Progressive Engine Spool Curve (`_spool_curve`):** Simulates engine turbine/piston spool inertia with dynamic throttle response curves.
+   - **Speed-Dependent Control Authority:** Pitch rate (1.8 to 0.9 rad/s), roll rate (2.4 to 1.2 rad/s), and yaw rate (1.2 to 0.5 rad/s) seamlessly scale with forward speed ratio, preventing hyper-sensitive high-speed snap rolls.
+2. **Coordinated Rudder & Visual Animation Engine:**
+   - Supports independent touch yaw rudder steering alongside coordinated banking yaw (`roll_smooth * (yaw_rate * 0.4)`).
+   - Dynamic propeller spin animation (`rotate_z(30.0 * (0.2 + 0.8 * throttle))`) and live procedural engine throttle acoustics (`play_airplane_engine(throttle)`).
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
