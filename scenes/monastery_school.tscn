@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3]
+[gd_scene load_steps=39 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(22.0, 0.6, 16.0)
@@ -134,6 +134,23 @@ height = 1.4
 albedo_color = Color(0.62, 0.42, 0.26, 1)
 roughness = 0.80
 
+[sub_resource type="BoxMesh" id="BoxMesh_slate_board"]
+size = Vector3(0.55, 0.04, 0.38)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_black_slate"]
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+roughness = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_water_goblet"]
+top_radius = 0.12
+bottom_radius = 0.10
+height = 0.32
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_silver_goblet"]
+albedo_color = Color(0.92, 0.94, 0.96, 1)
+metallic = 0.92
+roughness = 0.18
+
 [node name="MonasterySchool" type="StaticBody3D"]
 
 [node name="FloorCollision" type="CollisionShape3D" parent="."]
@@ -197,10 +214,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.8, -2.0)
 mesh = SubResource("BoxMesh_desk")
 surface_material_override/0 = SubResource("StandardMaterial3D_desk_wood")
 
+[node name="StudentSlate1" type="MeshInstance3D" parent="VisualMesh/Desk1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.40, 0)
+mesh = SubResource("BoxMesh_slate_board")
+surface_material_override/0 = SubResource("StandardMaterial3D_black_slate")
+
 [node name="Desk2" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.8, -2.0)
 mesh = SubResource("BoxMesh_desk")
 surface_material_override/0 = SubResource("StandardMaterial3D_desk_wood")
+
+[node name="StudentSlate2" type="MeshInstance3D" parent="VisualMesh/Desk2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.40, 0)
+mesh = SubResource("BoxMesh_slate_board")
+surface_material_override/0 = SubResource("StandardMaterial3D_black_slate")
 
 [node name="AltarTable" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, -6.0)
@@ -279,6 +306,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_mat")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, -1.8)
 mesh = SubResource("BoxMesh_teaching_table")
 surface_material_override/0 = SubResource("StandardMaterial3D_lacquer_red")
+
+[node name="WaterGoblet" type="MeshInstance3D" parent="VisualMesh/MonkTeachingDesk"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 0.38, 0)
+mesh = SubResource("CylinderMesh_water_goblet")
+surface_material_override/0 = SubResource("StandardMaterial3D_silver_goblet")
 
 [node name="SadaikScriptureChest" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0.65, -1.8)

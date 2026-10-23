@@ -4340,3 +4340,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=23` matching 0 ext_resources + 22 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 379: Monastery School Limestone Student Slates & Monk Silver Water Goblet Realism
+### Completed by Antigravity:
+1. **Monastic Education & Traditional Burmese Schoolroom Realism (`scenes/monastery_school.tscn`):**
+   - **Traditional Student Limestone Slates (`StudentSlate1`, `StudentSlate2`):** Modelled authentic framed black stone writing slates (`BoxMesh_slate_board`, `StandardMaterial3D_black_slate`, `albedo = Color(0.12, 0.12, 0.14, 1)`, `roughness = 0.85`) resting atop the student low teak desks for Burmese alphabet recitation practice (ကျောက်သင်ပုန်း).
+   - **Presiding Monk Chased Silver Drinking Goblet (`WaterGoblet`):** Modelled an authentic traditional chased silver stem goblet (`CylinderMesh_water_goblet`, `StandardMaterial3D_silver_goblet`, `metallic = 0.92`, `roughness = 0.18`) resting on the teaching table beside the gilded Sadaik scripture chest (သောက်ရေဖလား).
+   - Strictly verified canonical TSCN format (`load_steps=39` matching 0 ext_resources + 38 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
