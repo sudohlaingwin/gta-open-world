@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/elephant_controller.gd" id="1_elephant"]
 
@@ -46,6 +46,27 @@ size = Vector3(0.12, 1.8, 1.4)
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
 size = Vector3(6.8, 5.8, 8.0)
 
+[sub_resource type="BoxMesh" id="BoxMesh_blanket"]
+size = Vector3(3.5, 0.08, 4.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_royal_crimson"]
+albedo_color = Color(0.72, 0.08, 0.14, 1)
+roughness = 0.82
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_leg"]
+top_radius = 0.46
+bottom_radius = 0.42
+height = 2.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_bell"]
+radius = 0.22
+height = 0.44
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brass_bell"]
+albedo_color = Color(0.88, 0.74, 0.24, 1)
+metallic = 0.92
+roughness = 0.22
+
 [node name="MyanmarElephant" type="CharacterBody3D"]
 script = ExtResource("1_elephant")
 
@@ -59,6 +80,11 @@ shape = SubResource("BoxShape3D_elephant")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7, 0)
 mesh = SubResource("BoxMesh_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
+
+[node name="RoyalBlanket" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.55, 0)
+mesh = SubResource("BoxMesh_blanket")
+surface_material_override/0 = SubResource("StandardMaterial3D_royal_crimson")
 
 [node name="Head" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, -3.1)
@@ -92,6 +118,31 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ivory")
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0.8, 2.7, -3.8)
 mesh = SubResource("CylinderMesh_tusk")
 surface_material_override/0 = SubResource("StandardMaterial3D_ivory")
+
+[node name="NeckBell" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, -2.4)
+mesh = SubResource("SphereMesh_bell")
+surface_material_override/0 = SubResource("StandardMaterial3D_brass_bell")
+
+[node name="LegFL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 1.1, -1.8)
+mesh = SubResource("CylinderMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
+
+[node name="LegFR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 1.1, -1.8)
+mesh = SubResource("CylinderMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
+
+[node name="LegBL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 1.1, 1.8)
+mesh = SubResource("CylinderMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
+
+[node name="LegBR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 1.1, 1.8)
+mesh = SubResource("CylinderMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
 
 [node name="Howdah" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.9, 0)
