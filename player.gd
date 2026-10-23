@@ -17,6 +17,7 @@ const BusSim77Script = preload("res://bus_sim77.gd")
 const BusSim78Script = preload("res://bus_sim78.gd")
 const BusSim79Script = preload("res://bus_sim79.gd")
 const BusSim80Script = preload("res://bus_sim80.gd")
+const BusSim81Script = preload("res://bus_sim81.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -556,6 +557,13 @@ func _ready() -> void:
 	# reads next_stop from, and the bus whose door_open
 	# flag it watches for chime edges.
 	BusSim80Script.dress(get_parent())
+	# Slice 81 BUS SIMULATION part 8 (second minibus at the
+	# depot + fleet paint presets + depot parking as a bus
+	# yard): runs after Slice 80, same deferred pattern —
+	# its node queues behind the big bus it repaints, and
+	# the minibus it builds is added deferred like the
+	# Slice 74 bus.
+	BusSim81Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
@@ -1039,9 +1047,9 @@ func _update_speed_label() -> void:
 			_set_visible(speed_bar, false)
 		return
 	var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
-		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း", "Boat2": "လှေ", "Horse2": "မြင်း", "Bus": "ဘတ်စ်ကား"}
+		"Airplane": "လေယာဉ်", "Cow": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း", "Boat2": "လှေ", "Horse2": "မြင်း", "Bus": "ဘတ်စ်ကား", "Minibus": "မီနီဘတ်စ်"}
 	var vmax := {"Car": 14.0, "Cart": 6.0, "Motorcycle": 18.0,
-		"Airplane": 50.0, "Cow": 4.5, "Helicopter": 12.0, "Boat": 5.0, "Bicycle": 7.0, "TukTuk": 11.0, "Elephant": 6.0, "Horse": 9.0, "Boat2": 5.0, "Horse2": 9.0, "Bus": 16.0}
+		"Airplane": 50.0, "Cow": 4.5, "Helicopter": 12.0, "Boat": 5.0, "Bicycle": 7.0, "TukTuk": 11.0, "Elephant": 6.0, "Horse": 9.0, "Boat2": 5.0, "Horse2": 9.0, "Bus": 16.0, "Minibus": 14.0}
 	var vname: String = str(names.get(driving_vehicle.name, driving_vehicle.name))
 	var spd := 0.0
 	if driving_vehicle.get("speed") != null:
@@ -1145,7 +1153,7 @@ func _on_vehicle_button_pressed() -> void:
 func _nearest_vehicle() -> Node:
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2", "Bus"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2", "Bus", "Minibus"]:
 		var v := _n("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -1174,7 +1182,7 @@ func _try_enter_vehicle() -> void:
 	# list order, which could pick a farther vehicle over a nearer one).
 	var best: Node = null
 	var best_dist: float = 4.0
-	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2", "Bus"]:
+	for name in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2", "Bus", "Minibus"]:
 		var v := get_node_or_null("../" + name)
 		if v != null:
 			var d := global_position.distance_to(v.global_position)
@@ -1663,7 +1671,7 @@ func _update_minimap() -> void:
 		var lm := _n("../" + pair[0]) as Node3D
 		if lm != null:
 			put.call(pair[1], lm.global_position)
-	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2", "Bus"]:
+	for vname in ["Car", "Cart", "Motorcycle", "Airplane", "Cow", "Cow2", "Helicopter", "Boat", "Bicycle", "TukTuk", "Elephant", "Horse", "Boat2", "Horse2", "Bus", "Minibus"]:
 		var v := _n("../" + vname)
 		if v != null:
 			put.call("VehicleDot" + vname, (v as Node3D).global_position)
@@ -1774,7 +1782,7 @@ func _update_prompt_label() -> void:
 	var veh := _nearest_vehicle()
 	if veh != null:
 		var names := {"Car": "ကား", "Cart": "လှည်း", "Motorcycle": "ဆိုင်ကယ်",
-			"Airplane": "လေယာဉ်", "Cow": "နွား", "Cow2": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း", "Boat2": "လှေ", "Horse2": "မြင်း", "Bus": "ဘတ်စ်ကား"}
+			"Airplane": "လေယာဉ်", "Cow": "နွား", "Cow2": "နွား", "Helicopter": "ရဟတ်ယာဉ်", "Boat": "လှေ", "Bicycle": "စက်ဘီး", "TukTuk": "သုံးဘီး", "Elephant": "ဆင်", "Horse": "မြင်း", "Boat2": "လှေ", "Horse2": "မြင်း", "Bus": "ဘတ်စ်ကား", "Minibus": "မီနီဘတ်စ်"}
 		_set_text(prompt_label, "အနီး: " + names.get(veh.name, veh.name) + " — စီးမည်")
 		_set_visible(prompt_label, true)
 		return

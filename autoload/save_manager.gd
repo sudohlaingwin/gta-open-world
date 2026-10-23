@@ -75,6 +75,9 @@ var fps_visible: bool = false
 ## upgrade. A settings file written before Slice 55 has no key
 ## and loads as Balanced, so old behaviour is preserved exactly.
 var driving_mode: int = 1
+## Slice 81 fleet paint: 0 yellow (the Slice 74 bus colour),
+## 1 red, 2 blue, 3 green — one livery for both buses.
+var bus_paint81: int = 0
 ## Slice 62 seasons: 0 summer နွေ (dry/golden), 1 rainy မိုး (rain),
 ## 2 winter ဆောင်း (cool/clear). Default summer; old settings files
 ## without the key load as summer, so old behaviour is preserved.
@@ -155,6 +158,7 @@ func load_settings() -> void:
 	fps_visible = false
 	driving_mode = 1
 	season62 = 0
+	bus_paint81 = 0
 	if not FileAccess.file_exists(settings_path):
 		return
 	var file = FileAccess.open(settings_path, FileAccess.READ)
@@ -210,6 +214,8 @@ func load_settings() -> void:
 		driving_mode = clampi(int(parsed.get("driving_mode")), 0, 2)
 	if parsed.has("season62"):
 		season62 = clampi(int(parsed.get("season62")), 0, 2)
+	if parsed.has("bus_paint81"):
+		bus_paint81 = clampi(int(parsed.get("bus_paint81")), 0, 3)
 
 
 func save_settings() -> bool:
@@ -227,7 +233,8 @@ func save_settings() -> bool:
 		"graphics_tier": graphics_tier,
 		"fps_visible": fps_visible,
 		"driving_mode": driving_mode,
-		"season62": season62}
+		"season62": season62,
+		"bus_paint81": bus_paint81}
 	return _atomic_write(settings_path, JSON.stringify(data))
 
 
@@ -248,6 +255,7 @@ func reset_settings() -> void:
 	fps_visible = false
 	driving_mode = 1
 	season62 = 0
+	bus_paint81 = 0
 	save_settings()
 
 
