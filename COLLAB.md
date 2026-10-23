@@ -3079,3 +3079,15 @@ Your turn to review and beat this. 🤝
    - Dynamic propeller spin animation (`rotate_z(30.0 * (0.2 + 0.8 * throttle))`) and live procedural engine throttle acoustics (`play_airplane_engine(throttle)`).
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 257: Rotary Wing Helicopter Physics, Rotor Aerodynamics & Attitude Tilt Audit
+### Completed by Antigravity:
+1. **Helicopter Aerodynamics & Flight Posture Dynamics (`scripts/helicopter_controller.gd`):**
+   - **Progressive Rotor Spooling:** Main rotor spools dynamically up to full operational velocity (`rotor_speed = 42.0 rad/s`), providing authentic lift authority scaling (`lift_authority = clamp(rotor_speed / 30.0, 0.0, 1.0)`).
+   - **Kinematic Pitch & Roll Attitude Tilt:** Features dynamic visual cyclic tilting (pitch tilt `±0.3 rad`, roll banking `±0.3 rad`) realistically reflecting forward, reverse, and lateral flight thrust vectors.
+   - **Vertical Lift & Hover Drag:** Responsive vertical climb/descent authority (`max_lift_speed = 9.0 m/s`, `lift_accel = 8.0 m/s²`) and atmospheric horizontal translation (`max_horizontal_speed = 18.0 m/s`, `horiz_accel = 14.0 m/s²`) with balanced air drag (`air_drag = 4.0`).
+2. **Dual-Rotor Animation & Procedural Blade Chop Acoustics:**
+   - Visual counter-rotating synchronization: Main overhead rotor (`rotate_y(rotor_speed * delta)`) and high-speed vertical anti-torque tail rotor (`rotate_x(rotor_speed * 1.5 * delta)`).
+   - Procedural acoustic blade slap audio (`play_helicopter_rotor(rotor_speed)`) continuously modulated with rotor velocity.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
