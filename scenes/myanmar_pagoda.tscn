@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
@@ -72,6 +72,22 @@ top_radius = 0.10
 bottom_radius = 0.95
 height = 3.6
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_flagstone_terrace"]
+top_radius = 18.2
+bottom_radius = 19.5
+height = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_terrace_granite"]
+albedo_color = Color(0.68, 0.65, 0.60, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_flower_tray"]
+size = Vector3(1.8, 0.08, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lotus_blossoms"]
+albedo_color = Color(0.96, 0.38, 0.58, 1)
+roughness = 0.45
+
 [node name="MyanmarPagoda" type="StaticBody3D"]
 script = ExtResource("1_lantern")
 
@@ -120,6 +136,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_stair_terracotta")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 17.5)
 mesh = SubResource("BoxMesh_altar")
 surface_material_override/0 = SubResource("StandardMaterial3D_white_marble")
+
+[node name="FlagstoneTerrace" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
+mesh = SubResource("CylinderMesh_flagstone_terrace")
+surface_material_override/0 = SubResource("StandardMaterial3D_terrace_granite")
+
+[node name="OfferingFlowerTray" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 17.5)
+mesh = SubResource("BoxMesh_flower_tray")
+surface_material_override/0 = SubResource("StandardMaterial3D_lotus_blossoms")
 
 [node name="CornerStupaNE" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.8, 3.2, 9.8)
