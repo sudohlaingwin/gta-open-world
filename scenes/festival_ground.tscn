@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=20 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_stage"]
 size = Vector3(32.5, 2.4, 22.5)
@@ -63,6 +63,32 @@ emission_energy_multiplier = 0.35
 [sub_resource type="BoxShape3D" id="BoxShape3D_area"]
 size = Vector3(36.0, 10.0, 26.0)
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_tuned_drum"]
+top_radius = 0.18
+bottom_radius = 0.22
+height = 0.65
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_drumhead_leather"]
+albedo_color = Color(0.88, 0.82, 0.68, 1)
+roughness = 0.65
+
+[sub_resource type="BoxMesh" id="BoxMesh_stage_valance"]
+size = Vector3(29.5, 1.4, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crimson_velvet"]
+albedo_color = Color(0.72, 0.08, 0.12, 1)
+roughness = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hne_oboe"]
+top_radius = 0.04
+bottom_radius = 0.14
+height = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hne_brass"]
+albedo_color = Color(0.92, 0.78, 0.25, 1)
+metallic = 0.92
+roughness = 0.22
+
 [node name="MyanmarFestivalGround" type="StaticBody3D"]
 
 [node name="StageCollision" type="CollisionShape3D" parent="."]
@@ -100,6 +126,26 @@ surface_material_override/0 = SubResource("StandardMaterial3D_saing_waing")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 1.95, -4.2)
 mesh = SubResource("CylinderMesh_brass_gong")
 surface_material_override/0 = SubResource("StandardMaterial3D_brass_gong")
+
+[node name="StageValance" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.2, -9.8)
+mesh = SubResource("BoxMesh_stage_valance")
+surface_material_override/0 = SubResource("StandardMaterial3D_crimson_velvet")
+
+[node name="TunedDrum1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 2.45, -4.2)
+mesh = SubResource("CylinderMesh_tuned_drum")
+surface_material_override/0 = SubResource("StandardMaterial3D_drumhead_leather")
+
+[node name="TunedDrum2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 2.35, -3.8)
+mesh = SubResource("CylinderMesh_tuned_drum")
+surface_material_override/0 = SubResource("StandardMaterial3D_drumhead_leather")
+
+[node name="HneOboe" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 0, 1.55, -3.8)
+mesh = SubResource("CylinderMesh_hne_oboe")
+surface_material_override/0 = SubResource("StandardMaterial3D_hne_brass")
 
 [node name="FestivalSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.5, -9.8)
