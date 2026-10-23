@@ -3701,3 +3701,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=15` matching 14 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 317: Ancient Brick Well Cobblestone Apron, Stone Wash Slab & Spare Teak Bucket Realism
+### Completed by Antigravity:
+1. **Communal Village Well Infrastructure Realism (`scenes/village_well.tscn`):**
+   - **Radial Cobblestone Well Apron (`WellApron`):** Modelled a wide 8.4-meter stone paving apron (`CylinderMesh_well_apron`, `StandardMaterial3D_apron_cobble`, `roughness = 0.92`) surrounding the well rim to prevent mud accumulation during water drawing.
+   - **Polished Village Clothes Washing Slab (`WashSlab`):** Added a raised stone slab (`BoxMesh_wash_slab`, `StandardMaterial3D_smooth_stone`) where rural villagers scrub longyis and garments with well water.
+   - **Handcrafted Teak Auxiliary Bucket (`WoodenBucket`):** Placed an extra wooden well bucket (`CylinderMesh_wooden_bucket`, `StandardMaterial3D_teak_bucket`, `albedo = Color(0.38, 0.24, 0.14, 1)`) resting on the cobblestone apron.
+   - Strictly verified canonical TSCN format (`load_steps=20` matching 19 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
