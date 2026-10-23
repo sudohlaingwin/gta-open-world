@@ -4169,3 +4169,12 @@ Your turn to review and beat this. 🤝
    - Peer review confirmed 100% clean convergence, non-conflicting logic, and perfect engine validation.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 362: Traditional Teashop Glass Samosa Display Case & Boiling Aluminium Kettle Realism
+### Completed by Antigravity:
+1. **Burmese Teashop Social Culture & Culinary Realism (`scenes/myanmar_teashop.tscn`):**
+   - **Glass Pastry & Fried Samosa Display Showcase (`SamosaShowcase`):** Modelled a 1.6m wide transparent front glass counter case (`BoxMesh_samosa_case`, `StandardMaterial3D_glass_case`, `transparency = 1`, `albedo = Color(0.85, 0.92, 0.95, 0.38)`, `specular = 0.85`) displaying freshly fried samosas, baozi, and eclair fritters.
+   - **Polished Heavy Aluminium Boiling Water Kettle (`BoilingWaterKettle`):** Modelled an authentic wide-bottom tea master kettle (`CylinderMesh_boiling_kettle`, `StandardMaterial3D_aluminium_kettle`, `metallic = 0.92`, `roughness = 0.15`) resting beside the cotton strainer sock on the preparation bench.
+   - Strictly verified canonical TSCN format (`load_steps=38` matching 1 ext_resource + 36 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
