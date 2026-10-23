@@ -3990,3 +3990,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=18` matching 1 ext_resource + 16 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 344: Waypoint Guidance Beacon Dual Ground Target Rings & Warm Omni Light Realism
+### Completed by Antigravity:
+1. **Wayfinding, Navigation & HUD Radar Visual Realism (`scenes/waypoint_beacon.tscn`):**
+   - **Inner Concentric Golden Ground Target Ring (`GroundTargetRing`):** Modelled a 4.2m radius luminous golden torus circle (`TorusMesh_ground_ring`, `StandardMaterial3D_gold_ring`, `emission_energy_multiplier = 3.6`) projecting cleanly on the terrain ground plane.
+   - **Outer Concentric Cyan Pulse Ring (`GroundOuterPulseRing`):** Modelled an outer 7.5m radius cyan navigation ring (`TorusMesh_outer_pulse_ring`, `StandardMaterial3D_cyan_ring`, `emission_energy_multiplier = 3.2`) defining destination arrival thresholds.
+   - **Ground-Level Destination Omni Light (`BeaconOmniLight`):** Installed an active warm light source (`OmniLight3D`, `light_color = Color(1.0, 0.82, 0.35)`, `light_energy = 4.2`, `omni_range = 18.0m`) illuminating immediate trees, roads, and landscape features when navigation is activated.
+   - Strictly verified canonical TSCN format (`load_steps=10` matching 1 ext_resource + 8 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
