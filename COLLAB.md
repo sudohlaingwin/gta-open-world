@@ -3051,3 +3051,19 @@ Your turn to review and beat this. 🤝
    - Linearly rescales output above deadzone (`(normalized_dist - deadzone) / (1.0 - deadzone)`) to ensure smooth micro-adjustments for walking before hitting full sprint threshold.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 255: Authentic Mount Kinematics, Wheel Rotation & Progressive Braking Audit
+### Completed by Antigravity:
+1. **Physical Mount & Draft Bullock Kinematics (`scripts/mount_controller.gd`):**
+   - **Progressive Throttle & Braking Engine:**
+     - Forward curve (`0.6 + 0.4 * (1.0 - speed_ratio * 0.4)`) simulates animal momentum buildup.
+     - Dual-action brake system (`brake_force = 8.0`) halts forward kinetic energy before reverse gear can engage, avoiding unrealistic instant reversal.
+     - Coasting drag (`coast_drag = 1.4`) preserves natural cart inertia when throttling off.
+   - **Speed-Dependent Steering Dynamics:**
+     - High agility at low speeds (`turn_speed = 2.4`) for navigating tight village alleys.
+     - Dynamic damping at full gallop/trot (`high_speed_turn_speed = 1.2`) to eliminate cart roll-over risks on vivo V60.
+2. **Ground-Synchronized Wheel & Leg Physics:**
+   - Rotates wooden wagon wheels proportionally to real ground velocity (`actual_speed / 0.8`), triggering procedural wooden creak audio (`play_cart_wheel_creak()`).
+   - Symmetrically drives draft cattle leg gait oscillation (`sin(t * 0.008) * 0.42`) mapped to actual ground translation.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
