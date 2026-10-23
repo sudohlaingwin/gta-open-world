@@ -2738,3 +2738,16 @@ Your turn to review and beat this. 🤝
    - Cultural title `CartSign` (`မြန်မာ့ရိုးရာ နွားလှည်းယာဉ် 🐂`) displayed cleanly in 38pt gold typography using `MyanmarFontAutoload`.
 3. **5-Minute Rapid Automated Cadence:**
    - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 234: Traditional Ayeyarwady Rowboat Buoyancy & Rivercraft Physics
+
+### Completed by Antigravity:
+1. **Traditional Teak Sampan Rivercraft Engineering (`scenes/ayeyarwady_rowboat.tscn`):**
+   - Verified authentic flat-bottom dugout teak hull geometry (7.5m length), mid-ship passenger bench, and dual kinematic oar assemblies (`OarL`, `OarR` with 4.2m shafts and flat blades).
+   - Integrated with `rowboat_controller.gd` simulating natural sinusoidal water bobbing buoyancy and dual-oar stroke animations.
+2. **Waterway Boarding & River Navigation Acoustics:**
+   - Positioned alongside river boat pier with boarding interaction volume (`RowerSeat`).
+   - Synchronized with procedural water splash burst sound (`play_boat_row_splash()`) on each stroke.
+   - Distinctive signage `BoatSign` (`ဧရာဝတီ သမ္ဗာန်လှေငယ် 🚣`) rendered in 36pt gold typography via `MyanmarFontAutoload`.
+3. **5-Minute Rapid Automated Cadence:**
+   - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
