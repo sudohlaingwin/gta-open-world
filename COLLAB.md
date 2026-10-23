@@ -3040,3 +3040,14 @@ Your turn to review and beat this. 🤝
      - MLBB Mode: Strategic locked aerial angle (`-60°` to `-20°`).
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 254: Floating Virtual Touch Joystick & Analog Deadzone Filtering Audit
+### Completed by Antigravity:
+1. **Dynamic Floating Virtual Joystick (`scripts/virtual_joystick.gd`):**
+   - **Floating Anchor Positioning:** On touch press (`InputEventScreenTouch`), automatically centers joystick base (`$Base`) directly underneath the user's thumb position on the left-hand screen sector, eliminating thumb fatigue on 6.7-inch displays.
+   - **80px Clamped Radial Constrained Track:** Drag vector clamps neatly to `joystick_radius = 80.0px`, providing tactile visual limits.
+2. **True Analog Deadzone & Rescaled Linear Response:**
+   - Evaluates customizable deadzone (`effective_deadzone = 0.15` default, modulated by `SaveManager.joystick_deadzone`).
+   - Linearly rescales output above deadzone (`(normalized_dist - deadzone) / (1.0 - deadzone)`) to ensure smooth micro-adjustments for walking before hitting full sprint threshold.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
