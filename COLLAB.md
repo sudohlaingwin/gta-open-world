@@ -3651,3 +3651,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=20` matching 1 ext_resource + 18 sub_resources + 1) for zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 312: Village Night Market Crispy Snack Trays, Tea Urn & Low Plastic Stools Realism
+### Completed by Antigravity:
+1. **Night Market Gastronomy & Street Culture Realism (`scenes/myanmar_night_market.tscn`):**
+   - **Crispy Street Food Trays (`SnackTray1`, `SnackTray2`):** Modelled traditional street snack display trays filled with golden fried samosas and spring rolls (`BoxMesh_food_tray`, `StandardMaterial3D_fried_snack`, `albedo = Color(0.85, 0.52, 0.18, 1)`) flanking the noodle boiler.
+   - **Silver Beverage & Tea Urn (`BeverageUrn`):** Modelled a tall metallic tea and beverage dispenser (`CylinderMesh_tea_urn`, `StandardMaterial3D_urn_silver`, `metallic = 0.95`, `roughness = 0.15`) at the central drink stall.
+   - **Authentic Myanmar Low Plastic Stools (`StoolRed1`, `StoolRed2`, `StoolBlue1`):** Modelled vibrant red and blue street stools (`CylinderMesh_plastic_stool`, `StandardMaterial3D_stool_red`, `StandardMaterial3D_stool_blue`) clustered around the stalls.
+   - Strictly verified canonical TSCN format (`load_steps=20` matching 1 ext_resource + 18 sub_resources + 1) for zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
