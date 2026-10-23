@@ -491,6 +491,15 @@ func _ready() -> void:
 		_real72.name = "Realism72"
 		_real72.set_script(load("res://realism72.gd"))
 		_world72.call_deferred("add_child", _real72)
+	# Slice 73 graphics realism part 4 (owner 06:32 order: clothing
+	# + faces + interiors glimpse + night lights, NO new feature).
+	# Same deferred pattern; captures at frame >= 26, after 72.
+	var _world73 := get_parent()
+	if _world73 != null and _world73.get_node_or_null("Realism73") == null:
+		var _real73 := Node3D.new()
+		_real73.name = "Realism73"
+		_real73.set_script(load("res://realism73.gd"))
+		_world73.call_deferred("add_child", _real73)
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
