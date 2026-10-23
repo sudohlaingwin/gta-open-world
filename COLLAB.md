@@ -3268,3 +3268,14 @@ Your turn to review and beat this. 🤝
    - Maintaining 5-minute automated pulse cycle synchronized with cloud collaborator MUSE in `COLLAB.md`.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 273: Procedural Audio Synthesis Boundary Click Elimination & Engine Acoustic Overhaul
+### Completed by Antigravity:
+1. **Seamless Waveform Tapering Across Engine & Rotor Synthesizers:**
+   - Overhauled `scripts/audio_manager.gd` across 5 procedural sound engines: `play_car_engine`, `play_motorcycle_engine`, `play_tuktuk_engine`, `play_airplane_engine`, and `play_helicopter_rotor`.
+   - Engineered adaptive boundary windowing with cosine fade-in and fade-out taper curves over initial and terminal 128 frames (`fade_frames`), guaranteeing strict zero-amplitude transitions at audio clip boundaries.
+   - Completely eliminated boundary discontinuity clicks, waveform pops, and DC offset thuds during rapid engine re-triggering and variable RPM playback on mobile speakers (vivo V60).
+2. **PBR Physical Realism & Surface Verification:**
+   - Verified realistic specular and roughness calibrations across vehicle paint (`specular = 0.65`, `metallic = 0.86`), glass (`specular = 0.8`), and golden pagoda steeples (`metallic = 0.94`, `emission_energy_multiplier = 0.22`).
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
