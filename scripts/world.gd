@@ -54,6 +54,62 @@ func _setup_infinite_ground() -> void:
 			pbr_ground_mat.uv1_scale = Vector3(320.0, 320.0, 320.0)
 			ground_mesh_inst.set_surface_override_material(0, pbr_ground_mat)
 
+	_generate_scenic_mountain_ranges()
+
+func _generate_scenic_mountain_ranges() -> void:
+	var mountains_holder = Node3D.new()
+	mountains_holder.name = "ScenicMountainsAndHills"
+	add_child(mountains_holder)
+
+	var hill_mat = StandardMaterial3D.new()
+	hill_mat.albedo_color = Color(0.20, 0.35, 0.15, 1.0)
+	hill_mat.roughness = 0.95
+	hill_mat.specular = 0.15
+
+	var mountain_mat = StandardMaterial3D.new()
+	mountain_mat.albedo_color = Color(0.18, 0.28, 0.22, 1.0)
+	mountain_mat.roughness = 0.92
+	mountain_mat.specular = 0.20
+
+	# 1. Distant Mountain Ranges encircling the 8000m x 8000m map
+	var num_ranges = 36
+	for i in range(num_ranges):
+		var angle = (float(i) / float(num_ranges)) * TAU
+		var radius = 1200.0 + (i % 5) * 220.0
+		var mx = cos(angle) * radius
+		var mz = sin(angle) * radius
+		var height = 180.0 + (i % 7) * 45.0
+		var base_radius = 220.0 + (i % 4) * 60.0
+
+		var mountain = MeshInstance3D.new()
+		var cone = CylinderMesh.new()
+		cone.top_radius = 12.0
+		cone.bottom_radius = base_radius
+		cone.height = height
+		mountain.mesh = cone
+		mountain.set_surface_override_material(0, mountain_mat)
+		mountains_holder.add_child(mountain)
+		mountain.global_position = Vector3(mx, height * 0.45, mz)
+
+	# 2. Mid-distance Rolling Hills & Ridges
+	var num_hills = 28
+	for j in range(num_hills):
+		var h_angle = (float(j) / float(num_hills)) * TAU + 0.15
+		var h_radius = 550.0 + (j % 4) * 110.0
+		var hx = cos(h_angle) * h_radius
+		var hz = sin(h_angle) * h_radius
+		var h_height = 55.0 + (j % 5) * 18.0
+		var h_base = 110.0 + (j % 3) * 35.0
+
+		var hill = MeshInstance3D.new()
+		var sphere = SphereMesh.new()
+		sphere.radius = h_base
+		sphere.height = h_height * 2.0
+		hill.mesh = sphere
+		hill.set_surface_override_material(0, hill_mat)
+		mountains_holder.add_child(hill)
+		hill.global_position = Vector3(hx, 0.0, hz)
+
 func _process(_delta: float) -> void:
 	if not player_ref:
 		player_ref = get_tree().get_first_node_in_group("player")
