@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=15 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_stage"]
 size = Vector3(32.5, 2.4, 22.5)
@@ -41,6 +41,25 @@ albedo_color = Color(0.84, 0.18, 0.14, 1)
 roughness = 0.42
 specular = 0.42
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_saing_frame"]
+top_radius = 2.2
+bottom_radius = 2.2
+height = 1.1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_brass_gong"]
+top_radius = 0.22
+bottom_radius = 0.22
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brass_gong"]
+albedo_color = Color(0.95, 0.82, 0.22, 1)
+metallic = 0.94
+roughness = 0.15
+specular = 0.85
+emission_enabled = true
+emission = Color(0.90, 0.72, 0.15, 1)
+emission_energy_multiplier = 0.35
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_area"]
 size = Vector3(36.0, 10.0, 26.0)
 
@@ -71,6 +90,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_saing_waing")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.8, 2.6, -4.8)
 mesh = SubResource("BoxMesh_drum")
 surface_material_override/0 = SubResource("StandardMaterial3D_saing_waing")
+
+[node name="SaingWaingFrame" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 1.95, -4.2)
+mesh = SubResource("CylinderMesh_saing_frame")
+surface_material_override/0 = SubResource("StandardMaterial3D_saing_waing")
+
+[node name="KyayWyneCenter" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 1.95, -4.2)
+mesh = SubResource("CylinderMesh_brass_gong")
+surface_material_override/0 = SubResource("StandardMaterial3D_brass_gong")
 
 [node name="FestivalSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.5, -9.8)
