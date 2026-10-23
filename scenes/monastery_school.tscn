@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=29 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(22.0, 0.6, 16.0)
@@ -80,6 +80,35 @@ size = Vector3(1.8, 0.06, 1.4)
 albedo_color = Color(0.65, 0.48, 0.24, 1)
 roughness = 0.88
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brass"]
+albedo_color = Color(0.92, 0.78, 0.28, 1)
+metallic = 0.88
+roughness = 0.22
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_altar_vase"]
+top_radius = 0.18
+bottom_radius = 0.24
+height = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lotus_pink"]
+albedo_color = Color(0.95, 0.42, 0.62, 1)
+roughness = 0.45
+
+[sub_resource type="SphereMesh" id="SphereMesh_flowers"]
+radius = 0.28
+height = 0.42
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_oil_lamp"]
+top_radius = 0.16
+bottom_radius = 0.22
+height = 0.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lamp_flame"]
+albedo_color = Color(1.0, 0.65, 0.15, 1)
+emission_enabled = true
+emission = Color(1.0, 0.55, 0.1, 1)
+emission_energy_multiplier = 2.8
+
 [node name="MonasterySchool" type="StaticBody3D"]
 
 [node name="FloorCollision" type="CollisionShape3D" parent="."]
@@ -152,6 +181,48 @@ surface_material_override/0 = SubResource("StandardMaterial3D_desk_wood")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, -6.0)
 mesh = SubResource("BoxMesh_altar")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+
+[node name="AltarVaseLeft" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 1.95, -5.6)
+mesh = SubResource("CylinderMesh_altar_vase")
+surface_material_override/0 = SubResource("StandardMaterial3D_brass")
+
+[node name="AltarFlowersLeft" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 2.45, -5.6)
+mesh = SubResource("SphereMesh_flowers")
+surface_material_override/0 = SubResource("StandardMaterial3D_lotus_pink")
+
+[node name="AltarVaseRight" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 1.95, -5.6)
+mesh = SubResource("CylinderMesh_altar_vase")
+surface_material_override/0 = SubResource("StandardMaterial3D_brass")
+
+[node name="AltarFlowersRight" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 2.45, -5.6)
+mesh = SubResource("SphereMesh_flowers")
+surface_material_override/0 = SubResource("StandardMaterial3D_lotus_pink")
+
+[node name="AltarOilLampLeft" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 1.72, -5.2)
+mesh = SubResource("CylinderMesh_oil_lamp")
+surface_material_override/0 = SubResource("StandardMaterial3D_brass")
+
+[node name="OilLampFlameLeft" type="OmniLight3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 1.9, -5.2)
+light_color = Color(1.0, 0.72, 0.25, 1)
+light_energy = 1.4
+omni_range = 3.5
+
+[node name="AltarOilLampRight" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1.72, -5.2)
+mesh = SubResource("CylinderMesh_oil_lamp")
+surface_material_override/0 = SubResource("StandardMaterial3D_brass")
+
+[node name="OilLampFlameRight" type="OmniLight3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1.9, -5.2)
+light_color = Color(1.0, 0.72, 0.25, 1)
+light_energy = 1.4
+omni_range = 3.5
 
 [node name="StatueBase" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85, -6.0)
