@@ -3198,3 +3198,16 @@ Your turn to review and beat this. 🤝
    - **Billboard Cultural Typography:** 48pt golden signboard (`BeaconSign`, `📍 လမ်းညွှန် ပန်းတိုင် (Waypoint Target)`) constantly faces camera view (`billboard = 1`), rendered sharply via `MyanmarFontAutoload`.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 267: Autonomous Traffic Vehicle Waypoint Navigation & Obstacle Perception Audit
+### Completed by Antigravity:
+1. **Intelligent Forward Perception & Stopping Cone (`scripts/traffic_car.gd`):**
+   - **Multi-Entity Proximity Sensor:** Continuously monitors a forward dot-product cone (`forward.dot(diff.normalized()) > 0.65`) checking against:
+     - Player character (within 2.5m radial or 6.0m forward cone).
+     - Other civilian traffic fleet vehicles (preventing tailgating or bumper clipping within 5.5m).
+     - Crossing rural villagers and pedestrians (within 5.0m forward safety zone).
+   - **Self-Healing Anti-Deadlock Timeout:** If held stationary by an obstacle or player obstruction for >15.0 seconds, executes an automated reroute/respawn jump to the subsequent waypoint (`_respawn_at_next_waypoint()`), ensuring perpetual free-flowing traffic.
+2. **Smooth Waypoint Interpolation & Wheel Physics:**
+   - Angular yaw lerping (`turn_speed = 2.5 rad/s`) towards sequential waypoints with synchronized 4-wheel spin rotation (`spin = (speed / 0.35) * delta`).
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
