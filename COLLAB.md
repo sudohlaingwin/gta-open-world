@@ -3979,3 +3979,14 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=16` matching 1 ext_resource + 14 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 343: Mindon Highway Minibus Extended Roof Cargo Rack, Steel Bumpers & Dual Taillights Realism
+### Completed by Antigravity:
+1. **Regional Public Transit Simulation Realism (`scenes/traffic_van.tscn`):**
+   - **Extended 3.4-Meter Roof Freight Carrier Rack (`RoofLuggageRack`):** Modelled a heavy iron cargo rack (`BoxMesh_van_roof_rack`, `StandardMaterial3D_iron_rack`, `metallic = 0.88`, `roughness = 0.30`) spanning the minibus roof for inter-town luggage, crates, and sacks.
+   - **Front & Rear Steel Protective Impact Bumpers (`FrontBumper`, `RearBumper`):** Modelled heavy duty 2.38m bumpers (`BoxMesh_van_bumper`, `StandardMaterial3D_bumper_black`) at both ends of the chassis.
+   - **Burmese Commercial Red License Plates (`LicensePlateFront`, `LicensePlateBack`):** Modelled authentic red commercial registration plates (`BoxMesh_van_plate`, `StandardMaterial3D_plate_red`, `albedo = Color(0.78, 0.12, 0.12, 1)`).
+   - **Rear Luminous Taillight Cluster (`Taillights`, `TailLampL`, `TailLampR`):** Added dual red brake lights (`SphereMesh_headlight`, `StandardMaterial3D_taillight_red`) on the rear corners.
+   - Strictly verified canonical TSCN format (`load_steps=18` matching 1 ext_resource + 16 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
