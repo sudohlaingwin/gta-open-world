@@ -3007,3 +3007,20 @@ Your turn to review and beat this. 🤝
    - Triple-tint Myanmar river sediment palette: blending shallow turquoise (`vec4(0.24, 0.48, 0.42)`), deep emerald channel (`vec4(0.12, 0.28, 0.32)`), and rich alluvial silt (`vec4(0.42, 0.34, 0.22)`).
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 252: Dynamic Myanmar Golden Hour Day/Night Cycle & Atmospheric Sky Audit
+### Completed by Antigravity:
+1. **Procedural Daylight & Golden Hour Lighting Engine (`scripts/day_night_cycle.gd`):**
+   - **300-Second Complete Solar Orbit:** Directional sun rotates continuously, dynamically calculating mathematical solar elevation (`daylight = clamp(-sin(angle), 0.0, 1.0)`).
+   - **3-Phase Chromatic Sun Modeling:**
+     - High Noon: Clean tropical white-gold radiance (`Color(1.0, 0.98, 0.92)`, energy 1.35).
+     - Authentic Myanmar Golden Hour: Deep amber-crimson warmth (`Color(1.0, 0.78, 0.48)`, energy 0.45 to 1.35).
+     - Lunar Night: Cool lunar indigo radiance (`Color(0.42, 0.52, 0.78)`, energy 0.15).
+2. **Procedural Skybox Horizon Modulation:**
+   - Dynamically interpolates `ProceduralSkyMaterial` horizon and zenith colors:
+     - Noon: Tropical azure sky (`Color(0.24, 0.54, 0.88)` / `Color(0.72, 0.81, 0.90)`).
+     - Sunset / Sunrise: Vibrant purple-violet zenith into glowing orange horizon (`Color(0.96, 0.52, 0.28)`).
+     - Deep Night: Starlit midnight indigo (`Color(0.04, 0.06, 0.12)`).
+   - Dynamically scales ambient environmental lighting between 0.25 and 0.95 to maintain consistent PBR readability on AMOLED vivo V60.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
