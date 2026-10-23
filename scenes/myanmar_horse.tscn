@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/horse_controller.gd" id="1_horse"]
 
@@ -35,6 +35,10 @@ albedo_color = Color(0.78, 0.14, 0.14, 1)
 roughness = 0.55
 specular = 0.38
 
+[sub_resource type="PrismMesh" id="PrismMesh_horse_ear"]
+left_to_right = 0.5
+size = Vector3(0.12, 0.32, 0.15)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
 size = Vector3(4.8, 3.4, 5.5)
 
@@ -60,6 +64,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_chestnut")
 [node name="Head" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, -1.95)
 mesh = SubResource("BoxMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_chestnut")
+
+[node name="HorseEarL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -0.18, 3.28, -1.75)
+mesh = SubResource("PrismMesh_horse_ear")
+surface_material_override/0 = SubResource("StandardMaterial3D_chestnut")
+
+[node name="HorseEarR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 0.18, 3.28, -1.75)
+mesh = SubResource("PrismMesh_horse_ear")
 surface_material_override/0 = SubResource("StandardMaterial3D_chestnut")
 
 [node name="Saddle" type="MeshInstance3D" parent="VisualMesh"]
