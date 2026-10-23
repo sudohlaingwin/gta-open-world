@@ -3826,3 +3826,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=15` matching 1 ext_resource + 13 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 329: Ayeyarwady Traditional Sampan Rowboat Woven Bamboo Canopy & Stern Tiller Realism
+### Completed by Antigravity:
+1. **Fluvial Navigation & Traditional Boat Craft Realism (`scenes/ayeyarwady_rowboat.tscn`):**
+   - **Arched Woven Bamboo Passenger Sun Canopy (`PassengerCanopy`):** Modelled an authentic semi-cylindrical bamboo thatch arched roof (`CylinderMesh_bamboo_canopy_arch`, `StandardMaterial3D_bamboo_matting`, `albedo = Color(0.72, 0.62, 0.42, 1)`) shading midship passengers from tropical sunlight.
+   - **Coir Rope Bow Mooring Fender (`BowCoirFender`):** Modelled a thick woven coconut fiber buffer cushion ring (`TorusMesh_coir_fender`, `StandardMaterial3D_coir_rope`, `roughness = 0.95`) protecting the pointed prow against jetty collisions.
+   - **Stern Steering Rudder Tiller (`SternTiller`):** Installed an angled solid teak steering handle bar (`BoxMesh_tiller_handle`, `StandardMaterial3D_tiller_wood`) extending over the stern transom for traditional one-handed helmsmanship.
+   - Strictly verified canonical TSCN format (`load_steps=18` matching 1 ext_resource + 16 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

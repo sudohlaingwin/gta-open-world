@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/rowboat_controller.gd" id="1_boat"]
 
@@ -45,6 +45,30 @@ emission_energy_multiplier = 0.85
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
 size = Vector3(4.8, 3.0, 8.8)
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_bamboo_canopy_arch"]
+top_radius = 1.25
+bottom_radius = 1.25
+height = 3.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_matting"]
+albedo_color = Color(0.72, 0.62, 0.42, 1)
+roughness = 0.88
+
+[sub_resource type="TorusMesh" id="TorusMesh_coir_fender"]
+inner_radius = 0.16
+outer_radius = 0.32
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_coir_rope"]
+albedo_color = Color(0.50, 0.40, 0.26, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_tiller_handle"]
+size = Vector3(0.08, 0.12, 1.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tiller_wood"]
+albedo_color = Color(0.42, 0.24, 0.12, 1)
+roughness = 0.62
+
 [node name="AyeyarwadyRowboat" type="CharacterBody3D"]
 script = ExtResource("1_boat")
 
@@ -79,6 +103,21 @@ omni_range = 6.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
 mesh = SubResource("BoxMesh_bench")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+
+[node name="PassengerCanopy" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 1.35, 0.6)
+mesh = SubResource("CylinderMesh_bamboo_canopy_arch")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_matting")
+
+[node name="BowCoirFender" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.62, -3.85)
+mesh = SubResource("TorusMesh_coir_fender")
+surface_material_override/0 = SubResource("StandardMaterial3D_coir_rope")
+
+[node name="SternTiller" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.95, 3.65)
+mesh = SubResource("BoxMesh_tiller_handle")
+surface_material_override/0 = SubResource("StandardMaterial3D_tiller_wood")
 
 [node name="OarL" type="Node3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, -1.05, 0.8, 0)
@@ -116,7 +155,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
 shape = SubResource("BoxShape3D_interact")
 
 [node name="BoatSign" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 text = "ဧရာဝတီ သမ္ဗာန်လှေငယ် 🚣"
 font_size = 36
 outline_size = 10
