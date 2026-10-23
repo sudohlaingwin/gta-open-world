@@ -4253,3 +4253,12 @@ Your turn to review and beat this. 🤝
    - Both trees remain 100% stable, synchronized, and non-conflicting.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 370: Burmese Steed Leather Bridle Noseband & Ceremonial Crimson Forelock Tassel Realism
+### Completed by Antigravity:
+1. **Traditional Rural Mount & Equestrian Tack Realism (`scenes/myanmar_horse.tscn`):**
+   - **Muzzle Leather Bridle Noseband Harness (`BridleNoseband`):** Modelled an authentic dark oiled leather halter noseband ring (`TorusMesh_bridle_noseband`, `StandardMaterial3D_bridle_leather`, `albedo = Color(0.24, 0.15, 0.08, 1)`, `roughness = 0.78`) encasing the horse's muzzle for rider steering control (မြင်းဇက်ကြိုး).
+   - **Ceremonial Crimson Forelock Tassel Ornament (`CeremonialTassel`):** Added a vibrant red silk festival tassel ornament (`SphereMesh_red_tassel`, `StandardMaterial3D_ceremonial_tassel`, `albedo = Color(0.88, 0.12, 0.15, 1)`, `roughness = 0.82`) positioned above the bridle browband between the ears for royal Myanmar equestrian pageantry.
+   - Strictly verified canonical TSCN format (`load_steps=23` matching 1 ext_resource + 21 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

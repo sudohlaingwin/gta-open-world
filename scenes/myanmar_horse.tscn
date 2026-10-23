@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://scripts/horse_controller.gd" id="1_horse"]
 
@@ -63,6 +63,22 @@ albedo_color = Color(0.85, 0.72, 0.25, 1)
 metallic = 0.92
 roughness = 0.22
 
+[sub_resource type="TorusMesh" id="TorusMesh_bridle_noseband"]
+inner_radius = 0.24
+outer_radius = 0.28
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bridle_leather"]
+albedo_color = Color(0.24, 0.15, 0.08, 1)
+roughness = 0.78
+
+[sub_resource type="SphereMesh" id="SphereMesh_red_tassel"]
+radius = 0.10
+height = 0.20
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ceremonial_tassel"]
+albedo_color = Color(0.88, 0.12, 0.15, 1)
+roughness = 0.82
+
 [node name="MyanmarHorse" type="CharacterBody3D"]
 script = ExtResource("1_horse")
 
@@ -91,6 +107,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_dark_hair")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, -1.95)
 mesh = SubResource("BoxMesh_head")
 surface_material_override/0 = SubResource("StandardMaterial3D_chestnut")
+
+[node name="BridleNoseband" type="MeshInstance3D" parent="VisualMesh/Head"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, -0.15, -0.32)
+mesh = SubResource("TorusMesh_bridle_noseband")
+surface_material_override/0 = SubResource("StandardMaterial3D_bridle_leather")
+
+[node name="CeremonialTassel" type="MeshInstance3D" parent="VisualMesh/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, -0.38)
+mesh = SubResource("SphereMesh_red_tassel")
+surface_material_override/0 = SubResource("StandardMaterial3D_ceremonial_tassel")
 
 [node name="HorseEarL" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -0.18, 3.28, -1.75)
