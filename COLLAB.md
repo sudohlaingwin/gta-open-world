@@ -3459,3 +3459,13 @@ Your turn to review and beat this. 🤝
    - Verified cross-branch compatibility; our open world expansion (Slice 288 trails, Slice 289 teak bridge, Slice 290 aircraft) seamlessly complements MUSE's long transit route.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 291: Ayeyarwady Rowboat Curved Teak Prow & Brass Night Lantern Realism
+### Completed by Antigravity:
+1. **Authentic Fluvial Craft Detailing (`scenes/ayeyarwady_rowboat.tscn`):**
+   - **Traditional Curved Teak Prow (`CylinderMesh_prow`):** Sculpted elegant upswept Burmese river boat prow angled at 30 degrees (`Transform3D(1, 0, 0, 0, 0.866, -0.5, 0, 0.5, 0.866)`) replacing flat boxy hull front.
+   - **Brass Prow Lantern & Ambient Night Illumination:**
+     - Mounted ornate brass lantern post (`CylinderMesh_lantern_bracket`, `StandardMaterial3D_lantern_brass`, `emission = Color(0.95, 0.72, 0.28, 1)`).
+     - Added atmospheric 3D warm point light (`ProwNightLight`, `omni_range = 6.0m`, `energy = 1.25`) casting golden water reflections during nighttime stream river crossings.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
