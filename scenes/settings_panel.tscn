@@ -3,49 +3,49 @@
 [ext_resource type="Script" path="res://scripts/settings_panel.gd" id="1_settings"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings_bg"]
-bg_color = Color(0.05, 0.09, 0.16, 0.96)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(1.0, 0.86, 0.25, 0.95)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-shadow_color = Color(0, 0, 0, 0.6)
-shadow_size = 12
-shadow_offset = Vector2(0, 5)
+bg_color = Color(0.04, 0.08, 0.14, 0.90)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1.0, 0.84, 0.28, 0.90)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0, 0, 0, 0.65)
+shadow_size = 16
+shadow_offset = Vector2(0, 8)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
-bg_color = Color(0.10, 0.38, 0.30, 0.92)
+bg_color = Color(0.08, 0.28, 0.24, 0.88)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.25, 0.90, 0.65, 0.85)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-shadow_color = Color(0, 0, 0, 0.3)
-shadow_size = 4
-shadow_offset = Vector2(0, 2)
+border_color = Color(0.30, 0.92, 0.70, 0.90)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.40)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close"]
-bg_color = Color(0.70, 0.16, 0.20, 0.92)
+bg_color = Color(0.65, 0.14, 0.18, 0.88)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1.0, 0.40, 0.45, 0.85)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-shadow_color = Color(0, 0, 0, 0.3)
-shadow_size = 4
-shadow_offset = Vector2(0, 2)
+border_color = Color(1.0, 0.45, 0.50, 0.90)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.40)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
 
 [node name="SettingsPanel" type="Control"]
 process_mode = 3
