@@ -85,6 +85,18 @@ var last_shown_seq: int = 0
 var last_shown_serves: int = 0
 var last_shown_carried: int = 0
 var last_shown_ontime: int = 0
+# Slice 89: SESSION TOTALS for the depot board's second
+# section — the true sum of every collected round trip
+# this session. Slice 79 stays the single source of truth
+# (no counting duplicated in the board): totals are
+# bumped at the exact same depot-collection moment as
+# last_shown_*, so the two sections can never disagree
+# about what was collected. Session-only like the rest
+# of this file: no new save key, and a fresh session
+# starts at zero with seq 0.
+var total_serves: int = 0
+var total_carried: int = 0
+var total_ontime: int = 0
 
 
 static func dress(world: Node3D) -> void:
@@ -276,6 +288,12 @@ func _physics_process(delta: float) -> void:
 			last_shown_carried = _pend_carried
 			last_shown_ontime = _pend_ontime
 			last_shown_seq += 1
+			# Slice 89: totals accumulate here and only
+			# here — the last-trip section replaces, the
+			# totals section adds, from the same counts.
+			total_serves += _pend_serves
+			total_carried += _pend_carried
+			total_ontime += _pend_ontime
 			if _summary_label != null:
 				_summary_label.text = "ဝန်ဆောင်မှုပြီးပြီ ✓\nမှတ်တိုင် %s · ခရီးသည် %s · အချိန်မှန် %s" % [_my_num(_pend_serves), _my_num(_pend_carried), _my_num(_pend_ontime)]
 				_summary_label.visible = true

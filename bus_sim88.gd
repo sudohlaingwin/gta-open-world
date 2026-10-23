@@ -35,15 +35,39 @@ extends Node3D
 ## The Slice 81 honest limit stands unchanged: the
 ## minibus is a free-drive fleet vehicle and is NOT
 ## rewired into the route system in this slice either.
+##
+## Slice 89 — SHIFT TOTALS (part 16): the board gains a
+## second section directly below the first, same x span,
+## same backing and label style. The last-trip section
+## above is untouched (replaced per trip, never added).
+## The totals section shows the running session sum from
+## Slice 79's total_* (bumped at the same depot
+## collection as last_shown_*): total stops served,
+## total passengers carried, total on-time stops across
+## ALL completed round trips this session. Before any
+## round trip it shows the same neutral treatment —
+## Myanmar words only, no invented numbers, no
+## zeroes-as-results. Placement: totals board centre
+## y 0.75, spanning 0.25..1.25 — clear of the door
+## (x ends 0.5), clear of the south windows (y starts
+## 1.3, board top 1.25 leaves 0.05), and above the
+## steps (top 0.15, board bottom 0.25 leaves 0.10).
+## Session-only, no new save key. The two sections can
+## never be confused: one replaces, the other adds, and
+## the sim proves both from the same two trips.
 
 const BOARD_POS: Vector3 = Vector3(1.2, 1.8, 2.56)
 const BOARD_SIZE: Vector3 = Vector3(1.3, 1.0, 0.06)
 const LABEL_POS: Vector3 = Vector3(1.2, 1.8, 2.60)
 const PRE_TEXT: String = "ဝန်ဆောင်မှု\nမပြီးသေးပါ"
+const TOTALS_BOARD_POS: Vector3 = Vector3(1.2, 0.75, 2.56)
+const TOTALS_LABEL_POS: Vector3 = Vector3(1.2, 0.75, 2.60)
+const TOTALS_PRE_TEXT: String = "စုစုပေါင်း\nမပြီးသေးပါ"
 const MY_DIGITS: Array = ["၀", "၁", "၂", "၃", "၄", "၅", "၆", "၇", "၈", "၉"]
 
 var _built: bool = false
 var _label: Label3D = null
+var _totals_label: Label3D = null
 var _seen_seq: int = -1
 
 
@@ -85,30 +109,61 @@ func _try_build(world: Node3D) -> bool:
 	var existing := office.get_node_or_null("ServiceLabel88") as Label3D
 	if existing != null:
 		_label = existing
-		return true
-	var board_m := _mat(Color(0.05, 0.3, 0.15, 1.0), 0.8)
-	var box := MeshInstance3D.new()
-	box.name = "ServiceBoard88"
-	var bm := BoxMesh.new()
-	bm.size = BOARD_SIZE
-	box.mesh = bm
-	box.position = BOARD_POS
-	box.set_surface_override_material(0, board_m)
-	office.add_child(box)
-	var font := load("res://fonts/NotoSansMyanmar-Regular.ttf") as Font
-	if font == null:
-		push_error("BusSim88: Myanmar font failed to load, service board label skipped")
-		return true
-	var lab := Label3D.new()
-	lab.name = "ServiceLabel88"
-	lab.text = PRE_TEXT
-	lab.font = font
-	lab.font_size = 20
-	lab.pixel_size = 0.010
-	lab.position = LABEL_POS
-	lab.double_sided = true
-	office.add_child(lab)
-	_label = lab
+	else:
+		var board_m := _mat(Color(0.05, 0.3, 0.15, 1.0), 0.8)
+		var box := MeshInstance3D.new()
+		box.name = "ServiceBoard88"
+		var bm := BoxMesh.new()
+		bm.size = BOARD_SIZE
+		box.mesh = bm
+		box.position = BOARD_POS
+		box.set_surface_override_material(0, board_m)
+		office.add_child(box)
+		var font := load("res://fonts/NotoSansMyanmar-Regular.ttf") as Font
+		if font == null:
+			push_error("BusSim88: Myanmar font failed to load, service board label skipped")
+			return true
+		var lab := Label3D.new()
+		lab.name = "ServiceLabel88"
+		lab.text = PRE_TEXT
+		lab.font = font
+		lab.font_size = 20
+		lab.pixel_size = 0.010
+		lab.position = LABEL_POS
+		lab.double_sided = true
+		office.add_child(lab)
+		_label = lab
+	# Slice 89: totals section below the last-trip board.
+	# Built independently of the first board so a world
+	# that already carries ServiceLabel88 still gets it.
+	var texisting := office.get_node_or_null("TotalsLabel89") as Label3D
+	if texisting != null:
+		_totals_label = texisting
+	else:
+		if office.get_node_or_null("TotalsBoard89") == null:
+			var tboard_m := _mat(Color(0.05, 0.3, 0.15, 1.0), 0.8)
+			var tbox := MeshInstance3D.new()
+			tbox.name = "TotalsBoard89"
+			var tbm := BoxMesh.new()
+			tbm.size = BOARD_SIZE
+			tbox.mesh = tbm
+			tbox.position = TOTALS_BOARD_POS
+			tbox.set_surface_override_material(0, tboard_m)
+			office.add_child(tbox)
+		var font2 := load("res://fonts/NotoSansMyanmar-Regular.ttf") as Font
+		if font2 == null:
+			push_error("BusSim88: Myanmar font failed to load, totals board label skipped")
+			return true
+		var tlab := Label3D.new()
+		tlab.name = "TotalsLabel89"
+		tlab.text = TOTALS_PRE_TEXT
+		tlab.font = font2
+		tlab.font_size = 20
+		tlab.pixel_size = 0.010
+		tlab.position = TOTALS_LABEL_POS
+		tlab.double_sided = true
+		office.add_child(tlab)
+		_totals_label = tlab
 	return true
 
 
@@ -130,3 +185,7 @@ func _physics_process(_delta: float) -> void:
 	if seq <= 0:
 		return
 	_label.text = "ဝန်ဆောင်မှု\nမှတ်တိုင် %s\nခရီးသည် %s\nအချိန်မှန် %s" % [_my_num(int(sim79.get("last_shown_serves"))), _my_num(int(sim79.get("last_shown_carried"))), _my_num(int(sim79.get("last_shown_ontime")))]
+	# Slice 89: totals section follows the same seq bump
+	# — same collection, same moment, summed counts.
+	if _totals_label != null:
+		_totals_label.text = "စုစုပေါင်း\nမှတ်တိုင် %s\nခရီးသည် %s\nအချိန်မှန် %s" % [_my_num(int(sim79.get("total_serves"))), _my_num(int(sim79.get("total_carried"))), _my_num(int(sim79.get("total_ontime")))]
