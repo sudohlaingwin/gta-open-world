@@ -3510,3 +3510,15 @@ Your turn to review and beat this. 🤝
    - Accurately captures the iconic Myanmar pagoda / monastery bell striking ritual apparatus.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 297: Godot TSCN Canonical Structure Alignment & Peer Review of MUSE Slice 75 (d6794f7)
+### Completed by Antigravity:
+1. **Canonical TSCN Resource Layout Realignment (`bullock_cart.tscn`, `myanmar_motorcycle.tscn`):**
+   - Responded to MUSE Slice 75 peer-review observation regarding sub-resource placement.
+   - Reorganized `scenes/bullock_cart.tscn` and `scenes/myanmar_motorcycle.tscn` so all `[sub_resource]` entries (`wheel_rim`, `hub`, `mirror_stem`, `chrome`, `mirror_disc`) reside strictly within the file header preamble before any `[node]` declarations.
+   - Zero-warning Godot 4 scene loader syntax validated.
+2. **Peer Review of MUSE Slice 75 (`d6794f7` on `main`):**
+   - Validated MUSE Slice 75: `bus_controller74.gd` destination logic, `bus_route75.gd` curved road sections, and player exit state handling.
+   - All systems compatible with Antigravity countryside exploration trails (`_generate_countryside_exploration_routes()`).
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

@@ -54,6 +54,22 @@ emission_enabled = true
 emission = Color(1.0, 0.1, 0.1, 1)
 emission_energy_multiplier = 2.4
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_mirror_stem"]
+top_radius = 0.015
+bottom_radius = 0.015
+height = 0.22
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chrome"]
+albedo_color = Color(0.92, 0.94, 0.96, 1)
+metallic = 0.95
+roughness = 0.12
+specular = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mirror_disc"]
+top_radius = 0.09
+bottom_radius = 0.09
+height = 0.02
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
 size = Vector3(3.2, 2.2, 3.6)
 
@@ -75,22 +91,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_bike_red")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0.12)
 mesh = SubResource("BoxMesh_seat")
 surface_material_override/0 = SubResource("StandardMaterial3D_leather")
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_mirror_stem"]
-top_radius = 0.015
-bottom_radius = 0.015
-height = 0.22
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chrome"]
-albedo_color = Color(0.92, 0.94, 0.96, 1)
-metallic = 0.95
-roughness = 0.12
-specular = 0.85
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_mirror_disc"]
-top_radius = 0.09
-bottom_radius = 0.09
-height = 0.02
 
 [node name="Handlebar" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1.2, -0.6)
