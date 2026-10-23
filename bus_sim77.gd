@@ -40,11 +40,24 @@ extends Node3D
 ## nothing new is saved, so no save key is added and no old
 ## save can break. No opponent code, map, names or structure
 ## is used. Touch-first throughout (no keys anywhere).
+##
+## Slice 79 — NIGHT LEGS + SERVICE-POSITION DUES (part 6).
+## A leg starting at night (daylight < 0.15, Slice 57 rule)
+## runs 90 s per stop instead of 60 s; the duration is
+## fixed at leg start, so nightfall mid-leg does not
+## stretch the leg already running. Dues are counted by
+## position in the current service order (Slice 79 node
+## owns the service mode; the controller answers
+## service_pos79), so Express dues are 0 / 1 legs, never
+## Local spacing. The feedback sequence counter lets the
+## Slice 79 summary count on-time stops without reading
+## label text.
 
 const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0]
 const STOP_ZONE_R: float = 9.0
 const STOP_SPEED: float = 0.5
 const LEG_S: float = 60.0
+const NIGHT_LEG_S: float = 90.0
 const ON_TIME_S: float = 15.0
 const FEEDBACK_S: float = 5.0
 const MY_DIGITS: Array = ["၁", "၂", "၃", "၄"]
@@ -62,6 +75,14 @@ var _prev_door_open: bool = false
 var _feedback_timer: float = 0.0
 var _timetable_label: Label = null
 var _feedback_label: Label = null
+# Slice 79: leg duration is fixed when a leg STARTS (day
+# 60 s, night 90 s by the Slice 57 dark rule) — a
+# day-to-night change mid-leg does NOT stretch the leg
+# already running, stated plainly. The Slice 79 summary
+# reads the feedback sequence, never the label text.
+var _leg_s: float = LEG_S
+var feedback_seq79: int = 0
+var last_feedback_ontime79: bool = false
 
 
 static func dress(world: Node3D) -> void:
@@ -143,11 +164,20 @@ func _fmt_mmss(t: float) -> String:
 
 
 func _due_for(stop_idx: int, direction: int) -> float:
-	# Eastbound leg: stop k due k legs after leg start.
-	# Westbound leg: stop k due (3 - k) legs after leg start.
-	if direction == 0:
-		return _epoch + float(stop_idx) * LEG_S
-	return _epoch + float(3 - stop_idx) * LEG_S
+	# Due = leg start + (position in the service order) x
+	# leg duration. Slice 79: Express positions are 0 -> 0,
+	# 3 -> 1 eastbound (3 -> 0, 0 -> 1 westbound), so an
+	# Express stop is never due on Local spacing; Local
+	# positions are identical to the old index formula.
+	var pos := stop_idx
+	var world := get_parent() as Node3D
+	if world != null:
+		var ctrl := world.get_node_or_null("BusSim74") as Node3D
+		if ctrl != null and ctrl.has_method("service_pos79"):
+			var p := int(ctrl.call("service_pos79", stop_idx, direction))
+			if p >= 0:
+				pos = p
+	return _epoch + float(pos) * _leg_s
 
 
 func _try_stops(world: Node3D) -> bool:
@@ -295,18 +325,40 @@ func _physics_process(delta: float) -> void:
 	# First observation estimates the epoch from the stops
 	# already served on the current leg (a loaded mid-route
 	# save), and is the only estimated value here.
+	# Slice 79: the leg duration is fixed at leg start from
+	# daylight (night legs 90 s, day legs 60 s); the first
+	# observation uses current daylight for the same choice.
 	if ctrl != null:
 		var dir := int(ctrl.get("direction"))
 		var nxt := int(ctrl.get("next_stop"))
 		var key := "%d-%d" % [dir, nxt]
 		if not _observed:
 			var done_steps := nxt if dir == 0 else 3 - nxt
-			_epoch = _service_t - float(done_steps) * LEG_S
+			if ctrl.has_method("service_pos79"):
+				var p := int(ctrl.call("service_pos79", nxt, dir))
+				if p >= 0:
+					done_steps = p
+			_leg_s = NIGHT_LEG_S if _daylight() < 0.15 else LEG_S
+			_epoch = _service_t - float(done_steps) * _leg_s
 			_observed = true
 			_leg_key = key
 		elif key != _leg_key:
-			if (dir == 0 and nxt == 0) or (dir == 1 and nxt == 2):
+			# Slice 79: a leg starts at the first stop of an
+			# east order, or the second stop of a west order
+			# (the flip stop itself counts as served). Local:
+			# (0,0) / (1,2) as before; Express: (0,0) / (1,0).
+			var leg_start := false
+			if dir == 0 and nxt == 0:
+				leg_start = true
+			elif dir == 1 and ctrl.has_method("service_order79"):
+				var worder: Array = ctrl.call("service_order79", 1)
+				if worder.size() > 1 and nxt == int(worder[1]):
+					leg_start = true
+			elif dir == 1 and nxt == 2:
+				leg_start = true
+			if leg_start:
 				_epoch = _service_t
+				_leg_s = NIGHT_LEG_S if _daylight() < 0.15 else LEG_S
 			_leg_key = key
 	# Timetable label: service clock + countdown to the
 	# next stop's due time (or how late it already is).
@@ -343,8 +395,12 @@ func _physics_process(delta: float) -> void:
 			var late := _service_t - _due_for(best, dir3)
 			if absf(late) <= ON_TIME_S:
 				_show_feedback("အချိန်မှန် ✓")
+				last_feedback_ontime79 = true
 			elif late > 0.0:
 				_show_feedback("နောက်ကျ %s" % _fmt_mmss(late))
+				last_feedback_ontime79 = false
 			else:
 				_show_feedback("စော %s" % _fmt_mmss(-late))
+				last_feedback_ontime79 = false
+			feedback_seq79 += 1
 	_prev_door_open = door_open

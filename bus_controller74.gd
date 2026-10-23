@@ -50,6 +50,33 @@ extends Node3D
 ##   pattern as the Slice 54/60/64 optional keys).
 ## Traffic-rule enforcement (signals, lane discipline,
 ## fines) is NOT built here — stated plainly, not faked.
+##
+## Slice 79 — SERVICE VARIANTS (Local vs Express, part 6).
+## The route controller owns the service mode (session-only,
+## NOT saved: a loaded save always resumes as Local, stated
+## plainly — the busroute75 key is untouched):
+## - Local serves every stop in order (east 0 -> 1 -> 2 -> 3,
+##   west 3 -> 2 -> 1 -> 0) — the Slice 75 behaviour, kept
+##   exactly: the boarding filter below reduces to the old
+##   direction-match rule for Local, because the DESTS table
+##   only ever gives eastbound riders later destinations and
+##   westbound riders earlier ones;
+## - Express serves only stops 0 and 3 (east 0 -> 3, west
+##   3 -> 0). The destination sign, the Slice 77 timetable
+##   dues and the Slice 28/34 guidance all follow next_stop,
+##   so they re-point automatically; the Slice 79 node only
+##   re-texts the physical timetable boards;
+## - boarding is filtered by the service: a rider boards
+##   only if the stop is a service stop, their required
+##   direction matches the leg, AND their destination is a
+##   later service stop in that direction. A stop-0 rider
+##   bound for stop 2 therefore does NOT board an Express
+##   (they wait for Local); an out-of-order Express serve
+##   at a skipped stop boards nobody at all;
+## - switching mid-leg recomputes next_stop as the first
+##   service stop ahead of the last in-order served stop
+##   (by stop index in the travel direction), so a switch
+##   can never send the bus backwards or strand the route.
 
 var boarded: int = 0
 var _prev_door_open: bool = false
@@ -83,6 +110,60 @@ var _restored: bool = false
 var _last_wp_stop: int = -1
 var _last_sign_stop: int = -1
 var _alight_seq: int = 0
+
+# Slice 79 service mode (session-only, NOT saved).
+const SERVICE_LOCAL: int = 0
+const SERVICE_EXPRESS: int = 1
+var service79: int = SERVICE_LOCAL
+
+
+func service_order79(dir: int) -> Array:
+	# Stops in travel order for the current service. Local
+	# is the Slice 75 order; Express skips stops 1 and 2.
+	if service79 == SERVICE_EXPRESS:
+		if dir == DIR_WEST:
+			return [3, 0]
+		return [0, 3]
+	if dir == DIR_WEST:
+		return [3, 2, 1, 0]
+	return [0, 1, 2, 3]
+
+
+func service_pos79(stop_idx: int, dir: int) -> int:
+	return service_order79(dir).find(stop_idx)
+
+
+func set_service79(mode: int, world: Node3D, bus: Node3D) -> void:
+	# Touch-first selector (Slice 79 node) calls this. A
+	# mid-leg switch recomputes next_stop from the last
+	# in-order served stop, never from the old next_stop,
+	# so the route can neither run backwards nor stall.
+	if mode != SERVICE_LOCAL and mode != SERVICE_EXPRESS:
+		return
+	if mode == service79:
+		return
+	service79 = mode
+	var order: Array = service_order79(direction)
+	var last := -1
+	if leg_served.size() > 0:
+		last = int(leg_served[leg_served.size() - 1])
+	var nxt := -1
+	for s in order:
+		if last == -1:
+			nxt = int(s)
+			break
+		if direction == DIR_EAST and int(s) > last:
+			nxt = int(s)
+			break
+		if direction == DIR_WEST and int(s) < last:
+			nxt = int(s)
+			break
+	if nxt == -1:
+		nxt = int(order[0])
+	next_stop = nxt
+	_update_route_guidance(world)
+	if bus != null:
+		_update_dest_sign(bus)
 
 
 func _stop_pos(world: Node3D, idx: int) -> Vector3:
@@ -267,41 +348,57 @@ func _serve_stop(world: Node3D, bus: Node3D, stop_idx: int) -> void:
 			h.position = Vector3(0.0, 1.35, 0.0)
 			h.set_surface_override_material(0, head_m)
 			g.add_child(h)
-	# 2. Board: only still-visible waiting riders whose
-	# required direction matches the current leg direction.
-	if grp != null:
+	# 2. Board: only still-visible waiting riders on a
+	# SERVICE stop whose required direction matches the
+	# current leg AND whose destination is a later service
+	# stop in that direction (Slice 79). For Local this
+	# reduces to the old direction-match rule (the DESTS
+	# table only gives ahead destinations); for Express a
+	# rider bound for a skipped stop never boards, and an
+	# out-of-order serve at a skipped stop boards nobody.
+	var order79: Array = service_order79(direction)
+	if grp != null and order79.has(stop_idx):
 		for wi in range(2):
 			var w := grp.get_node_or_null("Waiting74_%d_%d" % [stop_idx, wi]) as Node3D
 			if w != null and w.visible and not bool(w.get_meta("walking78", false)) and int(w.get_meta("dir75", -1)) == direction:
+				var dest79 := int(w.get_meta("dest75", stop_idx))
+				var ahead79 := false
+				if direction == DIR_EAST and dest79 > stop_idx and order79.has(dest79):
+					ahead79 = true
+				if direction == DIR_WEST and dest79 < stop_idx and order79.has(dest79):
+					ahead79 = true
+				if not ahead79:
+					continue
 				# Slice 78: do NOT hide on the spot — flag the
 				# rider and let BusSim78 walk them to the bus
 				# flank, then hide them there. The count is
 				# recorded now; the visual follows.
 				w.set_meta("walking78", true)
-				onboard_dests.append(int(w.get_meta("dest75", stop_idx)))
+				onboard_dests.append(dest79)
 				boarded_total += 1
 		boarded = onboard_dests.size()
 	# 3. Route sequence advances ONLY when the stops are
 	# served in order; an out-of-order serve still moves
 	# passengers, it just does not advance the route.
+	# Order-based (Slice 79): the last stop of the current
+	# service order completes the leg, so Express (0 -> 3,
+	# 3 -> 0) flips exactly like Local (0 -> 3, 3 -> 0).
 	if stop_idx == next_stop:
 		leg_served.append(stop_idx)
-		if direction == DIR_EAST:
-			if stop_idx == 3:
+		var pos79 := order79.find(stop_idx)
+		if pos79 == order79.size() - 1:
+			if direction == DIR_EAST:
 				route_complete = true
 				direction = DIR_WEST
-				next_stop = 2
-				leg_served = [3]
+				next_stop = int(service_order79(DIR_WEST)[1])
+				leg_served = [stop_idx]
 			else:
-				next_stop = stop_idx + 1
-		else:
-			if stop_idx == 0:
 				_respawn_waiting(world)
 				direction = DIR_EAST
 				next_stop = 0
 				leg_served = []
-			else:
-				next_stop = stop_idx - 1
+		else:
+			next_stop = int(order79[pos79 + 1])
 		_update_route_guidance(world)
 		if bus != null:
 			_update_dest_sign(bus)
