@@ -3671,3 +3671,14 @@ Your turn to review and beat this. 🤝
    - Verified canonical TSCN format (`load_steps=13` matching 12 `[sub_resource]` entries) for 100% Godot engine and parser integrity.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 314: Village Roadside Fruit Stall Traditional Brass Balance Scale & Corner Timber Posts Realism
+### Completed by Antigravity:
+1. **Rural Marketplace Commerce & Architecture Realism (`scenes/market_stall.tscn`):**
+   - **Four-Corner Canopy Timber Posts (`CanopyPoleFL`, `CanopyPoleFR`, `CanopyPoleBL`, `CanopyPoleBR`):** Modelled four solid 3.6m rustic wood support stanchions (`CylinderMesh_canopy_pole`, `StandardMaterial3D_table_wood`) supporting the blue tarpaulin awning over the wooden display table.
+   - **Traditional Market Brass Balance Beam (`ScaleBeam`):** Modelled a traditional Burmese suspended dual-pan merchant scale beam (`BoxMesh_scale_beam`, `StandardMaterial3D_scale_brass`, `metallic = 0.88`, `roughness = 0.25`).
+   - **Dual Brass Weighing Pans (`ScalePanL`, `ScalePanR`):** Modelled twin circular brass weighing trays (`CylinderMesh_scale_pan`, `StandardMaterial3D_scale_brass`) suspended at counter level.
+   - **Cast-Iron Calibration Counterweight (`IronWeight`):** Placed an authentic cylindrical cast-iron merchant weight (`CylinderMesh_iron_weight`, `StandardMaterial3D_cast_iron`, `metallic = 0.82`) inside the right weighing pan.
+   - Strictly verified canonical TSCN format (`load_steps=23` matching 1 ext_resource + 21 sub_resources + 1) for 100% Godot engine and parser integrity.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

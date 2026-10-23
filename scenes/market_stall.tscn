@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
@@ -68,6 +68,34 @@ albedo_color = Color(0.95, 0.82, 0.18, 1)
 roughness = 0.45
 specular = 0.35
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_canopy_pole"]
+top_radius = 0.08
+bottom_radius = 0.09
+height = 3.6
+
+[sub_resource type="BoxMesh" id="BoxMesh_scale_beam"]
+size = Vector3(1.1, 0.06, 0.06)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_scale_pan"]
+top_radius = 0.24
+bottom_radius = 0.18
+height = 0.08
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_scale_brass"]
+albedo_color = Color(0.88, 0.74, 0.25, 1)
+metallic = 0.88
+roughness = 0.25
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_iron_weight"]
+top_radius = 0.08
+bottom_radius = 0.10
+height = 0.12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cast_iron"]
+albedo_color = Color(0.22, 0.22, 0.24, 1)
+metallic = 0.82
+roughness = 0.45
+
 [node name="MarketStall" type="StaticBody3D"]
 script = ExtResource("1_lantern")
 
@@ -127,6 +155,46 @@ surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_basket")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15, 0)
 mesh = SubResource("CylinderMesh_banana_bunch")
 surface_material_override/0 = SubResource("StandardMaterial3D_banana_gold")
+
+[node name="CanopyPoleFL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0, 2.1, 2.0)
+mesh = SubResource("CylinderMesh_canopy_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_table_wood")
+
+[node name="CanopyPoleFR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0, 2.1, 2.0)
+mesh = SubResource("CylinderMesh_canopy_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_table_wood")
+
+[node name="CanopyPoleBL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0, 2.1, -2.0)
+mesh = SubResource("CylinderMesh_canopy_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_table_wood")
+
+[node name="CanopyPoleBR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0, 2.1, -2.0)
+mesh = SubResource("CylinderMesh_canopy_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_table_wood")
+
+[node name="ScaleBeam" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 1.85, 1.2)
+mesh = SubResource("BoxMesh_scale_beam")
+surface_material_override/0 = SubResource("StandardMaterial3D_scale_brass")
+
+[node name="ScalePanL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 1.55, 1.2)
+mesh = SubResource("CylinderMesh_scale_pan")
+surface_material_override/0 = SubResource("StandardMaterial3D_scale_brass")
+
+[node name="ScalePanR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65, 1.55, 1.2)
+mesh = SubResource("CylinderMesh_scale_pan")
+surface_material_override/0 = SubResource("StandardMaterial3D_scale_brass")
+
+[node name="IronWeight" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65, 1.62, 1.2)
+mesh = SubResource("CylinderMesh_iron_weight")
+surface_material_override/0 = SubResource("StandardMaterial3D_cast_iron")
 
 [node name="StallSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, 2.8)
