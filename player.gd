@@ -42,6 +42,7 @@ const Realism103Script = preload("res://realism103.gd")
 const Realism104Script = preload("res://realism104.gd")
 const Realism105Script = preload("res://realism105.gd")
 const Realism106Script = preload("res://realism106.gd")
+const Realism107Script = preload("res://realism107.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -737,6 +738,12 @@ func _ready() -> void:
 	# benches x4, litter bins x6, post-office flag, zebra crossings x2)
 	# — 25 honest items (frame >= 300 pass, after realism105's 280).
 	Realism106Script.dress(get_parent())
+	# Slice 106: cone-tree upgrade (border N/S/W/E runs, scatter
+	# set, track set — trunk + upper tier per tree, cone lifted
+	# 1.8 m so the trunk reads), Field97 crop rows x43 (3 rows
+	# each), west pond reed ring x8 clusters — 50 honest items
+	# (frame >= 320 pass, after realism106's 300).
+	Realism107Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
