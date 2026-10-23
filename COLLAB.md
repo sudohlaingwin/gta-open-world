@@ -4370,3 +4370,12 @@ Your turn to review and beat this. 🤝
    - Both trees remain 100% stable, synchronized, and non-conflicting.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 382: Village Boundary Gate Gilded Spandrel Knee Braces & Lacquer Red Plaque Realism
+### Completed by Antigravity:
+1. **Traditional Vernacular Gate Architecture Realism (`scenes/village_gate.tscn`):**
+   - **Gilded Burmese Spandrel Knee Braces (`OrnateBracketL`, `OrnateBracketR`):** Modelled authentic 45-degree angled floral corner brackets (`PrismMesh_ornate_bracket`, `StandardMaterial3D_gilded_bracket`, `albedo = Color(0.92, 0.75, 0.18, 1)`, `metallic = 0.85`, `roughness = 0.28`) bracing the massive teak crossbeam against the columns in traditional Kanote architectural fashion (ကနုတ် ပန်းဆွဲထောင့်ထောက်).
+   - **Lacquered Red Signboard Backing Plaque (`PlaqueBoard`):** Modelled an authentic glossy crimson lacquer mounting board (`BoxMesh_red_plaque`, `StandardMaterial3D_lacquer_plaque`, `albedo = Color(0.58, 0.10, 0.08, 1)`, `roughness = 0.32`, `specular = 0.50`) framing the gilded Burmese welcome script to maximize contrast and visual prestige.
+   - Strictly verified canonical TSCN format (`load_steps=25` matching 1 ext_resource + 23 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

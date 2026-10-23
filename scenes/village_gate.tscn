@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3]
+[gd_scene load_steps=25 format=3]
 
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
@@ -80,6 +80,23 @@ size = Vector3(0.12, 1.8, 0.08)
 albedo_color = Color(0.88, 0.88, 0.85, 1)
 roughness = 0.72
 
+[sub_resource type="PrismMesh" id="PrismMesh_ornate_bracket"]
+left_to_right = 0.5
+size = Vector3(1.8, 1.8, 0.35)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gilded_bracket"]
+albedo_color = Color(0.92, 0.75, 0.18, 1)
+metallic = 0.85
+roughness = 0.28
+
+[sub_resource type="BoxMesh" id="BoxMesh_red_plaque"]
+size = Vector3(12.5, 1.25, 0.12)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lacquer_plaque"]
+albedo_color = Color(0.58, 0.10, 0.08, 1)
+roughness = 0.32
+specular = 0.50
+
 [node name="VillageGate" type="StaticBody3D"]
 script = ExtResource("1_lantern")
 
@@ -147,6 +164,21 @@ surface_material_override/0 = SubResource("StandardMaterial3D_whitewash_picket")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.8, 0)
 mesh = SubResource("BoxMesh_beam")
 surface_material_override/0 = SubResource("StandardMaterial3D_gate_teak")
+
+[node name="OrnateBracketL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, -5.8, 7.8, 0)
+mesh = SubResource("PrismMesh_ornate_bracket")
+surface_material_override/0 = SubResource("StandardMaterial3D_gilded_bracket")
+
+[node name="OrnateBracketR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0, 1, 5.8, 7.8, 0)
+mesh = SubResource("PrismMesh_ornate_bracket")
+surface_material_override/0 = SubResource("StandardMaterial3D_gilded_bracket")
+
+[node name="PlaqueBoard" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.0, 0.42)
+mesh = SubResource("BoxMesh_red_plaque")
+surface_material_override/0 = SubResource("StandardMaterial3D_lacquer_plaque")
 
 [node name="PyatthatTop" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.5, 0)
