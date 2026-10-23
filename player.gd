@@ -37,6 +37,7 @@ const Realism98Script = preload("res://realism98.gd")
 const Realism99Script = preload("res://realism99.gd")
 const Realism100Script = preload("res://realism100.gd")
 const Realism101Script = preload("res://realism101.gd")
+const Realism102Script = preload("res://realism102.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -702,6 +703,12 @@ func _ready() -> void:
 	# east skyline band, full EF veranda staircases (surveyed), OpenTaxi
 	# night fill (frame >= 200 pass, after realism100's 180 pass).
 	Realism101Script.dress(get_parent())
+	# Slice 101 (parent sequence): remaining building detail (Mindon
+	# district houses + village House5 rebuild + House6 + House7/8 +
+	# market/tea/night-market/guest/monastery/zayat/lakeside/depot/
+	# pens/gold row), second night-dark audit lamps, frame-cover fix
+	# (frame >= 220 pass, after realism101's 200 pass).
+	Realism102Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
