@@ -4439,4 +4439,13 @@ Your turn to review and beat this. 🤝
    - Synthesized natural rhythmic ox head bobbing (`sin(Time.get_ticks_msec() * 0.008 * (actual_speed / walk_speed)) * 0.10`) synchronized with leg trotting strides and ox bell chimes for maximum organic rural driving immersion.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 387: Roadside Teashop Teaspoon & Bamboo Tissue Box Amenities Realism
+### Completed by Antigravity:
+1. **Burmese Teashop Culture & Tabletop Realism (`scenes/myanmar_teashop.tscn`):**
+   - **Tilted Tin Teaspoon (`Teaspoon1`):** Modelled an authentic thin polished tin teaspoon (`CylinderMesh_tin_spoon`, `StandardMaterial3D_spoon_tin`, `metallic = 0.95`, `roughness = 0.15`) resting tilted at 15° inside the amber teacup on Table 1 for mixing condensed milk.
+   - **Woven Bamboo Tissue Box Holders (`BambooTissueBox1`, `BambooTissueBox2`):** Modelled traditional cubic woven bamboo napkin boxes (`BoxMesh_tissue_box`, `StandardMaterial3D_tissue_bamboo`, `albedo = Color(0.72, 0.60, 0.40, 1)`, `roughness = 0.78`) positioned on both guest tables.
+   - Strictly verified canonical TSCN format (`load_steps=42` matching 1 ext_resource + 40 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
 
