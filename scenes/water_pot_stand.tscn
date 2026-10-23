@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=18 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pot"]
 size = Vector3(3.6, 3.4, 2.1)
@@ -57,6 +57,26 @@ outer_radius = 0.36
 albedo_color = Color(0.96, 0.98, 0.92, 1)
 roughness = 0.55
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_ladle_handle"]
+top_radius = 0.02
+bottom_radius = 0.02
+height = 0.65
+
+[sub_resource type="SphereMesh" id="SphereMesh_coconut_bowl"]
+radius = 0.12
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_coconut_shell"]
+albedo_color = Color(0.28, 0.16, 0.08, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="BoxMesh_drain_slats"]
+size = Vector3(3.5, 0.08, 1.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wet_bamboo"]
+albedo_color = Color(0.48, 0.38, 0.20, 1)
+roughness = 0.45
+
 [node name="WaterPotStand" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -109,6 +129,21 @@ surface_material_override/0 = SubResource("StandardMaterial3D_wood")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 0)
 mesh = SubResource("PrismMesh_stand_roof")
 surface_material_override/0 = SubResource("StandardMaterial3D_roof_teak")
+
+[node name="BambooDrainSlats" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+mesh = SubResource("BoxMesh_drain_slats")
+surface_material_override/0 = SubResource("StandardMaterial3D_wet_bamboo")
+
+[node name="LadleHandle" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.966, 0.259, 0, -0.259, 0.966, 0, 0, 0, 1, -1.35, 1.85, 0.2)
+mesh = SubResource("CylinderMesh_ladle_handle")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="LadleCoconutBowl" type="MeshInstance3D" parent="VisualMesh/LadleHandle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.32, 0)
+mesh = SubResource("SphereMesh_coconut_bowl")
+surface_material_override/0 = SubResource("StandardMaterial3D_coconut_shell")
 
 [node name="JasmineGarland" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 0.866, 0.5, 0, -0.5, 0.866, -0.85, 2.45, 0.15)

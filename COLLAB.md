@@ -4071,3 +4071,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=35` matching 0 ext_resources + 34 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 352: Roadside Water Pot Stand Coconut Shell Ladle & Wet Bamboo Drainage Slats Realism
+### Completed by Antigravity:
+1. **Myanmar Traditional Roadside Hospitality & Charity Realism (`scenes/water_pot_stand.tscn`):**
+   - **Traditional Coconut Shell Water Ladle (`LadleHandle`, `LadleCoconutBowl`):** Modelled an authentic teak handled drinking ladle carved from a natural polished coconut half-shell (`SphereMesh_coconut_bowl`, `StandardMaterial3D_coconut_shell`, `roughness = 0.82`) suspended beside the water pot post.
+   - **Wet Slatted Bamboo Drainage Base (`BambooDrainSlats`):** Modelled a 3.5m x 1.8m bamboo drainage duckboard platform (`BoxMesh_drain_slats`, `StandardMaterial3D_wet_bamboo`, `roughness = 0.45`) resting below the stand to drain water drippings.
+   - Strictly verified canonical TSCN format (`load_steps=18` matching 0 ext_resources + 17 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
