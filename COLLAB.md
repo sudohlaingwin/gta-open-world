@@ -4080,3 +4080,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=18` matching 0 ext_resources + 17 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 353: Central Village Brick Water Well Wrought Iron Crank & Stone Runoff Trough Realism
+### Completed by Antigravity:
+1. **Vernacular Rural Infrastructure & Communal Well Realism (`scenes/village_well.tscn`):**
+   - **Forged Wrought-Iron Crank Winding Mechanism (`CrankSpindle`, `CrankArm`):** Modelled a realistic iron spindle shaft and offset winding crank arm (`StandardMaterial3D_wrought_iron`, `metallic = 0.90`, `roughness = 0.35`) fitted to the overhead pulley crossbeam for bucket hauling.
+   - **Chiseled Stone Runoff Drainage Trough (`DrainageTrough`):** Modelled a 3.2m masonry outflow conduit channel (`BoxMesh_drain_trough`, `StandardMaterial3D_smooth_stone`) carrying spilled bath and wash water safely outward from the cobbled apron.
+   - Strictly verified canonical TSCN format (`load_steps=24` matching 0 ext_resources + 23 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
