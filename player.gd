@@ -36,6 +36,7 @@ const Edge97Script = preload("res://edge97.gd")
 const Realism98Script = preload("res://realism98.gd")
 const Realism99Script = preload("res://realism99.gd")
 const Realism100Script = preload("res://realism100.gd")
+const Realism101Script = preload("res://realism101.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -696,6 +697,11 @@ func _ready() -> void:
 	# skyline band, dusk water glows), player night light
 	# (frame >= 180 pass, after realism99's 160 pass).
 	Realism100Script.dress(get_parent())
+	# Slice 100 (parent sequence): finish S99's deferred building list
+	# (hamlet + StiltHouse13 + School 2nd storey + stilt rebuilds),
+	# east skyline band, full EF veranda staircases (surveyed), OpenTaxi
+	# night fill (frame >= 200 pass, after realism100's 180 pass).
+	Realism101Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
