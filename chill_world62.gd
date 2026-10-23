@@ -332,7 +332,7 @@ static func dress(world: Node3D) -> void:
 		# from the cluster in every More × driving state; this
 		# row itself is clear of the stack and of cluster row 2
 		# in all states.
-		# Slice 96 RETIREMENT: ViewButton62 is gone — the tiny
+		# Slice 95 RETIREMENT: ViewButton62 is gone — the tiny
 		# More-buried "View" button is replaced by the dedicated
 		# visible ViewButton96 (realism96.gd, main HUD). Nothing
 		# is created here any more; the controller force-hides

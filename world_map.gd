@@ -461,6 +461,10 @@ func _configure_map_bounds() -> void:
 		var ground := world.get_node_or_null("GroundMesh") as Node3D
 		if ground != null:
 			MapTransform.configure_from_ground(ground)
+		# Slice 97: re-apply the extended rect after every
+		# re-configure, or opening the map would snap the
+		# bounds back to the old GroundMesh rect.
+		MapTransform.apply_extension()
 
 
 func close_map() -> void:

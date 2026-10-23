@@ -1,4 +1,5 @@
 extends CharacterBody3D
+const CamSteer97 = preload("res://camera_steer97.gd")
 ## Slice 3 airplane: flyable, with EXPLICIT throttle control.
 ## This deliberately avoids the opponent's auto-throttle defect
 ## (throttle rising every frame with no way down) and its unused
@@ -117,7 +118,16 @@ func _physics_process(delta: float) -> void:
 	var roll_in := Input.get_axis("ui_left", "ui_right")
 	if driver.get("touch_vector") != null and driver.touch_vector != Vector2.ZERO:
 		pitch_in = driver.touch_vector.y
-		roll_in = driver.touch_vector.x
+		# Slice 97: camera-relative bank (Slice 95 car fix, shared
+		# helper) — stick-right banks toward the camera-right
+		# direction. Pure sideways stick at orbit 0 reproduces
+		# the old raw roll exactly; pitch is untouched, and the
+		# bank/yaw sign relationship below is unchanged.
+		var _cam97 := get_node_or_null("../FollowCamera")
+		if _cam97 != null and _cam97.get("orbit_angle") != null:
+			roll_in = CamSteer97.plane_bank(driver.touch_vector, float(_cam97.get("orbit_angle")), -global_transform.basis.z)
+		else:
+			roll_in = driver.touch_vector.x
 	# Control smoothing: inputs ease toward their targets instead
 	# of snapping (weight feel, no twitch on small inputs).
 	pitch_smooth = move_toward(pitch_smooth, pitch_in, steer_response * delta)

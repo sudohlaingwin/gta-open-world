@@ -1,4 +1,5 @@
 extends CharacterBody3D
+const CamSteer97 = preload("res://camera_steer97.gd")
 ## Slice 9 helicopter — a NEW owner-spec aircraft type ("fly various
 ## airplanes" in the owner's spec; the helicopter is distinct from
 ## the Slice 3 airplane: it hovers, climbs vertically, and turns in
@@ -107,8 +108,18 @@ func _physics_process(delta: float) -> void:
 	var fwd := Input.get_axis("ui_down", "ui_up")
 	var turn := Input.get_axis("ui_left", "ui_right")
 	if driver.get("touch_vector") != null and driver.touch_vector != Vector2.ZERO:
-		turn = driver.touch_vector.x
-		fwd = -driver.touch_vector.y
+		# Slice 97: camera-relative steering (Slice 95 car fix,
+		# shared helper) — joystick-up is the camera look
+		# direction. Touch yaw buttons below still add to turn
+		# unchanged; smoothing/scales below are untouched.
+		var _cam97 := get_node_or_null("../FollowCamera")
+		if _cam97 != null and _cam97.get("orbit_angle") != null:
+			var _gs97 := CamSteer97.ground_steer(driver.touch_vector, float(_cam97.get("orbit_angle")), rotation.y)
+			turn = _gs97.x
+			fwd = _gs97.y
+		else:
+			turn = driver.touch_vector.x
+			fwd = -driver.touch_vector.y
 	# Slice 10: touch yaw buttons add to the joystick turn input.
 	if driver.get("touch_yaw_right") == true:
 		turn += 1.0

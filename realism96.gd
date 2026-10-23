@@ -1,5 +1,5 @@
 extends Node3D
-## Slice 96 VIDEO-VERDICT + TPP/FPP BATCH (owner orders 2026-10-23
+## Slice 95 VIDEO-VERDICT + TPP/FPP BATCH (owner orders 2026-10-23
 ## ~19:56 video verdict + ~20:00 TPP/FPP complaint).
 ## Runtime dressing ONLY, plus the two camera/steering code fixes
 ## that live in camera.gd / car.gd (this file is the dressing

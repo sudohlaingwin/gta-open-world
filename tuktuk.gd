@@ -1,4 +1,5 @@
 extends CharacterBody3D
+const CamSteer97 = preload("res://camera_steer97.gd")
 ## Slice 16 tuk-tuk: RIDEABLE three-wheeler (slower than the car,
 ## faster than the bicycle — the village taxi). Same enter/exit
 ## interface as car.gd / bicycle.gd, so the on-screen Vehicle
@@ -162,8 +163,19 @@ func _physics_process(delta: float) -> void:
 	var fwd := Input.get_axis("ui_down", "ui_up")
 	var steer := Input.get_axis("ui_left", "ui_right")
 	if driver.get("touch_vector") != null and driver.touch_vector != Vector2.ZERO:
-		steer = driver.touch_vector.x
-		fwd = -driver.touch_vector.y
+		# Slice 97: camera-relative steering (Slice 95 car fix,
+		# shared camera_steer97.gd helper) — joystick-up is the
+		# camera look direction, not screen-up. Smoothing and
+		# mode scales below are untouched; no camera means the
+		# old raw mapping (fallback, unchanged behaviour).
+		var _cam97 := get_node_or_null("../FollowCamera")
+		if _cam97 != null and _cam97.get("orbit_angle") != null:
+			var _gs97 := CamSteer97.ground_steer(driver.touch_vector, float(_cam97.get("orbit_angle")), rotation.y)
+			steer = _gs97.x
+			fwd = _gs97.y
+		else:
+			steer = driver.touch_vector.x
+			fwd = -driver.touch_vector.y
 	var ratio := absf(speed) / max_speed
 	if fwd > 0.0:
 		speed += fwd * accel * _accel_curve(ratio) * delta

@@ -30,6 +30,9 @@ const Realism93Script = preload("res://realism93.gd")
 const Realism94Script = preload("res://realism94.gd")
 const Realism95Script = preload("res://realism95.gd")
 const Realism96Script = preload("res://realism96.gd")
+const Night97Script = preload("res://night97.gd")
+const Scale97Script = preload("res://scale97.gd")
+const Edge97Script = preload("res://edge97.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -176,10 +179,10 @@ const GUIDE_ARRIVED_RADIUS: float = 5.0
 # playable area is x -70..250, z -110..110. The clamp keeps the
 # capsule CENTRE 0.5 m inside the edge so the body never hangs off
 # the plane; the edge label tells the player why they stopped.
-const WORLD_MIN_X: float = -69.5
-const WORLD_MAX_X: float = 2449.5
-const WORLD_MIN_Z: float = -209.5
-const WORLD_MAX_Z: float = 109.5
+const WORLD_MIN_X: float = -669.5
+const WORLD_MAX_X: float = 3049.5
+const WORLD_MIN_Z: float = -509.5
+const WORLD_MAX_Z: float = 409.5
 # Last ground position where the player stood freely (on the floor
 # with no slide collision). Stuck recovery returns here. Runtime
 # only — never saved, so it is always fresh for this session.
@@ -646,7 +649,7 @@ func _ready() -> void:
 	# sets, scarves + head-wraps + sticks, exhausts + plates
 	# + car handles/rails/mirrors, world dressing. Same
 	# runtime-only pattern, frame >= 60 people pass
-	# (Slice 96 comment fix: the old "frame >= 40" note was
+	# (Slice 95 comment fix: the old "frame >= 40" note was
 	# stale — realism94.gd itself uses frame >= 60).
 	Realism94Script.dress(get_parent())
 	# Slice 95 graphics batch 3: sheet programme second
@@ -657,12 +660,20 @@ func _ready() -> void:
 	# Same runtime-only pattern; its node waits until
 	# frame >= 80 so Slice 94's frame-60 pass is final.
 	Realism95Script.dress(get_parent())
-	# Slice 96 video-verdict + TPP/FPP batch: torso taper +
+	# Slice 95 video-verdict + TPP/FPP batch: torso taper +
 	# car rebuild (frame >= 100 pass) + the dedicated visible
 	# ViewButton96 in the main HUD. Same runtime-only
 	# pattern; its node waits until frame >= 100 so Slice
 	# 95's frame-80 pass is final.
 	Realism96Script.dress(get_parent())
+	# Slice 97 owner-complaint batch, in complaint order:
+	# night visibility (moon + street omnis + window glows,
+	# gated every frame), real scale (rebuilds + group scales,
+	# frame >= 120), world edges (extension planes + borders,
+	# bounds via MapTransform.apply_extension).
+	Night97Script.dress(get_parent())
+	Scale97Script.dress(get_parent())
+	Edge97Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
@@ -698,6 +709,10 @@ func _configure_map_bounds() -> void:
 	var ground := get_node_or_null("../GroundMesh") as Node3D
 	if ground != null:
 		MapTransform.configure_from_ground(ground)
+	# Slice 97: the extension planes are not GroundMesh, so
+	# re-apply the extended rect after every re-configure
+	# (same call the world map open path makes).
+	MapTransform.apply_extension()
 
 
 ## Slice 68 graphics tiers: replaces the Slice 40 High/Low toggle

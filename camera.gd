@@ -48,7 +48,7 @@ var zoom: float = 1.0
 # from inside a driven road vehicle (driver-seat eye height) or, on
 # the bullock cart, to a cart-top forward view over the road ahead.
 # V is a desktop fallback only.
-# Slice 96 MODE RULE (owner complaint 2026-10-23 ~20:00: FPP was
+# Slice 95 MODE RULE (owner complaint 2026-10-23 ~20:00: FPP was
 # promised but never appeared — the old rule reset to TPP the
 # moment the player stopped driving AND the only touch control
 # was a tiny More-buried button, so from the owner's side it
@@ -69,7 +69,7 @@ var zoom: float = 1.0
 #     foot). Nothing ever silently resets to TPP any more.
 # The touch-first control is now ViewButton96 (realism96.gd):
 # a dedicated visible button in the main HUD, NOT More-buried.
-# The old More-stack ViewButton62 is retired in Slice 96.
+# The old More-stack ViewButton62 is retired in Slice 95.
 var view_mode: int = 0
 var _v_held: bool = false
 
@@ -207,11 +207,11 @@ func _process(delta: float) -> void:
 	var veh: Node = null
 	if player != null and player.get("driving_vehicle") != null:
 		veh = player.get("driving_vehicle")
-	# Slice 96: cart-top (2) has no meaning on foot — it becomes
+	# Slice 95: cart-top (2) has no meaning on foot — it becomes
 	# on-foot FPP (1) instead of silently resetting to TPP.
 	if veh == null and view_mode == 2:
 		view_mode = 1
-	# Slice 96 on-foot FPP: camera at head height (1.6 m, the
+	# Slice 95 on-foot FPP: camera at head height (1.6 m, the
 	# EYE_HEIGHT used for the TPP ray origin), looking along
 	# the player's facing direction (local +z). Orbit drag
 	# still updates orbit_angle, but FPP does not use it —

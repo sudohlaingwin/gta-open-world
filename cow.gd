@@ -1,4 +1,5 @@
 extends Node3D
+const CamSteer97 = preload("res://camera_steer97.gd")
 ## Slice 7 cow: RIDEABLE (was a scenery stub in Slices 1-6).
 ## Owner-spec item: the player can ride a cow, not just see one.
 ## Same enter/exit interface as car.gd/cart.gd: walk within 4 m,
@@ -96,8 +97,19 @@ func _process(delta: float) -> void:
 	var ix := Input.get_axis("ui_left", "ui_right")
 	var iz := Input.get_axis("ui_up", "ui_down")
 	if driver.get("touch_vector") != null and driver.touch_vector != Vector2.ZERO:
-		ix = driver.touch_vector.x
-		iz = driver.touch_vector.y
+		# Slice 97: camera-relative desired direction (Slice 95
+		# car fix, shared helper). The cow frame faces
+		# (sin ry, 0, cos ry), so it takes desired_dir directly;
+		# its existing brake gate (input >90 deg from facing
+		# brakes, never reverses) is untouched below.
+		var _cam97 := get_node_or_null("../FollowCamera")
+		if _cam97 != null and _cam97.get("orbit_angle") != null:
+			var _des97 := CamSteer97.desired_dir(driver.touch_vector, float(_cam97.get("orbit_angle")))
+			ix = _des97.x
+			iz = _des97.z
+		else:
+			ix = driver.touch_vector.x
+			iz = driver.touch_vector.y
 	var dir := Vector3(ix, 0.0, iz)
 	var ratio := speed / max_speed
 	# Speed-dependent turning: agile at low speed, stable at top

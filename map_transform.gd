@@ -44,16 +44,17 @@
 class_name MapTransform
 extends RefCounted
 
-## Fallback bounds: the actual ground rect from main.tscn
-## (GroundMesh PlaneMesh 520x320 at (190, 0, -50) -> x -70..450,
-## z -210..110). Used only if configure_from_ground never runs;
-## in the live game it always runs at world spawn (player._ready)
-## and again whenever the world map opens, so the scene is the
-## single source of truth and this fallback is never consulted.
-static var min_x: float = -70.0
-static var max_x: float = 450.0
-static var min_z: float = -210.0
-static var max_z: float = 110.0
+## Fallback bounds: the EXTENDED ground rect (Slice 97:
+## old GroundMesh 2520x320 at (1190, 0, -50) -> x -70..2450
+## plus four extension planes -> x -670..3050, z -510..410).
+## Used only if configure_from_ground never runs; in the live
+## game it always runs at world spawn (player._ready) and again
+## whenever the world map opens, and both call sites then apply
+## apply_extension below, so the extended rect is the truth.
+static var min_x: float = -670.0
+static var max_x: float = 3050.0
+static var min_z: float = -510.0
+static var max_z: float = 410.0
 static var configured: bool = false
 
 
@@ -81,6 +82,22 @@ static func configure_from_ground(ground: Node3D) -> bool:
 	max_z = c.z + sz * 0.5
 	configured = true
 	return true
+
+
+## Slice 97 world extension: the ground planes added by
+## edge97.gd are NOT the scene GroundMesh, so a plain
+## configure_from_ground would snap the bounds back to the
+## old rect. Every configure call site (player._ready, world
+## map open, Edge97 build) calls this right after, so the
+## minimap, world map, tap clamp and waypoint mapping all use
+## the extended rect. The clamp margin lives in player.gd
+## (new rect minus 0.5 m), not here.
+static func apply_extension() -> void:
+	min_x = -670.0
+	max_x = 3050.0
+	min_z = -510.0
+	max_z = 410.0
+	configured = true
 
 
 ## World metres -> panel-local pixels. The world rect is fitted
