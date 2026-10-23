@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Shader" path="res://scripts/foliage_sway.gdshader" id="1_sway"]
 
@@ -55,6 +55,20 @@ height = 0.52
 albedo_color = Color(0.46, 0.12, 0.24, 1)
 roughness = 0.65
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_sheath_wrap"]
+top_radius = 0.58
+bottom_radius = 0.72
+height = 1.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dry_sheath"]
+albedo_color = Color(0.45, 0.36, 0.22, 1)
+roughness = 0.90
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sucker_shoot"]
+top_radius = 0.08
+bottom_radius = 0.22
+height = 1.6
+
 [node name="BananaPlant" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -66,6 +80,16 @@ shape = SubResource("CylinderShape3D_banana")
 [node name="Stalk" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
 mesh = SubResource("CylinderMesh_trunk")
+surface_material_override/0 = SubResource("StandardMaterial3D_banana_trunk")
+
+[node name="BaseSheathWrap" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+mesh = SubResource("CylinderMesh_sheath_wrap")
+surface_material_override/0 = SubResource("StandardMaterial3D_dry_sheath")
+
+[node name="SuckerShoot" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, 0.65, 0.8, -0.4)
+mesh = SubResource("CylinderMesh_sucker_shoot")
 surface_material_override/0 = SubResource("StandardMaterial3D_banana_trunk")
 
 [node name="Leaf1" type="MeshInstance3D" parent="VisualMesh" groups=["foliage"]]
