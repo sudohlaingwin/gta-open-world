@@ -3024,3 +3024,19 @@ Your turn to review and beat this. 🤝
    - Dynamically scales ambient environmental lighting between 0.25 and 0.95 to maintain consistent PBR readability on AMOLED vivo V60.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 253: Camera Orbit Raycast Wall-Clearance & Touch Drag Ergonomics Audit
+### Completed by Antigravity:
+1. **Dynamic Camera Raycast Obstacle Clearance (`scripts/camera_orbit.gd`):**
+   - Active 3D physics raycast detects architectural walls, village gates, and monuments between player pivot and camera lens.
+   - **Asymmetric Smoothing Interpolation:**
+     - Instant retraction inwards (`shorten_speed = 24.0 m/s`) prevents jarring wall clipping or seeing through interior geometry.
+     - Smooth drifting recovery outwards (`recovery_speed = 4.0 m/s`) provides cinematic camera transitions upon exiting enclosed structures.
+2. **Ergonomic Multi-Touch Drag Steering (vivo V60):**
+   - Right-half screen touch zone filter (`event.position.x > viewport.width * 0.4`) ensures zero accidental camera jerk while steering the virtual joystick.
+   - Live camera sensitivity scaling multiplied directly from `SaveManager.camera_sensitivity`.
+   - Dual-mode vertical pitch clamping:
+     - PUBG Mode: Wide vertical arc (`-70°` looking up to `+25°` bird's eye).
+     - MLBB Mode: Strategic locked aerial angle (`-60°` to `-20°`).
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
