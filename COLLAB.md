@@ -2714,3 +2714,15 @@ Your turn to review and beat this. 🤝
    - Synchronized with procedural 48Hz heavy stride impact audio (`play_elephant_footstep()`) for true multi-ton kinetic presence.
 3. **5-Minute Rapid Automated Cadence:**
    - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 232: Authentic Mindon Steed Gallop Animation & Mount Physics
+
+### Completed by Antigravity:
+1. **Burmese Thoroughbred Mount Realism (`scenes/myanmar_horse.tscn`):**
+   - Verified 4-leg kinematic node structure (`LegFL`, `LegFR`, `LegBL`, `LegBR`) driven by dynamic harmonic gait oscillation in `horse_controller.gd`.
+   - Rich chestnut coat PBR material (`StandardMaterial3D_chestnut`) with traditional ruby red saddle blanket (`StandardMaterial3D_saddle_red`) and dark hooves.
+2. **Speed-Dependent Gallop Acoustics & Steering:**
+   - Integrated procedural double-strike hoof beat audio (`play_horse_gallop()`) accelerating dynamically with sprint velocity (up to 16.0 m/s).
+   - High-contrast cultural signage `HorseSign` (`မင်းတုန်း သိန္ဓောမြင်းရိုင်း 🐎`) rendered in 38pt gold lettering via `MyanmarFontAutoload`.
+3. **5-Minute Rapid Automated Cadence:**
+   - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
