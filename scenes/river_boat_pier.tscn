@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=27 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pier"]
 size = Vector3(10.5, 2.2, 32.0)
@@ -92,6 +92,22 @@ albedo_color = Color(0.12, 0.35, 0.68, 1)
 metallic = 0.78
 roughness = 0.32
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_fish_basket"]
+top_radius = 0.45
+bottom_radius = 0.36
+height = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_woven_cane"]
+albedo_color = Color(0.70, 0.58, 0.34, 1)
+roughness = 0.88
+
+[sub_resource type="BoxMesh" id="BoxMesh_gangway_cleat"]
+size = Vector3(3.0, 0.04, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tread_teak"]
+albedo_color = Color(0.28, 0.18, 0.10, 1)
+roughness = 0.75
+
 [node name="RiverBoatPier" type="StaticBody3D"]
 
 [node name="PierCollision" type="CollisionShape3D" parent="."]
@@ -166,6 +182,21 @@ transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 
 mesh = SubResource("BoxMesh_gangway")
 surface_material_override/0 = SubResource("StandardMaterial3D_pier_wood")
 
+[node name="GangwayCleat1" type="MeshInstance3D" parent="VisualMesh/GangwayRamp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, -1.8)
+mesh = SubResource("BoxMesh_gangway_cleat")
+surface_material_override/0 = SubResource("StandardMaterial3D_tread_teak")
+
+[node name="GangwayCleat2" type="MeshInstance3D" parent="VisualMesh/GangwayRamp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0.0)
+mesh = SubResource("BoxMesh_gangway_cleat")
+surface_material_override/0 = SubResource("StandardMaterial3D_tread_teak")
+
+[node name="GangwayCleat3" type="MeshInstance3D" parent="VisualMesh/GangwayRamp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 1.8)
+mesh = SubResource("BoxMesh_gangway_cleat")
+surface_material_override/0 = SubResource("StandardMaterial3D_tread_teak")
+
 [node name="SafetyRailingL" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.75, -2.0)
 mesh = SubResource("BoxMesh_pier_railing")
@@ -185,6 +216,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_crate_wood")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.65, -8.5)
 mesh = SubResource("SphereMesh_rice_sack")
 surface_material_override/0 = SubResource("StandardMaterial3D_burlap")
+
+[node name="WovenFishBasket" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0.65, 3.5)
+mesh = SubResource("CylinderMesh_fish_basket")
+surface_material_override/0 = SubResource("StandardMaterial3D_woven_cane")
 
 [node name="BoatFenderTire1" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0, -0.4, 6.0)

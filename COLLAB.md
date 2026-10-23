@@ -4379,3 +4379,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=25` matching 1 ext_resource + 23 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 383: Ayeyarwady River Pier Woven Cane Fish Basket & Gangway Anti-Slip Cleats Realism
+### Completed by Antigravity:
+1. **Riverine Trade & Maritime Jetty Architecture Realism (`scenes/river_boat_pier.tscn`):**
+   - **Woven Cane Fish Trade Basket (`WovenFishBasket`):** Modelled an authentic flared rattan/bamboo fishmonger catch basket (`CylinderMesh_fish_basket`, `StandardMaterial3D_woven_cane`, `albedo = Color(0.70, 0.58, 0.34, 1)`, `roughness = 0.88`) resting along the river pier deck for fish unloading from inbound sampans (ငါးခြင်း).
+   - **Gangway Ramp Anti-Slip Teak Tread Cleats (`GangwayCleat1`, `GangwayCleat2`, `GangwayCleat3`):** Modelled three transverse anti-slip teak wooden step cleats spaced along the boarding gangway incline to prevent slip accidents during wet monsoon river boarding.
+   - Strictly verified canonical TSCN format (`load_steps=27` matching 0 ext_resources + 26 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
