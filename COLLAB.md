@@ -3417,3 +3417,12 @@ Your turn to review and beat this. 🤝
    - **Axle Spoke Hubs (`CylinderMesh_hub`):** Added cylindrical center axle hubs on left and right wheels (`WheelLeft`, `WheelRight`) terminating the wooden spoke array.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 287: Kenbo 125cc Motorcycle Chrome Rear-View Mirror Realism
+### Completed by Antigravity:
+1. **Authentic Rural Motorcycle Details (`scenes/myanmar_motorcycle.tscn`):**
+   - **Rear-View Mirror Stems (`MirrorStemL`, `MirrorStemR`):** Modelled angled chrome handlebar stems (`CylinderMesh_stem`) mounting left and right mirrors.
+   - **Mirror Glass Discs (`MirrorDiscL`, `MirrorDiscR`):** Crafted circular high-reflective chrome mirror housings (`CylinderMesh_mirror`, `StandardMaterial3D_chrome`, `metallic = 0.95`, `roughness = 0.08`, `specular = 0.95`).
+   - Fully aligned with authentic rural Myanmar Kenbo / Dayang 125cc motorcycle anatomy.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://scripts/motorcycle_controller.gd" id="1_bike"]
 
@@ -76,10 +76,46 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0.12)
 mesh = SubResource("BoxMesh_seat")
 surface_material_override/0 = SubResource("StandardMaterial3D_leather")
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_mirror_stem"]
+top_radius = 0.015
+bottom_radius = 0.015
+height = 0.22
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chrome"]
+albedo_color = Color(0.92, 0.94, 0.96, 1)
+metallic = 0.95
+roughness = 0.12
+specular = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mirror_disc"]
+top_radius = 0.09
+bottom_radius = 0.09
+height = 0.02
+
 [node name="Handlebar" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1.2, -0.6)
 mesh = SubResource("CylinderMesh_handle")
 surface_material_override/0 = SubResource("StandardMaterial3D_leather")
+
+[node name="MirrorStemL" type="MeshInstance3D" parent="VisualMesh/Handlebar"]
+transform = Transform3D(1, 0, 0, 0, 0.94, -0.34, 0, 0.34, 0.94, 0, 0.12, -0.38)
+mesh = SubResource("CylinderMesh_mirror_stem")
+surface_material_override/0 = SubResource("StandardMaterial3D_chrome")
+
+[node name="MirrorDiscL" type="MeshInstance3D" parent="VisualMesh/Handlebar/MirrorStemL"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.11, 0)
+mesh = SubResource("CylinderMesh_mirror_disc")
+surface_material_override/0 = SubResource("StandardMaterial3D_chrome")
+
+[node name="MirrorStemR" type="MeshInstance3D" parent="VisualMesh/Handlebar"]
+transform = Transform3D(1, 0, 0, 0, 0.94, 0.34, 0, -0.34, 0.94, 0, 0.12, 0.38)
+mesh = SubResource("CylinderMesh_mirror_stem")
+surface_material_override/0 = SubResource("StandardMaterial3D_chrome")
+
+[node name="MirrorDiscR" type="MeshInstance3D" parent="VisualMesh/Handlebar/MirrorStemR"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.11, 0)
+mesh = SubResource("CylinderMesh_mirror_disc")
+surface_material_override/0 = SubResource("StandardMaterial3D_chrome")
 
 [node name="Headlight" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.12, -0.85)
