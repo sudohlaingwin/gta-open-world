@@ -4322,3 +4322,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=28` matching 1 ext_resource + 26 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 377: Shwe Mingalar Night Market Satay Skewers Display Rack & Tamarind Chili Dip Pot Realism
+### Completed by Antigravity:
+1. **Nocturnal Bazaar & Street Food Gastronomy Realism (`scenes/myanmar_night_market.tscn`):**
+   - **Lined Bamboo Satay Skewers Display Rack (`SkewerRack`):** Modelled a traditional bamboo skewer food rack (`BoxMesh_skewer_rack`, `StandardMaterial3D_bamboo_skewers`, `albedo = Color(0.78, 0.62, 0.34, 1)`, `roughness = 0.78`) resting along the hot iron brazier for sizzling barbecue pork and chicken satay skewers (အမဲကြော် / ဝက်သားစတိတ်ကင်).
+   - **Piquant Tamarind Garlic Chili Dip Pot (`TamarindDipPot`):** Modelled an authentic earthen sauce condiment jar (`CylinderMesh_sauce_pot`, `StandardMaterial3D_tamarind_chili`, `albedo = Color(0.72, 0.18, 0.12, 1)`, `roughness = 0.45`) holding tangy homemade Burmese chili dipping sauce for night market patrons.
+   - Strictly verified canonical TSCN format (`load_steps=28` matching 1 ext_resource + 26 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

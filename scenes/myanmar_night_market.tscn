@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=28 format=3]
 
 [ext_resource type="Script" path="res://scripts/myanmar_night_market.gd" id="1_market_script"]
 
@@ -100,6 +100,23 @@ emission_enabled = true
 emission = Color(1.0, 0.42, 0.05, 1)
 emission_energy_multiplier = 4.2
 
+[sub_resource type="BoxMesh" id="BoxMesh_skewer_rack"]
+size = Vector3(1.8, 0.06, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_skewers"]
+albedo_color = Color(0.78, 0.62, 0.34, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sauce_pot"]
+top_radius = 0.22
+bottom_radius = 0.20
+height = 0.38
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tamarind_chili"]
+albedo_color = Color(0.72, 0.18, 0.12, 1)
+roughness = 0.45
+specular = 0.35
+
 [node name="MyanmarNightMarket" type="StaticBody3D"]
 script = ExtResource("1_market_script")
 
@@ -143,6 +160,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_grill_iron")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
 mesh = SubResource("BoxMesh_embers")
 surface_material_override/0 = SubResource("StandardMaterial3D_embers_glowing")
+
+[node name="SkewerRack" type="MeshInstance3D" parent="VisualMesh/SatayGrillBrazier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, 0)
+mesh = SubResource("BoxMesh_skewer_rack")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_skewers")
+
+[node name="TamarindDipPot" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4, 1.45, 0.85)
+mesh = SubResource("CylinderMesh_sauce_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_tamarind_chili")
 
 [node name="GrillGlowLight" type="OmniLight3D" parent="VisualMesh/SatayGrillBrazier"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
