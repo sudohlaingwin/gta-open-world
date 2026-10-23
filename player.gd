@@ -12,6 +12,7 @@ const EastFields64Script = preload("res://eastfields64.gd")
 const Signboards69Script = preload("res://signboards69.gd")
 const BusSim74Script = preload("res://bus_sim74.gd")
 const BusRoute75Script = preload("res://bus_route75.gd")
+const BusSim76Script = preload("res://bus_sim76.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -516,6 +517,12 @@ func _ready() -> void:
 	# after Slice 74, same deferred pattern — its node
 	# queues behind the bus, so bus polish finds the bus.
 	BusRoute75Script.dress(get_parent())
+	# Slice 76 BUS SIMULATION part 3 (long-route traffic +
+	# junction full stops + night/rain bus operation +
+	# passenger feedback): runs after Slice 75, same
+	# deferred pattern — its node queues behind the bus
+	# and the Slice 74 controller it reads totals from.
+	BusSim76Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
