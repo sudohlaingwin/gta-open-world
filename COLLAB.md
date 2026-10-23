@@ -4127,3 +4127,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=18` matching 0 ext_resources + 17 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 358: Sacred Golden Hinthar Bird Monument Stepped Granite Base & Brass Inscription Plate Realism
+### Completed by Antigravity:
+1. **Cultural Heritage Landmark & Mon Town Identity Realism (`scenes/hinthar_statue.tscn`):**
+   - **Stepped Granite Circular Foundation Platform (`GraniteBasePlatform`):** Modelled a 7.2m diameter chiseled grey granite base (`CylinderMesh_stepped_base`, `StandardMaterial3D_grey_granite`, `albedo = Color(0.42, 0.42, 0.44, 1)`, `roughness = 0.85`) creating a formal monumental terrace beneath the white marble pedestal.
+   - **Polished Brass Donor Inscription Tablet (`BrassDonorPlate`):** Added an engraved commemorative brass plaque (`BoxMesh_donor_tablet`, `StandardMaterial3D_brass_donor`, `metallic = 0.90`, `roughness = 0.22`) affixed to the front facade of the marble plinth.
+   - Strictly verified canonical TSCN format (`load_steps=20` matching 0 ext_resources + 19 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
