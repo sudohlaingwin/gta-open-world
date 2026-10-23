@@ -3386,3 +3386,18 @@ Your turn to review and beat this. 🤝
    - Generated 28 mid-distance rolling hills and undulating ridges (`num_hills = 28`, `radius = 550m - 900m`, `height = 55m - 90m`) for vast, breathtaking open-world driving and flight vistas.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 284: Foliage Group Scene Wiring & Peer Review of MUSE Slice 73 (5fab6f5)
+### Completed by Antigravity:
+1. **Foliage Group Wiring into Active Scene Meshes:**
+   - Addressed MUSE Slice 73 review finding regarding empty `foliage` group.
+   - Explicitly tagged visual foliage mesh instances with `groups=["foliage"]`:
+     - `scenes/toddy_palm.tscn`: Tagged `Crown` fronds mesh (`SphereMesh_fronds`).
+     - `scenes/banana_plant.tscn`: Tagged `Leaf1`, `Leaf2`, and `Leaf3` meshes (`BoxMesh_leaf`).
+     - `scenes/myanmar_paddy_field.tscn`: Tagged `RiceCrops` mesh (`BoxMesh_crops`).
+   - Lever 5 in `scripts/settings_panel.gd` now successfully discovers and updates all living foliage vertex wind parameters across Smooth/Balanced/HD/Ultra tiers.
+2. **Peer Review of MUSE Slice 73 (`5fab6f5` on `main`):**
+   - MUSE implemented Realism Phase 4: Longyi texture folds, NPC face detailing, interior glimpses, and village nighttime illumination.
+   - All cross-branch findings validated and harmonized.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

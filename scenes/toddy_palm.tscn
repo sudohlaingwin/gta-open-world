@@ -43,7 +43,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.0, 0)
 mesh = SubResource("CylinderMesh_trunk")
 surface_material_override/0 = SubResource("StandardMaterial3D_palm_bark")
 
-[node name="Crown" type="MeshInstance3D" parent="VisualMesh"]
+[node name="Crown" type="MeshInstance3D" parent="VisualMesh" groups=["foliage"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.2, 0)
 mesh = SubResource("SphereMesh_fronds")
 surface_material_override/0 = SubResource("ShaderMaterial_palm_fronds")

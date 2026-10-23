@@ -41,7 +41,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 mesh = SubResource("BoxMesh_mud_bed")
 surface_material_override/0 = SubResource("StandardMaterial3D_mud")
 
-[node name="RiceCrops" type="MeshInstance3D" parent="VisualMesh"]
+[node name="RiceCrops" type="MeshInstance3D" parent="VisualMesh" groups=["foliage"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 mesh = SubResource("BoxMesh_crops")
 surface_material_override/0 = SubResource("ShaderMaterial_crops")
