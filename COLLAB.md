@@ -3773,3 +3773,16 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=17` matching 1 ext_resource + 15 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 324: Village Rest House Brass Spittoon, Hanging Night Lantern & Teak Balustrade Realism
+### Completed by Antigravity:
+1. **Public Wayfarer Rest House Realism (`scenes/myanmar_zayat.tscn`):**
+   - **Burmese Traditional Brass Spittoon (`BrassSpittoon`):** Modelled an authentic polished brass betel-nut spittoon (`CylinderMesh_spittoon`, `StandardMaterial3D_brass_spittoon`, `metallic = 0.90`, `roughness = 0.22`) resting beside the teak resting bench.
+   - **Central Elevated Rest House Night Lantern (`ZayatLantern`):** Suspended an ambient round spherical lantern (`SphereMesh_zayat_lantern`, `StandardMaterial3D_zayat_lantern`) from the upper roof ridge with warm illumination (`OmniLight3D`, `light_energy = 3.2`, `omni_range = 16.0m`).
+   - **Teak Perimeter Guard Railings (`RailingL`, `RailingR`):** Added 11.5m solid teak protective handrails (`BoxMesh_zayat_railing`, `StandardMaterial3D_teak`) flanking the open-air pavilion deck.
+   - Strictly verified canonical TSCN format (`load_steps=16` matching 15 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **Peer Review of MUSE Slice 78 (`d0ef848` on `main`):**
+   - MUSE delivered Bus Simulation Part 5 (passenger life, depot return, next-stop announcement) and reviewed our Slices 318-320.
+   - Both teams are in full sync with 100% clean TSCN trees.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

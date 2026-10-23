@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=16 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_zayat"]
 size = Vector3(17.5, 8.5, 13.5)
@@ -37,6 +37,29 @@ size = Vector3(7.5, 0.05, 5.5)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thinbyu"]
 albedo_color = Color(0.76, 0.68, 0.46, 1)
 roughness = 0.88
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_spittoon"]
+top_radius = 0.22
+bottom_radius = 0.16
+height = 0.38
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brass_spittoon"]
+albedo_color = Color(0.88, 0.72, 0.22, 1)
+metallic = 0.90
+roughness = 0.22
+
+[sub_resource type="SphereMesh" id="SphereMesh_zayat_lantern"]
+radius = 0.35
+height = 0.55
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_zayat_lantern"]
+albedo_color = Color(1.0, 0.88, 0.50, 1)
+emission_enabled = true
+emission = Color(1.0, 0.82, 0.40, 1)
+emission_energy_multiplier = 2.6
+
+[sub_resource type="BoxMesh" id="BoxMesh_zayat_railing"]
+size = Vector3(0.18, 0.85, 11.5)
 
 [node name="MyanmarZayat" type="StaticBody3D"]
 
@@ -100,6 +123,32 @@ surface_material_override/0 = SubResource("StandardMaterial3D_roof_tile")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.5, 0)
 mesh = SubResource("PrismMesh_upper_roof")
 surface_material_override/0 = SubResource("StandardMaterial3D_roof_tile")
+
+[node name="BrassSpittoon" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2, 1.5, -4.5)
+mesh = SubResource("CylinderMesh_spittoon")
+surface_material_override/0 = SubResource("StandardMaterial3D_brass_spittoon")
+
+[node name="ZayatLantern" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.2, 0)
+mesh = SubResource("SphereMesh_zayat_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_zayat_lantern")
+
+[node name="ZayatLight" type="OmniLight3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.0, 0)
+light_color = Color(1.0, 0.88, 0.50, 1)
+light_energy = 3.2
+omni_range = 16.0
+
+[node name="RailingL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 1.8, 0)
+mesh = SubResource("BoxMesh_zayat_railing")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+
+[node name="RailingR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 1.8, 0)
+mesh = SubResource("BoxMesh_zayat_railing")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 
 [node name="ZayatSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8, 6.2)
