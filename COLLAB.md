@@ -3493,3 +3493,11 @@ Your turn to review and beat this. 🤝
    - **Burmese Golden Ripe Bananas (`BananasCenter`):** Modelled fresh bunches of ripe Myanmar bananas (`CylinderMesh_banana_bunch`, `StandardMaterial3D_banana_gold`, `albedo = Color(0.95, 0.82, 0.18, 1)`) nestled between the watermelons and mangoes.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 295: Traditional Sweet Milk Tea Amber Glass Realism
+### Completed by Antigravity:
+1. **Authentic Roadside Tea Shop Props (`scenes/myanmar_teashop.tscn`):**
+   - **Amber Sweet Milk Tea Glass (`TeaCup1`):** Modelled traditional cylindrical tapered tea drinking glass (`CylinderMesh_teacup`) filled with amber-toned Burmese sweet milk tea (`StandardMaterial3D_tea_amber`, `albedo = Color(0.72, 0.44, 0.18, 0.88)`, `transparency = 1`, `roughness = 0.12`, `specular = 0.85`).
+   - Placed on Table 1 beside the red thermos flask, golden teapot, and Eclair/Samusa snack plate.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
