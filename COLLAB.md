@@ -2936,3 +2936,18 @@ Your turn to review and beat this. 🤝
    - Efficient instancing with mesh batching ensures continuous 60 FPS rendering under heavy draw call conditions on vivo V60.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 247: Tactical TPP Player Locomotion, Parachute Airdrop & State Transition Audit
+### Completed by Antigravity:
+1. **PUBG Mobile-Scale Third-Person Character Controller (`scripts/player.gd`):**
+   - **Tactical Locomotion Dynamics:** Calibrated speeds (7.5 m/s walk, 12.0 m/s sprint) with responsive touch joystick damping and camera-relative rotational lerping (rotation speed 12.0).
+   - **4-Mode State Machine (`State` Enum):**
+     - `ON_FOOT`: Free walking, sprinting, jump physics, dynamic footstep audio cadence, and high-velocity fall damage calculation.
+     - `RIDING_MOUNT`: Instant mount/dismount handshake for War Elephant, Bullock Cart, Riding Cow, and Mindon Steed.
+     - `DRIVING_VEHICLE`: Collision handoff and seated driving logic for 125cc Bike, Tuk-Tuk, and Passenger Car.
+     - `FLYING_AIRCRAFT`: Aerodynamic flight state for Propeller Airplane and Rescue Helicopter.
+   - **Airborne Parachute Drop Mechanic:** Glide velocity (8.0 m/s) and terminal descent braking (3.5 m/s) with camera-directed flight vectors and auto-chute collapse upon ground touchdown.
+2. **Camera Perspective Dual-Mode Engine:**
+   - Real-time switching between PUBG Tactical TPP Over-the-Shoulder (arm length 1.95m, pitch -8°) and MLBB Strategic Aerial TPP (arm length 6.5m, pitch -45°).
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
