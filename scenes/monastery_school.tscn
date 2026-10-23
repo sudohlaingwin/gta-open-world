@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3]
+[gd_scene load_steps=35 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(22.0, 0.6, 16.0)
@@ -108,6 +108,31 @@ albedo_color = Color(1.0, 0.65, 0.15, 1)
 emission_enabled = true
 emission = Color(1.0, 0.55, 0.1, 1)
 emission_energy_multiplier = 2.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_teaching_table"]
+size = Vector3(3.6, 0.45, 1.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lacquer_red"]
+albedo_color = Color(0.55, 0.12, 0.10, 1)
+roughness = 0.35
+specular = 0.45
+
+[sub_resource type="BoxMesh" id="BoxMesh_scripture_chest"]
+size = Vector3(1.4, 0.65, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sadaik_gilt"]
+albedo_color = Color(0.88, 0.68, 0.20, 1)
+metallic = 0.72
+roughness = 0.32
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_monastery_drum"]
+top_radius = 0.55
+bottom_radius = 0.55
+height = 1.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_leather_drum"]
+albedo_color = Color(0.62, 0.42, 0.26, 1)
+roughness = 0.80
 
 [node name="MonasterySchool" type="StaticBody3D"]
 
@@ -249,6 +274,21 @@ surface_material_override/0 = SubResource("StandardMaterial3D_mat")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0.35, -3.5)
 mesh = SubResource("BoxMesh_mat")
 surface_material_override/0 = SubResource("StandardMaterial3D_mat")
+
+[node name="MonkTeachingDesk" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, -1.8)
+mesh = SubResource("BoxMesh_teaching_table")
+surface_material_override/0 = SubResource("StandardMaterial3D_lacquer_red")
+
+[node name="SadaikScriptureChest" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0.65, -1.8)
+mesh = SubResource("BoxMesh_scripture_chest")
+surface_material_override/0 = SubResource("StandardMaterial3D_sadaik_gilt")
+
+[node name="KalatMonasteryDrum" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -8.6, 1.4, 0)
+mesh = SubResource("CylinderMesh_monastery_drum")
+surface_material_override/0 = SubResource("StandardMaterial3D_leather_drum")
 
 [node name="RoofLower" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5, 0)

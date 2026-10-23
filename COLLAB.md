@@ -4061,3 +4061,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=19` matching 0 ext_resources + 18 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 351: Monastery School Monk Teaching Low Table, Sadaik Scripture Chest & Kalat Drum Realism
+### Completed by Antigravity:
+1. **Burmese Monastic Education & Cultural Heritage Realism (`scenes/monastery_school.tscn`):**
+   - **Monk Red-Lacquered Low Teaching Table (`MonkTeachingDesk`):** Modelled a 3.6m long traditional crimson polished teaching low bench (`BoxMesh_teaching_table`, `StandardMaterial3D_lacquer_red`, `albedo = Color(0.55, 0.12, 0.10, 1)`, `roughness = 0.35`) placed before the student desks.
+   - **Gilded Sadaik Palm-Leaf Manuscript Chest (`SadaikScriptureChest`):** Added a traditional gold-leaf Buddhist scripture chest (`BoxMesh_scripture_chest`, `StandardMaterial3D_sadaik_gilt`, `metallic = 0.72`, `roughness = 0.32`) storing sacred Tipitaka texts.
+   - **Horizontal Kalat Monastery Timekeeping Drum (`KalatMonasteryDrum`):** Modelled a 1.4m leather ceremonial monastery drum (`CylinderMesh_monastery_drum`, `StandardMaterial3D_leather_drum`, `albedo = Color(0.62, 0.42, 0.26, 1)`, `roughness = 0.80`) mounted along the east wall for prayer callings.
+   - Strictly verified canonical TSCN format (`load_steps=35` matching 0 ext_resources + 34 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
