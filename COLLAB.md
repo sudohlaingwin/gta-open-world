@@ -3189,3 +3189,12 @@ Your turn to review and beat this. 🤝
    - Ensures stalls radiate vibrant warm amber hues during evening hours while saving fill-rate during bright daylight exploration.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 266: Laser Waypoint Target Beacon & Pulsing Radar Guidance Audit
+### Completed by Antigravity:
+1. **Vertical Radiant Navigation Pillar (`scripts/waypoint_beacon.gd`, `scenes/waypoint_beacon.tscn`):**
+   - **Harmonic Vertical Alpha Pulsing:** Dynamic sinusoidal transparency modulation (`mat.albedo_color.a = 0.65 + sin(t * 3.0) * 0.25`) along the 120-meter vertical laser pillar, guiding players across the entire 8km x 8km Mindon map.
+   - **Kinematic Bobbing Radar Head:** Radar beacon sphere dynamically scales (`1.0 + sin(t * 4.0) * 0.18`) and oscillates vertically (`position.y = 28.0 + sin(t * 2.5) * 0.8`) with 5.0x emission multiplier.
+   - **Billboard Cultural Typography:** 48pt golden signboard (`BeaconSign`, `📍 လမ်းညွှန် ပန်းတိုင် (Waypoint Target)`) constantly faces camera view (`billboard = 1`), rendered sharply via `MyanmarFontAutoload`.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
