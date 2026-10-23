@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scripts/rowboat_controller.gd" id="1_boat"]
 
@@ -69,6 +69,22 @@ size = Vector3(0.08, 0.12, 1.4)
 albedo_color = Color(0.42, 0.24, 0.12, 1)
 roughness = 0.62
 
+[sub_resource type="BoxMesh" id="BoxMesh_ceremonial_sash"]
+size = Vector3(0.18, 0.75, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sash_red"]
+albedo_color = Color(0.88, 0.14, 0.12, 1)
+roughness = 0.55
+
+[sub_resource type="TorusMesh" id="TorusMesh_bow_ring"]
+inner_radius = 0.08
+outer_radius = 0.16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_copper"]
+albedo_color = Color(0.88, 0.52, 0.28, 1)
+metallic = 0.92
+roughness = 0.24
+
 [node name="AyeyarwadyRowboat" type="CharacterBody3D"]
 script = ExtResource("1_boat")
 
@@ -98,6 +114,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -4.05)
 light_color = Color(1.0, 0.78, 0.38, 1)
 light_energy = 1.25
 omni_range = 6.0
+
+[node name="ProwBlessingSash" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -4.0)
+mesh = SubResource("BoxMesh_ceremonial_sash")
+surface_material_override/0 = SubResource("StandardMaterial3D_sash_red")
+
+[node name="CopperMooringRing" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0.82, -4.2)
+mesh = SubResource("TorusMesh_bow_ring")
+surface_material_override/0 = SubResource("StandardMaterial3D_copper")
 
 [node name="Bench" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
