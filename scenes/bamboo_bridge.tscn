@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=20 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(5.2, 0.45, 36.0)
@@ -61,6 +61,20 @@ specular = 0.35
 [sub_resource type="BoxMesh" id="BoxMesh_diagonal_strut"]
 size = Vector3(0.16, 0.16, 4.2)
 
+[sub_resource type="BoxMesh" id="BoxMesh_bamboo_toe_board"]
+size = Vector3(0.12, 0.24, 35.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_bamboo"]
+albedo_color = Color(0.55, 0.44, 0.24, 1)
+roughness = 0.70
+
+[sub_resource type="BoxMesh" id="BoxMesh_approach_ramp"]
+size = Vector3(5.4, 0.25, 4.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_packed_earth"]
+albedo_color = Color(0.58, 0.46, 0.30, 1)
+roughness = 0.95
+
 [node name="BambooBridge" type="StaticBody3D"]
 
 [node name="FloorCollision" type="CollisionShape3D" parent="."]
@@ -81,6 +95,26 @@ shape = SubResource("BoxShape3D_rail_r")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, 0)
 mesh = SubResource("BoxMesh_deck")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="ToeBoardL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.42, 0.42, 0)
+mesh = SubResource("BoxMesh_bamboo_toe_board")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_bamboo")
+
+[node name="ToeBoardR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.42, 0.42, 0)
+mesh = SubResource("BoxMesh_bamboo_toe_board")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_bamboo")
+
+[node name="ApproachRampSouth" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, -0.173648, 0, 0.173648, 0.984808, 0, -0.22, 19.8)
+mesh = SubResource("BoxMesh_approach_ramp")
+surface_material_override/0 = SubResource("StandardMaterial3D_packed_earth")
+
+[node name="ApproachRampNorth" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, -0.22, -19.8)
+mesh = SubResource("BoxMesh_approach_ramp")
+surface_material_override/0 = SubResource("StandardMaterial3D_packed_earth")
 
 [node name="RailL" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.1, 0)

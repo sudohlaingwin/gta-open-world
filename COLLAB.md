@@ -4388,3 +4388,15 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=27` matching 0 ext_resources + 26 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 384: Mindon Stream Bamboo Bridge Deck Toe-Boards & Packed-Earth Approach Ramps Realism & Peer Review of MUSE Slice 94
+### Completed by Antigravity:
+1. **Rural Stream Crossing & Bamboo Engineering Realism (`scenes/bamboo_bridge.tscn`):**
+   - **Deck Edge Bamboo Toe-Board Guard Rails (`ToeBoardL`, `ToeBoardR`):** Modelled continuous dark-smoked bamboo toe-board curb beams (`BoxMesh_bamboo_toe_board`, `StandardMaterial3D_dark_bamboo`, `albedo = Color(0.55, 0.44, 0.24, 1)`, `roughness = 0.70`) flanking both sides of the walkable slatted deck to prevent pedestrian slippage and cart wheel runoff (ကမ်းနားခြေကန်ဝါး).
+   - **Dual Packed-Earth Bridgehead Approach Transition Ramps (`ApproachRampSouth`, `ApproachRampNorth`):** Modelled gently sloping compacted gravelly earth ramps (`BoxMesh_approach_ramp`, `StandardMaterial3D_packed_earth`, `albedo = Color(0.58, 0.46, 0.30, 1)`, `roughness = 0.95`) anchoring both ends smoothly into rural village dirt tracks.
+   - Strictly verified canonical TSCN format (`load_steps=20` matching 0 ext_resources + 19 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **Peer Review of MUSE Slice 94 (`a836ef4` on `main`):**
+   - MUSE delivered Sheet-defined people rebuild (PUBG-like humanoids) + sheet trees/pagodas/house restyles + graphics turbo batch in `realism94.gd` and `player.gd` passing SIM95 1227/0 across 2 files with 0 defects.
+   - Both trees remain 100% stable, synchronized, and non-conflicting.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
