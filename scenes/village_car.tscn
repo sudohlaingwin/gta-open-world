@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -61,6 +61,27 @@ specular = 0.4
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
 size = Vector3(5.0, 3.0, 6.6)
 
+[sub_resource type="BoxMesh" id="BoxMesh_roof_rack"]
+size = Vector3(1.75, 0.12, 2.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rack_metal"]
+albedo_color = Color(0.20, 0.22, 0.24, 1)
+metallic = 0.88
+roughness = 0.28
+
+[sub_resource type="BoxMesh" id="BoxMesh_front_bumper"]
+size = Vector3(2.32, 0.28, 0.32)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_car_exhaust"]
+top_radius = 0.05
+bottom_radius = 0.05
+height = 0.65
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_exhaust_chrome"]
+albedo_color = Color(0.88, 0.92, 0.95, 1)
+metallic = 0.96
+roughness = 0.12
+
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
 
@@ -73,10 +94,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0)
 mesh = SubResource("BoxMesh_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_car_paint")
 
+[node name="FrontBumper" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, -2.46)
+mesh = SubResource("BoxMesh_front_bumper")
+surface_material_override/0 = SubResource("StandardMaterial3D_rack_metal")
+
 [node name="CabinMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.35)
 mesh = SubResource("BoxMesh_cabin")
 surface_material_override/0 = SubResource("StandardMaterial3D_cabin_glass")
+
+[node name="RoofLuggageRack" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98, -0.35)
+mesh = SubResource("BoxMesh_roof_rack")
+surface_material_override/0 = SubResource("StandardMaterial3D_rack_metal")
+
+[node name="ChromeExhaust" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -0.75, 0.35, 2.48)
+mesh = SubResource("CylinderMesh_car_exhaust")
+surface_material_override/0 = SubResource("StandardMaterial3D_exhaust_chrome")
 
 [node name="HeadlightL" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.82, 0.78, -2.45)
@@ -123,7 +159,7 @@ mesh = SubResource("BoxMesh_mirror")
 surface_material_override/0 = SubResource("StandardMaterial3D_car_paint")
 
 [node name="LicensePlateFront" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -2.48)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -2.58)
 mesh = SubResource("BoxMesh_plate")
 surface_material_override/0 = SubResource("StandardMaterial3D_plate_red")
 
@@ -195,4 +231,3 @@ text = "မင်းတုန်း မြို့ပြ ခရီးသည်�
 font_size = 36
 outline_size = 10
 modulate = Color(1.0, 0.90, 0.40, 1)
-
