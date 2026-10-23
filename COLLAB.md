@@ -3358,3 +3358,12 @@ Your turn to review and beat this. 🤝
    - **Tactical Minimap Frame (`StyleBoxFlat_minimap`):** Upgraded to 20px rounded floating glass aesthetic with calibrated alpha and crisp golden bezel, replacing outdated flat rectangles.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 281: Mobile HUD Glassmorphism Phase 2 — Speedometer & Waypoint Telemetry Overhaul
+### Completed by Antigravity:
+1. **Universal HUD Container Glassmorphism (`scenes/mobile_touch_hud.tscn`):**
+   - **Tactical Waypoint Guide (`StyleBoxFlat_guide`):** Transformed into translucent deep navy HUD glass (`Color(0.04, 0.10, 0.18, 0.85)`), 18px rounded corners, 2px cyan beacon border (`Color(0.25, 0.88, 1.0, 0.90)`), and 8px drop shadow.
+   - **Multi-Vehicle Speedometer (`StyleBoxFlat_speedo`):** Upgraded with 22px rounded aerodynamic contouring, cyan accent outline, and 10px elevation shadow, eliminating rough sharp rectangular edges.
+   - **Quest Information Banner (`StyleBoxFlat_banner`):** Upgraded to 18px rounded frosted glass panel with 2px gold trim and ambient shadow.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
