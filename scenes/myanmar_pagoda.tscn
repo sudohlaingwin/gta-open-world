@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
@@ -34,6 +34,19 @@ specular = 0.5
 emission_enabled = true
 emission = Color(0.96, 0.80, 0.15, 1)
 emission_energy_multiplier = 0.22
+
+[sub_resource type="SphereMesh" id="SphereMesh_diamond_orb"]
+radius = 0.55
+height = 1.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_diamond_orb"]
+albedo_color = Color(0.92, 0.96, 1.0, 1)
+metallic = 0.96
+roughness = 0.04
+specular = 1.0
+emission_enabled = true
+emission = Color(0.85, 0.95, 1.0, 1)
+emission_energy_multiplier = 2.4
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_pagoda"]
 height = 29.6
@@ -72,6 +85,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_gold")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.3, 0)
 mesh = SubResource("SphereMesh_hti")
 surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="SeinbuDiamondOrb" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.8, 0)
+mesh = SubResource("SphereMesh_diamond_orb")
+surface_material_override/0 = SubResource("StandardMaterial3D_diamond_orb")
 
 [node name="PagodaCrownLight" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.5, 0)
