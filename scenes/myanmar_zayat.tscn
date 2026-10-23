@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=11 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_zayat"]
 size = Vector3(17.5, 8.5, 13.5)
@@ -28,6 +28,16 @@ size = Vector3(13.0, 2.8, 10.5)
 albedo_color = Color(0.52, 0.24, 0.14, 1)
 roughness = 0.74
 
+[sub_resource type="BoxMesh" id="BoxMesh_bench"]
+size = Vector3(14.0, 0.45, 1.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_thinbyu_mat"]
+size = Vector3(7.5, 0.05, 5.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thinbyu"]
+albedo_color = Color(0.76, 0.68, 0.46, 1)
+roughness = 0.88
+
 [node name="MyanmarZayat" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -40,6 +50,16 @@ shape = SubResource("BoxShape3D_zayat")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
 mesh = SubResource("BoxMesh_deck")
 surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+
+[node name="TeakBenchBack" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, -4.8)
+mesh = SubResource("BoxMesh_bench")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+
+[node name="ThinbyuMat" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0.5)
+mesh = SubResource("BoxMesh_thinbyu_mat")
+surface_material_override/0 = SubResource("StandardMaterial3D_thinbyu")
 
 [node name="PillarFL" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 4.2, 5.5)
