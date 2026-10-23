@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=16 format=3]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_statue"]
 height = 8.8
@@ -56,6 +56,28 @@ emission_enabled = true
 emission = Color(0.95, 0.15, 0.22, 1)
 emission_energy_multiplier = 0.85
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_lotus_throne"]
+top_radius = 2.2
+bottom_radius = 1.85
+height = 0.55
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lotus_pink"]
+albedo_color = Color(0.95, 0.55, 0.72, 1)
+roughness = 0.38
+specular = 0.45
+
+[sub_resource type="SphereMesh" id="SphereMesh_emerald_eye"]
+radius = 0.08
+height = 0.16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_emerald"]
+albedo_color = Color(0.12, 0.85, 0.32, 1)
+metallic = 0.88
+roughness = 0.15
+emission_enabled = true
+emission = Color(0.15, 0.90, 0.35, 1)
+emission_energy_multiplier = 0.65
+
 [node name="HintharStatue" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -69,35 +91,56 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 mesh = SubResource("CylinderMesh_pedestal")
 surface_material_override/0 = SubResource("StandardMaterial3D_white_marble")
 
+[node name="LotusThrone" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("CylinderMesh_lotus_throne")
+surface_material_override/0 = SubResource("StandardMaterial3D_lotus_pink")
+
 [node name="Body" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 0)
 mesh = SubResource("SphereMesh_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_hinthar_gold")
 
 [node name="Neck" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 0.965, 0.258, 0, -0.258, 0.965, 0, 4.6, -0.68)
+transform = Transform3D(1, 0, 0, 0, 0.965, 0.258, 0, -0.258, 0.965, 0, 5.0, -0.68)
 mesh = SubResource("CylinderMesh_neck")
 surface_material_override/0 = SubResource("StandardMaterial3D_hinthar_gold")
 
+[node name="EmeraldEyeL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.28, 5.75, -1.0)
+mesh = SubResource("SphereMesh_emerald_eye")
+surface_material_override/0 = SubResource("StandardMaterial3D_emerald")
+
+[node name="EmeraldEyeR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, 5.75, -1.0)
+mesh = SubResource("SphereMesh_emerald_eye")
+surface_material_override/0 = SubResource("StandardMaterial3D_emerald")
+
 [node name="Beak" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.4, -1.25)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.8, -1.25)
 mesh = SubResource("PrismMesh_beak")
 surface_material_override/0 = SubResource("StandardMaterial3D_hinthar_gold")
 
 [node name="Wings" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 0.965, 0.258, 0, -0.258, 0.965, 0, 3.7, 0)
+transform = Transform3D(1, 0, 0, 0, 0.965, 0.258, 0, -0.258, 0.965, 0, 4.1, 0)
 mesh = SubResource("BoxMesh_wing")
 surface_material_override/0 = SubResource("StandardMaterial3D_hinthar_gold")
 
 [node name="TailFeathers" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 4.4, 1.25)
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 4.8, 1.25)
 mesh = SubResource("PrismMesh_tail_feathers")
 surface_material_override/0 = SubResource("StandardMaterial3D_hinthar_gold")
 
 [node name="RubyCrest" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8, -0.85)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.2, -0.85)
 mesh = SubResource("SphereMesh_crest")
 surface_material_override/0 = SubResource("StandardMaterial3D_ruby_crest")
+
+[node name="StatueSpotlight" type="OmniLight3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.0, 2.2)
+light_color = Color(1.0, 0.92, 0.65, 1)
+light_energy = 2.4
+omni_range = 10.0
 
 [node name="StatueSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 2.6)
