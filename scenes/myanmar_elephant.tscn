@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scripts/elephant_controller.gd" id="1_elephant"]
 
@@ -67,6 +67,23 @@ albedo_color = Color(0.88, 0.74, 0.24, 1)
 metallic = 0.92
 roughness = 0.22
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_howdah_post"]
+top_radius = 0.06
+bottom_radius = 0.06
+height = 1.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carved_teak"]
+albedo_color = Color(0.34, 0.20, 0.10, 1)
+roughness = 0.65
+
+[sub_resource type="TorusMesh" id="TorusMesh_girth_strap"]
+inner_radius = 1.85
+outer_radius = 2.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_leather_strap"]
+albedo_color = Color(0.22, 0.14, 0.08, 1)
+roughness = 0.85
+
 [node name="MyanmarElephant" type="CharacterBody3D"]
 script = ExtResource("1_elephant")
 
@@ -85,6 +102,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.55, 0)
 mesh = SubResource("BoxMesh_blanket")
 surface_material_override/0 = SubResource("StandardMaterial3D_royal_crimson")
+
+[node name="GirthStrap" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 2.7, 0)
+mesh = SubResource("TorusMesh_girth_strap")
+surface_material_override/0 = SubResource("StandardMaterial3D_leather_strap")
 
 [node name="Head" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, -3.1)
@@ -148,6 +170,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_elephant_skin")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.9, 0)
 mesh = SubResource("BoxMesh_howdah")
 surface_material_override/0 = SubResource("StandardMaterial3D_gold_howdah")
+
+[node name="HowdahPostFL" type="MeshInstance3D" parent="VisualMesh/Howdah"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.8, -1.2)
+mesh = SubResource("CylinderMesh_howdah_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_carved_teak")
+
+[node name="HowdahPostFR" type="MeshInstance3D" parent="VisualMesh/Howdah"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.8, -1.2)
+mesh = SubResource("CylinderMesh_howdah_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_carved_teak")
 
 [node name="HowdahSeat" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.3, 0)
