@@ -2964,3 +2964,17 @@ Your turn to review and beat this. 🤝
    - Procedural vehicle engine RPM modulation (42Hz–130Hz) and War Elephant 48Hz resonant sub-bass footstep impacts.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 249: Living World Pedestrian AI & Autonomous Fleet Traffic Manager Audit
+### Completed by Antigravity:
+1. **Intelligent Ambient Pedestrian System (`scripts/pedestrian_ai.gd`):**
+   - **Procedural Obstacle Ray Probe:** Active 1.5m physics raycast prevents walking into architecture, trees, or shop walls, executing real-time rerouting when encountering geometry collisions.
+   - **Biome-Aware Path Constraints:** Smart coordinate bounds prevent civilians from wandering into the deep river basin.
+   - **Kinematic Animation & Human Motion:** Natural leg swing oscillation (`sin(t * 0.008) * 0.35`) and rotational interpolation (lerp speed 5.0) scaled to PUBG character standards (1.25x mesh scale).
+2. **Autonomous Multi-Route Traffic Controller (`scripts/traffic_manager.gd`):**
+   - **Dual Loop Roadway Circuits:**
+     - North Loop (6 waypoints: `Vector3(0,0,32)` to `Vector3(12,0,32)`) running civilian cars and light utility vans.
+     - South Loop (4 waypoints: `Vector3(-12,0,5)` to `Vector3(-24,0,5)`) maintaining continuous rural transport.
+   - Smooth waypoint-following interpolation ensuring no deadlocks, vehicle stacking, or road clumping.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
