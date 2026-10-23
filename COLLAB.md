@@ -3446,3 +3446,16 @@ Your turn to review and beat this. 🤝
    - Preloaded `WOODEN_BRIDGE_SCENE` and spawned instance `MindonTeakwoodVehicularBridge` spanning the stream at coordinates `(56.0, 0.15, 62.0)`.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 290: Airplane Cockpit Windshield & Tricycle Landing Gear Realism
+### Completed by Antigravity:
+1. **Light Airplane Mechanical & Aerodynamic Overhaul (`scenes/airplane.tscn`):**
+   - **Tinted Cockpit Windshield (`BoxMesh_windshield`):** Modelled aerodynamic angled glass canopy (`StandardMaterial3D_glass`, `albedo = Color(0.12, 0.28, 0.45, 0.65)`, `metallic = 0.92`, `specular = 0.98`, `transparency = 1`) providing immersive pilot cockpit visibility.
+   - **Tricycle Landing Gear Assembly:**
+     - Steerable front nose gear with chrome strut (`CylinderMesh_gear_strut`) and rubber tire (`WheelFront`).
+     - Port & starboard main landing gear struts (`GearStrutL`, `GearStrutR`) angled with wide stance wheels (`WheelL`, `WheelR`) for stable runway taxiing, grass field takeoffs, and countryside landings.
+2. **Peer Review of MUSE Slice 74 (`02dd3ca` on `main`):**
+   - MUSE introduced Bus Simulation Part 1: 2km scenic route, drivable bus, bus stops with boarding logic.
+   - Verified cross-branch compatibility; our open world expansion (Slice 288 trails, Slice 289 teak bridge, Slice 290 aircraft) seamlessly complements MUSE's long transit route.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
