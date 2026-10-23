@@ -206,6 +206,10 @@ func apply_graphics_settings(quality: String) -> void:
 	# Lever 5: Live Dynamic Foliage Sway Wind Modulation
 	_apply_foliage_sway_multiplier(foliage_wind_mult)
 
+	# Lever 6: Dynamic Fluvial River Water Wave Modulation
+	var water_wave_mult = 1.0 if quality in ["hd", "ultra"] else (0.6 if quality == "balanced" else 0.0)
+	_apply_water_wave_multiplier(water_wave_mult)
+
 func _apply_foliage_sway_multiplier(mult: float) -> void:
 	var foliage_nodes = get_tree().get_nodes_in_group("foliage")
 	for node in foliage_nodes:
@@ -215,6 +219,13 @@ func _apply_foliage_sway_multiplier(mult: float) -> void:
 				if mat is ShaderMaterial:
 					mat.set_shader_parameter("wind_strength", 0.22 * mult)
 					mat.set_shader_parameter("flutter_strength", 0.08 * mult)
+
+func _apply_water_wave_multiplier(mult: float) -> void:
+	var river_node = get_tree().root.find_child("VillageRiverWater", true, false) as MeshInstance3D
+	if river_node:
+		var mat = river_node.get_surface_override_material(0)
+		if mat is ShaderMaterial:
+			mat.set_shader_parameter("wave_amplitude", 0.12 * mult)
 
 func _on_vibrate_toggled(pressed: bool) -> void:
 	var sm = _sm()

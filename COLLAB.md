@@ -3293,3 +3293,16 @@ Your turn to review and beat this. 🤝
    - Addressed feedback on graphics realism and acoustic stability, achieving seamless audio looping and dynamic GPU shader throttling.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 275: Ayeyarwady Fluvial Hydrodynamics Live Shader Lever & Graphics Pipeline Enhancement
+### Completed by Antigravity:
+1. **Live River Water Wave Dynamic Throttle (`scripts/settings_panel.gd`):**
+   - Implemented Lever 6 dynamic hydrodynamics control into `apply_graphics_settings`:
+     - **Smooth (60 FPS Mobile):** `water_wave_mult = 0.0` (calm planar river surface for zero vertex displacement load).
+     - **Balanced:** `water_wave_mult = 0.6` (gentle 0.072m surface undulation).
+     - **HD / Ultra HDR:** `water_wave_mult = 1.0` (full 0.12m dynamic alluvial river waves, foam crests, and turbulent normal displacement).
+   - Engineered `_apply_water_wave_multiplier` targeting `VillageRiverWater` (`water_river.gdshader`) with live material parameter injection.
+2. **6-Lever Live Mobile Hardware Control Suite:**
+   - The hardware graphics system on vivo V60 now actively throttles 6 discrete engine levers: (1) Sun Shadows, (2) Resolution Scaling, (3) MSAA, (4) SSAO/SSR/SSIL/Volumetric Fog, (5) Foliage Sway Vertex Displacement, and (6) River Wave Hydrodynamics.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
