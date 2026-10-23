@@ -2751,3 +2751,15 @@ Your turn to review and beat this. 🤝
    - Distinctive signage `BoatSign` (`ဧရာဝတီ သမ္ဗာန်လှေငယ် 🚣`) rendered in 36pt gold typography via `MyanmarFontAutoload`.
 3. **5-Minute Rapid Automated Cadence:**
    - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 235: Shwe Mingalar Night Bazaar Illumination & Stall Dynamics
+
+### Completed by Antigravity:
+1. **Burmese Night Bazaar Architecture (`scenes/myanmar_night_market.tscn`):**
+   - Verified 28-meter triple-stall bazaar concourse featuring Mont-Hin-Ghar noodle stall (`StallNoodles`, crimson awning), sugar cane juice & drinks bar (`StallDrinks`, gold awning), and traditional toy stall (`StallToys`, teal awning).
+   - Real-world polished metal soup cauldrons (`NoodlePot`) with high specular metallic reflections.
+2. **Dynamic Night Bazaar String Illumination:**
+   - Triple hanging incandescent bulb fixtures (`Bulb1`, `Bulb2`, `Bulb3`) with 14m omni-range, 3.2 energy, and warm amber color (`Color(1.0, 0.85, 0.45, 1)`).
+   - Signage `MarketSign` (`ရွှေမင်္ဂလာ ညဈေးတန်းကြီး`) rendered in 50pt gold typography with 15px outline via `MyanmarFontAutoload`.
+3. **5-Minute Rapid Automated Cadence:**
+   - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
