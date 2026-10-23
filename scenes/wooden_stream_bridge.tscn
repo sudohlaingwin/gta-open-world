@@ -1,0 +1,99 @@
+[gd_scene load_steps=9 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(6.4, 0.5, 42.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rail_l"]
+size = Vector3(0.45, 1.9, 42.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rail_r"]
+size = Vector3(0.45, 1.9, 42.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_timber_deck"]
+size = Vector3(6.2, 0.35, 41.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_timber"]
+albedo_color = Color(0.38, 0.25, 0.14, 1)
+roughness = 0.86
+specular = 0.18
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_teak_pillar"]
+top_radius = 0.32
+bottom_radius = 0.38
+height = 6.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_timber_rail"]
+size = Vector3(0.3, 0.26, 41.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iron_bolts"]
+albedo_color = Color(0.18, 0.18, 0.20, 1)
+metallic = 0.82
+roughness = 0.40
+
+[node name="WoodenStreamBridge" type="StaticBody3D"]
+
+[node name="FloorCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("BoxShape3D_floor")
+
+[node name="LeftRailCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1, 1.15, 0)
+shape = SubResource("BoxShape3D_rail_l")
+
+[node name="RightRailCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 1.15, 0)
+shape = SubResource("BoxShape3D_rail_r")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+[node name="Deck" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("BoxMesh_timber_deck")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="RailL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1, 1.15, 0)
+mesh = SubResource("BoxMesh_timber_rail")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="RailR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 1.15, 0)
+mesh = SubResource("BoxMesh_timber_rail")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="PillarL1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, -2.5, -16.0)
+mesh = SubResource("CylinderMesh_teak_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="PillarL2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, -2.5, 0.0)
+mesh = SubResource("CylinderMesh_teak_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="PillarL3" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, -2.5, 16.0)
+mesh = SubResource("CylinderMesh_teak_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="PillarR1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0, -2.5, -16.0)
+mesh = SubResource("CylinderMesh_teak_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="PillarR2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0, -2.5, 0.0)
+mesh = SubResource("CylinderMesh_teak_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="PillarR3" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0, -2.5, 16.0)
+mesh = SubResource("CylinderMesh_teak_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="BridgeSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 20.2)
+text = "မင်းတုန်းချောင်း ကျွန်းသစ်တံတားကြီး 🌉"
+font_size = 42
+outline_size = 12
+modulate = Color(1.0, 0.88, 0.35, 1)

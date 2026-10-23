@@ -18,6 +18,7 @@ const PAGODA_SCENE = preload("res://scenes/myanmar_pagoda.tscn")
 const PIER_SCENE = preload("res://scenes/river_boat_pier.tscn")
 const BOAT_SCENE = preload("res://scenes/ayeyarwady_rowboat.tscn")
 const BRIDGE_SCENE = preload("res://scenes/bamboo_bridge.tscn")
+const WOODEN_BRIDGE_SCENE = preload("res://scenes/wooden_stream_bridge.tscn")
 const TEASHOP_SCENE = preload("res://scenes/myanmar_teashop.tscn")
 const STALL_SCENE = preload("res://scenes/market_stall.tscn")
 const PEDESTRIAN_SCENE = preload("res://scenes/ambient_pedestrian.tscn")
@@ -597,6 +598,13 @@ func _generate_ward3_amenities() -> void:
 	amenities_holder.add_child(bridge)
 	bridge.global_position = Vector3(2.0, 0.1, 28.0)
 	bridge.rotation.y = deg_to_rad(20.0)
+
+	# Heavy Teakwood Vehicular & Bullock Cart Stream Bridge (မင်းတုန်းချောင်း ကျွန်းသစ်တံတားကြီး)
+	var teak_bridge = WOODEN_BRIDGE_SCENE.instantiate()
+	teak_bridge.name = "MindonTeakwoodVehicularBridge"
+	amenities_holder.add_child(teak_bridge)
+	teak_bridge.global_position = Vector3(56.0, 0.15, 62.0)
+	teak_bridge.rotation.y = deg_to_rad(-45.0)
 
 	# Traditional roadside Myanmar Tea Shop (မင်းတုန်း ရိုးရာလက်ဖက်ရည်ဆိုင်)
 	var teashop = TEASHOP_SCENE.instantiate()
