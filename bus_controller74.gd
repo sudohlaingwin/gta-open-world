@@ -142,12 +142,31 @@ var leg_served: Array = []
 var _restored: bool = false
 var _last_wp_stop: int = -1
 var _last_sign_stop: int = -1
+# Slice 90 — service colour of the destination sign: the
+# service the sign was last coloured for (-1 = never).
+var _last_sign_service: int = -1
 var _alight_seq: int = 0
 
 # Slice 79 service mode (session-only, NOT saved).
 const SERVICE_LOCAL: int = 0
 const SERVICE_EXPRESS: int = 1
 var service79: int = SERVICE_LOCAL
+
+# Slice 90 — SERVICE-COLOURED DESTINATION SIGN (part 17).
+# The Slice 75 sign text is untouched (next stop, stable
+# Slice 84 numbers); only its TEXT COLOUR follows the
+# service, so the service reads from outside the bus:
+# Local = the established next-stop yellow (the S75 dot
+# yellow, also the S87 route-line tint), Express = the
+# established non-next dot blue from the minimap code
+# below. Honest note: no yellow was ever set on this
+# sign before — DestSign75 rendered the default white
+# (bus_route75.gd never set modulate), so Local APPLIES
+# the established route yellow rather than preserving
+# an existing sign colour. Colour cue only: no new text,
+# no new HUD label, no money, no economy. The minibus
+# sign (MiniSign81) is never touched — this function
+# only ever looks up "DestSign75" on the big "Bus" node.
 
 
 func service_order79(dir: int) -> Array:
@@ -405,12 +424,26 @@ func _update_route_guidance(world: Node3D) -> void:
 
 
 func _update_dest_sign(bus: Node3D) -> void:
-	if _last_sign_stop == next_stop:
+	# Colour follows the service independently of the
+	# stop: a mid-leg switch that leaves next_stop
+	# unchanged must still recolour the sign at once.
+	# set_service79 calls this directly (same recompute
+	# moment as its next_stop recompute), and _process
+	# calls it every frame, so a switch is visible
+	# within one frame at the latest. Guards advance
+	# only when the sign exists, so a late-built sign
+	# (bus polish retries until the Bus appears) still
+	# gets its text + colour on the next frame instead
+	# of being marked done while missing.
+	var lab := bus.get_node_or_null("DestSign75") as Label3D
+	if lab == null:
+		return
+	if _last_sign_stop == next_stop and _last_sign_service == service79:
 		return
 	_last_sign_stop = next_stop
-	var lab := bus.get_node_or_null("DestSign75") as Label3D
-	if lab != null:
-		lab.text = "မှတ်တိုင် " + pos_digit79(next_stop, direction)
+	_last_sign_service = service79
+	lab.text = "မှတ်တိုင် " + pos_digit79(next_stop, direction)
+	lab.modulate = Color(0.2, 0.6, 1.0, 1.0) if service79 == SERVICE_EXPRESS else Color(1.0, 0.85, 0.2, 1.0)
 
 
 func _serve_stop(world: Node3D, bus: Node3D, stop_idx: int) -> void:
