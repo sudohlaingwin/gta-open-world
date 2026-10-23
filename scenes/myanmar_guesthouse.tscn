@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
@@ -75,6 +75,23 @@ albedo_color = Color(0.24, 0.24, 0.26, 1)
 metallic = 0.85
 roughness = 0.35
 
+[sub_resource type="BoxMesh" id="BoxMesh_floor_mat"]
+size = Vector3(3.2, 0.04, 2.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_reed_mat"]
+albedo_color = Color(0.74, 0.64, 0.42, 1)
+roughness = 0.90
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_thermos"]
+top_radius = 0.16
+bottom_radius = 0.18
+height = 0.62
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thermos_floral"]
+albedo_color = Color(0.92, 0.32, 0.38, 1)
+metallic = 0.75
+roughness = 0.28
+
 [node name="MyanmarGuestHouse" type="StaticBody3D"]
 script = ExtResource("1_lantern")
 
@@ -88,6 +105,11 @@ shape = SubResource("BoxShape3D_guest")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 mesh = SubResource("BoxMesh_floor")
 surface_material_override/0 = SubResource("StandardMaterial3D_floor_wood")
+
+[node name="ReedFloorMat" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, -1.2)
+mesh = SubResource("BoxMesh_floor_mat")
+surface_material_override/0 = SubResource("StandardMaterial3D_reed_mat")
 
 [node name="Bed" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.85, -3.2)
@@ -104,8 +126,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.9, -3.2)
 mesh = SubResource("BoxMesh_desk")
 surface_material_override/0 = SubResource("StandardMaterial3D_desk_wood")
 
+[node name="TeaThermos" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 1.75, -3.2)
+mesh = SubResource("CylinderMesh_thermos")
+surface_material_override/0 = SubResource("StandardMaterial3D_thermos_floral")
+
 [node name="GoldLamp" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 1.9, -3.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 1.9, -3.2)
 mesh = SubResource("SphereMesh_lamp")
 surface_material_override/0 = SubResource("StandardMaterial3D_gold_glow")
 

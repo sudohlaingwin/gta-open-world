@@ -4033,3 +4033,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=23` matching 1 ext_resource + 21 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 348: Rural Guesthouse Reed Floor Matting & Floral Tea Thermos Realism
+### Completed by Antigravity:
+1. **Village Hospitality & Interior Living Realism (`scenes/myanmar_guesthouse.tscn`):**
+   - **Authentic Woven Reed Floor Mat (`ReedFloorMat`):** Added a 3.2m x 2.2m traditional natural reed floor mat (`BoxMesh_floor_mat`, `StandardMaterial3D_reed_mat`, `albedo = Color(0.74, 0.64, 0.42, 1)`, `roughness = 0.90`) laid over the wooden planking.
+   - **Iconic Burmese Floral Tin Hot Water Tea Thermos (`TeaThermos`):** Modelled a classic cylindrical hot water thermos (`CylinderMesh_thermos`, `StandardMaterial3D_thermos_floral`, `albedo = Color(0.92, 0.32, 0.38, 1)`, `metallic = 0.75`, `roughness = 0.28`) placed atop the guest writing desk for traditional plain green tea brewing.
+   - Strictly verified canonical TSCN format (`load_steps=24` matching 1 ext_resource + 22 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
