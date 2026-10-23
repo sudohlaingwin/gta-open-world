@@ -4331,3 +4331,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=28` matching 1 ext_resource + 26 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 378: Monastery Bronze Bell Sounding Lip Relief Band & Deer Antler Hand Striker Realism
+### Completed by Antigravity:
+1. **Monastic Sanctuary & Sacred Buddhist Campanology Realism (`scenes/monastery_bell.tscn`):**
+   - **Acoustic Lip Relief Moulding Band (`BellRimRelief`):** Modelled an authentic circumferential flared bronze moulding band (`TorusMesh_bell_rim_relief`, `StandardMaterial3D_relief_bronze`, `metallic = 0.94`, `roughness = 0.24`) ringing the mouth of the Kyone bell to ensure authentic harmonic reverberation.
+   - **Devotee Handheld Deer Antler Striker Horn (`DeerAntlerStriker`):** Modelled a traditional shed deer stag horn antler striker (`CylinderMesh_deer_antler`, `StandardMaterial3D_antler_horn`, `albedo = Color(0.72, 0.62, 0.48, 1)`, `roughness = 0.52`) leaning against the eastern timber support column for individual devotee merit chime offerings (သမင်ချို ခေါင်းလောင်းထိုးတံ).
+   - Strictly verified canonical TSCN format (`load_steps=23` matching 0 ext_resources + 22 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
