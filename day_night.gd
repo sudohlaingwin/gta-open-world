@@ -3,7 +3,7 @@ extends Node3D
 ## (Rotating the sun alone leaves the light on all night, so
 ## energy follows the sun angle: bright at noon, near-dark at night.)
 
-@export var day_length_seconds: float = 120.0
+@export var day_length_seconds: float = 1200.0
 @export var sun_path: NodePath
 @export var window_material: StandardMaterial3D
 var time: float = 0.0
@@ -46,23 +46,28 @@ func _season_mul() -> Color:
 
 func _sky_top_for_daylight(day: float) -> Color:
 	var noon := Color(0.30, 0.58, 0.95, 1.0)
-	var sunset := Color(0.42, 0.32, 0.62, 1.0)
+	# Slice 99 dusk variant (owner OpenTaxi-look order): the
+	# evening band (daylight 0.15..0.6) now leans warm pink
+	# instead of the old violet, so dusk reads orange-pink
+	# at the horizon fading to blue up top. Noon (day >= 0.6
+	# endpoint) and deep night (day = 0) are UNCHANGED.
+	var dusk := Color(0.62, 0.30, 0.52, 1.0)
 	var night := Color(0.02, 0.03, 0.12, 1.0)
 	if day >= 0.6:
-		return sunset.lerp(noon, (day - 0.6) / 0.4)
+		return dusk.lerp(noon, (day - 0.6) / 0.4)
 	if day >= 0.15:
-		return sunset.lerp(noon, (day - 0.15) / 0.45)
-	return night.lerp(sunset, day / 0.15)
+		return dusk.lerp(noon, (day - 0.15) / 0.45)
+	return night.lerp(dusk, day / 0.15)
 
 func _sky_horizon_for_daylight(day: float) -> Color:
 	var noon := Color(0.70, 0.82, 1.0, 1.0)
-	var sunset := Color(1.0, 0.52, 0.30, 1.0)
+	var dusk := Color(1.0, 0.58, 0.32, 1.0)
 	var night := Color(0.07, 0.07, 0.18, 1.0)
 	if day >= 0.6:
-		return sunset.lerp(noon, (day - 0.6) / 0.4)
+		return dusk.lerp(noon, (day - 0.6) / 0.4)
 	if day >= 0.15:
-		return sunset.lerp(noon, (day - 0.15) / 0.45)
-	return night.lerp(sunset, day / 0.15)
+		return dusk.lerp(noon, (day - 0.15) / 0.45)
+	return night.lerp(dusk, day / 0.15)
 
 func _process(delta: float) -> void:
 	time += delta

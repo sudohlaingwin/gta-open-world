@@ -29,8 +29,9 @@ extends Node3D
 ## two copies in sync; SIM83 proves they agree at every band):
 ## night wins first (daylight < 0.15, Slice 57 rule, even
 ## inside a peak window — evening peak overlaps night),
-## then the 120 s day clock: morning peak [0, 15), evening
-## peak [45, 60), everything else off-peak. Times are
+## then the 1200 s day clock (Slice 99: was 120 s):
+## morning peak [0, 150), evening peak [450, 600),
+## everything else off-peak. Times are
 ## seconds on the DayNight clock, not wall-clock hours.
 ## No new HUD label: the band reads through the road
 ## (traffic count), the stops (2 vs 3 waiting riders) and
@@ -66,10 +67,14 @@ extends Node3D
 const BAND_NIGHT: int = 0
 const BAND_PEAK: int = 1
 const BAND_OFFPEAK: int = 2
-const DAY_LENGTH_S: float = 120.0
-const PEAK_MORNING_END: float = 15.0
-const PEAK_EVENING_START: float = 45.0
-const PEAK_EVENING_END: float = 60.0
+# Slice 99 timing order: the day clock is now 1200 s (was
+# 120 s), so the peak windows scale x10 with it. The bus
+# SERVICE clock (S77) is separate and untouched; leg
+# durations (45/60/75/90) are untouched.
+const DAY_LENGTH_S: float = 1200.0
+const PEAK_MORNING_END: float = 150.0
+const PEAK_EVENING_START: float = 450.0
+const PEAK_EVENING_END: float = 600.0
 # Parked fleet by band (Slice 76 car indices; 0/2 are the
 # cars that always stay on the road, one per direction).
 # Peak: none parked. Off-peak: the two Slice 83 extra cars
@@ -107,7 +112,8 @@ static func dress(world: Node3D) -> void:
 
 static func band_for(daylight: float, day_time: float) -> int:
 	# Night precedence first (Slice 57 rule), then peak
-	# windows on the 120 s day clock, else off-peak.
+	# windows on the 1200 s day clock (Slice 99: was 120 s,
+	# windows scaled x10), else off-peak.
 	if daylight < 0.15:
 		return BAND_NIGHT
 	var t := fmod(day_time, DAY_LENGTH_S)

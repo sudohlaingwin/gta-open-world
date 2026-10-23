@@ -209,7 +209,8 @@ func _leg_duration_now() -> float:
 	# Slice 83 band rule, mirrored from bus_sim83.gd,
 	# plus Slice 85 rain precedence: night (daylight <
 	# 0.15) first at 90 s, then rain at 75 s, then peak
-	# bands on the 120 s day clock at 45 s, else 60 s.
+	# bands on the 1200 s day clock (Slice 99: was 120 s,
+	# windows scaled x10) at 45 s, else 60 s.
 	if _daylight() < 0.15:
 		return NIGHT_LEG_S
 	if _is_rainy():
@@ -220,12 +221,12 @@ func _leg_duration_now() -> float:
 		var dn := world.get_node_or_null("DayNight")
 		if dn != null and dn.get("time") != null:
 			t = float(dn.get("time"))
-	t = fmod(t, 120.0)
+	t = fmod(t, 1200.0)
 	if t < 0.0:
-		t += 120.0
-	if t < 15.0:
+		t += 1200.0
+	if t < 150.0:
 		return PEAK_LEG_S
-	if t >= 45.0 and t < 60.0:
+	if t >= 450.0 and t < 600.0:
 		return PEAK_LEG_S
 	return LEG_S
 

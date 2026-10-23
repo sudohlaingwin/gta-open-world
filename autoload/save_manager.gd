@@ -82,6 +82,11 @@ var bus_paint81: int = 0
 ## 2 winter ဆောင်း (cool/clear). Default summer; old settings files
 ## without the key load as summer, so old behaviour is preserved.
 var season62: int = 0
+## Slice 99 season clock: seconds accumulated toward the
+## next automatic season change (3600 s = 1 hour of play).
+## Old settings files without the key load as 0.0, so the
+## current season is never disturbed by the migration.
+var season62_play_s: float = 0.0
 
 
 func _ready() -> void:
@@ -158,6 +163,7 @@ func load_settings() -> void:
 	fps_visible = false
 	driving_mode = 1
 	season62 = 0
+	season62_play_s = 0.0
 	bus_paint81 = 0
 	if not FileAccess.file_exists(settings_path):
 		return
@@ -214,6 +220,8 @@ func load_settings() -> void:
 		driving_mode = clampi(int(parsed.get("driving_mode")), 0, 2)
 	if parsed.has("season62"):
 		season62 = clampi(int(parsed.get("season62")), 0, 2)
+	if parsed.has("season62_play_s"):
+		season62_play_s = clampf(float(parsed.get("season62_play_s")), 0.0, 3600.0)
 	if parsed.has("bus_paint81"):
 		bus_paint81 = clampi(int(parsed.get("bus_paint81")), 0, 3)
 
@@ -234,6 +242,7 @@ func save_settings() -> bool:
 		"fps_visible": fps_visible,
 		"driving_mode": driving_mode,
 		"season62": season62,
+		"season62_play_s": season62_play_s,
 		"bus_paint81": bus_paint81}
 	return _atomic_write(settings_path, JSON.stringify(data))
 
@@ -255,6 +264,7 @@ func reset_settings() -> void:
 	fps_visible = false
 	driving_mode = 1
 	season62 = 0
+	season62_play_s = 0.0
 	bus_paint81 = 0
 	save_settings()
 

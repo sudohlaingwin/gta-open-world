@@ -35,6 +35,7 @@ const Scale97Script = preload("res://scale97.gd")
 const Edge97Script = preload("res://edge97.gd")
 const Realism98Script = preload("res://realism98.gd")
 const Realism99Script = preload("res://realism99.gd")
+const Realism100Script = preload("res://realism100.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -687,6 +688,14 @@ func _ready() -> void:
 	# (frame >= 160 pass, after realism98's 140 pass).
 	# File numbering realism99 follows realism98.
 	Realism99Script.dress(get_parent())
+	# Slice 99 (parent sequence): Mindon 2-storey
+	# conversion + fine building detail (frames, cornices,
+	# pilasters, balconies, plinths, steps), sheet people
+	# detail (female waistbands), car antenna + wipers,
+	# OpenTaxi-look night pass (route + Mindon light pools,
+	# skyline band, dusk water glows), player night light
+	# (frame >= 180 pass, after realism99's 160 pass).
+	Realism100Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
@@ -1190,7 +1199,7 @@ func _update_speed_label() -> void:
 		_set_bar_value(speed_bar, clampf(spd / top * 100.0, 0.0, 100.0))
 		_set_visible(speed_bar, true)
 
-## Slice 9 clock: in-game time from DayNight.time (120 s = 1 day).
+## Slice 9 clock: in-game time from DayNight.time (1200 s = 1 day, Slice 99).
 ## Guarded: an older scene without DayNight just shows no clock.
 func _update_clock_label() -> void:
 	if clock_label == null:
@@ -1595,7 +1604,7 @@ func _update_stamina(delta: float) -> void:
 		_set_bar_value(stamina_bar, stamina)
 		_set_visible(stamina_bar, not driving)
 
-## Slice 10 day counter from DayNight time (120 s = 1 day).
+## Slice 10 day counter from DayNight time (1200 s = 1 day, Slice 99).
 func _update_day_label() -> void:
 	if day_label == null:
 		day_label = _n("../JoystickLayer/DayLabel") as Label

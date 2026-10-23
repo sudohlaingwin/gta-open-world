@@ -26,6 +26,14 @@ var _time: float = 0.0
 var _frames: int = 0
 var _season: int = 0
 var _applied: int = -1
+## Slice 99 season clock (owner order: seasons rotate once
+## per hour of accumulated play): seconds banked toward the
+## next automatic rotation. Persisted via
+## SaveManager.season62_play_s; a manual cycle_season()
+## call resets the bank to 0, and every crossed 600 s
+## mark is saved so a quit mid-hour loses at most 600 s.
+var _play_s: float = 0.0
+var _saved_mark: int = 0
 var _captured: bool = false
 var _ground_base: Color = Color.WHITE
 var _canopy_base: Dictionary = {}
@@ -42,15 +50,25 @@ func _ready() -> void:
 	var sm := get_node_or_null("/root/SaveManager")
 	if sm != null and sm.get("season62") != null:
 		_season = clampi(int(sm.get("season62")), 0, 2)
+	if sm != null and sm.get("season62_play_s") != null:
+		_play_s = clampf(float(sm.get("season62_play_s")), 0.0, 3600.0)
+		_saved_mark = int(_play_s / 600.0)
 
-func cycle_season() -> void:
+func _advance_season() -> void:
 	_season = (_season + 1) % 3
 	var sm := get_node_or_null("/root/SaveManager")
 	if sm != null and sm.get("season62") != null:
 		sm.set("season62", _season)
+		if sm.get("season62_play_s") != null:
+			sm.set("season62_play_s", _play_s)
 		if sm.has_method("save_settings"):
 			sm.call("save_settings")
 	_applied = -1
+
+func cycle_season() -> void:
+	_play_s = 0.0
+	_saved_mark = 0
+	_advance_season()
 
 func _capture(world: Node3D) -> void:
 	_captured = true
@@ -100,6 +118,23 @@ func _apply_season(world: Node3D) -> void:
 func _process(delta: float) -> void:
 	_time += delta
 	_frames += 1
+	# Slice 99 season clock: bank play time; every 3600 s
+	# rotate နွေ -> မိုး -> ဆောင်း and persist (bank wraps,
+	# so a 2-hour session rotates twice, never skips).
+	_play_s += delta
+	if _play_s >= 3600.0:
+		_play_s -= 3600.0
+		_saved_mark = 0
+		_advance_season()
+	else:
+		var mark := int(_play_s / 600.0)
+		if mark != _saved_mark:
+			_saved_mark = mark
+			var sm := get_node_or_null("/root/SaveManager")
+			if sm != null and sm.get("season62_play_s") != null:
+				sm.set("season62_play_s", _play_s)
+				if sm.has_method("save_settings"):
+					sm.call("save_settings")
 	var world := get_parent() as Node3D
 	if world == null:
 		return
