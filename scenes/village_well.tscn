@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=28 format=3]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_well"]
 height = 5.2
@@ -103,6 +103,22 @@ roughness = 0.35
 [sub_resource type="BoxMesh" id="BoxMesh_drain_trough"]
 size = Vector3(3.2, 0.22, 0.55)
 
+[sub_resource type="TorusMesh" id="TorusMesh_bamboo_safety_grate"]
+inner_radius = 2.15
+outer_radius = 2.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_safety_bamboo"]
+albedo_color = Color(0.68, 0.55, 0.30, 1)
+roughness = 0.70
+
+[sub_resource type="TorusMesh" id="TorusMesh_moss_ring"]
+inner_radius = 2.65
+outer_radius = 2.92
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wet_moss"]
+albedo_color = Color(0.25, 0.42, 0.18, 1)
+roughness = 0.92
+
 [node name="VillageWell" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -115,6 +131,11 @@ shape = SubResource("CylinderShape3D_well")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 mesh = SubResource("CylinderMesh_well_apron")
 surface_material_override/0 = SubResource("StandardMaterial3D_apron_cobble")
+
+[node name="MossyBaseRing" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("TorusMesh_moss_ring")
+surface_material_override/0 = SubResource("StandardMaterial3D_wet_moss")
 
 [node name="WashSlab" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9, 0.22, 1.8)
@@ -130,6 +151,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_teak_bucket")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.72, 0)
 mesh = SubResource("CylinderMesh_wall")
 surface_material_override/0 = SubResource("StandardMaterial3D_brick")
+
+[node name="BambooSafetyGrate" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46, 0)
+mesh = SubResource("TorusMesh_bamboo_safety_grate")
+surface_material_override/0 = SubResource("StandardMaterial3D_safety_bamboo")
 
 [node name="Water" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68, 0)

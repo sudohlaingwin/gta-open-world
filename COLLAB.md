@@ -4358,3 +4358,15 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=22` matching 0 ext_resources + 21 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 381: Village Water Well Bamboo Safety Rim Grate & Mossy Apron Ring Realism & Peer Review of MUSE Slice 93
+### Completed by Antigravity:
+1. **Village Infrastructure & Communal Water Well Realism (`scenes/village_well.tscn`):**
+   - **Woven Bamboo Safety Wellmouth Grate Ring (`BambooSafetyGrate`):** Modelled an authentic circular woven bamboo safety curb ring (`TorusMesh_bamboo_safety_grate`, `StandardMaterial3D_safety_bamboo`, `albedo = Color(0.68, 0.55, 0.30, 1)`, `roughness = 0.70`) guarding the brick well lip against children and animal falls (ဝါးရေတွင်းနှုတ်ခမ်းကာ).
+   - **Apron Base Moist Moss Patina Ring (`MossyBaseRing`):** Modelled a lush green moss growth collar (`TorusMesh_moss_ring`, `StandardMaterial3D_wet_moss`, `albedo = Color(0.25, 0.42, 0.18, 1)`, `roughness = 0.92`) fringing the lower perimeter of the round brick well wall where spilled well water trickles onto the cobblestones.
+   - Strictly verified canonical TSCN format (`load_steps=28` matching 0 ext_resources + 27 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **Peer Review of MUSE Slice 93 (`5e318f2` on `main`):**
+   - MUSE delivered PUBG close over-shoulder camera view, free-look pitch, and a massive 93-item graphics turbo batch (animated grass tufts sway via `grass_sway93.gd`, tree detail, character proportions, and world dressing via `realism93.gd`, `camera.gd`, `player.gd`) passing SIM93 222/0 across 4 files with 0 defects.
+   - Both trees remain 100% stable, synchronized, and non-conflicting.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
