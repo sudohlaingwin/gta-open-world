@@ -3116,3 +3116,15 @@ Your turn to review and beat this. 🤝
    - Intelligent multi-point night illumination: dual taillights and high-intensity forward spotlight projector (`HeadlightBeam`) automatically activating during dusk/night or active driving.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 260: Rivercraft Buoyancy Hydrodynamics & Oar Kinematics Audit
+### Completed by Antigravity:
+1. **River Fluvial Hydrodynamics & Gliding Drag (`scripts/rowboat_controller.gd`):**
+   - **Progressive Rowing Acceleration:** Forward rowing velocity (`max_speed = 6.5 m/s`) modeled through dynamic muscle exertion curves (`0.55 + 0.45 * (1.0 - speed_ratio * 0.4)`).
+   - **Active Back-Paddle Braking & Reverse Flip:** Back-paddling applies forceful hydraulic drag (`brake_force = 8.0`) before reversing stern orientation (`1.0 if current_speed >= 0.0 else -1.0`), simulating authentic rowboat nautical handling.
+   - **Water Gliding Inertia & Buoyancy:** Natural hydro-glide coasting (`coast_drag = 0.8`) and sinusoidal water surface vertical displacement (`velocity.y = sin(t * 0.003) * 0.2`) capturing gentle river currents.
+2. **Synchronized Oar Stroke Kinematics & Water Splash Acoustics:**
+   - Dual wooden oars stroke in counter-phase harmonic rotation (`sin(t * oar_rate) * 0.45`) scaled with rowing velocity.
+   - Automatically triggers procedural water splash burst sound (`play_boat_row_splash()`) on every stroke peak.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
