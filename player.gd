@@ -474,6 +474,23 @@ func _ready() -> void:
 		_real71.name = "Realism71"
 		_real71.set_script(load("res://realism71.gd"))
 		_world71.call_deferred("add_child", _real71)
+	# Slice 72 graphics realism, part 3 (owner 06:32 order, still
+	# binding: graphics first, no new feature): animal detail
+	# (cow head/ears/horns/tail/hooves, horse ears/saddle/stirrups/
+	# hooves, elephant howdah/toenails/tail, scenery cows/chickens),
+	# buildings round 2 (stall crates/fruit, tea-shop benches/jars,
+	# school windows/door/steps, night-market trays, guest-house
+	# table/pillow, hospital canopy/steps/cross), road curbs +
+	# rain-only puddles + clouds + horizon hills. Runtime-only,
+	# no scene touched. Captures once at its frame >= 20 (after
+	# Slice 71's frame-16 capture), then keeps processing only
+	# for the rainy-season puddle toggle.
+	var _world72 := get_parent()
+	if _world72 != null and _world72.get_node_or_null("Realism72") == null:
+		var _real72 := Node3D.new()
+		_real72.name = "Realism72"
+		_real72.set_script(load("res://realism72.gd"))
+		_world72.call_deferred("add_child", _real72)
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
