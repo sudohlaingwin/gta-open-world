@@ -52,6 +52,9 @@ var _zoom_out_btn: Button = null
 var _clear_btn: Button = null
 var _marker_nodes: Dictionary = {}
 var _player_dot: ColorRect = null
+# Slice 87 bus route line (child of _map_area, created in
+# _build_ui, refreshed in _update_markers beside the dots).
+var _route_line: Line2D = null
 var _waypoint_dot: ColorRect = null
 var _waypoint_label: Label = null
 var _beacon: MeshInstance3D = null
@@ -167,6 +170,15 @@ func _build_ui() -> void:
 	_map_bg.color = Color(0.12, 0.28, 0.12, 1.0)
 	_map_bg.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_map_area.add_child(_map_bg)
+	# Slice 87 bus route line: drawn FIRST among the map
+	# content so every marker dot draws on top of it.
+	# Points refresh in _update_markers (zoom/pan move
+	# it for free); width suits the large map area.
+	_route_line = Line2D.new()
+	_route_line.name = "BusRouteLine87"
+	_route_line.width = 3.0
+	_route_line.default_color = Color(1.0, 0.85, 0.2, 1.0)
+	_map_area.add_child(_route_line)
 	for lm in LANDMARKS:
 		var dot := ColorRect.new()
 		dot.name = "Dot_" + str(lm[0])
@@ -253,7 +265,7 @@ func _build_ui() -> void:
 	# Plain words only — no symbol glyphs the default font may lack.
 	_legend_label = Label.new()
 	_legend_label.name = "MapLegend"
-	_legend_label.text = "အညွှန်း — အဝါ: ကစားသူ • အနီ: လမ်းကြောင်း • အဝါရောင်မျဉ်း: လမ်း • စာတန်း: ခရိုင် / နေရာအမည်"
+	_legend_label.text = "အညွှန်း — အဝါ: ကစားသူ • အနီ: လမ်းကြောင်း • အဝါရောင်မျဉ်း: လမ်း • ဘတ်စ်လမ်း • စာတန်း: ခရိုင် / နေရာအမည်"
 	_legend_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(_legend_label)
 	_layout()
@@ -351,6 +363,28 @@ func _update_markers() -> void:
 		(pair[0] as ColorRect).position = p - Vector2(7.0, 7.0)
 		(pair[1] as Label).visible = true
 		(pair[1] as Label).position = p + Vector2(10.0, -6.0)
+	# Slice 87 bus route line, through the same world_to_map
+	# (zoom/pan) as the landmark dots: one polyline through
+	# the 6 stop positions in west-to-east travel order
+	# (Slice 84 Local east order [4, 0, 1, 2, 3, 5]). A
+	# marker dot's CENTRE is world_to_map (dots sit at
+	# p - (7, 7) with size 14), so these points pass
+	# through the stop dot centres exactly. Guidance
+	# only — it steers nothing and changes no rule. A
+	# missing stop group hides the line rather than
+	# drawing a guessed partial route.
+	if _route_line != null:
+		var rpts: PackedVector2Array = PackedVector2Array()
+		var all_found := true
+		for g in [4, 0, 1, 2, 3, 5]:
+			var gnode := world.get_node_or_null("LongRoute74/BusStop74_%d" % g) as Node3D
+			if gnode == null:
+				all_found = false
+				break
+			rpts.append(world_to_map(gnode.global_position.x, gnode.global_position.z))
+		_route_line.visible = all_found
+		if all_found:
+			_route_line.points = rpts
 	# Slice 67 region titles + water labels, through the same
 	# world_to_map (zoom/pan) as the landmark dots. Titles are
 	# centred above their anchor so they read as region titles.

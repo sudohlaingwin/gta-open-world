@@ -22,6 +22,7 @@ const BusSim82Script = preload("res://bus_sim82.gd")
 const BusSim83Script = preload("res://bus_sim83.gd")
 const BusSim84Script = preload("res://bus_sim84.gd")
 const BusSim86Script = preload("res://bus_sim86.gd")
+const BusSim87Script = preload("res://bus_sim87.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -594,6 +595,14 @@ func _ready() -> void:
 	# groups and all 18 riders exist with destination meta,
 	# so dress order cannot strand a rider boardless.
 	BusSim86Script.dress(get_parent())
+	# Slice 87 BUS SIMULATION part 14 (route drawn on the
+	# maps: one yellow polyline through the 6 stop dot
+	# centres on the minimap + the world map, guidance
+	# only): runs after Slice 86, same deferred pattern —
+	# its node retries nothing (it reads live stop
+	# positions every frame, so dress order cannot strand
+	# it), and the world-map line lives in world_map.gd.
+	BusSim87Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
