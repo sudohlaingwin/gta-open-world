@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/myanmar_villager.gd" id="1_villager"]
 
@@ -49,6 +49,24 @@ specular = 0.1
 [sub_resource type="SphereShape3D" id="SphereShape3D_talk"]
 radius = 3.6
 
+[sub_resource type="BoxMesh" id="BoxMesh_shoulder_bag"]
+size = Vector3(0.28, 0.32, 0.10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_shan_bag"]
+albedo_color = Color(0.82, 0.22, 0.18, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="BoxMesh_slipper"]
+size = Vector3(0.14, 0.05, 0.28)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_velvet_slipper"]
+albedo_color = Color(0.18, 0.12, 0.26, 1)
+roughness = 0.85
+
+[sub_resource type="SphereMesh" id="SphereMesh_longyi_knot"]
+radius = 0.08
+height = 0.14
+
 [node name="MyanmarVillager" type="CharacterBody3D"]
 script = ExtResource("1_villager")
 
@@ -82,10 +100,30 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, 0)
 mesh = SubResource("BoxMesh_torso")
 surface_material_override/0 = SubResource("StandardMaterial3D_taikpon")
 
+[node name="ShanShoulderBag" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.32, 1.05, 0.05)
+mesh = SubResource("BoxMesh_shoulder_bag")
+surface_material_override/0 = SubResource("StandardMaterial3D_shan_bag")
+
 [node name="Longyi" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48, 0)
 mesh = SubResource("CylinderMesh_longyi")
 surface_material_override/0 = SubResource("StandardMaterial3D_longyi_maroon")
+
+[node name="LongyiKnot" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0.31)
+mesh = SubResource("SphereMesh_longyi_knot")
+surface_material_override/0 = SubResource("StandardMaterial3D_longyi_maroon")
+
+[node name="SlipperL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, 0.03, 0.04)
+mesh = SubResource("BoxMesh_slipper")
+surface_material_override/0 = SubResource("StandardMaterial3D_velvet_slipper")
+
+[node name="SlipperR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0.03, 0.04)
+mesh = SubResource("BoxMesh_slipper")
+surface_material_override/0 = SubResource("StandardMaterial3D_velvet_slipper")
 
 [node name="DialogueLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35, 0)

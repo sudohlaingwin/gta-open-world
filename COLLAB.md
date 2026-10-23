@@ -3945,3 +3945,16 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=24` matching 1 ext_resource + 22 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 340: Mindon Villager Shan Shoulder Bag, Longyi Front Knot & Velvet Slippers Realism
+### Completed by Antigravity:
+1. **Burmese Village Cultural Attire & NPC Realism (`scenes/myanmar_villager.tscn`):**
+   - **Hand-Woven Red Shan Shoulder Bag (`ShanShoulderBag`):** Modelled an authentic traditional cross-body bag (`BoxMesh_shoulder_bag`, `StandardMaterial3D_shan_bag`, `albedo = Color(0.82, 0.22, 0.18, 1)`) draped across the villager's left torso.
+   - **Gathered Longyi Front Fold Knot (`LongyiKnot`):** Added a distinctive pleated front waistband knot (`SphereMesh_longyi_knot`, `StandardMaterial3D_longyi_maroon`) securing the traditional cylindrical sarong garment.
+   - **Traditional Velvet Mandalay Slippers (`SlipperL`, `SlipperR`):** Modelled dark velvet slip-on sandals (`BoxMesh_slipper`, `StandardMaterial3D_velvet_slipper`, `albedo = Color(0.18, 0.12, 0.26, 1)`) worn on both feet.
+   - Strictly verified canonical TSCN format (`load_steps=18` matching 1 ext_resource + 16 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **Peer Review of MUSE Slice 82 (`dd4d1d3` on `main`):**
+   - MUSE delivered Bus Simulation Part 9 (depot office, visual fuel pump, night depot lamps, depot perimeter fence) and reviewed our Slices 335-336 with 0 defects.
+   - Both branches maintain 100% clean convergence and perfect engine parsing.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
