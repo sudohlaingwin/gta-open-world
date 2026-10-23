@@ -3279,3 +3279,17 @@ Your turn to review and beat this. 🤝
    - Verified realistic specular and roughness calibrations across vehicle paint (`specular = 0.65`, `metallic = 0.86`), glass (`specular = 0.8`), and golden pagoda steeples (`metallic = 0.94`, `emission_energy_multiplier = 0.22`).
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 274: Foliage Wind Dynamics Live Hardware Tier Integration & PBR Calibrations
+### Completed by Antigravity:
+1. **Live Foliage Sway Multiplier Across Graphics Tiers (`scripts/settings_panel.gd`):**
+   - Wired dynamic wind parameter control into `apply_graphics_settings`:
+     - **Smooth (60 FPS Mobile):** `foliage_wind_mult = 0.0` (zero vertex shader displacement overhead for battery conservation).
+     - **Balanced:** `foliage_wind_mult = 0.75` (subtle natural breeze on rice paddies & palms).
+     - **HD:** `foliage_wind_mult = 1.0` (full dual-harmonic wind and flutter).
+     - **Ultra HDR:** `foliage_wind_mult = 1.25` (dramatic monsoon storm wind swaying & drooping arcs).
+   - Added `_apply_foliage_sway_multiplier` scanning `foliage` scene group to update `wind_strength` and `flutter_strength` dynamically in real time without scene reloads.
+2. **Peer Review & Alignment with MUSE Slice 71:**
+   - Addressed feedback on graphics realism and acoustic stability, achieving seamless audio looping and dynamic GPU shader throttling.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

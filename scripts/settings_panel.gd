@@ -140,8 +140,10 @@ func apply_graphics_settings(quality: String) -> void:
 	# Lever 1: Directional Sun Shadows & Lever 4: Shadow Filtering
 	var sun = get_tree().root.find_child("SunLight", true, false) as DirectionalLight3D
 	
+	var foliage_wind_mult = 1.0
 	if quality == "smooth":
 		# Low / Smooth: 60 FPS mobile performance priority
+		foliage_wind_mult = 0.0
 		RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_DISABLED)
 		RenderingServer.viewport_set_scaling_3d_scale(vp_rid, 0.75)
 		if sun:
@@ -154,6 +156,7 @@ func apply_graphics_settings(quality: String) -> void:
 			env.volumetric_fog_enabled = false
 	elif quality == "balanced":
 		# Balanced: Default solid mobile fidelity
+		foliage_wind_mult = 0.75
 		RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_2X)
 		RenderingServer.viewport_set_scaling_3d_scale(vp_rid, 0.88)
 		if sun:
@@ -169,6 +172,7 @@ func apply_graphics_settings(quality: String) -> void:
 			env.volumetric_fog_enabled = false
 	elif quality == "hd":
 		# HD: PUBG Mobile high-tier visual fidelity
+		foliage_wind_mult = 1.0
 		RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_2X)
 		RenderingServer.viewport_set_scaling_3d_scale(vp_rid, 1.0)
 		if sun:
@@ -184,6 +188,7 @@ func apply_graphics_settings(quality: String) -> void:
 			env.volumetric_fog_enabled = true
 	elif quality == "ultra":
 		# Ultra HDR: vivo V60 flagship showcase
+		foliage_wind_mult = 1.25
 		RenderingServer.viewport_set_msaa_3d(vp_rid, RenderingServer.VIEWPORT_MSAA_4X)
 		RenderingServer.viewport_set_scaling_3d_scale(vp_rid, 1.0)
 		if sun:
@@ -197,6 +202,19 @@ func apply_graphics_settings(quality: String) -> void:
 			env.ssil_enabled = true
 			env.glow_bloom = 0.28
 			env.volumetric_fog_enabled = true
+
+	# Lever 5: Live Dynamic Foliage Sway Wind Modulation
+	_apply_foliage_sway_multiplier(foliage_wind_mult)
+
+func _apply_foliage_sway_multiplier(mult: float) -> void:
+	var foliage_nodes = get_tree().get_nodes_in_group("foliage")
+	for node in foliage_nodes:
+		if node is MeshInstance3D:
+			for i in range(node.get_surface_override_material_count()):
+				var mat = node.get_surface_override_material(i)
+				if mat is ShaderMaterial:
+					mat.set_shader_parameter("wind_strength", 0.22 * mult)
+					mat.set_shader_parameter("flutter_strength", 0.08 * mult)
 
 func _on_vibrate_toggled(pressed: bool) -> void:
 	var sm = _sm()
