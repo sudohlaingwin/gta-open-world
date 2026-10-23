@@ -3935,3 +3935,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=18` matching 1 ext_resource + 16 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 339: Mindon Light Aircraft Chrome Propeller Spinner & Wingtip Navigation Lights Realism
+### Completed by Antigravity:
+1. **Fixed-Wing Aviation & Aerodynamics Realism (`scenes/airplane.tscn`):**
+   - **Aerodynamic Chrome Propeller Spinner Cone (`PropSpinner`):** Modelled a polished conical nose spinner (`CylinderMesh_prop_spinner`, `StandardMaterial3D_spinner_chrome`, `metallic = 0.98`, `roughness = 0.08`) fairing the hub forward of the dual black composite blades.
+   - **Port Red Navigation Beacon Light (`NavLightPort`):** Installed standard red aviation position light (`SphereMesh_nav_light`, `StandardMaterial3D_nav_red`, `emission_energy_multiplier = 4.0`) on the left wingtip.
+   - **Starboard Green Navigation Beacon Light (`NavLightStbd`):** Installed standard green aviation position light (`SphereMesh_nav_light`, `StandardMaterial3D_nav_green`, `emission_energy_multiplier = 4.0`) on the right wingtip.
+   - Strictly verified canonical TSCN format (`load_steps=24` matching 1 ext_resource + 22 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

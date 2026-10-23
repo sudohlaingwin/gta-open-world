@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://scripts/aircraft_controller.gd" id="1_aircraft"]
 
@@ -68,6 +68,33 @@ specular = 0.20
 [sub_resource type="SphereShape3D" id="SphereShape3D_interact"]
 radius = 5.5
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_prop_spinner"]
+top_radius = 0.04
+bottom_radius = 0.38
+height = 0.65
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spinner_chrome"]
+albedo_color = Color(0.95, 0.95, 0.98, 1)
+metallic = 0.98
+roughness = 0.08
+specular = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_nav_light"]
+radius = 0.08
+height = 0.16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nav_red"]
+albedo_color = Color(1.0, 0.1, 0.1, 1)
+emission_enabled = true
+emission = Color(1.0, 0.1, 0.1, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nav_green"]
+albedo_color = Color(0.1, 1.0, 0.2, 1)
+emission_enabled = true
+emission = Color(0.1, 1.0, 0.2, 1)
+emission_energy_multiplier = 4.0
+
 [node name="Airplane" type="CharacterBody3D"]
 script = ExtResource("1_aircraft")
 
@@ -92,6 +119,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, -0.6)
 mesh = SubResource("BoxMesh_wings")
 surface_material_override/0 = SubResource("StandardMaterial3D_plane")
 
+[node name="NavLightPort" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 1.7, -0.6)
+mesh = SubResource("SphereMesh_nav_light")
+surface_material_override/0 = SubResource("StandardMaterial3D_nav_red")
+
+[node name="NavLightStbd" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 1.7, -0.6)
+mesh = SubResource("SphereMesh_nav_light")
+surface_material_override/0 = SubResource("StandardMaterial3D_nav_green")
+
 [node name="TailWing" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 3.6)
 mesh = SubResource("BoxMesh_tail_wing")
@@ -101,6 +138,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_plane")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45, 3.5)
 mesh = SubResource("BoxMesh_tailfin")
 surface_material_override/0 = SubResource("StandardMaterial3D_plane")
+
+[node name="PropSpinner" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.4, -4.55)
+mesh = SubResource("CylinderMesh_prop_spinner")
+surface_material_override/0 = SubResource("StandardMaterial3D_spinner_chrome")
 
 [node name="Propeller" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, -4.35)
