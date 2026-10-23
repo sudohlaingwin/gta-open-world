@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/helicopter_controller.gd" id="1_heli"]
 
@@ -36,6 +36,37 @@ specular = 0.58
 [sub_resource type="SphereShape3D" id="SphereShape3D_interact"]
 radius = 5.5
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_rotor_mast"]
+top_radius = 0.14
+bottom_radius = 0.18
+height = 0.85
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mast_metal"]
+albedo_color = Color(0.24, 0.26, 0.28, 1)
+metallic = 0.92
+roughness = 0.18
+
+[sub_resource type="SphereMesh" id="SphereMesh_canopy_bubble"]
+radius = 1.45
+height = 2.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glass"]
+albedo_color = Color(0.10, 0.22, 0.32, 0.65)
+roughness = 0.04
+metallic = 0.85
+specular = 0.95
+transparency = 1
+
+[sub_resource type="SphereMesh" id="SphereMesh_beacon"]
+radius = 0.12
+height = 0.24
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red_beacon"]
+albedo_color = Color(1.0, 0.12, 0.12, 1)
+emission_enabled = true
+emission = Color(1.0, 0.10, 0.10, 1)
+emission_energy_multiplier = 4.2
+
 [node name="Helicopter" type="CharacterBody3D"]
 script = ExtResource("1_heli")
 
@@ -50,13 +81,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
 mesh = SubResource("SphereMesh_cockpit")
 surface_material_override/0 = SubResource("StandardMaterial3D_heli")
 
+[node name="CockpitGlassBubble" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85, -0.65)
+mesh = SubResource("SphereMesh_canopy_bubble")
+surface_material_override/0 = SubResource("StandardMaterial3D_glass")
+
 [node name="Tail" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.95, 3.6)
 mesh = SubResource("BoxMesh_tail")
 surface_material_override/0 = SubResource("StandardMaterial3D_heli")
 
+[node name="RotorMast" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.05, 0)
+mesh = SubResource("CylinderMesh_rotor_mast")
+surface_material_override/0 = SubResource("StandardMaterial3D_mast_metal")
+
 [node name="Rotor" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.48, 0)
 mesh = SubResource("BoxMesh_rotor_blade")
 surface_material_override/0 = SubResource("StandardMaterial3D_heli")
 
@@ -64,6 +105,17 @@ surface_material_override/0 = SubResource("StandardMaterial3D_heli")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 2.1, 6.0)
 mesh = SubResource("BoxMesh_tail_rotor")
 surface_material_override/0 = SubResource("StandardMaterial3D_heli")
+
+[node name="TailBeacon" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45, 6.1)
+mesh = SubResource("SphereMesh_beacon")
+surface_material_override/0 = SubResource("StandardMaterial3D_red_beacon")
+
+[node name="BeaconLight" type="OmniLight3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 6.1)
+light_color = Color(1.0, 0.15, 0.15, 1)
+light_energy = 2.5
+omni_range = 14.0
 
 [node name="SkidL" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 0.15, 0)
@@ -84,7 +136,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -0.3)
 shape = SubResource("SphereShape3D_interact")
 
 [node name="HeliSign" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.0, 0)
 text = "မင်းတုန်း ကယ်ဆယ်ရေး ရဟတ်ယာဉ် 🚁"
 font_size = 40
 outline_size = 12

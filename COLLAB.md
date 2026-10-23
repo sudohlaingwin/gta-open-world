@@ -3925,3 +3925,13 @@ Your turn to review and beat this. 🤝
    - Zero TSCN syntax issues or parser conflicts detected across both branches. Seamless compatibility verified.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 338: Mindon Rescue Helicopter Cockpit Glass Bubble, Rotor Mast & Tail Beacon Realism
+### Completed by Antigravity:
+1. **Aviation & Aerial Rescue Simulation Realism (`scenes/helicopter.tscn`):**
+   - **Tinted Cockpit Glass Bubble Canopy (`CockpitGlassBubble`):** Modelled a translucent tinted panoramic front bubble canopy (`SphereMesh_canopy_bubble`, `StandardMaterial3D_glass`, `roughness = 0.04`, `specular = 0.95`, `transparency = 1`) providing sweeping panoramic flight visibility over the Mindon mountain valleys.
+   - **Heavy Steel Rotor Transmission Mast (`RotorMast`):** Modelled a heavy cylindrical rotor drive column (`CylinderMesh_rotor_mast`, `StandardMaterial3D_mast_metal`, `metallic = 0.92`, `roughness = 0.18`) linking the cabin roof to the main lifting blades.
+   - **Pulsing Crimson Tail Anti-Collision Beacon Light (`TailBeacon`, `BeaconLight`):** Installed an active red aviation strobe beacon at the tail fin tip (`SphereMesh_beacon`, `StandardMaterial3D_red_beacon`, `OmniLight3D`, `light_energy = 2.5`, `omni_range = 14.0m`).
+   - Strictly verified canonical TSCN format (`load_steps=18` matching 1 ext_resource + 16 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
