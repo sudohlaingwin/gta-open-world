@@ -4304,3 +4304,12 @@ Your turn to review and beat this. 🤝
    - Both trees remain 100% stable, synchronized, and non-conflicting.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 375: Rural Aviation Light Airplane Wingtip Pitot Tube & Tailfin Anti-Collision Strobe Realism
+### Completed by Antigravity:
+1. **Aviation Fleet & Bush Plane Flight Realism (`scenes/airplane.tscn`):**
+   - **Brass Wingtip Pitot Airspeed Sensing Tube (`PitotTube`):** Modelled an authentic forward-facing brass Pitot tube probe (`CylinderMesh_pitot_tube`, `StandardMaterial3D_brass_pitot`, `metallic = 0.94`, `roughness = 0.18`) mounted beneath the port wing leading edge for airspeed indication.
+   - **Vertical Tailfin Anti-Collision White Strobe Beacon (`TailfinStrobe`):** Modelled an omnidirectional flashing white aviation strobe light beacon (`BoxMesh_tail_strobe`, `StandardMaterial3D_strobe_white`, `emission = Color(1.0, 1.0, 1.0, 1)`, `emission_energy_multiplier = 5.0`) crowning the top edge of the vertical stabilizer for high-altitude visual conspicuity across the Shan mountain airspace.
+   - Strictly verified canonical TSCN format (`load_steps=28` matching 1 ext_resource + 26 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

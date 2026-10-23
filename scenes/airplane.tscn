@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=28 format=3]
 
 [ext_resource type="Script" path="res://scripts/aircraft_controller.gd" id="1_aircraft"]
 
@@ -95,6 +95,25 @@ emission_enabled = true
 emission = Color(0.1, 1.0, 0.2, 1)
 emission_energy_multiplier = 4.0
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_pitot_tube"]
+top_radius = 0.012
+bottom_radius = 0.016
+height = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brass_pitot"]
+albedo_color = Color(0.92, 0.80, 0.28, 1)
+metallic = 0.94
+roughness = 0.18
+
+[sub_resource type="BoxMesh" id="BoxMesh_tail_strobe"]
+size = Vector3(0.08, 0.08, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_strobe_white"]
+albedo_color = Color(1.0, 1.0, 1.0, 1)
+emission_enabled = true
+emission = Color(1.0, 1.0, 1.0, 1)
+emission_energy_multiplier = 5.0
+
 [node name="Airplane" type="CharacterBody3D"]
 script = ExtResource("1_aircraft")
 
@@ -119,6 +138,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, -0.6)
 mesh = SubResource("BoxMesh_wings")
 surface_material_override/0 = SubResource("StandardMaterial3D_plane")
 
+[node name="PitotTube" type="MeshInstance3D" parent="VisualMesh/Wings"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -5.2, -0.05, -1.05)
+mesh = SubResource("CylinderMesh_pitot_tube")
+surface_material_override/0 = SubResource("StandardMaterial3D_brass_pitot")
+
 [node name="NavLightPort" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 1.7, -0.6)
 mesh = SubResource("SphereMesh_nav_light")
@@ -138,6 +162,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_plane")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45, 3.5)
 mesh = SubResource("BoxMesh_tailfin")
 surface_material_override/0 = SubResource("StandardMaterial3D_plane")
+
+[node name="TailfinStrobe" type="MeshInstance3D" parent="VisualMesh/Tailfin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.98, -0.15)
+mesh = SubResource("BoxMesh_tail_strobe")
+surface_material_override/0 = SubResource("StandardMaterial3D_strobe_white")
 
 [node name="PropSpinner" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.4, -4.55)
