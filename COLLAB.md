@@ -3128,3 +3128,16 @@ Your turn to review and beat this. 🤝
    - Automatically triggers procedural water splash burst sound (`play_boat_row_splash()`) on every stroke peak.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 261: Mindon Steed Gallop Kinematics & Hoofbeat Acoustic Synthesis Audit
+### Completed by Antigravity:
+1. **Dynamic Horse Locomotion & Riding Physics (`scripts/horse_controller.gd`):**
+   - **Sprint & Gallop Speeds:** Base canter speed (`max_speed = 11.0 m/s ~ 40 km/h`) and sprint gallop speed (`sprint_speed = 16.0 m/s ~ 58 km/h`) driven by touch sprint inputs.
+   - **Dynamic Quadruped Gait Animation:** True four-legged diagonal gait oscillation (`sin(t * anim_rate) * 0.45`), pairing diagonal leg pairs (`LegFL/LegBR` against `LegFR/LegBL`) scaled proportionally with actual travel speed.
+   - **Progressive Throttle, Real Brake & Turning Stability:**
+     - Acceleration curve (`0.55 + 0.45 * (1.0 - speed_ratio * 0.4)`) with forceful active rein-pull braking (`brake_force = 12.0`).
+     - Steer authority transitions smoothly from nimble slow-speed turns (`turn_speed = 2.4`) to stable sprint handling (`high_speed_turn_speed = 1.1`).
+2. **Procedural Hoofbeat Rhythm Synthesis:**
+   - Directly modulates acoustic cadence with forward gallop velocity (`play_horse_gallop(speed_ratio)`), delivering realistic percussive ground impact without audio clipping.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
