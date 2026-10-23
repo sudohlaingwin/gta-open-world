@@ -47,6 +47,64 @@ func _ready() -> void:
 	_generate_mindon_buildings(data.get("buildings", []))
 	_generate_mindon_rivers(data.get("rivers", []))
 	_generate_ward3_amenities()
+	_generate_countryside_exploration_routes()
+
+func _generate_countryside_exploration_routes() -> void:
+	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
+	var routes_holder = Node3D.new()
+	routes_holder.name = "CountrysideExplorationTrails"
+	add_child(routes_holder)
+
+	var dirt_trail_mat = StandardMaterial3D.new()
+	dirt_trail_mat.albedo_color = Color(0.46, 0.38, 0.26, 1.0)
+	dirt_trail_mat.roughness = 0.94
+
+	# 4 Primary exploration trails winding out across the rolling terrain (North, East, South, West)
+	var trail_directions = [
+		Vector2(0.0, 1.0),    # South into foothills
+		Vector2(1.0, 0.2),    # East towards Ayeyarwady basin
+		Vector2(-0.8, -0.6),  # Northwest mountain pass
+		Vector2(0.3, -1.0)    # North valley crossing
+	]
+
+	for trail_idx in range(trail_directions.size()):
+		var base_dir = trail_directions[trail_idx].normalized()
+		var start_pos = Vector2(-20.0, 40.0) + base_dir * 120.0
+		var current_pos = start_pos
+		var trail_segments = 35 # ~1200m each trail
+		var segment_len = 35.0
+
+		for s in range(trail_segments):
+			var angle_offset = sin(float(s) * 0.45 + float(trail_idx) * 1.5) * 0.4
+			var seg_dir = base_dir.rotated(angle_offset).normalized()
+			var next_pos = current_pos + seg_dir * segment_len
+
+			var p1 = Vector3(current_pos.x, 0.05, current_pos.y)
+			var p2 = Vector3(next_pos.x, 0.05, next_pos.y)
+			var dist = p1.distance_to(p2)
+
+			var mesh_inst = MeshInstance3D.new()
+			var quad = BoxMesh.new()
+			quad.size = Vector3(5.2, 0.06, dist)
+			mesh_inst.mesh = quad
+			mesh_inst.set_surface_override_material(0, dirt_trail_mat)
+
+			var mid_point = (p1 + p2) * 0.5
+			var forward = (p2 - p1).normalized()
+			routes_holder.add_child(mesh_inst)
+			mesh_inst.global_position = mid_point
+			mesh_inst.look_at(mid_point + forward, Vector3.UP)
+
+			# Scatter roadside waystones and toddy palms along trail
+			if s % 5 == 0:
+				var palm = PALM_SCENE.instantiate()
+				routes_holder.add_child(palm)
+				var side_offset = forward.cross(Vector3.UP).normalized() * (4.2 + (s % 3) * 1.5)
+				palm.global_position = mid_point + side_offset
+				palm.scale = Vector3(1.4, 1.4, 1.4)
+
+			current_pos = next_pos
+
 
 func _generate_mindon_roads(roads: Array) -> void:
 	var road_holder = Node3D.new()
