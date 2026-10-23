@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene load_steps=24 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_stage"]
 size = Vector3(32.5, 2.4, 22.5)
@@ -89,6 +89,25 @@ albedo_color = Color(0.92, 0.78, 0.25, 1)
 metallic = 0.92
 roughness = 0.22
 
+[sub_resource type="BoxMesh" id="BoxMesh_footlight_strip"]
+size = Vector3(26.0, 0.16, 0.22)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_footlight_glow"]
+albedo_color = Color(1.0, 0.88, 0.45, 1)
+emission_enabled = true
+emission = Color(1.0, 0.82, 0.35, 1)
+emission_energy_multiplier = 3.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_horn_speaker"]
+top_radius = 0.45
+bottom_radius = 0.12
+height = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_speaker_grey"]
+albedo_color = Color(0.35, 0.38, 0.42, 1)
+metallic = 0.82
+roughness = 0.35
+
 [node name="MyanmarFestivalGround" type="StaticBody3D"]
 
 [node name="StageCollision" type="CollisionShape3D" parent="."]
@@ -146,6 +165,27 @@ surface_material_override/0 = SubResource("StandardMaterial3D_drumhead_leather")
 transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 0, 1.55, -3.8)
 mesh = SubResource("CylinderMesh_hne_oboe")
 surface_material_override/0 = SubResource("StandardMaterial3D_hne_brass")
+
+[node name="FootlightStrip" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.48, 10.6)
+mesh = SubResource("BoxMesh_footlight_strip")
+surface_material_override/0 = SubResource("StandardMaterial3D_footlight_glow")
+
+[node name="FootlightsGlow" type="OmniLight3D" parent="VisualMesh/FootlightStrip"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.6)
+light_color = Color(1.0, 0.82, 0.35, 1)
+light_energy = 3.4
+omni_range = 14.0
+
+[node name="HornSpeakerL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, -14.2, 8.8, 10.2)
+mesh = SubResource("CylinderMesh_horn_speaker")
+surface_material_override/0 = SubResource("StandardMaterial3D_speaker_grey")
+
+[node name="HornSpeakerR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 14.2, 8.8, 10.2)
+mesh = SubResource("CylinderMesh_horn_speaker")
+surface_material_override/0 = SubResource("StandardMaterial3D_speaker_grey")
 
 [node name="FestivalSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.5, -9.8)
