@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
@@ -70,6 +70,16 @@ metallic = 0.88
 roughness = 0.25
 specular = 0.55
 
+[sub_resource type="BoxMesh" id="BoxMesh_side_fence_rail"]
+size = Vector3(4.5, 0.14, 0.12)
+
+[sub_resource type="BoxMesh" id="BoxMesh_side_picket"]
+size = Vector3(0.12, 1.8, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_whitewash_picket"]
+albedo_color = Color(0.88, 0.88, 0.85, 1)
+roughness = 0.72
+
 [node name="VillageGate" type="StaticBody3D"]
 script = ExtResource("1_lantern")
 
@@ -98,6 +108,16 @@ transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 
 mesh = SubResource("BoxMesh_chinthe_base")
 surface_material_override/0 = SubResource("StandardMaterial3D_chinthe_gold")
 
+[node name="SideFenceLeftRail" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.8, 1.2, 0)
+mesh = SubResource("BoxMesh_side_fence_rail")
+surface_material_override/0 = SubResource("StandardMaterial3D_whitewash_picket")
+
+[node name="SideFenceLeftPicket" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0.9, 0)
+mesh = SubResource("BoxMesh_side_picket")
+surface_material_override/0 = SubResource("StandardMaterial3D_whitewash_picket")
+
 [node name="ColumnR" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.0, 4.6, 0)
 mesh = SubResource("CylinderMesh_column")
@@ -112,6 +132,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_white_stucco")
 transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 5.2, 0.7, 1.4)
 mesh = SubResource("BoxMesh_chinthe_base")
 surface_material_override/0 = SubResource("StandardMaterial3D_chinthe_gold")
+
+[node name="SideFenceRightRail" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.8, 1.2, 0)
+mesh = SubResource("BoxMesh_side_fence_rail")
+surface_material_override/0 = SubResource("StandardMaterial3D_whitewash_picket")
+
+[node name="SideFenceRightPicket" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0.9, 0)
+mesh = SubResource("BoxMesh_side_picket")
+surface_material_override/0 = SubResource("StandardMaterial3D_whitewash_picket")
 
 [node name="Beam" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.8, 0)
