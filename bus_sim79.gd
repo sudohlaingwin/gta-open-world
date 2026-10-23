@@ -42,6 +42,12 @@ extends Node3D
 ## the round-trip flip is (west, next 4) -> (east, next 4).
 ## Board sync covers all 6 groups.
 
+## Slice 88 — DEPOT SERVICE BOARD (part 15). The counts
+## collected at the depot are published as last_shown_*
+## (seq bumps once per collection) so BusSim88 can paint
+## them on the depot office board. This changes no
+## counting: the HUD summary path is untouched.
+
 const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0, 500.0, 2400.0]
 const DEPOT_POS: Vector3 = Vector3(30.0, 0.0, 16.0)
 const DEPOT_R: float = 12.0
@@ -70,6 +76,15 @@ var _pend_serves: int = 0
 var _pend_carried: int = 0
 var _pend_ontime: int = 0
 var _last_service: int = -1
+# Slice 88: last summary COLLECTED at the depot, exposed
+# for the depot service board (BusSim88). _pending is
+# consumed at depot arrival, so without these the board
+# would have nothing to read after the HUD summary fades.
+# seq bumps once per depot collection; the board polls it.
+var last_shown_seq: int = 0
+var last_shown_serves: int = 0
+var last_shown_carried: int = 0
+var last_shown_ontime: int = 0
 
 
 static func dress(world: Node3D) -> void:
@@ -254,6 +269,13 @@ func _physics_process(delta: float) -> void:
 		var d := Vector2(bus.global_position.x - DEPOT_POS.x, bus.global_position.z - DEPOT_POS.z).length()
 		if d < DEPOT_R:
 			_pending = false
+			# Slice 88: publish the collected counts for
+			# the depot service board before the HUD text
+			# (the _pend_* values are still intact here).
+			last_shown_serves = _pend_serves
+			last_shown_carried = _pend_carried
+			last_shown_ontime = _pend_ontime
+			last_shown_seq += 1
 			if _summary_label != null:
 				_summary_label.text = "ဝန်ဆောင်မှုပြီးပြီ ✓\nမှတ်တိုင် %s · ခရီးသည် %s · အချိန်မှန် %s" % [_my_num(_pend_serves), _my_num(_pend_carried), _my_num(_pend_ontime)]
 				_summary_label.visible = true
