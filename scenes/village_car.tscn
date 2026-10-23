@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -46,6 +46,17 @@ height = 0.32
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tire"]
 albedo_color = Color(0.15, 0.15, 0.15, 1)
 roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_mirror"]
+size = Vector3(0.24, 0.16, 0.08)
+
+[sub_resource type="BoxMesh" id="BoxMesh_plate"]
+size = Vector3(0.55, 0.22, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_plate_red"]
+albedo_color = Color(0.78, 0.12, 0.12, 1)
+roughness = 0.5
+specular = 0.4
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
 size = Vector3(5.0, 3.0, 6.6)
@@ -100,6 +111,26 @@ surface_material_override/0 = SubResource("StandardMaterial3D_taillight")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.82, 0.78, 2.45)
 mesh = SubResource("BoxMesh_headlight")
 surface_material_override/0 = SubResource("StandardMaterial3D_taillight")
+
+[node name="SideMirrorL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.08, 1.35, -1.25)
+mesh = SubResource("BoxMesh_mirror")
+surface_material_override/0 = SubResource("StandardMaterial3D_car_paint")
+
+[node name="SideMirrorR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08, 1.35, -1.25)
+mesh = SubResource("BoxMesh_mirror")
+surface_material_override/0 = SubResource("StandardMaterial3D_car_paint")
+
+[node name="LicensePlateFront" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -2.48)
+mesh = SubResource("BoxMesh_plate")
+surface_material_override/0 = SubResource("StandardMaterial3D_plate_red")
+
+[node name="LicensePlateBack" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 2.48)
+mesh = SubResource("BoxMesh_plate")
+surface_material_override/0 = SubResource("StandardMaterial3D_plate_red")
 
 [node name="WheelFrontLeft" type="VehicleWheel3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 0.46, -1.6)
