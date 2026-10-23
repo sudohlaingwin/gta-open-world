@@ -217,7 +217,15 @@ func _sync_request_ui(world: Node3D) -> void:
 		_req_btn.text = "ရပ်မည် ✓" if request_stop80 >= 0 else "ရပ်တောင်းဆို"
 	if _req_label != null:
 		if request_stop80 >= 0:
-			_req_label.text = "ရပ်တောင်းဆိုထားသည် · မှတ်တိုင် " + _my_num(request_stop80 + 1)
+			# Digit is the travel position (Slice 84),
+			# never the group index: group 4 shows ၁.
+			var digit := ""
+			var ctrl := world.get_node_or_null("BusSim74") as Node3D
+			if ctrl != null and ctrl.has_method("pos_digit79"):
+				digit = str(ctrl.call("pos_digit79", request_stop80, _req_dir))
+			if digit == "":
+				digit = _my_num(request_stop80 + 1)
+			_req_label.text = "ရပ်တောင်းဆိုထားသည် · မှတ်တိုင် " + digit
 			_req_label.visible = _driving_bus(world)
 		else:
 			_req_label.text = ""

@@ -40,7 +40,15 @@ extends Node3D
 ## save can break. No opponent code, map, names or structure
 ## is used. Touch-first throughout (no keys anywhere).
 
-const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0]
+## Slice 84 — FULL-LENGTH ROUTE (part 11). 6 stops, not 4:
+## the seat/walk loops, the depot-return flip and the
+## announcement all follow the controller's orders now.
+## Depot flip is (west, next 4) -> (east, next 4) — the
+## west leg ends at group 4 (x 500) and the fresh east
+## leg starts there too. Announcement digits are travel
+## positions via the controller's pos_digit79.
+
+const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0, 500.0, 2400.0]
 const DEPOT_POS: Vector3 = Vector3(30.0, 0.0, 16.0)
 const DEPOT_R: float = 12.0
 # Slice 83: seat 2 sits in the middle of the bench (x 0.0).
@@ -54,7 +62,7 @@ const STAND_HEAD_Y: float = 1.35
 const AWAY_DIST: float = 4.0
 const ANNOUNCE_S: float = 5.0
 const SERVICE_MSG_S: float = 5.0
-const MY_DIGITS: Array = ["၁", "၂", "၃", "၄"]
+const MY_DIGITS: Array = ["၁", "၂", "၃", "၄", "၅", "၆"]
 
 # Walk/fade speeds are vars (not consts) so the headless sim
 # can accelerate them; the shipped defaults are the real
@@ -182,7 +190,7 @@ func _physics_process(delta: float) -> void:
 	if bus != null and player != null:
 		driving_bus = bool(player.get("driving")) and player.get("driving_vehicle") == bus
 	# --- Passenger life: seat, walk to bus, walk away. ---
-	for si in range(4):
+	for si in range(6):
 		var grp := _stop_group(world, si)
 		if grp == null:
 			continue
@@ -258,16 +266,22 @@ func _physics_process(delta: float) -> void:
 	if ctrl != null:
 		var dir := int(ctrl.get("direction"))
 		var nxt := int(ctrl.get("next_stop"))
-		if _prev_dir == 1 and _prev_next == 0 and dir == 0 and nxt == 0:
-			# West leg finished at stop 0, route flipped back
-			# east: the round trip is complete.
+		if _prev_dir == 1 and _prev_next == 4 and dir == 0 and nxt == 4:
+			# West leg finished at group 4 (x 500), route
+			# flipped back east: the round trip is complete.
 			_service_done = true
 			_set_waypoint(world, Vector2(DEPOT_POS.x, DEPOT_POS.z))
 		if _prev_dir != -1 and (_prev_next != nxt) and driving_bus:
 			# Next stop changed while driving = just left a
 			# stop: announce where the bus is headed next.
+			# Digit is the travel position, never the group.
+			var digit := ""
+			if ctrl != null and ctrl.has_method("pos_digit79"):
+				digit = str(ctrl.call("pos_digit79", nxt, dir))
+			if digit == "":
+				digit = str(MY_DIGITS[clampi(nxt, 0, 5)])
 			if _announce_label != null:
-				_announce_label.text = "➡ နောက် မှတ်တိုင် " + str(MY_DIGITS[nxt])
+				_announce_label.text = "➡ နောက် မှတ်တိုင် " + digit
 				_announce_label.visible = true
 			_announce_timer = ANNOUNCE_S
 		_prev_dir = dir
@@ -288,7 +302,13 @@ func _physics_process(delta: float) -> void:
 				_service_label.text = "ဝန်ဆောင်မှုအသစ် စပါပြီ"
 				_service_label.visible = true
 			_service_msg_timer = SERVICE_MSG_S
-			_set_waypoint(world, Vector2(STOPS_X[0], 0.0))
+			# Fresh leg starts at group 4 (x 500), not the
+			# old group 0 (x 700): read it from the
+			# controller instead of hardcoding an index.
+			var ns := 4
+			if ctrl != null:
+				ns = int(ctrl.get("next_stop"))
+			_set_waypoint(world, Vector2(STOPS_X[ns], 0.0))
 	if _service_label != null:
 		if _service_done and driving_bus:
 			_service_label.text = "✓ ဝန်ဆောင်မှုပြီးပြီ · ဂိုဒေါင်သို့ ပြန်ပါ"

@@ -65,7 +65,19 @@ extends Node3D
 ## running, and the first-observation estimate uses
 ## current daylight + current band for the same choice.
 
-const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0]
+## Slice 84 — FULL-LENGTH ROUTE (part 11). 6 stops, not 4:
+## travel order east [4, 0, 1, 2, 3, 5], west [5, 3, 2, 1, 0,
+## 4] (controller owns it). Leg-start latch is now generic
+## via service_order79 (first stop of an east order, second
+## stop of a west order — the flip stop counts as served);
+## timetable dues count by service position, so Local dues
+## run 0..5 legs and Express dues 0..1; player-facing
+## digits are travel positions via the controller's
+## pos_digit79, never group indices. The Slice 77 upgrade
+## loop covers all 6 groups (BusSim84 builds groups 4/5;
+## this loop retries until they exist, same pattern).
+
+const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0, 500.0, 2400.0]
 const STOP_ZONE_R: float = 9.0
 const STOP_SPEED: float = 0.5
 const LEG_S: float = 60.0
@@ -73,8 +85,7 @@ const NIGHT_LEG_S: float = 90.0
 const PEAK_LEG_S: float = 45.0
 const ON_TIME_S: float = 15.0
 const FEEDBACK_S: float = 5.0
-const MY_DIGITS: Array = ["၁", "၂", "၃", "၄"]
-const BOARD_TEXT: String = "ဘတ်စ်ဇယား\nမှတ်တိုင် ၁ ၀ မိနစ်\nမှတ်တိုင် ၂ ၁ မိနစ်\nမှတ်တိုင် ၃ ၂ မိနစ်\nမှတ်တိုင် ၄ ၃ မိနစ်"
+const BOARD_TEXT: String = "ဘတ်စ်ဇယား\nမှတ်တိုင် ၁ ၀ မိနစ်\nမှတ်တိုင် ၂ ၁ မိနစ်\nမှတ်တိုင် ၃ ၂ မိနစ်\nမှတ်တိုင် ၄ ၃ မိနစ်\nမှတ်တိုင် ၅ ၄ မိနစ်\nမှတ်တိုင် ၆ ၅ မိနစ်"
 
 var _stops_done: bool = false
 var _hud_done: bool = false
@@ -201,24 +212,39 @@ func _fmt_mmss(t: float) -> String:
 func _due_for(stop_idx: int, direction: int) -> float:
 	# Due = leg start + (position in the service order) x
 	# leg duration. Slice 79: Express positions are 0 -> 0,
-	# 3 -> 1 eastbound (3 -> 0, 0 -> 1 westbound), so an
-	# Express stop is never due on Local spacing; Local
-	# positions are identical to the old index formula.
-	var pos := stop_idx
+	# 1 -> 1 eastbound (0 -> 0, 1 -> 1 westbound in full
+	# terms — endpoints only), so an Express stop is never
+	# due on Local spacing; Local positions run 0..5.
+	# A stop the service skips falls back to its FULL
+	# order position (Slice 84), never its group index.
+	var pos := -1
 	var world := get_parent() as Node3D
 	if world != null:
 		var ctrl := world.get_node_or_null("BusSim74") as Node3D
 		if ctrl != null and ctrl.has_method("service_pos79"):
-			var p := int(ctrl.call("service_pos79", stop_idx, direction))
-			if p >= 0:
-				pos = p
+			pos = int(ctrl.call("service_pos79", stop_idx, direction))
+		if pos < 0 and ctrl != null and ctrl.has_method("full_pos79"):
+			pos = int(ctrl.call("full_pos79", stop_idx, direction))
+	if pos < 0:
+		pos = stop_idx
 	return _epoch + float(pos) * _leg_s
 
 
+func _pos_digit(stop_idx: int, direction: int) -> String:
+	# Player-facing digit: travel position, never group.
+	var world := get_parent() as Node3D
+	if world != null:
+		var ctrl := world.get_node_or_null("BusSim74") as Node3D
+		if ctrl != null and ctrl.has_method("pos_digit79"):
+			return str(ctrl.call("pos_digit79", stop_idx, direction))
+	return ""
+
+
 func _try_stops(world: Node3D) -> bool:
-	# All 4 stop groups must exist first (Slice 74 dress runs
-	# before this node, but deferred order is retried anyway).
-	for si in range(4):
+	# All 6 stop groups must exist first (Slice 74 dress +
+	# Slice 84 dress run before this node, but deferred
+	# order is retried anyway).
+	for si in range(6):
 		if world.get_node_or_null("LongRoute74/BusStop74_%d" % si) == null:
 			return false
 	var wood := _mat(Color(0.45, 0.30, 0.15, 1.0), 0.9)
@@ -228,7 +254,7 @@ func _try_stops(world: Node3D) -> bool:
 	var lamp_m := _mat(Color(1.0, 0.85, 0.5, 1.0), 0.5)
 	var font := load("res://fonts/NotoSansMyanmar-Regular.ttf") as Font
 	var night := _daylight() < 0.15
-	for si in range(4):
+	for si in range(6):
 		var grp := world.get_node_or_null("LongRoute74/BusStop74_%d" % si) as Node3D
 		if grp.get_node_or_null("Upgrades77") != null:
 			continue
@@ -356,43 +382,35 @@ func _physics_process(delta: float) -> void:
 		return
 	_service_t += delta
 	# Leg-start latch: a fresh leg starts exactly when the
-	# controller flips to (east, next 0) or (west, next 2).
-	# First observation estimates the epoch from the stops
-	# already served on the current leg (a loaded mid-route
-	# save), and is the only estimated value here.
-	# Slice 79: the leg duration is fixed at leg start from
-	# daylight (night legs 90 s, day legs 60 s); Slice 83
-	# adds peak legs at 45 s (night still wins over peak).
-	# The first observation uses current daylight + band
-	# for the same choice.
+	# controller flips to the first stop of an east order
+	# or the second stop of a west order (the flip stop
+	# itself counts as served). Slice 84: generic via
+	# service_order79 — Local east starts at 4, west at
+	# 3; Express east starts at 4, west at 4. The old
+	# hardcoded (east, 0) / (west, 2) pair died with the
+	# 4-stop route and is NOT kept as a fallback.
 	if ctrl != null:
 		var dir := int(ctrl.get("direction"))
 		var nxt := int(ctrl.get("next_stop"))
 		var key := "%d-%d" % [dir, nxt]
 		if not _observed:
-			var done_steps := nxt if dir == 0 else 3 - nxt
+			var done_steps := 0
 			if ctrl.has_method("service_pos79"):
-				var p := int(ctrl.call("service_pos79", nxt, dir))
-				if p >= 0:
-					done_steps = p
+				var p0 := int(ctrl.call("service_pos79", nxt, dir))
+				if p0 >= 0:
+					done_steps = p0
 			_leg_s = _leg_duration_now()
 			_epoch = _service_t - float(done_steps) * _leg_s
 			_observed = true
 			_leg_key = key
 		elif key != _leg_key:
-			# Slice 79: a leg starts at the first stop of an
-			# east order, or the second stop of a west order
-			# (the flip stop itself counts as served). Local:
-			# (0,0) / (1,2) as before; Express: (0,0) / (1,0).
 			var leg_start := false
-			if dir == 0 and nxt == 0:
-				leg_start = true
-			elif dir == 1 and ctrl.has_method("service_order79"):
-				var worder: Array = ctrl.call("service_order79", 1)
-				if worder.size() > 1 and nxt == int(worder[1]):
+			if ctrl.has_method("service_order79"):
+				var order: Array = ctrl.call("service_order79", dir)
+				if dir == 0 and order.size() > 0 and nxt == int(order[0]):
 					leg_start = true
-			elif dir == 1 and nxt == 2:
-				leg_start = true
+				elif dir == 1 and order.size() > 1 and nxt == int(order[1]):
+					leg_start = true
 			if leg_start:
 				_epoch = _service_t
 				_leg_s = _leg_duration_now()
@@ -404,10 +422,11 @@ func _physics_process(delta: float) -> void:
 		var dir2 := int(ctrl.get("direction"))
 		var remain := _due_for(nxt2, dir2) - _service_t
 		var line2 := ""
+		var digit2 := _pos_digit(nxt2, dir2)
 		if remain >= 0.0:
-			line2 = "နောက်: %s · %s အတွင်း" % [MY_DIGITS[nxt2], _fmt_mmss(remain)]
+			line2 = "နောက်: %s · %s အတွင်း" % [digit2, _fmt_mmss(remain)]
 		else:
-			line2 = "နောက်: %s · နောက်ကျ %s" % [MY_DIGITS[nxt2], _fmt_mmss(-remain)]
+			line2 = "နောက်: %s · နောက်ကျ %s" % [digit2, _fmt_mmss(-remain)]
 		_timetable_label.text = "🕐 %s · %s" % [_fmt_mmss(_service_t), line2]
 		_timetable_label.visible = true
 	# Serve detection, same rule as the Slice 74 controller:

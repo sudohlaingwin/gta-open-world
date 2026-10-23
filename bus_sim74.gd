@@ -16,6 +16,9 @@ extends RefCounted
 ##   sign board with a REAL Myanmar font (Noto Sans Myanmar, the
 ##   Slice 69 font — never the default font, which has no Myanmar
 ##   glyphs) + painted stop zone + 2 waiting passengers each.
+##   (Slice 84 appends 2 endpoint stops, x 500 / x 2400, as
+##   groups 4 / 5 — see bus_sim84.gd; this file is untouched
+##   so existing worlds keep their 4 original stops.)
 ## - BUS: a drivable CharacterBody3D "Bus" (script bus.gd) parked
 ##   in the village at (30, 16) facing east, so the player walks
 ##   a few steps, presses Vehicle, and drives the long road.

@@ -67,8 +67,8 @@ const JUNC_RESET_R: float = 60.0
 const FULL_STOP_SPEED: float = 0.5
 const STUCK_RESPAWN_S: float = 30.0
 const FEEDBACK_S: float = 3.5
-const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0]
-const MY_DIGITS: Array = ["၁", "၂", "၃", "၄"]
+const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0, 500.0, 2400.0]
+const MY_DIGITS: Array = ["၁", "၂", "၃", "၄", "၅", "၆"]
 # Slice 83 depot park spots, one per car that can ever
 # park (night parks 1, 3, 4, 5 — four cars, four spots).
 # All sit inside the Slice 82 fence lines, clear of both
@@ -581,7 +581,14 @@ func _physics_process(delta: float) -> void:
 					stop_d = dd
 					stop_idx = si
 			if stop_idx >= 0:
-				_show_feedback("✓ မှတ်တိုင် %s: တက် +%d · ဆင်း +%d" % [MY_DIGITS[stop_idx], db, da])
+				# Digit is the travel position (Slice 84),
+				# never the group index: group 4 shows ၁.
+				var digit := ""
+				if ctrl.has_method("pos_digit79"):
+					digit = str(ctrl.call("pos_digit79", stop_idx, int(ctrl.get("direction"))))
+				if digit == "":
+					digit = str(MY_DIGITS[clampi(stop_idx, 0, 5)])
+				_show_feedback("✓ မှတ်တိုင် %s: တက် +%d · ဆင်း +%d" % [digit, db, da])
 			else:
 				_show_feedback("✓ ခရီးသည် တက် +%d · ဆင်း +%d" % [db, da])
 		_last_boarded_total = bt

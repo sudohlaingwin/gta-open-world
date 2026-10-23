@@ -80,10 +80,18 @@ const LANDMARKS: Array = [
 	["OoHouse1", "အိုးရွာ", Color(0.85, 0.8, 0.7, 1.0)],
 	# Slice 74 bus stops: group origins ARE the stop points,
 	# so these dots track the stops live like every landmark.
-	["BusStop74_0", "ဘတ်စ်ကား ၁", Color(0.2, 0.6, 1.0, 1.0)],
-	["BusStop74_1", "ဘတ်စ်ကား ၂", Color(0.2, 0.6, 1.0, 1.0)],
-	["BusStop74_2", "ဘတ်စ်ကား ၃", Color(0.2, 0.6, 1.0, 1.0)],
-	["BusStop74_3", "ဘတ်စ်ကား ၄", Color(0.2, 0.6, 1.0, 1.0)],
+	# Slice 84: labels are TRAVEL positions (group 4 = ၁,
+	# group 0 = ၂, ..., group 5 = ၆), and 2 new endpoints
+	# join. The lookup below falls back to the LongRoute74
+	# path, because the groups are children of LongRoute74,
+	# not of the world root (the old direct lookup silently
+	# hid every stop dot — found while adding the new ones).
+	["BusStop74_4", "ဘတ်စ်ကား ၁", Color(0.2, 0.6, 1.0, 1.0)],
+	["BusStop74_0", "ဘတ်စ်ကား ၂", Color(0.2, 0.6, 1.0, 1.0)],
+	["BusStop74_1", "ဘတ်စ်ကား ၃", Color(0.2, 0.6, 1.0, 1.0)],
+	["BusStop74_2", "ဘတ်စ်ကား ၄", Color(0.2, 0.6, 1.0, 1.0)],
+	["BusStop74_3", "ဘတ်စ်ကား ၅", Color(0.2, 0.6, 1.0, 1.0)],
+	["BusStop74_5", "ဘတ်စ်ကား ၆", Color(0.2, 0.6, 1.0, 1.0)],
 ]
 
 ## Slice 67 — district region titles. Unlike LANDMARKS, a region has
@@ -328,6 +336,9 @@ func _update_markers() -> void:
 		return
 	for lm in LANDMARKS:
 		var node := world.get_node_or_null(str(lm[0])) as Node3D
+		if node == null and str(lm[0]).begins_with("BusStop74_"):
+			# Slice 84: stop groups live under LongRoute74.
+			node = world.get_node_or_null("LongRoute74/" + str(lm[0])) as Node3D
 		var pair: Array = _marker_nodes.get(str(lm[0]), [])
 		if pair.is_empty():
 			continue

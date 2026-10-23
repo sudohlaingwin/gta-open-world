@@ -21,26 +21,26 @@ extends Node3D
 ## - every waiting passenger has a fixed destination stop
 ##   and a required direction (DESTS table, assigned as
 ##   node metadata on the first frame): eastbound riders
-##   from stops 0/1/2 ride to a LATER stop, westbound
-##   riders from stops 2/3 ride to an EARLIER stop, so a
-##   rider from stop 0 never gets off at stop 1 just because
-##   the bus stopped there — they ride to their own stop;
+##   from a stop ride to a LATER stop in travel order,
+##   westbound riders to a LATER stop in west travel
+##   order, so a rider never gets off at the wrong stop
+##   just because the bus stopped there;
 ## - serving a stop always alights (dest == this stop) and
 ##   boards (direction matches) whoever is there, but the
 ##   ROUTE SEQUENCE only advances when the stops are
-##   served IN ORDER: eastbound 0 -> 1 -> 2 -> 3 completes
-##   the route (HUD banner + saved), then the direction
-##   flips west (3 -> 2 -> 1 -> 0); a full round trip
-##   respawns fresh waiting passengers and restarts
-##   eastbound, so the shuttle never runs dry;
+##   served IN ORDER: eastbound 4 -> 0 -> 1 -> 2 -> 3 -> 5
+##   completes the leg (HUD banner + saved), then the
+##   direction flips west (5 -> 3 -> 2 -> 1 -> 0 -> 4); a
+##   full round trip respawns fresh waiting passengers
+##   and restarts eastbound, so the shuttle never runs dry;
 ## - next-stop guidance reuses the Slice 28/34 waypoint
 ##   (WorldMapPanel waypoint + WaypointBeacon28 + GuidePanel34
 ##   arrow/distance, updated only when the next stop
 ##   changes, never cleared automatically) and the next
 ##   stop's minimap dot is tinted yellow;
 ## - the bus destination sign (DestSign75, bus_route75.gd)
-##   shows the next stop in real Myanmar digits, and the
-##   "🚌 N ↓M" label shows onboard + total alighted;
+##   shows the next stop in travel-position Myanmar digits,
+##   and the "🚌 N ↓M" label shows onboard + total alighted;
 ## - route state (next stop, direction, completion,
 ##   totals, onboard destinations, leg served, waiting
 ##   visibility) is saved under "busroute75" (player.gd
@@ -51,60 +51,88 @@ extends Node3D
 ## Traffic-rule enforcement (signals, lane discipline,
 ## fines) is NOT built here — stated plainly, not faked.
 ##
+## Slice 84 — FULL-LENGTH ROUTE (part 11). The route runs
+## the whole 2 km road: 6 stops, travel order east
+## [4, 0, 1, 2, 3, 5] and west [5, 3, 2, 1, 0, 4].
+## Group indices are NOT travel positions (bus_sim84.gd
+## header explains why): group 4 is x 500 (stop 1), group
+## 5 is x 2400 (stop 6). Player-facing digits are travel
+## positions via service_pos79 / full_pos79, never the
+## group index. Old saves need NO migration: groups 0..3
+## kept their stops, so a saved next_stop / onboard dest
+## / leg_served still means the same stop; a saved route
+## simply continues with 2 new endpoints available.
+##
 ## Slice 79 — SERVICE VARIANTS (Local vs Express, part 6).
 ## The route controller owns the service mode (session-only,
 ## NOT saved: a loaded save always resumes as Local, stated
 ## plainly — the busroute75 key is untouched):
-## - Local serves every stop in order (east 0 -> 1 -> 2 -> 3,
-##   west 3 -> 2 -> 1 -> 0) — the Slice 75 behaviour, kept
-##   exactly: the boarding filter below reduces to the old
-##   direction-match rule for Local, because the DESTS table
-##   only ever gives eastbound riders later destinations and
-##   westbound riders earlier ones;
-## - Express serves only stops 0 and 3 (east 0 -> 3, west
-##   3 -> 0). The destination sign, the Slice 77 timetable
-##   dues and the Slice 28/34 guidance all follow next_stop,
-##   so they re-point automatically; the Slice 79 node only
-##   re-texts the physical timetable boards;
+## - Local serves every stop in order (east 4 -> 0 -> 1 ->
+##   2 -> 3 -> 5, west 5 -> 3 -> 2 -> 1 -> 0 -> 4) — the
+##   Slice 75 behaviour, kept exactly: the boarding filter
+##   below reduces to the old direction-match rule for
+##   Local, because the DESTS table only ever gives
+##   ahead destinations in travel order;
+## - Express serves only the endpoints 500 and 2400 (east
+##   4 -> 5, west 5 -> 4). The destination sign, the Slice
+##   77 timetable dues and the Slice 28/34 guidance all
+##   follow next_stop, so they re-point automatically; the
+##   Slice 79 node only re-texts the physical timetable boards;
 ## - boarding is filtered by the service: a rider boards
 ##   only if the stop is a service stop, their required
 ##   direction matches the leg, AND their destination is a
-##   later service stop in that direction. A stop-0 rider
-##   bound for stop 2 therefore does NOT board an Express
+##   later service stop in that direction. A group-4 rider
+##   bound for group 1 therefore does NOT board an Express
 ##   (they wait for Local); an out-of-order Express serve
 ##   at a skipped stop boards nobody at all;
 ## - switching mid-leg recomputes next_stop as the first
 ##   service stop ahead of the last in-order served stop
-##   (by stop index in the travel direction), so a switch
+##   (by position in the travel direction), so a switch
 ##   can never send the bus backwards or strand the route.
 
 var boarded: int = 0
 var _prev_door_open: bool = false
 
-const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0]
+# GROUP-indexed stop x positions (group 4 = x 500 west end,
+# group 5 = x 2400 east end — appended by Slice 84, never
+# renumbering groups 0..3). Travel order lives in
+# service_order79 below; never read this array as travel
+# order.
+const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0, 500.0, 2400.0]
 const STOP_ZONE_R: float = 9.0
 const STOP_SPEED: float = 0.5
 
 # Slice 75 route state.
 const DIR_EAST: int = 0
 const DIR_WEST: int = 1
-const MY_DIGITS: Array = ["၁", "၂", "၃", "၄"]
+# TRAVEL-POSITION digits (1..6 west to east), NOT group
+# digits: position 0 = x 500, position 5 = x 2400. Use
+# _pos_digit() / service_pos79, never MY_DIGITS[group].
+const MY_DIGITS: Array = ["၁", "၂", "၃", "၄", "၅", "၆"]
 # Per stop, per waiting seat: [destination stop, required
-# direction]. Eastbound dests are always later stops, westbound
-# dests always earlier stops, so the boarding rule (direction
-# must match) can never board a rider going the wrong way.
+# direction]. Destinations are always AHEAD in travel
+# order for their direction (east: later in the east
+# order; west: later in the west order), so the boarding
+# rule (position of dest > position of stop) can never
+# board a rider going the wrong way.
 # Slice 83 adds seat 2 (the peak third rider, created by
-# BusSim83): stop 0 -> 3 east, stop 1 -> 3 east, stop 2 ->
-# 0 west, stop 3 -> 0 west. All four board Local; stop 1
-# never boards Express (not a service stop), the others
-# board Express when the direction matches.
+# BusSim83): group 0 -> 3 east, group 1 -> 3 east, group 2 ->
+# 0 west, group 3 -> 0 west. Slice 84 adds groups 4 and 5:
+# group 4 (west terminus) rides east only, group 5 (east
+# terminus) rides west only; dests 5 (from 4) and 4 (from
+# 5) are the Express endpoints, so those seats board
+# Express while the other new seats are Local-only.
 const DESTS: Array = [
 	[[2, DIR_EAST], [3, DIR_EAST], [3, DIR_EAST]],
 	[[3, DIR_EAST], [2, DIR_EAST], [3, DIR_EAST]],
 	[[3, DIR_EAST], [0, DIR_WEST], [0, DIR_WEST]],
 	[[1, DIR_WEST], [0, DIR_WEST], [0, DIR_WEST]],
+	[[0, DIR_EAST], [1, DIR_EAST], [5, DIR_EAST]],
+	[[3, DIR_WEST], [0, DIR_WEST], [4, DIR_WEST]],
 ]
-var next_stop: int = 0
+# Fresh route starts at the west terminus (x 500), the
+# first stop of an east leg. Restored saves overwrite this.
+var next_stop: int = 4
 var direction: int = DIR_EAST
 var route_complete: bool = false
 var boarded_total: int = 0
@@ -124,18 +152,55 @@ var service79: int = SERVICE_LOCAL
 
 func service_order79(dir: int) -> Array:
 	# Stops in travel order for the current service. Local
-	# is the Slice 75 order; Express skips stops 1 and 2.
+	# is the Slice 75 order; Express serves only the two
+	# endpoints (groups 4 and 5).
 	if service79 == SERVICE_EXPRESS:
 		if dir == DIR_WEST:
-			return [3, 0]
-		return [0, 3]
+			return [5, 4]
+		return [4, 5]
 	if dir == DIR_WEST:
-		return [3, 2, 1, 0]
-	return [0, 1, 2, 3]
+		return [5, 3, 2, 1, 0, 4]
+	return [4, 0, 1, 2, 3, 5]
 
 
 func service_pos79(stop_idx: int, dir: int) -> int:
 	return service_order79(dir).find(stop_idx)
+
+
+func full_pos79(stop_idx: int, dir: int) -> int:
+	# Position in the FULL travel order, ignoring the
+	# service: the fallback for a stop the current service
+	# skips (service_pos79 returns -1 there). Never -1 for
+	# a valid group 0..5.
+	if dir == DIR_WEST:
+		return [5, 3, 2, 1, 0, 4].find(stop_idx)
+	return [4, 0, 1, 2, 3, 5].find(stop_idx)
+
+
+func pos_digit79(stop_idx: int, dir: int) -> String:
+	# Player-facing digit for a stop: ALWAYS its
+	# west-to-east travel position (1..6), never its
+	# position in the current service order, never its
+	# group index, and never its position in the
+	# direction of travel (full_pos79 west order would
+	# renumber every stop on the return leg). A stop's
+	# number must be stable: the physical sign at
+	# group 2 reads ၄, the Local board lists it as ၄,
+	# and the Express board lists the endpoints as ၁
+	# and ၆ — so the destination sign, route label,
+	# announcement and request label must show the
+	# same digits in both directions and both services.
+	# (Slice 84 fix, second draft: the first draft used
+	# service positions, so the same stop showed ၃
+	# westbound but ၄ eastbound, and the Express
+	# endpoint showed ၂ instead of ၆; full_pos79 with
+	# the travel direction still renumbered westbound.)
+	# dir is kept for signature compatibility; the
+	# numbering is direction-independent by design.
+	var p := full_pos79(stop_idx, DIR_EAST)
+	if p < 0:
+		return ""
+	return MY_DIGITS[p]
 
 
 func set_service79(mode: int, world: Node3D, bus: Node3D) -> void:
@@ -152,15 +217,16 @@ func set_service79(mode: int, world: Node3D, bus: Node3D) -> void:
 	var last := -1
 	if leg_served.size() > 0:
 		last = int(leg_served[leg_served.size() - 1])
+	# "Ahead" is measured in the FULL travel order, not the
+	# service order: after serving group 0 eastbound, the
+	# next Express stop is 5 (full position 5), not 4
+	# (full position 0, behind the bus). The old group-
+	# index comparison only worked while group order was
+	# travel order; Slice 84 broke that identity.
+	var last_full := full_pos79(last, direction) if last >= 0 else -1
 	var nxt := -1
 	for s in order:
-		if last == -1:
-			nxt = int(s)
-			break
-		if direction == DIR_EAST and int(s) > last:
-			nxt = int(s)
-			break
-		if direction == DIR_WEST and int(s) < last:
+		if last_full < 0 or full_pos79(int(s), direction) > last_full:
 			nxt = int(s)
 			break
 	if nxt == -1:
@@ -185,7 +251,7 @@ func _stop_group(world: Node3D, idx: int) -> Node3D:
 func _assign_destinations(world: Node3D) -> void:
 	# Metadata on the waiting groups themselves, so a later
 	# inspection (sim or save) can read each rider's trip.
-	for si in range(4):
+	for si in range(6):
 		var grp := _stop_group(world, si)
 		if grp == null:
 			continue
@@ -198,7 +264,7 @@ func _assign_destinations(world: Node3D) -> void:
 
 func _waiting_bools(world: Node3D) -> Array:
 	var out: Array = []
-	for si in range(4):
+	for si in range(6):
 		var grp := _stop_group(world, si)
 		for wi in range(3):
 			var vis := false
@@ -219,7 +285,7 @@ func _peak_hidden_bools(world: Node3D) -> Array:
 	# the save can tell a band-hidden rider (resurrect at
 	# peak) from a boarded rider (stay hidden).
 	var out: Array = []
-	for si in range(4):
+	for si in range(6):
 		var grp := _stop_group(world, si)
 		var hidden := false
 		if grp != null:
@@ -261,7 +327,7 @@ func _restore_state(world: Node3D) -> void:
 	var br: Dictionary = data.get("busroute75", {})
 	if br.is_empty():
 		return
-	next_stop = clampi(int(br.get("next_stop", 0)), 0, 3)
+	next_stop = clampi(int(br.get("next_stop", 4)), 0, 5)
 	direction = int(br.get("direction", DIR_EAST))
 	if direction != DIR_EAST and direction != DIR_WEST:
 		direction = DIR_EAST
@@ -273,14 +339,17 @@ func _restore_state(world: Node3D) -> void:
 	leg_served = (br.get("leg_served", []) as Array).duplicate()
 	var waiting: Array = br.get("waiting", [])
 	var ph: Array = br.get("peak83_hidden", [])
-	# Slice 83: saves hold 12 waiting entries (3 seats x 4
-	# stops). Pre-83 saves hold 8 (2 seats x 4); reading
-	# those with the new stride would misalign every stop
-	# after the first, so old saves keep the old stride
-	# and seat 2 is left visible (the band rule then hides
-	# it off-peak on the next frame).
+	# Slice 84: saves hold 18 waiting entries (3 seats x 6
+	# stops). Slice 83 saves hold 12 (3 seats x 4 stops)
+	# and pre-83 saves hold 8 (2 seats x 4); reading any
+	# of those with the new stride would misalign every
+	# stop after the first, so old saves keep their own
+	# stride and groups 4/5 are left visible (the band
+	# rule then hides seat 2 off-peak on the next frame).
+	# Groups 0..3 never moved, so no index remap is needed.
 	var seats := 3 if waiting.size() >= 12 else 2
-	for si in range(4):
+	var stops := 6 if waiting.size() >= 18 else 4
+	for si in range(stops):
 		var grp := _stop_group(world, si)
 		if grp == null:
 			continue
@@ -301,7 +370,7 @@ func _respawn_waiting(world: Node3D) -> void:
 	# appear at every stop (same destinations, same pattern
 	# as the first day). Alighted figures stay standing —
 	# they are people who got off, not fresh riders.
-	for si in range(4):
+	for si in range(6):
 		var grp := _stop_group(world, si)
 		if grp == null:
 			continue
@@ -341,7 +410,7 @@ func _update_dest_sign(bus: Node3D) -> void:
 	_last_sign_stop = next_stop
 	var lab := bus.get_node_or_null("DestSign75") as Label3D
 	if lab != null:
-		lab.text = "မှတ်တိုင် " + str(MY_DIGITS[next_stop])
+		lab.text = "မှတ်တိုင် " + pos_digit79(next_stop, direction)
 
 
 func _serve_stop(world: Node3D, bus: Node3D, stop_idx: int) -> void:
@@ -402,12 +471,14 @@ func _serve_stop(world: Node3D, bus: Node3D, stop_idx: int) -> void:
 			var w := grp.get_node_or_null("Waiting74_%d_%d" % [stop_idx, wi]) as Node3D
 			if w != null and w.visible and not bool(w.get_meta("walking78", false)) and int(w.get_meta("dir75", -1)) == direction:
 				var dest79 := int(w.get_meta("dest75", stop_idx))
-				var ahead79 := false
-				if direction == DIR_EAST and dest79 > stop_idx and order79.has(dest79):
-					ahead79 = true
-				if direction == DIR_WEST and dest79 < stop_idx and order79.has(dest79):
-					ahead79 = true
-				if not ahead79:
+				# Ahead = later in the CURRENT service order
+				# (position comparison, Slice 84: group order
+				# is no longer travel order, so the old
+				# "dest > stop east / dest < stop west" test
+				# would board backwards from group 4).
+				var pos_s := order79.find(stop_idx)
+				var pos_d := order79.find(dest79)
+				if pos_d < 0 or pos_d <= pos_s:
 					continue
 				# Slice 78: do NOT hide on the spot — flag the
 				# rider and let BusSim78 walk them to the bus
@@ -421,8 +492,9 @@ func _serve_stop(world: Node3D, bus: Node3D, stop_idx: int) -> void:
 	# served in order; an out-of-order serve still moves
 	# passengers, it just does not advance the route.
 	# Order-based (Slice 79): the last stop of the current
-	# service order completes the leg, so Express (0 -> 3,
-	# 3 -> 0) flips exactly like Local (0 -> 3, 3 -> 0).
+	# service order completes the leg, so Express (4 -> 5,
+	# 5 -> 4) flips exactly like Local (4 -> 5, 5 -> 4
+	# endpoints with 4 middle stops between them).
 	if stop_idx == next_stop:
 		leg_served.append(stop_idx)
 		var pos79 := order79.find(stop_idx)
@@ -435,7 +507,7 @@ func _serve_stop(world: Node3D, bus: Node3D, stop_idx: int) -> void:
 			else:
 				_respawn_waiting(world)
 				direction = DIR_EAST
-				next_stop = 0
+				next_stop = int(service_order79(DIR_EAST)[0])
 				leg_served = []
 		else:
 			next_stop = int(order79[pos79 + 1])
@@ -470,17 +542,27 @@ func _process(_delta: float) -> void:
 		if rlab != null:
 			rlab.visible = driving_bus
 			if route_complete:
-				rlab.text = "✓ လမ်းကြောင်းပြီးပြီ · ➡ မှတ်တိုင် " + str(MY_DIGITS[next_stop])
+				rlab.text = "✓ လမ်းကြောင်းပြီးပြီ · ➡ မှတ်တိုင် " + pos_digit79(next_stop, direction)
 			else:
-				rlab.text = "➡ နောက်: မှတ်တိုင် " + str(MY_DIGITS[next_stop])
+				rlab.text = "➡ နောက်: မှတ်တိုင် " + pos_digit79(next_stop, direction)
 		# Next-stop minimap dot tint (yellow = next, blue =
-		# the rest); the dots themselves are Slice 74's.
+		# the rest) AND position (Slice 84 fix: Slice 74
+		# created the dots but nothing ever positioned
+		# them, so they sat at the panel corner — the
+		# controller now drives all 6 from the live group
+		# positions, same MapTransform pattern as the
+		# player minimap).
 		var panel := layer.get_node_or_null("MinimapPanel") as Control
 		if panel != null:
-			for si in range(4):
+			for si in range(6):
 				var dot := panel.get_node_or_null("BusStop74_%d" % si) as ColorRect
 				if dot != null:
 					dot.color = Color(1.0, 0.85, 0.2, 1.0) if si == next_stop else Color(0.2, 0.6, 1.0, 1.0)
+					var sp := _stop_pos(world, si)
+					var pp := MapTransform.world_to_panel(sp.x, sp.z, panel.size)
+					var cp := MapTransform.clamp_dot(pp, panel.size, dot.size)
+					if dot.position != cp:
+						dot.position = cp
 	# The destination sign reads correctly even on foot — it
 	# is a physical sign on the bus, not a driving-only HUD.
 	if bus != null:

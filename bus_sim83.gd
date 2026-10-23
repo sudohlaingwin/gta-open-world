@@ -45,6 +45,12 @@ extends Node3D
 ## map, names or structure is used. Touch-first throughout
 ## (no keys anywhere; nothing here needs a button at all).
 
+## Slice 84 — FULL-LENGTH ROUTE (part 11). The third
+## seat now covers all 6 stops: groups 4 and 5 gain seat 2
+## with the same shape (group 4 -> 5 east, the Express
+## endpoint; group 5 -> 4 west, the Express endpoint).
+## Band visibility loops all 6 groups.
+
 const BAND_NIGHT: int = 0
 const BAND_PEAK: int = 1
 const BAND_OFFPEAK: int = 2
@@ -63,11 +69,13 @@ const PARKED_NIGHT: Array = [1, 3, 4, 5]
 # table (controller holds the same values; BusSim83 sets
 # them at creation so the rider is never meta-less, and the
 # controller's own assignment skips riders that have meta).
-# Seat 2: stop 0 -> 3 east, stop 1 -> 3 east, stop 2 -> 0
-# west, stop 3 -> 0 west. All four board Local; stops 1
-# never boards Express (not a service stop), stops 0 / 2 /
-# 3 board Express when the direction matches.
-const DESTS83: Array = [[3, 0], [3, 0], [0, 1], [0, 1]]
+# Seat 2: group 0 -> 3 east, group 1 -> 3 east, group 2 ->
+# 0 west, group 3 -> 0 west. Slice 84: group 4 -> 5 east,
+# group 5 -> 4 west. All six board Local; group 1 never
+# boards Express (not a service stop), groups 0 / 2 / 3
+# board Express when the direction matches, and the new
+# endpoint seats (4 -> 5, 5 -> 4) board Express too.
+const DESTS83: Array = [[3, 0], [3, 0], [0, 1], [0, 1], [5, 0], [4, 1]]
 const SEAT2_BODY: Color = Color(0.85, 0.6, 0.2, 1.0)
 const SEAT2_HEAD: Color = Color(0.8, 0.6, 0.45, 1.0)
 
@@ -140,15 +148,15 @@ func _mat(color: Color, rough: float = 0.9) -> StandardMaterial3D:
 
 
 func _try_third_seat(world: Node3D) -> bool:
-	# All 4 stop groups must exist first (Slice 74 dress
-	# runs before this node, but deferred order is
-	# retried anyway — same pattern as Slice 77).
-	for si in range(4):
+	# All 6 stop groups must exist first (Slice 74 dress +
+	# Slice 84 dress run before this node, but deferred
+	# order is retried anyway — same pattern as Slice 77).
+	for si in range(6):
 		if world.get_node_or_null("LongRoute74/BusStop74_%d" % si) == null:
 			return false
 	var body_m := _mat(SEAT2_BODY, 0.9)
 	var head_m := _mat(SEAT2_HEAD, 0.9)
-	for si in range(4):
+	for si in range(6):
 		var grp := world.get_node_or_null("LongRoute74/BusStop74_%d" % si) as Node3D
 		if grp == null:
 			continue
@@ -217,7 +225,7 @@ func _apply_band(world: Node3D, band: int) -> void:
 	# by the band" (show again at peak) from "boarded and
 	# hidden by the walk" (never resurrected by the band).
 	# A rider mid-walk is owned by Slice 78 and skipped.
-	for si in range(4):
+	for si in range(6):
 		var grp := world.get_node_or_null("LongRoute74/BusStop74_%d" % si) as Node3D
 		if grp == null:
 			continue

@@ -36,13 +36,19 @@ extends Node3D
 ## save can break. No opponent code, map, names or structure
 ## is used. Touch-first throughout (no keys anywhere).
 
-const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0]
+## Slice 84 — FULL-LENGTH ROUTE (part 11). 6 stops, not 4:
+## Local boards list stops 1-6 at 0/1/2/3/4/5 minutes,
+## Express boards list stops 1 and 6 at 0/1 minutes, and
+## the round-trip flip is (west, next 4) -> (east, next 4).
+## Board sync covers all 6 groups.
+
+const STOPS_X: Array = [700.0, 1200.0, 1700.0, 2200.0, 500.0, 2400.0]
 const DEPOT_POS: Vector3 = Vector3(30.0, 0.0, 16.0)
 const DEPOT_R: float = 12.0
 const SUMMARY_S: float = 10.0
 const MY_DIGITS: Array = ["၀", "၁", "၂", "၃", "၄", "၅", "၆", "၇", "၈", "၉"]
-const BOARD_LOCAL: String = "ဘတ်စ်ဇယား\nမှတ်တိုင် ၁ ၀ မိနစ်\nမှတ်တိုင် ၂ ၁ မိနစ်\nမှတ်တိုင် ၃ ၂ မိနစ်\nမှတ်တိုင် ၄ ၃ မိနစ်"
-const BOARD_EXPRESS: String = "ဘတ်စ်ဇယား\nမှတ်တိုင် ၁ ၀ မိနစ်\nမှတ်တိုင် ၄ ၁ မိနစ်"
+const BOARD_LOCAL: String = "ဘတ်စ်ဇယား\nမှတ်တိုင် ၁ ၀ မိနစ်\nမှတ်တိုင် ၂ ၁ မိနစ်\nမှတ်တိုင် ၃ ၂ မိနစ်\nမှတ်တိုင် ၄ ၃ မိနစ်\nမှတ်တိုင် ၅ ၄ မိနစ်\nမှတ်တိုင် ၆ ၅ မိနစ်"
+const BOARD_EXPRESS: String = "ဘတ်စ်ဇယား\nမှတ်တိုင် ၁ ၀ မိနစ်\nမှတ်တိုင် ၆ ၁ မိနစ်"
 
 var _hud_done: bool = false
 var _boards_done: bool = false
@@ -159,13 +165,13 @@ func _sync_button(ctrl: Node3D) -> void:
 func _sync_boards(world: Node3D) -> void:
 	# Physical timetable boards follow the active service.
 	# Runs once the Slice 77 upgrades exist, and again on
-	# every service switch (cheap: 4 labels, text only).
+	# every service switch (cheap: 6 labels, text only).
 	var ctrl := world.get_node_or_null("BusSim74") as Node3D
 	if ctrl == null:
 		return
 	var express := int(ctrl.get("service79")) == 1
 	var text := BOARD_EXPRESS if express else BOARD_LOCAL
-	for si in range(4):
+	for si in range(6):
 		var grp := world.get_node_or_null("LongRoute74/BusStop74_%d" % si) as Node3D
 		if grp == null:
 			continue
@@ -227,7 +233,7 @@ func _physics_process(delta: float) -> void:
 		# An in-order serve changed the route state (only
 		# the in-order path moves next_stop/direction).
 		_svc_serves += 1
-		if _prev_dir == 1 and _prev_next == 0 and dir == 0 and nxt == 0:
+		if _prev_dir == 1 and _prev_next == 4 and dir == 0 and nxt == 4:
 			# Round trip complete: finalise this service's
 			# counts; they show at the next depot arrival.
 			# A previous uncollected summary is replaced.
