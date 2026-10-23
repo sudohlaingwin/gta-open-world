@@ -3764,3 +3764,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=14` matching 13 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 323: Village Gateway White Masonry Plinths & Golden Guardian Chinthe Statues Realism
+### Completed by Antigravity:
+1. **Traditional Monumental Portal Realism (`scenes/village_gate.tscn`):**
+   - **White Stucco Masonry Column Plinths (`PlinthL`, `PlinthR`):** Modelled heavy square masonry foundation bases (`BoxMesh_masonry_plinth`, `StandardMaterial3D_white_stucco`, size 2.2m x 1.2m x 2.2m) anchoring the massive primary teak portal pillars into the roadside soil.
+   - **Twin Golden Guardian Chinthe Statues (`ChintheL`, `ChintheR`):** Modelled iconic Burmese mythical guardian leogryph / chinthe statues (`BoxMesh_chinthe_base`, `StandardMaterial3D_chinthe_gold`, `metallic = 0.88`, `specular = 0.55`) flanking both portal entrances angled inward to welcome and protect visitors entering the Mindon township ward.
+   - Strictly verified canonical TSCN format (`load_steps=17` matching 1 ext_resource + 15 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
