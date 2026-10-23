@@ -3892,3 +3892,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=23` matching 1 ext_resource + 21 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 335: Mindon Three-Wheeler Tuk-Tuk Steering Handlebar, Rear Spare Wheel & Passenger Bench Realism
+### Completed by Antigravity:
+1. **Three-Wheeler Urban Transport Realism (`scenes/myanmar_tuktuk.tscn`):**
+   - **Chrome Motorcycle Steering Handlebar (`Handlebar`):** Modelled a 1.1m polished chrome transverse handlebar (`CylinderMesh_handlebar`, `StandardMaterial3D_chrome`, `metallic = 0.95`, `roughness = 0.15`) in the driver's cockpit.
+   - **Rear-Mounted Emergency Spare Wheel (`RearSpareTire`):** Attached a full-size spare rubber tire (`CylinderMesh_spare_tire`, `StandardMaterial3D_tire`, `roughness = 0.88`) vertically bolted to the rear exterior transom.
+   - **Upholstered Rear Passenger Bench Seat (`PassengerSeat`):** Modelled a 1.9m wide vinyl passenger bench (`BoxMesh_passenger_bench`, `StandardMaterial3D_vinyl_seat`, `albedo = Color(0.20, 0.12, 0.08, 1)`) welcoming up to 3 town commuters.
+   - Strictly verified canonical TSCN format (`load_steps=22` matching 1 ext_resource + 20 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

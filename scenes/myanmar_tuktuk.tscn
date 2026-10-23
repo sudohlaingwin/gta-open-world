@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scripts/tuktuk_controller.gd" id="1_tuktuk"]
 
@@ -62,6 +62,28 @@ transparency = 1
 [sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
 size = Vector3(4.8, 3.2, 5.8)
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_handlebar"]
+top_radius = 0.04
+bottom_radius = 0.04
+height = 1.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chrome"]
+albedo_color = Color(0.88, 0.90, 0.92, 1)
+metallic = 0.95
+roughness = 0.15
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_spare_tire"]
+top_radius = 0.44
+bottom_radius = 0.44
+height = 0.22
+
+[sub_resource type="BoxMesh" id="BoxMesh_passenger_bench"]
+size = Vector3(1.9, 0.22, 0.85)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vinyl_seat"]
+albedo_color = Color(0.20, 0.12, 0.08, 1)
+roughness = 0.58
+
 [node name="MyanmarTukTuk" type="CharacterBody3D"]
 script = ExtResource("1_tuktuk")
 
@@ -85,6 +107,21 @@ surface_material_override/0 = SubResource("StandardMaterial3D_canopy_green")
 transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 1.55, -1.35)
 mesh = SubResource("BoxMesh_tuktuk_windshield")
 surface_material_override/0 = SubResource("StandardMaterial3D_tuktuk_glass")
+
+[node name="Handlebar" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 1.2, -1.15)
+mesh = SubResource("CylinderMesh_handlebar")
+surface_material_override/0 = SubResource("StandardMaterial3D_chrome")
+
+[node name="PassengerSeat" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0.85)
+mesh = SubResource("BoxMesh_passenger_bench")
+surface_material_override/0 = SubResource("StandardMaterial3D_vinyl_seat")
+
+[node name="RearSpareTire" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 1.15, 1.82)
+mesh = SubResource("CylinderMesh_spare_tire")
+surface_material_override/0 = SubResource("StandardMaterial3D_tire")
 
 [node name="Headlight" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.05, -1.8)
