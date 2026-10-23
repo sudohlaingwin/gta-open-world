@@ -64,6 +64,10 @@ func _physics_process(delta: float) -> void:
 		smoothed_steering = move_toward(smoothed_steering, target_steering, 8.0 * delta)
 		steering = smoothed_steering
 
+		var sw = get_node_or_null("SteeringWheel")
+		if sw:
+			sw.rotation.z = -smoothed_steering * 3.8
+
 		# Progressive Acceleration & Dual-Power Braking
 		if input_dir.y < -0.1: # Forward Throttle
 			var throttle_curve = lerp(0.65, 1.0, 1.0 - speed_ratio * 0.5)

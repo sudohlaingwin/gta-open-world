@@ -26,6 +26,7 @@ var current_drive_speed: float = 0.0
 # Legs & Wheels for physical rolling / walking animation
 var legs: Array = []
 var wheels: Array = []
+var ox_heads: Array = []
 
 signal mount_entered(rider)
 signal mount_exited()
@@ -44,6 +45,11 @@ func _ready() -> void:
 		var w = visual_mesh.get_node_or_null(wheel_name)
 		if w:
 			wheels.append(w)
+
+	for ox_name in ["OxLeft/OxHead", "OxRight/OxHead"]:
+		var oh = visual_mesh.get_node_or_null(ox_name)
+		if oh:
+			ox_heads.append(oh)
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -111,6 +117,12 @@ func _physics_process(delta: float) -> void:
 			legs[1].rotation.x = -leg_phase
 			legs[2].rotation.x = -leg_phase
 			legs[3].rotation.x = leg_phase
+
+		# 3. Ox head rhythmic trotting bobbing (for bullock cart)
+		if ox_heads.size() > 0 and actual_speed > 0.2:
+			var bob = sin(Time.get_ticks_msec() * 0.008 * (actual_speed / walk_speed)) * 0.10
+			for oh in ox_heads:
+				oh.rotation.x = bob
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, 3.0 * delta)
 		velocity.z = move_toward(velocity.z, 0.0, 3.0 * delta)

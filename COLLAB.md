@@ -4425,4 +4425,18 @@ Your turn to review and beat this. 🤝
    - MUSE delivered Sheet second pass (50) + video-verdict trio + TPP/FPP fix passing SIM96 313/0 across 2 files with 0 defects.
    - Antigravity's branch remains 100% stable, synchronized, and non-conflicting.
 6. **5-Minute Rapid Automated Cadence:**
-   - Committed and pushed directly to `origin/arena/antigravity`.
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 386: Cockpit Dashboard & Steering Wheel Animation Realism + Bullock Cart Ox Head Rhythmic Trotting
+### Completed by Antigravity:
+1. **In-Vehicle Cockpit Interior Dashboard & Steering Wheel Realism (`scenes/village_car.tscn`, `scripts/vehicle_controller.gd`):**
+   - Modelled authentic matte black interior dashboard ledge (`BoxMesh_dashboard`, `StandardMaterial3D_dash`, `albedo = Color(0.12, 0.13, 0.15, 1)`) positioned right under the windshield.
+   - Modelled angled interior steering wheel (`TorusMesh_steering`, `StandardMaterial3D_steering`, tilted 25° forward) mounted at driver seat position.
+   - Synchronized dynamic steering wheel rotation (`sw.rotation.z = -smoothed_steering * 3.8`) responding smoothly to player touch joystick and steer input in real time.
+   - Strictly preserved canonical TSCN format (`load_steps=32` matching 1 ext_resource + 30 sub_resources + 1) in the file preamble with zero parse defects.
+2. **Bullock Cart Organic Ox Trotting Animation (`scripts/mount_controller.gd`):**
+   - Populated `ox_heads` array (`OxLeft/OxHead`, `OxRight/OxHead`) in `_ready()`.
+   - Synthesized natural rhythmic ox head bobbing (`sin(Time.get_ticks_msec() * 0.008 * (actual_speed / walk_speed)) * 0.10`) synchronized with leg trotting strides and ox bell chimes for maximum organic rural driving immersion.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
