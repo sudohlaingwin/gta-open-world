@@ -460,6 +460,20 @@ func _ready() -> void:
 		_real70.name = "Realism70"
 		_real70.set_script(load("res://realism70.gd"))
 		_world70.call_deferred("add_child", _real70)
+	# Slice 71 graphics realism, part 2 (owner 06:32 order, still
+	# binding: graphics first, no new feature): layered tree
+	# canopies + trunk bark, palm frond rings, vehicle hubs /
+	# windows / lights / bumpers / real motorcycle + cart wheels,
+	# river + pond ripple planes, pagoda tiered eaves, bell
+	# pavilion roof. Runtime-only, no scene touched. Captures
+	# once at its frame >= 16 (after Slice 70's frame-12 capture),
+	# then keeps processing only to scroll the ripple planes.
+	var _world71 := get_parent()
+	if _world71 != null and _world71.get_node_or_null("Realism71") == null:
+		var _real71 := Node3D.new()
+		_real71.name = "Realism71"
+		_real71.set_script(load("res://realism71.gd"))
+		_world71.call_deferred("add_child", _real71)
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
