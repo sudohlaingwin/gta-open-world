@@ -3796,3 +3796,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=6` matching 1 ext_resource + 4 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 326: Central Myanmar Toddy Palm Bamboo Harvest Ladder & Clay Sap Pots Realism
+### Completed by Antigravity:
+1. **Anyar Cultural Plantation & Toddy Harvesting Realism (`scenes/toddy_palm.tscn`):**
+   - **Full-Height Bamboo Climber Pole (`BambooLadder`):** Modelled a vertical 21.0-meter bamboo climbing stem (`CylinderMesh_bamboo_ladder`, `StandardMaterial3D_bamboo`, `albedo = Color(0.68, 0.58, 0.32, 1)`) strapped parallel to the palm trunk for toddy tappers (ထန်းတက်သမား).
+   - **Bamboo Step Rungs (`LadderRungLower`, `LadderRungMid`, `LadderRungUpper`):** Installed transverse bamboo footrests tied along the stem at 4m, 10m, and 16m elevation.
+   - **Clay Toddy Sap Collection Pots (`ToddySapPot1`, `ToddySapPot2`):** Modelled traditional terracotta collecting pots (`SphereMesh_toddy_pot`, `StandardMaterial3D_clay_pot`, `albedo = Color(0.55, 0.32, 0.18, 1)`) suspended from the palm crown to harvest fresh sweet toddy juice (ထန်းရည်ချို).
+   - Strictly verified canonical TSCN format (`load_steps=12` matching 1 ext_resource + 10 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Shader" path="res://scripts/foliage_sway.gdshader" id="1_sway"]
 
@@ -30,6 +30,28 @@ shader_parameter/wind_strength = 0.18
 shader_parameter/flutter_speed = 4.5
 shader_parameter/flutter_strength = 0.06
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_bamboo_ladder"]
+top_radius = 0.07
+bottom_radius = 0.07
+height = 21.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo"]
+albedo_color = Color(0.68, 0.58, 0.32, 1)
+roughness = 0.72
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ladder_rung"]
+top_radius = 0.04
+bottom_radius = 0.04
+height = 0.48
+
+[sub_resource type="SphereMesh" id="SphereMesh_toddy_pot"]
+radius = 0.32
+height = 0.52
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clay_pot"]
+albedo_color = Color(0.55, 0.32, 0.18, 1)
+roughness = 0.85
+
 [node name="ToddyPalm" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -47,6 +69,36 @@ surface_material_override/0 = SubResource("StandardMaterial3D_palm_bark")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.2, 0)
 mesh = SubResource("SphereMesh_fronds")
 surface_material_override/0 = SubResource("ShaderMaterial_palm_fronds")
+
+[node name="BambooLadder" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 10.5, 0)
+mesh = SubResource("CylinderMesh_bamboo_ladder")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="LadderRungLower" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.75, 4.0, 0)
+mesh = SubResource("CylinderMesh_ladder_rung")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="LadderRungMid" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.75, 10.0, 0)
+mesh = SubResource("CylinderMesh_ladder_rung")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="LadderRungUpper" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.75, 16.0, 0)
+mesh = SubResource("CylinderMesh_ladder_rung")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="ToddySapPot1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.65, 20.8, 0.35)
+mesh = SubResource("SphereMesh_toddy_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_clay_pot")
+
+[node name="ToddySapPot2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 20.6, -0.3)
+mesh = SubResource("SphereMesh_toddy_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_clay_pot")
 
 [node name="PalmSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 1.4)
