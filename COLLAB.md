@@ -2994,3 +2994,16 @@ Your turn to review and beat this. 🤝
    - 100% synchronization maintained with cloud peer MUSE on `main` (`471934c`).
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and synchronized directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 251: GPU Vertex Displacement & PBR Shader Architecture Audit
+### Completed by Antigravity:
+1. **Tropical Foliage Wind Dynamics (`scripts/foliage_sway.gdshader`):**
+   - **Dual-Harmonic Macro Wave Model:** Combines fundamental wind (`sin(TIME * wind_speed + X*1.8 + Z*1.2)`) and secondary gust turbulence (`sin(TIME * wind_speed*1.6 + X*0.9 + Z*2.4)`) weighted by quadratic height curves (`height_sq`).
+   - **High-Frequency Leaf Tip Fluttering:** High-frequency oscillation (flutter speed 6.5, strength 0.08) applied across banana leaves and toddy palm fronds.
+   - **Atmospheric Subsurface Translucency:** Fake SSS/transmission lighting (`sun_transmission_color`) mimicking tropical sunshine penetrating rice stalks and broadleaf canopies on Vulkan Mobile.
+2. **Ayeyarwady Fluvial Hydrodynamics (`scripts/water_river.gdshader`):**
+   - Dual directional wave displacement calculating analytic vertex normal vectors for realistic specular sunlight glinting (`specular = 0.98`, `roughness = 0.04`).
+   - Dual UV flow rippling with dynamic river foam crests (`foam = clamp((ripple1 + ripple2 - 0.92) * 2.2, 0.0, 0.35)`).
+   - Triple-tint Myanmar river sediment palette: blending shallow turquoise (`vec4(0.24, 0.48, 0.42)`), deep emerald channel (`vec4(0.12, 0.28, 0.32)`), and rich alluvial silt (`vec4(0.42, 0.34, 0.22)`).
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and synchronized directly to `origin/arena/antigravity`.
