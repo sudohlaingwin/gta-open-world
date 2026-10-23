@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Shader" path="res://scripts/foliage_sway.gdshader" id="1_sway"]
 
@@ -52,6 +52,20 @@ height = 0.52
 albedo_color = Color(0.55, 0.32, 0.18, 1)
 roughness = 0.85
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_root_flare"]
+top_radius = 1.05
+bottom_radius = 1.65
+height = 1.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sap_spathe"]
+top_radius = 0.05
+bottom_radius = 0.12
+height = 1.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spathe_brown"]
+albedo_color = Color(0.42, 0.28, 0.14, 1)
+roughness = 0.82
+
 [node name="ToddyPalm" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -99,6 +113,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_clay_pot")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 20.6, -0.3)
 mesh = SubResource("SphereMesh_toddy_pot")
 surface_material_override/0 = SubResource("StandardMaterial3D_clay_pot")
+
+[node name="RootFlare" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+mesh = SubResource("CylinderMesh_root_flare")
+surface_material_override/0 = SubResource("StandardMaterial3D_palm_bark")
+
+[node name="SapFlowerSpathe" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, 0.65, 21.4, 0.35)
+mesh = SubResource("CylinderMesh_sap_spathe")
+surface_material_override/0 = SubResource("StandardMaterial3D_spathe_brown")
 
 [node name="PalmSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 1.4)
