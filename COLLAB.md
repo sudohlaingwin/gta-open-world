@@ -3711,3 +3711,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=20` matching 19 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 318: Roadside Water Donation Stand Teak Canopy & Fragrant Jasmine Garland Realism
+### Completed by Antigravity:
+1. **Traditional Roadside Merit & Hospitality Realism (`scenes/water_pot_stand.tscn`):**
+   - **Miniature Teak Gabled Canopy (`StandRoof`):** Modelled an authentic traditional gabled wooden roof (`PrismMesh_stand_roof`, `StandardMaterial3D_roof_teak`) supported by twin teak posts (`RoofPostL`, `RoofPostR`, `CylinderMesh_roof_post`) sheltering the donation pots from tropical midday sun.
+   - **Fresh White Jasmine Floral Garland (`JasmineGarland`):** Draped an ornamental hand-threaded fragrant white jasmine garland (`TorusMesh_jasmine_garland`, `StandardMaterial3D_jasmine`, `albedo = Color(0.96, 0.98, 0.92, 1)`) across the left water pot's neck.
+   - Strictly verified canonical TSCN format (`load_steps=14` matching 13 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
