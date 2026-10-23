@@ -52,14 +52,26 @@ func _driving_mode() -> int:
 	return clampi(int(_sm_cached.get("driving_mode")), 0, 2)
 
 
+func _rain_brake_factor() -> float:
+	# Slice 77: wet-road braking. In the rainy season
+	# (SaveManager season62 == 1) the bus stops longer:
+	# brake force x 0.8, a stated tuning value, not a
+	# physics claim. Dry braking is exactly unchanged,
+	# and a missing SaveManager also means dry.
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm == null or sm.get("season62") == null:
+		return 1.0
+	return 0.8 if int(sm.get("season62")) == 1 else 1.0
+
+
 func _mode_brake() -> float:
 	match _driving_mode():
 		0:
-			return brake_force * 1.5
+			return brake_force * 1.5 * _rain_brake_factor()
 		2:
-			return brake_force * 0.75
+			return brake_force * 0.75 * _rain_brake_factor()
 		_:
-			return brake_force
+			return brake_force * _rain_brake_factor()
 
 
 func _mode_coast() -> float:
