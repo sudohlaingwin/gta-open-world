@@ -4262,3 +4262,12 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=23` matching 1 ext_resource + 21 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 371: Rural Draft Zebu Cow Pierced Septum Nose-Rope Ring & Woven Jute Riding Pad Realism
+### Completed by Antigravity:
+1. **Indigenous Draft Cattle & Agrarian Mount Realism (`scenes/rideable_cow.tscn`):**
+   - **Pierced Septum Guiding Nose-Rope Ring (`NoseRopeRing`):** Modelled an authentic traditional twisted hemp nose-rope ring (`TorusMesh_nose_ring`, `StandardMaterial3D_nose_rope`, `albedo = Color(0.72, 0.54, 0.32, 1)`, `roughness = 0.88`) fitted through the cattle septum for authentic Burmese halter steering (နွားနှာခေါင်းကြိုး / နှာထွင်းကြိုး).
+   - **Cushioned Woven Jute Riding Saddle Pad (`JuteRidingPad`):** Modelled a durable coarse woven jute sackcloth riding pad (`BoxMesh_jute_pad`, `StandardMaterial3D_jute_cloth`, `albedo = Color(0.68, 0.58, 0.42, 1)`, `roughness = 0.92`) positioned behind the dorsal hump for comfortable bareback village riding.
+   - Strictly verified canonical TSCN format (`load_steps=22` matching 1 ext_resource + 20 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

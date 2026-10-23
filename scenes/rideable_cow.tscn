@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scripts/mount_controller.gd" id="1_mount"]
 
@@ -66,6 +66,21 @@ height = 1.15
 albedo_color = Color(0.24, 0.20, 0.18, 1)
 roughness = 0.88
 
+[sub_resource type="TorusMesh" id="TorusMesh_nose_ring"]
+inner_radius = 0.08
+outer_radius = 0.12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nose_rope"]
+albedo_color = Color(0.72, 0.54, 0.32, 1)
+roughness = 0.88
+
+[sub_resource type="BoxMesh" id="BoxMesh_jute_pad"]
+size = Vector3(1.45, 0.12, 1.05)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jute_cloth"]
+albedo_color = Color(0.68, 0.58, 0.42, 1)
+roughness = 0.92
+
 [node name="RideableCow" type="CharacterBody3D"]
 script = ExtResource("1_mount")
 mount_type = 0
@@ -89,10 +104,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45, 0.72)
 mesh = SubResource("BoxMesh_cow_hump")
 surface_material_override/0 = SubResource("StandardMaterial3D_cow")
 
+[node name="JuteRidingPad" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.28, -0.1)
+mesh = SubResource("BoxMesh_jute_pad")
+surface_material_override/0 = SubResource("StandardMaterial3D_jute_cloth")
+
 [node name="HeadMesh" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05, -1.85)
 mesh = SubResource("BoxMesh_cow_head")
 surface_material_override/0 = SubResource("StandardMaterial3D_cow")
+
+[node name="NoseRopeRing" type="MeshInstance3D" parent="VisualMesh/HeadMesh"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, -0.28, -0.58)
+mesh = SubResource("TorusMesh_nose_ring")
+surface_material_override/0 = SubResource("StandardMaterial3D_nose_rope")
 
 [node name="HornL" type="MeshInstance3D" parent="VisualMesh/HeadMesh"]
 transform = Transform3D(0.9, -0.4, 0, 0.4, 0.9, 0, 0, 0, 1, 0.45, 0.58, 0.16)
