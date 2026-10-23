@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/football_pitch.gd" id="1_pitch"]
 
@@ -39,6 +39,31 @@ albedo_color = Color(0.98, 0.98, 0.98, 1)
 roughness = 0.28
 specular = 0.52
 
+[sub_resource type="BoxMesh" id="BoxMesh_goal_net"]
+size = Vector3(1.8, 3.4, 7.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_net"]
+transparency = 1
+albedo_color = Color(0.95, 0.95, 0.95, 0.45)
+roughness = 0.95
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_corner_post"]
+top_radius = 0.04
+bottom_radius = 0.05
+height = 1.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo"]
+albedo_color = Color(0.82, 0.72, 0.38, 1)
+roughness = 0.75
+
+[sub_resource type="PrismMesh" id="PrismMesh_flag"]
+left_to_right = 0.0
+size = Vector3(0.5, 0.35, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flag_red"]
+albedo_color = Color(0.92, 0.15, 0.12, 1)
+roughness = 0.65
+
 [node name="MyanmarFootballPitch" type="StaticBody3D"]
 script = ExtResource("1_pitch")
 
@@ -68,6 +93,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.5, 3.6, 0)
 mesh = SubResource("BoxMesh_crossbar")
 surface_material_override/0 = SubResource("StandardMaterial3D_white")
 
+[node name="GoalNetL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.4, 1.8, 0)
+mesh = SubResource("BoxMesh_goal_net")
+surface_material_override/0 = SubResource("StandardMaterial3D_net")
+
 [node name="GoalPostR1" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.5, 1.8, -3.66)
 mesh = SubResource("CylinderMesh_post")
@@ -82,6 +112,51 @@ surface_material_override/0 = SubResource("StandardMaterial3D_white")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.5, 3.6, 0)
 mesh = SubResource("BoxMesh_crossbar")
 surface_material_override/0 = SubResource("StandardMaterial3D_white")
+
+[node name="GoalNetR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.4, 1.8, 0)
+mesh = SubResource("BoxMesh_goal_net")
+surface_material_override/0 = SubResource("StandardMaterial3D_net")
+
+[node name="CornerPostNW" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.5, 0.8, -21.5)
+mesh = SubResource("CylinderMesh_corner_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="CornerFlagNW" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.25, 1.45, -21.5)
+mesh = SubResource("PrismMesh_flag")
+surface_material_override/0 = SubResource("StandardMaterial3D_flag_red")
+
+[node name="CornerPostNE" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.5, 0.8, -21.5)
+mesh = SubResource("CylinderMesh_corner_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="CornerFlagNE" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.75, 1.45, -21.5)
+mesh = SubResource("PrismMesh_flag")
+surface_material_override/0 = SubResource("StandardMaterial3D_flag_red")
+
+[node name="CornerPostSW" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.5, 0.8, 21.5)
+mesh = SubResource("CylinderMesh_corner_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="CornerFlagSW" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.25, 1.45, 21.5)
+mesh = SubResource("PrismMesh_flag")
+surface_material_override/0 = SubResource("StandardMaterial3D_flag_red")
+
+[node name="CornerPostSE" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.5, 0.8, 21.5)
+mesh = SubResource("CylinderMesh_corner_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="CornerFlagSE" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.75, 1.45, 21.5)
+mesh = SubResource("PrismMesh_flag")
+surface_material_override/0 = SubResource("StandardMaterial3D_flag_red")
 
 [node name="FootballRigid" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
