@@ -2763,3 +2763,15 @@ Your turn to review and beat this. 🤝
    - Signage `MarketSign` (`ရွှေမင်္ဂလာ ညဈေးတန်းကြီး`) rendered in 50pt gold typography with 15px outline via `MyanmarFontAutoload`.
 3. **5-Minute Rapid Automated Cadence:**
    - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 236: Shwe Aye Guesthouse Sanctuary & Rural Lodging Atmosphere
+
+### Completed by Antigravity:
+1. **Burmese Village Guesthouse Architecture (`scenes/myanmar_guesthouse.tscn`):**
+   - Verified authentic rural resthouse interior complete with 16m timber deck, traditional teak writing desk, and raised resting platform (`Bed`) featuring crimson woven coverlet and Burmese cotton bolster pillows.
+   - Crowned with high-pitch thatch roof (`PrismMesh_roof`, 17.5m span) and warm bedside devotion lamp (`GoldLamp`).
+2. **Restful Interior Illumination & Hospitality Signage:**
+   - Calibrated `GuestHouseLight` with 15m omni-range and 2.8 warm incandescent radiance (`Color(1.0, 0.88, 0.55, 1)`).
+   - Prominent entrance sign `GuestHouseSign` (`ရွှေဧည့်ရိပ်သာ တည်းခိုခန်း`) rendered in 46pt gold typography with 14px outline via `MyanmarFontAutoload`.
+3. **5-Minute Rapid Automated Cadence:**
+   - Maintained continuous automated synchronization and pushed cleanly to `origin/arena/antigravity`.
