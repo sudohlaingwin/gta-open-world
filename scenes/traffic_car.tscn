@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://scripts/traffic_car.gd" id="1_traffic"]
 
@@ -38,6 +38,24 @@ height = 0.32
 shading_mode = 0
 albedo_color = Color(1.0, 0.95, 0.6, 1)
 
+[sub_resource type="BoxMesh" id="BoxMesh_traffic_bumper"]
+size = Vector3(2.28, 0.24, 0.26)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_black_trim"]
+albedo_color = Color(0.12, 0.12, 0.12, 1)
+roughness = 0.65
+
+[sub_resource type="BoxMesh" id="BoxMesh_traffic_plate"]
+size = Vector3(0.52, 0.20, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red_plate"]
+albedo_color = Color(0.78, 0.12, 0.12, 1)
+roughness = 0.55
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red_taillight"]
+shading_mode = 0
+albedo_color = Color(0.95, 0.12, 0.12, 1)
+
 [node name="AmbientTrafficCar" type="Node3D"]
 script = ExtResource("1_traffic")
 
@@ -47,6 +65,26 @@ script = ExtResource("1_traffic")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.74, 0)
 mesh = SubResource("BoxMesh_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_car_red")
+
+[node name="FrontBumper" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, -2.48)
+mesh = SubResource("BoxMesh_traffic_bumper")
+surface_material_override/0 = SubResource("StandardMaterial3D_black_trim")
+
+[node name="RearBumper" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 2.48)
+mesh = SubResource("BoxMesh_traffic_bumper")
+surface_material_override/0 = SubResource("StandardMaterial3D_black_trim")
+
+[node name="LicensePlateFront" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -2.58)
+mesh = SubResource("BoxMesh_traffic_plate")
+surface_material_override/0 = SubResource("StandardMaterial3D_red_plate")
+
+[node name="LicensePlateBack" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 2.58)
+mesh = SubResource("BoxMesh_traffic_plate")
+surface_material_override/0 = SubResource("StandardMaterial3D_red_plate")
 
 [node name="Cabin" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, -0.25)
@@ -85,6 +123,19 @@ surface_material_override/0 = SubResource("StandardMaterial3D_glow")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.82, 0, 0)
 mesh = SubResource("SphereMesh_headlight")
 surface_material_override/0 = SubResource("StandardMaterial3D_glow")
+
+[node name="Taillights" type="Node3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.74, 2.48)
+
+[node name="TailLampL" type="MeshInstance3D" parent="VisualMesh/Taillights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.82, 0, 0)
+mesh = SubResource("SphereMesh_headlight")
+surface_material_override/0 = SubResource("StandardMaterial3D_red_taillight")
+
+[node name="TailLampR" type="MeshInstance3D" parent="VisualMesh/Taillights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.82, 0, 0)
+mesh = SubResource("SphereMesh_headlight")
+surface_material_override/0 = SubResource("StandardMaterial3D_red_taillight")
 
 [node name="TrafficCarSign" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)

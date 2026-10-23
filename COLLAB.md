@@ -3969,3 +3969,13 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=16` matching 1 ext_resource + 14 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 342: Ambient Traffic Taxi Front/Rear Bumpers, Red Commercial Plates & Taillights Realism
+### Completed by Antigravity:
+1. **Town Traffic Simulation Realism (`scenes/traffic_car.tscn`):**
+   - **Front & Rear Impact Protective Bumpers (`FrontBumper`, `RearBumper`):** Modelled heavy matte black impact bumper bars (`BoxMesh_traffic_bumper`, `StandardMaterial3D_black_trim`, size 2.28m x 0.24m x 0.26m) at both vehicle ends.
+   - **Dual Commercial Red License Plates (`LicensePlateFront`, `LicensePlateBack`):** Modelled iconic Burmese crimson red taxi registration plates (`BoxMesh_traffic_plate`, `StandardMaterial3D_red_plate`, `albedo = Color(0.78, 0.12, 0.12, 1)`) mounted centrally on both bumpers.
+   - **Luminous Rear Taillight Cluster (`Taillights`, `TailLampL`, `TailLampR`):** Installed dual crimson red luminous brake lamps (`SphereMesh_headlight`, `StandardMaterial3D_red_taillight`, `albedo = Color(0.95, 0.12, 0.12, 1)`) enhancing nighttime traffic visibility.
+   - Strictly verified canonical TSCN format (`load_steps=16` matching 1 ext_resource + 14 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
