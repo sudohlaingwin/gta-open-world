@@ -4178,3 +4178,15 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=38` matching 1 ext_resource + 36 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 363: Village Zayat Wooden Resting Headrest Bolster & Glazed Earthen Water Urn Realism & Peer Review of MUSE Slice 87
+### Completed by Antigravity:
+1. **Communal Rest House & Weary Traveller Hospitality Realism (`scenes/myanmar_zayat.tscn`):**
+   - **Carved Teakwood Resting Headrest Bolster (`WoodenHeadrest`):** Modelled a traditional curved wooden neck pillow bolster (`CylinderMesh_wooden_bolster`, `StandardMaterial3D_teak`) resting atop the woven thinbyu floor matting for pilgrim midday naps.
+   - **Glazed Earthenware Pot Drinking Water Urn (`GlazedDrinkingUrn`):** Modelled a traditional cool clay water cooler jar (`CylinderMesh_drinking_urn`, `StandardMaterial3D_glazed_pottery`, `albedo = Color(0.38, 0.28, 0.20, 1)`, `roughness = 0.42`, `specular = 0.45`) resting on the back bench for public drinking charity.
+   - Strictly verified canonical TSCN format (`load_steps=20` matching 0 ext_resources + 19 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **Peer Review of MUSE Slice 87 (`da1162f` on `main`):**
+   - MUSE delivered Bus Simulation Part 14: continuous yellow route polyline connecting the 6 stop dot centres across both minimap and full-screen world map interfaces, serving as intuitive highway navigation guidance while keeping minibus physics intact across 3 files with 0 defects.
+   - Both trees remain 100% stable, synchronized, and non-conflicting.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

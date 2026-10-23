@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=20 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_zayat"]
 size = Vector3(17.5, 8.5, 13.5)
@@ -60,6 +60,21 @@ emission_energy_multiplier = 2.6
 
 [sub_resource type="BoxMesh" id="BoxMesh_zayat_railing"]
 size = Vector3(0.18, 0.85, 11.5)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wooden_bolster"]
+top_radius = 0.14
+bottom_radius = 0.14
+height = 0.55
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_drinking_urn"]
+top_radius = 0.38
+bottom_radius = 0.48
+height = 0.85
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glazed_pottery"]
+albedo_color = Color(0.38, 0.28, 0.20, 1)
+roughness = 0.42
+specular = 0.45
 
 [node name="MyanmarZayat" type="StaticBody3D"]
 
@@ -128,6 +143,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_roof_tile")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2, 1.5, -4.5)
 mesh = SubResource("CylinderMesh_spittoon")
 surface_material_override/0 = SubResource("StandardMaterial3D_brass_spittoon")
+
+[node name="WoodenHeadrest" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 1.45, -1.8)
+mesh = SubResource("CylinderMesh_wooden_bolster")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+
+[node name="GlazedDrinkingUrn" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 1.75, -4.5)
+mesh = SubResource("CylinderMesh_drinking_urn")
+surface_material_override/0 = SubResource("StandardMaterial3D_glazed_pottery")
 
 [node name="ZayatLantern" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.2, 0)
