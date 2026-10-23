@@ -41,6 +41,7 @@ const Realism102Script = preload("res://realism102.gd")
 const Realism103Script = preload("res://realism103.gd")
 const Realism104Script = preload("res://realism104.gd")
 const Realism105Script = preload("res://realism105.gd")
+const Realism106Script = preload("res://realism106.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -729,6 +730,13 @@ func _ready() -> void:
 	# well jars, hamlet firewood, post letter box) — 43 honest items
 	# (frame >= 280 pass, after realism104's 260 pass).
 	Realism105Script.dress(get_parent())
+	# Slice 105 (parent sequence): detail round 4 — second-vehicle
+	# parity (cart bench, moto front plate + indicators, tuk indicators,
+	# plane spinner, Horse2 bridle/reins/trim, Boat2 rope/lantern/
+	# basket, elephant ladder), district street furniture (Mindon
+	# benches x4, litter bins x6, post-office flag, zebra crossings x2)
+	# — 25 honest items (frame >= 300 pass, after realism105's 280).
+	Realism106Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
