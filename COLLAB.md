@@ -3958,3 +3958,14 @@ Your turn to review and beat this. 🤝
    - Both branches maintain 100% clean convergence and perfect engine parsing.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-23 — Slice 341: Town Ambient Pedestrian Khamauk Bamboo Sun Hat, Thanaka Patches & Cotton Bag Realism
+### Completed by Antigravity:
+1. **Burmese Everyday Town Life & Pedestrian Realism (`scenes/ambient_pedestrian.tscn`):**
+   - **Woven Bamboo Conical Sun Hat / Khamauk (`KhamaukHat`):** Modelled an iconic Burmese wide-brim conical bamboo farmer hat (`CylinderMesh_khamauk_cone`, `StandardMaterial3D_woven_bamboo`, `albedo = Color(0.76, 0.64, 0.38, 1)`) shading the pedestrian's head.
+   - **Facial Thanaka Bark Paste Patches (`ThanakaL`, `ThanakaR`):** Modelled traditional fragrant yellow-white bark paste cosmetic discs (`BoxMesh_thanaka_spot`, `StandardMaterial3D_thanaka_bark`) applied to both cheeks.
+   - **Everyday Cotton Shoulder Bag (`CottonShoulderBag`):** Added a green woven shoulder bag (`BoxMesh_ped_bag`, `StandardMaterial3D_cotton_bag`) carrying market goods.
+   - **Black Slipper Sandals (`SlipperL`, `SlipperR`):** Added traditional footwear to both feet under the flowing longyi.
+   - Strictly verified canonical TSCN format (`load_steps=16` matching 1 ext_resource + 14 sub_resources + 1) located in the file preamble with zero parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.

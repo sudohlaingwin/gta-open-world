@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://scripts/pedestrian_ai.gd" id="1_ped"]
 
@@ -28,6 +28,36 @@ albedo_color = Color(0.14, 0.30, 0.54, 1)
 roughness = 0.64
 specular = 0.3
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_khamauk_cone"]
+top_radius = 0.04
+bottom_radius = 0.44
+height = 0.24
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_woven_bamboo"]
+albedo_color = Color(0.76, 0.64, 0.38, 1)
+roughness = 0.88
+
+[sub_resource type="BoxMesh" id="BoxMesh_ped_bag"]
+size = Vector3(0.24, 0.28, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cotton_bag"]
+albedo_color = Color(0.22, 0.52, 0.36, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="BoxMesh_ped_slipper"]
+size = Vector3(0.12, 0.04, 0.25)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_slipper_black"]
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_thanaka_spot"]
+size = Vector3(0.07, 0.07, 0.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thanaka_bark"]
+albedo_color = Color(0.92, 0.88, 0.68, 1)
+roughness = 0.92
+
 [node name="AmbientPedestrian" type="CharacterBody3D"]
 script = ExtResource("1_ped")
 
@@ -41,10 +71,30 @@ shape = SubResource("CapsuleShape3D_ped")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58, 0)
 mesh = SubResource("SphereMesh_head")
 
+[node name="KhamaukHat" type="MeshInstance3D" parent="VisualMesh/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
+mesh = SubResource("CylinderMesh_khamauk_cone")
+surface_material_override/0 = SubResource("StandardMaterial3D_woven_bamboo")
+
+[node name="ThanakaL" type="MeshInstance3D" parent="VisualMesh/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13, -0.02, 0.18)
+mesh = SubResource("BoxMesh_thanaka_spot")
+surface_material_override/0 = SubResource("StandardMaterial3D_thanaka_bark")
+
+[node name="ThanakaR" type="MeshInstance3D" parent="VisualMesh/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13, -0.02, 0.18)
+mesh = SubResource("BoxMesh_thanaka_spot")
+surface_material_override/0 = SubResource("StandardMaterial3D_thanaka_bark")
+
 [node name="Torso" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, 0)
 mesh = SubResource("BoxMesh_torso")
 surface_material_override/0 = SubResource("StandardMaterial3D_taikpon")
+
+[node name="CottonShoulderBag" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.30, 1.05, 0.04)
+mesh = SubResource("BoxMesh_ped_bag")
+surface_material_override/0 = SubResource("StandardMaterial3D_cotton_bag")
 
 [node name="LegL" type="Node3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0.95, 0)
@@ -54,6 +104,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.47, 0)
 mesh = SubResource("CylinderMesh_leg")
 surface_material_override/0 = SubResource("StandardMaterial3D_longyi")
 
+[node name="SlipperL" type="MeshInstance3D" parent="VisualMesh/LegL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.92, 0.04)
+mesh = SubResource("BoxMesh_ped_slipper")
+surface_material_override/0 = SubResource("StandardMaterial3D_slipper_black")
+
 [node name="LegR" type="Node3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16, 0.95, 0)
 
@@ -62,8 +117,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.47, 0)
 mesh = SubResource("CylinderMesh_leg")
 surface_material_override/0 = SubResource("StandardMaterial3D_longyi")
 
+[node name="SlipperR" type="MeshInstance3D" parent="VisualMesh/LegR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.92, 0.04)
+mesh = SubResource("BoxMesh_ped_slipper")
+surface_material_override/0 = SubResource("StandardMaterial3D_slipper_black")
+
 [node name="PedLabel" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15, 0)
 billboard = 1
 text = "မင်းတုန်း မြို့သူမြို့သား 🚶"
 font_size = 28
