@@ -1,0 +1,214 @@
+[gd_scene load_steps=26 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_press_col"]
+size = Vector3(6.8, 4.4, 5.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_weathered_teak"]
+albedo_color = Color(0.32, 0.22, 0.15, 1)
+roughness = 0.88
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pillar"]
+material = SubResource("StandardMaterial3D_weathered_teak")
+top_radius = 0.12
+bottom_radius = 0.14
+height = 3.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thatch_roof"]
+albedo_color = Color(0.55, 0.44, 0.28, 1)
+roughness = 0.95
+
+[sub_resource type="PrismMesh" id="PrismMesh_thatch_roof"]
+material = SubResource("StandardMaterial3D_thatch_roof")
+left_to_right = 0.5
+size = Vector3(6.6, 1.6, 5.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crusher_iron"]
+albedo_color = Color(0.28, 0.28, 0.3, 1)
+metallic = 0.75
+roughness = 0.45
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_roller"]
+material = SubResource("StandardMaterial3D_crusher_iron")
+top_radius = 0.18
+bottom_radius = 0.18
+height = 0.65
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crusher_frame"]
+albedo_color = Color(0.38, 0.26, 0.18, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="BoxMesh_press_frame"]
+material = SubResource("StandardMaterial3D_crusher_frame")
+size = Vector3(1.1, 1.4, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cane_green"]
+albedo_color = Color(0.45, 0.68, 0.22, 1)
+roughness = 0.55
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cane_stalk"]
+material = SubResource("StandardMaterial3D_cane_green")
+top_radius = 0.035
+bottom_radius = 0.04
+height = 2.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cane_pulp"]
+albedo_color = Color(0.72, 0.68, 0.42, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_pulp_pile"]
+material = SubResource("StandardMaterial3D_cane_pulp")
+size = Vector3(1.2, 0.45, 0.9)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_table_wood"]
+albedo_color = Color(0.48, 0.35, 0.22, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="BoxMesh_table"]
+material = SubResource("StandardMaterial3D_table_wood")
+size = Vector3(1.8, 0.75, 0.9)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clay_pot"]
+albedo_color = Color(0.58, 0.32, 0.2, 1)
+roughness = 0.88
+
+[sub_resource type="SphereMesh" id="SphereMesh_clay_pot"]
+material = SubResource("StandardMaterial3D_clay_pot")
+radius = 0.26
+height = 0.52
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lime_green"]
+albedo_color = Color(0.62, 0.82, 0.18, 1)
+roughness = 0.45
+
+[sub_resource type="SphereMesh" id="SphereMesh_lime"]
+material = SubResource("StandardMaterial3D_lime_green")
+radius = 0.06
+height = 0.12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_bench"]
+albedo_color = Color(0.68, 0.58, 0.38, 1)
+roughness = 0.72
+
+[sub_resource type="BoxMesh" id="BoxMesh_bench"]
+material = SubResource("StandardMaterial3D_bamboo_bench")
+size = Vector3(1.8, 0.45, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lantern_brass"]
+albedo_color = Color(0.72, 0.56, 0.24, 1)
+metallic = 0.75
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lantern"]
+material = SubResource("StandardMaterial3D_lantern_brass")
+top_radius = 0.1
+bottom_radius = 0.12
+height = 0.32
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_amber_glow"]
+albedo_color = Color(1, 0.85, 0.4, 0.9)
+emission_enabled = true
+emission = Color(1, 0.75, 0.3, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_amber_glow"]
+material = SubResource("StandardMaterial3D_amber_glow")
+radius = 0.09
+height = 0.18
+
+[node name="RoadsideSugarcanePress" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+shape = SubResource("BoxShape3D_press_col")
+
+[node name="PillarFL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 1.6, 2.2)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="PillarFR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 1.6, 2.2)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="PillarBL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 1.6, -2.2)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="PillarBR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 1.6, -2.2)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="ThatchRoof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 0)
+mesh = SubResource("PrismMesh_thatch_roof")
+
+[node name="CrusherFrame" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.7, -0.4)
+mesh = SubResource("BoxMesh_press_frame")
+
+[node name="Roller1" type="MeshInstance3D" parent="CrusherFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.18, 0.15, 0)
+mesh = SubResource("CylinderMesh_roller")
+
+[node name="Roller2" type="MeshInstance3D" parent="CrusherFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.15, 0)
+mesh = SubResource("CylinderMesh_roller")
+
+[node name="CaneStalkBundle" type="Node3D" parent="."]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, -2.2, 1.1, -1.1)
+
+[node name="Stalk1" type="MeshInstance3D" parent="CaneStalkBundle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08, 0, 0)
+mesh = SubResource("CylinderMesh_cane_stalk")
+
+[node name="Stalk2" type="MeshInstance3D" parent="CaneStalkBundle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08, 0, 0)
+mesh = SubResource("CylinderMesh_cane_stalk")
+
+[node name="Stalk3" type="MeshInstance3D" parent="CaneStalkBundle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
+mesh = SubResource("CylinderMesh_cane_stalk")
+
+[node name="CrushedPulp" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.22, 0.7)
+mesh = SubResource("BoxMesh_pulp_pile")
+
+[node name="JuiceTable" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, -0.4)
+mesh = SubResource("BoxMesh_table")
+
+[node name="ClayPot" type="MeshInstance3D" parent="JuiceTable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.62, 0)
+mesh = SubResource("SphereMesh_clay_pot")
+
+[node name="Lime1" type="MeshInstance3D" parent="JuiceTable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.42, 0.1)
+mesh = SubResource("SphereMesh_lime")
+
+[node name="Lime2" type="MeshInstance3D" parent="JuiceTable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 0.42, -0.1)
+mesh = SubResource("SphereMesh_lime")
+
+[node name="RestBench" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.22, 1.4)
+mesh = SubResource("BoxMesh_bench")
+
+[node name="DuskLantern" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
+mesh = SubResource("CylinderMesh_lantern")
+
+[node name="LanternGlow" type="MeshInstance3D" parent="DuskLantern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("SphereMesh_amber_glow")
+
+[node name="LanternLight" type="OmniLight3D" parent="DuskLantern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+light_color = Color(1, 0.85, 0.45, 1)
+light_energy = 2.6
+omni_range = 15.0
+
+[node name="PressSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 2.4)
+text = "မင်းတုန်း ကျေးလက် သဘာဝ ကြံရည်စခန်း 🎋🥤"
+font_size = 28
+outline_size = 8
+modulate = Color(1, 0.92, 0.45, 1)

@@ -49,6 +49,7 @@ const LOG_RAFT_SCENE = preload("res://scenes/river_log_raft.tscn")
 const WATERMILL_SCENE = preload("res://scenes/bamboo_watermill.tscn")
 const SILK_SHED_SCENE = preload("res://scenes/silk_weaving_shed.tscn")
 const CAVE_SHRINE_SCENE = preload("res://scenes/buddhist_cave_shrine.tscn")
+const SUGARCANE_PRESS_SCENE = preload("res://scenes/roadside_sugarcane_press.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -91,6 +92,7 @@ func _ready() -> void:
 	_generate_bamboo_watermills()
 	_generate_silk_weaving_sheds()
 	_generate_buddhist_cave_shrines()
+	_generate_roadside_sugarcane_presses()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1841,5 +1843,34 @@ func _generate_buddhist_cave_shrines() -> void:
 		shrines_holder.add_child(shrine)
 
 		var sign_node = shrine.get_node_or_null("ShrineSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_roadside_sugarcane_presses() -> void:
+	# Traditional Myanmar roadside wooden gear sugarcane crushers with earthen clay pots and bamboo resting benches
+	var presses_holder = Node3D.new()
+	presses_holder.name = "RoadsideSugarcanePresses"
+	add_child(presses_holder)
+
+	var press_data = [
+		{
+			"pos": Vector3(-140.0, 0.0, 240.0),
+			"rot_y": deg_to_rad(35.0),
+			"sign": "မင်းတုန်း ကျေးလက် သဘာဝ ကြံရည်စခန်း 🎋🥤"
+		},
+		{
+			"pos": Vector3(260.0, 0.0, 80.0),
+			"rot_y": deg_to_rad(-45.0),
+			"sign": "အရှေ့လမ်းဆုံ ရိုးရာကြံရည်နှင့် သံပရာရည်ဆိုင် 🎋🍋"
+		}
+	]
+
+	for data in press_data:
+		var press = SUGARCANE_PRESS_SCENE.instantiate()
+		press.position = data["pos"]
+		press.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		presses_holder.add_child(press)
+
+		var sign_node = press.get_node_or_null("PressSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]
