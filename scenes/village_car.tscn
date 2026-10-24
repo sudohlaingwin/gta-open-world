@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=71 format=3]
+﻿[gd_scene load_steps=77 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -305,6 +305,31 @@ roughness = 0.8
 [sub_resource type="BoxMesh" id="BoxMesh_map_booklet"]
 material = SubResource("StandardMaterial3D_map_paper")
 size = Vector3(0.14, 0.02, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_visor_gray"]
+albedo_color = Color(0.22, 0.22, 0.24, 1)
+roughness = 0.65
+
+[sub_resource type="BoxMesh" id="BoxMesh_sun_visor"]
+material = SubResource("StandardMaterial3D_visor_gray")
+size = Vector3(0.44, 0.16, 0.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_amulet_card"]
+albedo_color = Color(0.92, 0.78, 0.28, 1)
+metallic = 0.4
+roughness = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_amulet_card"]
+material = SubResource("StandardMaterial3D_amulet_card")
+size = Vector3(0.12, 0.08, 0.005)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_toll_card"]
+albedo_color = Color(0.25, 0.55, 0.85, 1)
+roughness = 0.45
+
+[sub_resource type="BoxMesh" id="BoxMesh_toll_card"]
+material = SubResource("StandardMaterial3D_toll_card")
+size = Vector3(0.1, 0.06, 0.005)
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")

@@ -1405,3 +1405,32 @@ func play_glovebox_latch(is_open: bool) -> void:
 	stream.data = data
 	glovebox_player.stream = stream
 	glovebox_player.play()
+
+var sun_visor_player: AudioStreamPlayer = null
+
+func play_sun_visor_flip(is_down: bool) -> void:
+	if is_muted: return
+	if not sun_visor_player:
+		sun_visor_player = AudioStreamPlayer.new()
+		sun_visor_player.name = "SunVisorAudio"
+		sun_visor_player.volume_db = -6.5
+		add_child(sun_visor_player)
+	var sample_hz = 22050
+	var duration = 0.07
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	var snap_freq = 1850.0 if is_down else 2600.0
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var snap = exp(-t * 110.0) * sin(t * snap_freq * TAU) * 0.75
+		var friction = sin(t * 450.0 * TAU) * exp(-t * 55.0) * 0.35
+		var val = snap + friction
+		var int_sample = int(clamp(val, -1.0, 1.0) * 21000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	sun_visor_player.stream = stream
+	sun_visor_player.play()

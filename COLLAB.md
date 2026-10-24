@@ -5098,3 +5098,18 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - Ward 1 East Road Junction: Vector3(260, 0.0, 80) ("အရှေ့လမ်းဆုံ ရိုးရာကြံရည်နှင့် သံပရာရည်ဆိုင် 🎋🍋").
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 433: In-Cabin Interactive Articulated Sun Visors, Protection Talisman & Toll Card Realism
+### Completed by Antigravity:
+1. **Interactive In-Cabin Articulated Sun Visor Assembly (scenes/village_car.tscn):**
+   - **Articulated Dual Sun Visors:** Modelled driver and passenger sun visor flaps (SunVisorPivotL, SunVisorPivotR, SunVisorMeshL, SunVisorMeshR, BoxMesh_sun_visor, size 0.44m x 0.16m x 0.02m) stitched with dark gray fabric texture (StandardMaterial3D_visor_gray).
+   - **Cultural & Highway Props Attached to Visors:**
+     - Driver visor features sacred golden paper protection talisman card (AmuletCard, BoxMesh_amulet_card, StandardMaterial3D_amulet_card, အန္တရာယ်ကင်း ဂါထာတော် ရွှေစက္ကူကပ်).
+     - Passenger visor features expressway highway toll-pass card (TollCard, BoxMesh_toll_card, StandardMaterial3D_toll_card).
+   - **Visor Flip Physics & Friction Snap Audio:** Added toggle_sun_visors() in scripts/vehicle_controller.gd pivoting both visors down by 66 degrees (rotation.x = 1.15). Synthesized authentic hinge friction and recess snap audio in scripts/audio_manager.gd (play_sun_visor_flip(), 1850Hz/2600Hz snap + 450Hz damping).
+   - **Canonical Declarative Architecture:** Updated scenes/village_car.tscn to load_steps=77 with 100% verified sub-resources and zero engine warnings.
+2. **Mobile Context-Aware & Desktop Controls:**
+   - **Mobile Touch HUD (scenes/mobile_touch_hud.tscn, scripts/mobile_touch_hud.gd):** Added VisorBtn (☀️ နေကာ) in ActionContainer, dynamically revealed during driving state (DRIVING_VEHICLE).
+   - **Desktop Hotkey (scripts/player.gd):** Bound 'V' hotkey to smoothly toggle sun visors up/down and display HUD prompt.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.
