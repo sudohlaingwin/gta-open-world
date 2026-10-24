@@ -1705,3 +1705,33 @@ func play_wood_adze_chop() -> void:
 	stream.data = data
 	wood_adze_player.stream = stream
 	wood_adze_player.play()
+var granary_latch_player: AudioStreamPlayer = null
+
+func play_granary_latch() -> void:
+	if is_muted: return
+	if not granary_latch_player:
+		granary_latch_player = AudioStreamPlayer.new()
+		granary_latch_player.name = "GranaryLatchAudio"
+		granary_latch_player.volume_db = -6.5
+		add_child(granary_latch_player)
+	var sample_hz = 22050
+	var duration = 0.35
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Heavy timber hatch creak + brass padlock click
+		var creak = exp(-t * 14.0) * (sin(t * 180.0 * TAU) * 0.6 + sin(t * 360.0 * TAU) * 0.3)
+		var brass = 0.0
+		if t > 0.08 and t < 0.16:
+			brass = exp(-(t - 0.08) * 65.0) * sin((t - 0.08) * 3400.0 * TAU) * 0.35
+		var val = creak + brass
+		var int_sample = int(clamp(val, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	granary_latch_player.stream = stream
+	granary_latch_player.play()

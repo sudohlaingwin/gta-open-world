@@ -56,6 +56,7 @@ const OIL_PRESS_SCENE = preload("res://scenes/traditional_oil_press.tscn")
 const THRESHING_FLOOR_SCENE = preload("res://scenes/village_threshing_floor.tscn")
 const FERRY_LANDING_SCENE = preload("res://scenes/river_ferry_landing.tscn")
 const WHEELWRIGHT_WORKSHOP_SCENE = preload("res://scenes/wheelwright_workshop.tscn")
+const GRANARY_SCENE = preload("res://scenes/traditional_granary.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -105,6 +106,7 @@ func _ready() -> void:
 	_generate_village_threshing_floors()
 	_generate_river_ferry_landings()
 	_generate_wheelwright_workshops()
+	_generate_traditional_granaries()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -2053,5 +2055,33 @@ func _generate_wheelwright_workshops() -> void:
 		workshops_holder.add_child(workshop)
 
 		var sign_node = workshop.get_node_or_null("WorkshopSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+func _generate_traditional_granaries() -> void:
+	# Traditional Myanmar countryside elevated teak timber grain barns & granaries (စပါးကျီကြီးများနှင့် စပါးတိုက်များ)
+	var granaries_holder = Node3D.new()
+	granaries_holder.name = "TraditionalGranaries"
+	add_child(granaries_holder)
+
+	var granary_data = [
+		{
+			"pos": Vector3(-140.0, 0.0, 75.0),
+			"rot_y": deg_to_rad(20.0),
+			"sign": "မင်းတုန်း ကျောင်းတိုက် စပါးကျီကြီး 🌾🏛️"
+		},
+		{
+			"pos": Vector3(80.0, 0.0, -180.0),
+			"rot_y": deg_to_rad(-70.0),
+			"sign": "မြောက်ဘက် လယ်ယာ စပါးတိုက် 🌾✨"
+		}
+	]
+
+	for data in granary_data:
+		var granary = GRANARY_SCENE.instantiate()
+		granary.position = data["pos"]
+		granary.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		granaries_holder.add_child(granary)
+
+		var sign_node = granary.get_node_or_null("GranarySign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

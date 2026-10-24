@@ -5258,3 +5258,17 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - South Cart Trail Junction: Vector3(-80.0, 0.0, 390.0), rot_y = 65 deg ("တောင်ဘက် လှည်းလမ်းဆုံ လှည်းပြင်ဖို 🛞✨").
 4. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+## 2026-10-24 — Slice 443: Traditional Countryside Elevated Teak Granary, Anti-Rodent Collars & Grain Barn Realism
+### Completed by Antigravity:
+1. **Traditional Countryside Elevated Teak Granary Scene (scenes/traditional_granary.tscn):**
+   - **Architectural & Agrarian Heritage Authenticity:** Modelled authentic Upper Myanmar traditional elevated teak timber grain storage granary and barn (မင်းတုန်း ကျေးလက် ရိုးရာ စပါးကျီနှင့် စပါးတိုက် 🌾🏛️). Features 6 massive round teak timber stilt posts (Stilts, CylinderMesh_stilt_pillar, 2.2m tall) each fitted with inverted conical anti-rodent defense collars (Collar1-6, CylinderMesh_anti_rodent_disc, ကြွက်ကာ သစ်သားကွင်းများ) to protect rice reserves from pests, elevated tongue-and-groove plank cabin body (GranaryCabin, BoxMesh_granary_cabin, 5.6m x 2.6m x 4.4m), double-leaf heavy plank entrance doors with antique brass padlock (DoorLeft, DoorRight, Padlock, BoxMesh_padlock), sturdy angled timber ladder with smooth handrails (Ladder, BoxMesh_ladder_stringer, BoxMesh_ladder_rung), stacked burlap grain sacks stored under the stilt shade (Sack1, Sack2, BoxMesh_grain_sack), thatch roof with wide sheltering eaves (GranaryRoof, PrismMesh_granary_roof, 6.6m x 1.8m x 5.4m), bamboo rest bench for the grain master, dusk brass hanging lantern (OmniLight3D, range 10m, energy 2.4), and carved calligraphic signboard (GranarySign, Label3D).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=23), zero runtime monkey patching, zero load errors.
+2. **Procedural Native Audio Synthesis (scripts/audio_manager.gd):**
+   - Implemented play_granary_latch(): heavy weathered teak timber door creak (180Hz/360Hz) paired with antique brass padlock metallic rattle (3400Hz).
+3. **Procedural Map Integration (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_traditional_granaries().
+   - Strategically placed at:
+     - Mindon Monastery Farmstead: Vector3(-140.0, 0.0, 75.0), rot_y = 20 deg ("မင်းတုန်း ကျောင်းတိုက် စပါးကျီကြီး 🌾🏛️").
+     - North Paddy Valley Farm: Vector3(80.0, 0.0, -180.0), rot_y = -70 deg ("မြောက်ဘက် လယ်ယာ စပါးတိုက် 🌾✨").
+4. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.
