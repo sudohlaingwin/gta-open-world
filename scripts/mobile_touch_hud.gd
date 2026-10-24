@@ -519,6 +519,12 @@ func _on_handbrake_pressed() -> void:
 			var msg = player.active_vehicle.toggle_handbrake()
 			show_temporary_prompt(msg, 2.5)
 
+func _on_armrest_pressed() -> void:
+	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
+		if player.active_vehicle.has_method("toggle_console_armrest"):
+			var msg = player.active_vehicle.toggle_console_armrest()
+			show_temporary_prompt(msg, 2.5)
+
 func _on_door_lock_pressed() -> void:
 	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
 		if player.active_vehicle.has_method("toggle_door_locks"):

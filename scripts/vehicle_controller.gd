@@ -69,6 +69,8 @@ var doors_locked: bool = false
 @onready var lock_peg_r: MeshInstance3D = get_node_or_null("DoorInteriorAssembly/DoorInteriorR/LockPegR")
 @onready var handle_pivot_l: Node3D = get_node_or_null("DoorInteriorAssembly/DoorInteriorL/HandlePivotL")
 @onready var handle_pivot_r: Node3D = get_node_or_null("DoorInteriorAssembly/DoorInteriorR/HandlePivotR")
+var armrest_open: bool = false
+@onready var armrest_lid_pivot: Node3D = get_node_or_null("CenterConsoleArmrestAssembly/ArmrestLidPivot")
 var engine_rpm: float = 0.0
 var rev_limiter_cooldown: float = 0.0
 var aroma_diffuser_active: bool = false
@@ -225,6 +227,15 @@ func toggle_glovebox() -> String:
 	if am and am.has_method("play_glovebox_latch"):
 		am.play_glovebox_latch(glovebox_open)
 	return "📦 အံဆွဲ: ဖွင့်ထားသည် (ရိုးရာကွမ်းအစ်နှင့် ခရီးဆောင်မြေပုံ)" if glovebox_open else "📦 အံဆွဲ: ပြန်ပိတ်ထားသည် (Glove Box Closed)"
+
+func toggle_console_armrest() -> String:
+	armrest_open = !armrest_open
+	if armrest_lid_pivot:
+		armrest_lid_pivot.rotation.x = deg_to_rad(65.0) if armrest_open else 0.0
+	var am = get_tree().get_first_node_in_group("audio_manager")
+	if am and am.has_method("play_armrest_latch"):
+		am.play_armrest_latch(armrest_open)
+	return "🧰 လက်တင်အံဆွဲ: ဖွင့်ထားသည် (၁၀၀၀၀ တန် ငွေစက္ကူထပ်နှင့် နေကာမျက်မှန်)" if armrest_open else "🧰 လက်တင်အံဆွဲ: ပြန်ပိတ်ထားသည် (Console Armrest Closed)"
 
 func toggle_door_locks() -> String:
 	doors_locked = !doors_locked

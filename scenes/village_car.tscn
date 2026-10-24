@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=150 format=3]
+﻿[gd_scene load_steps=158 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -693,6 +693,40 @@ material = SubResource("StandardMaterial3D_door_chrome")
 top_radius = 0.006
 bottom_radius = 0.006
 height = 0.032
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kyat_blue"]
+albedo_color = Color(0.25, 0.55, 0.75, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold_wire"]
+albedo_color = Color(0.92, 0.82, 0.32, 1)
+metallic = 0.95
+roughness = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sunglass_lens"]
+albedo_color = Color(0.1, 0.12, 0.15, 1)
+metallic = 0.5
+roughness = 0.1
+specular = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_armrest_base"]
+size = Vector3(0.24, 0.14, 0.34)
+
+[sub_resource type="BoxMesh" id="BoxMesh_armrest_lid"]
+size = Vector3(0.23, 0.045, 0.32)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kyat_stack"]
+material = SubResource("StandardMaterial3D_kyat_blue")
+size = Vector3(0.07, 0.025, 0.14)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sunglass_case"]
+size = Vector3(0.06, 0.035, 0.16)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sunglass_rim"]
+material = SubResource("StandardMaterial3D_sunglass_lens")
+top_radius = 0.024
+bottom_radius = 0.024
+height = 0.003
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
@@ -1495,3 +1529,39 @@ surface_material_override/0 = SubResource("StandardMaterial3D_door_chrome")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.185, 0.12)
 mesh = SubResource("CylinderMesh_lock_peg")
 surface_material_override/0 = SubResource("StandardMaterial3D_door_chrome")
+
+[node name="CenterConsoleArmrestAssembly" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, 0.95, -0.10)
+
+[node name="ConsoleStorageBase" type="MeshInstance3D" parent="CenterConsoleArmrestAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07, 0)
+mesh = SubResource("BoxMesh_armrest_base")
+surface_material_override/0 = SubResource("StandardMaterial3D_dash")
+
+[node name="KyatBanknotesStack" type="MeshInstance3D" parent="CenterConsoleArmrestAssembly"]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -0.04, 0.08, -0.05)
+mesh = SubResource("BoxMesh_kyat_stack")
+
+[node name="SunglassCase" type="MeshInstance3D" parent="CenterConsoleArmrestAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05, 0.08, 0.04)
+mesh = SubResource("BoxMesh_sunglass_case")
+surface_material_override/0 = SubResource("StandardMaterial3D_pedal_rubber")
+
+[node name="AviatorGlasses" type="Node3D" parent="CenterConsoleArmrestAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05, 0.105, 0.04)
+
+[node name="LensL" type="MeshInstance3D" parent="CenterConsoleArmrestAssembly/AviatorGlasses"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.026, 0, 0)
+mesh = SubResource("CylinderMesh_sunglass_rim")
+
+[node name="LensR" type="MeshInstance3D" parent="CenterConsoleArmrestAssembly/AviatorGlasses"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.026, 0, 0)
+mesh = SubResource("CylinderMesh_sunglass_rim")
+
+[node name="ArmrestLidPivot" type="Node3D" parent="CenterConsoleArmrestAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14, 0.15)
+
+[node name="LidCushion" type="MeshInstance3D" parent="CenterConsoleArmrestAssembly/ArmrestLidPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.022, -0.15)
+mesh = SubResource("BoxMesh_armrest_lid")
+surface_material_override/0 = SubResource("StandardMaterial3D_dash")

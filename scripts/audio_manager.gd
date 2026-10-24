@@ -29,6 +29,7 @@ var door_lock_player: AudioStreamPlayer = null
 var door_latch_player: AudioStreamPlayer = null
 var banyan_wind_player: AudioStreamPlayer = null
 var nat_chime_player: AudioStreamPlayer = null
+var armrest_player: AudioStreamPlayer = null
 
 const RADIO_STATIONS: Array[String] = [
 	"📻 ရေဒီယို: ပိတ်ထားသည် (Off)",
@@ -2539,3 +2540,38 @@ func play_nat_shrine_chime() -> void:
 	stream.data = data
 	nat_chime_player.stream = stream
 	nat_chime_player.play()
+
+func play_armrest_latch(is_opening: bool) -> void:
+	if is_muted: return
+	if not armrest_player:
+		armrest_player = AudioStreamPlayer.new()
+		armrest_player.name = "ArmrestLatchAudio"
+		armrest_player.volume_db = -7.0
+		add_child(armrest_player)
+	var sample_hz = 22050
+	var duration = 0.2
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Mechanical armrest spring button latch click + soft leather cushion thud
+		var click_freq = 1650.0 if is_opening else 2400.0
+		var latch_click = sin(t * click_freq * TAU) * exp(-t * 35.0) * 0.45
+		var hinge_squeak = sin(t * 850.0 * TAU) * exp(-t * 22.0) * 0.2
+		var leather_thud = 0.0
+		if is_opening:
+			if t > 0.05:
+				leather_thud = sin((t - 0.05) * 110.0 * TAU) * exp(-(t - 0.05) * 18.0) * 0.25
+		else:
+			if t > 0.03:
+				leather_thud = sin((t - 0.03) * 85.0 * TAU) * exp(-(t - 0.03) * 25.0) * 0.5
+		var val = latch_click + hinge_squeak + leather_thud
+		var int_sample = int(clamp(val, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	armrest_player.stream = stream
+	armrest_player.play()
