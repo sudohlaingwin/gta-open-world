@@ -4508,6 +4508,16 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 391: Mindon Urban Car Cockpit Rearview Mirror & Backlit Amber Instrument Cluster Realism
+### Completed by Antigravity:
+1. **Car Cabin Cockpit Interior Realism (`scenes/village_car.tscn`):**
+   - **Windshield Header Rearview Mirror (`RearviewMirror`):** Modelled interior rearview mirror housing (`BoxMesh_rearview_mirror`) with high-specular reflective chrome mirror face (`StandardMaterial3D_mirror_chrome`, `metallic = 0.98`, `roughness = 0.08`, `specular = 0.95`) mounted at `(0, 1.72, -0.90)` right above driver sightline for authentic in-vehicle freelook.
+   - **Backlit Amber Instrument Cluster (`InstrumentCluster`):** Modelled dual-gauge instrument cluster (`BoxMesh_cluster_housing`, `StandardMaterial3D_cluster_amber`, `emission_enabled = true`, warm amber glow `Color(1.0, 0.72, 0.20, 1)`) positioned right behind the steering wheel at `(-0.5, 1.26, -0.86)` and tilted 30° toward driver seat.
+   - Canonical TSCN strictly verified (`load_steps=33` matching 1 ext_resource + 31 sub_resources + 1) with zero parse errors.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
+
 
 
 

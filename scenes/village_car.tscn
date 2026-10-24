@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3]
+[gd_scene load_steps=33 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -115,6 +115,24 @@ outer_radius = 0.22
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_steering"]
 albedo_color = Color(0.08, 0.08, 0.09, 1)
 roughness = 0.6
+
+[sub_resource type="BoxMesh" id="BoxMesh_rearview_mirror"]
+size = Vector3(0.28, 0.08, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mirror_chrome"]
+albedo_color = Color(0.85, 0.90, 0.95, 1)
+metallic = 0.98
+roughness = 0.08
+specular = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_cluster_housing"]
+size = Vector3(0.42, 0.16, 0.06)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cluster_amber"]
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+emission_enabled = true
+emission = Color(1.0, 0.72, 0.20, 1)
+emission_energy_multiplier = 1.2
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
@@ -285,3 +303,13 @@ surface_material_override/0 = SubResource("StandardMaterial3D_dash")
 transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, -0.5, 1.25, -0.65)
 mesh = SubResource("TorusMesh_steering")
 surface_material_override/0 = SubResource("StandardMaterial3D_steering")
+
+[node name="RearviewMirror" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 1.72, -0.9)
+mesh = SubResource("BoxMesh_rearview_mirror")
+surface_material_override/0 = SubResource("StandardMaterial3D_mirror_chrome")
+
+[node name="InstrumentCluster" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.5, 1.26, -0.86)
+mesh = SubResource("BoxMesh_cluster_housing")
+surface_material_override/0 = SubResource("StandardMaterial3D_cluster_amber")
