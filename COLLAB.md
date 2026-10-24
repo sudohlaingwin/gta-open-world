@@ -5005,3 +5005,17 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
    - **Desktop Hotkey (scripts/player.gd):** Bound 'O' hotkey for desktop player to toggle A/C modes and show temporary prompt.
 5. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 427: Traditional Countryside Bamboo Watermill, Paddy Irrigation Noria Wheel & Splash Realism
+### Completed by Antigravity:
+1. **Scenic Countryside Bamboo Watermill Scene (scenes/bamboo_watermill.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Upper Myanmar river valley bamboo irrigation noria waterwheel (မင်းတုန်းချောင်း ရိုးရာ ရေမောင်း ရေလှည့်ဘီးကြီး). Features mortared river stone footing pier (BoxMesh_stone_pier, 1.6m x 2.2m x 4.8m), heavy forked teak support bents (CylinderMesh_bent_post, 4.2m tall), heavy iron axle hub (CylinderMesh_wheel_axle), massive 5.3m diameter double-rim bamboo noria wheel (TorusMesh_wheel_rim, inner radius 2.45m, outer 2.65m), 6 full-span radial spokes (CylinderMesh_wheel_spoke, 5.1m length), 4 river-torque paddle fins (BoxMesh_paddle_fin), angled hollow bamboo scoop cups (CylinderMesh_scoop_cup) delivering river water to elevated flume, raised slatted wooden irrigation aqueduct flume with clear flowing water (BoxMesh_flume_channel, BoxMesh_flume_water, length 6.5m at 6.2m elevation), thatched operator's observation shed with teak deck (PrismMesh_shed_roof, BoxMesh_shed_deck), dusk amber lantern (OmniLight3D, energy 2.6, range 15m), and authentic calligraphic wooden sign (WatermillSign, Label3D).
+   - **Kinetic Hydraulic Rotation & Audio:** Animated with continuous river-driven rotational physics in scripts/watermill.gd (wheel_pivot.rotate_z(-delta * 0.42)). Synthesized authentic wooden torque creaking and churning water splashes (play_watermill_churn()) in scripts/audio_manager.gd.
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=26), zero runtime monkey patching, zero load errors.
+2. **Procedural Distribution Along Mindon River Intakes (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_bamboo_watermills().
+   - Strategically placed active noria waterwheels at:
+     - Mindon Stream North Irrigation Intake: Vector3(-180, 0.2, 95) ("မင်းတုန်းချောင်း မြောက်ဘက် လယ်ယာရေသွင်း ရေမောင်းဘီး 🌊⚙️").
+     - East River Rapid Irrigation Diversion: Vector3(390, 0.2, -85) ("အရှေ့မြစ်ဆုံ ရိုးရာ ရေမောင်း ရေလှည့်ဘီး 🌾🌊").
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

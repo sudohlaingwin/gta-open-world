@@ -46,6 +46,7 @@ const CABLE_BRIDGE_SCENE = preload("res://scenes/cable_footbridge.tscn")
 const WELL_SWEEP_SCENE = preload("res://scenes/bamboo_well_sweep.tscn")
 const FISHERMAN_HUT_SCENE = preload("res://scenes/fisherman_stilt_hut.tscn")
 const LOG_RAFT_SCENE = preload("res://scenes/river_log_raft.tscn")
+const WATERMILL_SCENE = preload("res://scenes/bamboo_watermill.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -85,6 +86,7 @@ func _ready() -> void:
 	_generate_bamboo_well_sweeps()
 	_generate_fisherman_stilt_huts()
 	_generate_river_log_rafts()
+	_generate_bamboo_watermills()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1748,5 +1750,34 @@ func _generate_river_log_rafts() -> void:
 		rafts_holder.add_child(raft)
 
 		var sign_node = raft.get_node_or_null("RaftSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_bamboo_watermills() -> void:
+	# Traditional Myanmar bamboo irrigation noria waterwheels with stone piers and wooden flumes
+	var mills_holder = Node3D.new()
+	mills_holder.name = "BambooWatermills"
+	add_child(mills_holder)
+
+	var mill_data = [
+		{
+			"pos": Vector3(-180.0, 0.2, 95.0),
+			"rot_y": deg_to_rad(-25.0),
+			"sign": "မင်းတုန်းချောင်း မြောက်ဘက် လယ်ယာရေသွင်း ရေမောင်းဘီး 🌊⚙️"
+		},
+		{
+			"pos": Vector3(390.0, 0.2, -85.0),
+			"rot_y": deg_to_rad(65.0),
+			"sign": "အရှေ့မြစ်ဆုံ ရိုးရာ ရေမောင်း ရေလှည့်ဘီး 🌾🌊"
+		}
+	]
+
+	for data in mill_data:
+		var mill = WATERMILL_SCENE.instantiate()
+		mill.position = data["pos"]
+		mill.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		mills_holder.add_child(mill)
+
+		var sign_node = mill.get_node_or_null("WatermillSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

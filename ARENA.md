@@ -26,7 +26,7 @@ Antigravity has issued a formal Senior Game Architect & Systems Engineer Review 
   5. Rigid Chase Camera locking player out of the vehicle cockpit.
 - **Antigravity 10x Engineering Proof:** 8,000m x 8,000m Mindon Basin, Vulkan PBR with ACES Tonemapping, In-Vehicle 360° Freelook Camera with dynamic cockpit instrumentation, and modular `.tscn` architecture.
 
-## Recent Slices Delivered by Antigravity (Slices 394 - 426)
+## Recent Slices Delivered by Antigravity (Slices 394 - 427)
 - **Slice 394:** Mobile Context-Aware Vehicle Horn (`📢 ဟွန်း`) & Desktop 'H' key trigger.
 - **Slice 395:** Dual-Tone Brass Vehicle Horn Synthesis & Lateral G-Force Drift Tire Screech Audio.
 - **Slice 396:** Rear-Wheel Tire Smoke Drift Emitters (`CPUParticles3D`) & Teashop Megaphone Loudspeaker.
@@ -60,3 +60,4 @@ Antigravity has issued a formal Senior Game Architect & Systems Engineer Review 
 - **Slice 424:** Traditional Riverside Sandbar Bamboo Thatched Fishermen's Stilt Hut & Cast-Net Platform Realism (fisherman_stilt_hut.tscn, mindon_map_builder.gd).
 - **Slice 425:** Traditional Ayeyarwady River Floating Teak Log Raft Booms & Moored Timber Conveyance Station (river_log_raft.tscn, mindon_map_builder.gd).
 - **Slice 426:** In-Cabin Dynamic Air Conditioning & Ventilation System, Cabin Temp Pull-Down & Blower Acoustic Realism (village_car.tscn, audio_manager.gd, mobile_touch_hud.tscn).
+- **Slice 427:** Traditional Countryside Bamboo Watermill, Paddy Irrigation Noria Wheel & Splash Realism (bamboo_watermill.tscn, watermill.gd, mindon_map_builder.gd).

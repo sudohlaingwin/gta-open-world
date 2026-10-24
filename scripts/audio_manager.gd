@@ -1282,3 +1282,32 @@ func play_ac_blower(level: int) -> void:
 			ac_blower_player.play()
 		ac_blower_player.volume_db = -10.5
 		ac_blower_player.pitch_scale = 1.35
+
+var watermill_churn_player: AudioStreamPlayer = null
+
+func play_watermill_churn() -> void:
+	if is_muted: return
+	if not watermill_churn_player:
+		watermill_churn_player = AudioStreamPlayer.new()
+		watermill_churn_player.name = "WatermillChurnAudio"
+		watermill_churn_player.volume_db = -8.5
+		add_child(watermill_churn_player)
+	var sample_hz = 22050
+	var duration = 0.6
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env = sin((t / duration) * PI)
+		var creak = (sin(t * 92.0 * TAU + sin(t * 24.0) * 3.5) * 0.65 + sin(t * 184.0 * TAU) * 0.25)
+		var splash = (sin(t * 310.0 * TAU) * 0.35 + sin(t * 620.0 * TAU) * 0.20)
+		var val = (creak + splash) * env
+		var int_sample = int(clamp(val, -1.0, 1.0) * 19000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	watermill_churn_player.stream = stream
+	watermill_churn_player.play()
