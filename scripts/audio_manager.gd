@@ -23,6 +23,8 @@ var wind_rush_player: AudioStreamPlayer = null
 var radio_tuning_player: AudioStreamPlayer = null
 var throttle_pedal_player: AudioStreamPlayer = null
 var brake_pedal_player: AudioStreamPlayer = null
+var sima_chant_player: AudioStreamPlayer = null
+var deep_gong_player: AudioStreamPlayer = null
 
 const RADIO_STATIONS: Array[String] = [
 	"📻 ရေဒီယို: ပိတ်ထားသည် (Off)",
@@ -2355,3 +2357,61 @@ func play_brake_pedal_press() -> void:
 	stream.data = data
 	brake_pedal_player.stream = stream
 	brake_pedal_player.play()
+
+func play_sima_ordination_chant() -> void:
+	if is_muted: return
+	if not sima_chant_player:
+		sima_chant_player = AudioStreamPlayer.new()
+		sima_chant_player.name = "SimaChantAudio"
+		sima_chant_player.volume_db = -5.0
+		add_child(sima_chant_player)
+	var sample_hz = 22050
+	var duration = 1.8
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Monastic deep resonant Pali chant drone (108Hz / 216Hz) with spinning Kyeezee rotary chime overtone
+		var drone_fundamental = sin(t * 108.0 * TAU) * 0.45 * (1.0 - exp(-t * 8.0)) * exp(-t * 1.2)
+		var drone_harmonic = sin(t * 216.0 * TAU) * 0.28 * exp(-t * 1.5)
+		var spin_mod = sin(t * 9.0 * TAU) * 0.5 + 0.5
+		var kyeezee_spin = (sin(t * 1750.0 * TAU) * 0.22 + sin(t * 2350.0 * TAU) * 0.15) * spin_mod * exp(-t * 2.2)
+		var val = drone_fundamental + drone_harmonic + kyeezee_spin
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23500.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	sima_chant_player.stream = stream
+	sima_chant_player.play()
+
+func play_temple_gong_deep() -> void:
+	if is_muted: return
+	if not deep_gong_player:
+		deep_gong_player = AudioStreamPlayer.new()
+		deep_gong_player.name = "DeepGongAudio"
+		deep_gong_player.volume_db = -4.0
+		add_child(deep_gong_player)
+	var sample_hz = 22050
+	var duration = 2.2
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Massive temple bronze bell gong strike (82Hz) with rich octave harmonics & long warm acoustic decay
+		var strike_transient = sin(t * 780.0 * TAU) * exp(-t * 25.0) * 0.4
+		var low_drone = sin(t * 82.0 * TAU) * exp(-t * 0.95) * 0.65
+		var mid_harmonic = sin(t * 164.0 * TAU) * exp(-t * 1.4) * 0.35
+		var high_sing = sin(t * 328.0 * TAU + sin(t * 3.5) * 0.8) * exp(-t * 1.8) * 0.2
+		var val = strike_transient + low_drone + mid_harmonic + high_sing
+		var int_sample = int(clamp(val, -1.0, 1.0) * 25000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	deep_gong_player.stream = stream
+	deep_gong_player.play()

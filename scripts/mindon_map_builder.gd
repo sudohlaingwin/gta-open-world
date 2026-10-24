@@ -63,6 +63,7 @@ const MONASTERY_BELL_TOWER_SCENE = preload("res://scenes/monastery_bell_tower.ts
 const COVERED_BRIDGE_SCENE = preload("res://scenes/covered_wooden_bridge.tscn")
 const SUGARCANE_WORKS_SCENE = preload("res://scenes/oxen_sugarcane_works.tscn")
 const BAMBOO_TIMBER_BOOM_SCENE = preload("res://scenes/bamboo_timber_boom.tscn")
+const MONASTIC_SIMA_HALL_SCENE = preload("res://scenes/monastic_sima_hall.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -119,6 +120,7 @@ func _ready() -> void:
 	_generate_covered_wooden_bridges()
 	_generate_oxen_sugarcane_works()
 	_generate_bamboo_timber_booms()
+	_generate_monastic_sima_halls()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -2268,5 +2270,34 @@ func _generate_bamboo_timber_booms() -> void:
 		booms_holder.add_child(boom)
 
 		var sign_node = boom.get_node_or_null("RaftSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_monastic_sima_halls() -> void:
+	# Sacred Monastic Sīmā Ordination Halls (မင်းတုန်း မဟာဝိဟာရ ရိုးရာ သိမ်တော်ကြီးများ)
+	var sima_holder = Node3D.new()
+	sima_holder.name = "MonasticSimaHalls"
+	add_child(sima_holder)
+
+	var sima_locations = [
+		{
+			"pos": Vector3(-45.0, 0.0, -110.0),
+			"rot_y": deg_to_rad(0.0),
+			"sign": "မင်းတုန်း မဟာဝိဟာရ ဗဟို သိမ်တော်ကြီး 🛕✨"
+		},
+		{
+			"pos": Vector3(185.0, 8.5, -280.0),
+			"rot_y": deg_to_rad(-25.0),
+			"sign": "ရွှေမင်းတုန်း တောင်ကုန်း သာသနာ့ သိမ်တော် 🛕🌸"
+		}
+	]
+
+	for data in sima_locations:
+		var sima = MONASTIC_SIMA_HALL_SCENE.instantiate()
+		sima.position = data["pos"]
+		sima.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		sima_holder.add_child(sima)
+
+		var sign_node = sima.get_node_or_null("SimaSignboard")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

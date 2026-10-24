@@ -1,0 +1,495 @@
+﻿[gd_scene load_steps=38 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sima_base"]
+size = Vector3(14.4, 1.4, 10.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sima_hall"]
+size = Vector3(13.6, 7.5, 9.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_plinth_stone"]
+albedo_color = Color(0.92, 0.90, 0.86, 1)
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_terracotta_floor"]
+albedo_color = Color(0.68, 0.32, 0.22, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_padauk"]
+albedo_color = Color(0.28, 0.16, 0.11, 1)
+roughness = 0.72
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold_leaf"]
+albedo_color = Color(0.96, 0.84, 0.26, 1)
+metallic = 0.95
+roughness = 0.18
+specular = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_terracotta_roof"]
+albedo_color = Color(0.72, 0.34, 0.22, 1)
+roughness = 0.76
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sandstone_stela"]
+albedo_color = Color(0.84, 0.78, 0.68, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_monk_mat"]
+albedo_color = Color(0.76, 0.68, 0.44, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lotus_pink"]
+albedo_color = Color(0.96, 0.52, 0.70, 1)
+roughness = 0.55
+
+[sub_resource type="BoxMesh" id="BoxMesh_plinth_base"]
+material = SubResource("StandardMaterial3D_plinth_stone")
+size = Vector3(14.0, 1.2, 9.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_plinth_coping"]
+material = SubResource("StandardMaterial3D_plinth_stone")
+size = Vector3(14.4, 0.16, 10.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_stair_step1"]
+material = SubResource("StandardMaterial3D_plinth_stone")
+size = Vector3(3.6, 0.3, 1.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_stair_step2"]
+material = SubResource("StandardMaterial3D_plinth_stone")
+size = Vector3(3.6, 0.3, 0.7)
+
+[sub_resource type="BoxMesh" id="BoxMesh_stair_step3"]
+material = SubResource("StandardMaterial3D_plinth_stone")
+size = Vector3(3.6, 0.3, 0.4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_column"]
+material = SubResource("StandardMaterial3D_dark_padauk")
+top_radius = 0.18
+bottom_radius = 0.22
+height = 5.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor_tiles"]
+material = SubResource("StandardMaterial3D_terracotta_floor")
+size = Vector3(13.6, 0.08, 9.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_architrave_x"]
+material = SubResource("StandardMaterial3D_dark_padauk")
+size = Vector3(13.6, 0.35, 0.35)
+
+[sub_resource type="BoxMesh" id="BoxMesh_architrave_z"]
+material = SubResource("StandardMaterial3D_dark_padauk")
+size = Vector3(0.35, 0.35, 9.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_railing_beam"]
+material = SubResource("StandardMaterial3D_dark_padauk")
+size = Vector3(12.8, 0.12, 0.1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_roof_tier1"]
+material = SubResource("StandardMaterial3D_terracotta_roof")
+size = Vector3(14.8, 2.4, 10.4)
+
+[sub_resource type="PrismMesh" id="PrismMesh_roof_tier2"]
+material = SubResource("StandardMaterial3D_terracotta_roof")
+size = Vector3(10.8, 2.0, 7.6)
+
+[sub_resource type="PrismMesh" id="PrismMesh_roof_tier3"]
+material = SubResource("StandardMaterial3D_terracotta_roof")
+size = Vector3(7.4, 1.8, 5.2)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hti_spire"]
+material = SubResource("StandardMaterial3D_gold_leaf")
+top_radius = 0.04
+bottom_radius = 0.28
+height = 2.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_stela_base"]
+material = SubResource("StandardMaterial3D_sandstone_stela")
+size = Vector3(0.65, 0.25, 0.65)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_stela_pillar"]
+material = SubResource("StandardMaterial3D_sandstone_stela")
+top_radius = 0.16
+bottom_radius = 0.2
+height = 1.35
+
+[sub_resource type="SphereMesh" id="SphereMesh_lotus_bud"]
+material = SubResource("StandardMaterial3D_gold_leaf")
+radius = 0.18
+height = 0.36
+
+[sub_resource type="BoxMesh" id="BoxMesh_altar_pedestal"]
+material = SubResource("StandardMaterial3D_plinth_stone")
+size = Vector3(3.2, 0.9, 1.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_altar_steps"]
+material = SubResource("StandardMaterial3D_plinth_stone")
+size = Vector3(3.4, 0.15, 2.0)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_buddha_body"]
+material = SubResource("StandardMaterial3D_gold_leaf")
+top_radius = 0.32
+bottom_radius = 0.58
+height = 1.3
+
+[sub_resource type="SphereMesh" id="SphereMesh_buddha_head"]
+material = SubResource("StandardMaterial3D_gold_leaf")
+radius = 0.26
+height = 0.52
+
+[sub_resource type="TorusMesh" id="TorusMesh_buddha_halo"]
+material = SubResource("StandardMaterial3D_gold_leaf")
+inner_radius = 0.32
+outer_radius = 0.42
+
+[sub_resource type="BoxMesh" id="BoxMesh_meditation_mat"]
+material = SubResource("StandardMaterial3D_monk_mat")
+size = Vector3(0.9, 0.03, 1.2)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_offering_bowl"]
+material = SubResource("StandardMaterial3D_gold_leaf")
+top_radius = 0.24
+bottom_radius = 0.14
+height = 0.18
+
+[sub_resource type="SphereMesh" id="SphereMesh_lotus_flower"]
+material = SubResource("StandardMaterial3D_lotus_pink")
+radius = 0.12
+height = 0.18
+
+[sub_resource type="BoxMesh" id="BoxMesh_chinthe_plinth"]
+material = SubResource("StandardMaterial3D_plinth_stone")
+size = Vector3(0.7, 0.5, 0.9)
+
+[sub_resource type="BoxMesh" id="BoxMesh_chinthe_body"]
+material = SubResource("StandardMaterial3D_gold_leaf")
+size = Vector3(0.55, 0.85, 0.75)
+
+[node name="MonasticSimaHall" type="StaticBody3D"]
+
+[node name="CollisionBase" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("BoxShape3D_sima_base")
+
+[node name="CollisionHall" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, 0)
+shape = SubResource("BoxShape3D_sima_hall")
+
+[node name="PlinthBase" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("BoxMesh_plinth_base")
+
+[node name="PlinthCoping" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+mesh = SubResource("BoxMesh_plinth_coping")
+
+[node name="FloorTiles" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("BoxMesh_floor_tiles")
+
+[node name="FrontStairs" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.2)
+
+[node name="Step1" type="MeshInstance3D" parent="FrontStairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0.5)
+mesh = SubResource("BoxMesh_stair_step1")
+
+[node name="Step2" type="MeshInstance3D" parent="FrontStairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0.2)
+mesh = SubResource("BoxMesh_stair_step2")
+
+[node name="Step3" type="MeshInstance3D" parent="FrontStairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -0.1)
+mesh = SubResource("BoxMesh_stair_step3")
+
+[node name="GuardianChintheL" type="Node3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -2.4, 0, 5.6)
+
+[node name="Plinth" type="MeshInstance3D" parent="GuardianChintheL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("BoxMesh_chinthe_plinth")
+
+[node name="Body" type="MeshInstance3D" parent="GuardianChintheL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_chinthe_body")
+
+[node name="GuardianChintheR" type="Node3D" parent="."]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 2.4, 0, 5.6)
+
+[node name="Plinth" type="MeshInstance3D" parent="GuardianChintheR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("BoxMesh_chinthe_plinth")
+
+[node name="Body" type="MeshInstance3D" parent="GuardianChintheR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_chinthe_body")
+
+[node name="Columns" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+
+[node name="Col_FL" type="MeshInstance3D" parent="Columns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0, 2.6, 4.0)
+mesh = SubResource("CylinderMesh_column")
+
+[node name="Col_FML" type="MeshInstance3D" parent="Columns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 2.6, 4.0)
+mesh = SubResource("CylinderMesh_column")
+
+[node name="Col_FMR" type="MeshInstance3D" parent="Columns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 2.6, 4.0)
+mesh = SubResource("CylinderMesh_column")
+
+[node name="Col_FR" type="MeshInstance3D" parent="Columns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 2.6, 4.0)
+mesh = SubResource("CylinderMesh_column")
+
+[node name="Col_BL" type="MeshInstance3D" parent="Columns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0, 2.6, -4.0)
+mesh = SubResource("CylinderMesh_column")
+
+[node name="Col_BML" type="MeshInstance3D" parent="Columns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 2.6, -4.0)
+mesh = SubResource("CylinderMesh_column")
+
+[node name="Col_BMR" type="MeshInstance3D" parent="Columns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 2.6, -4.0)
+mesh = SubResource("CylinderMesh_column")
+
+[node name="Col_BR" type="MeshInstance3D" parent="Columns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 2.6, -4.0)
+mesh = SubResource("CylinderMesh_column")
+
+[node name="Architraves" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.4, 0)
+
+[node name="BeamFront" type="MeshInstance3D" parent="Architraves"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.0)
+mesh = SubResource("BoxMesh_architrave_x")
+
+[node name="BeamBack" type="MeshInstance3D" parent="Architraves"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.0)
+mesh = SubResource("BoxMesh_architrave_x")
+
+[node name="BeamLeft" type="MeshInstance3D" parent="Architraves"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0, 0, 0)
+mesh = SubResource("BoxMesh_architrave_z")
+
+[node name="BeamRight" type="MeshInstance3D" parent="Architraves"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 0, 0)
+mesh = SubResource("BoxMesh_architrave_z")
+
+[node name="PyatthatRoof" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.5, 0)
+
+[node name="RoofTier1" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+mesh = SubResource("PrismMesh_roof_tier1")
+
+[node name="RoofTier2" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_roof_tier2")
+
+[node name="RoofTier3" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.0, 0)
+mesh = SubResource("PrismMesh_roof_tier3")
+
+[node name="GoldenHtiFinial" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.1, 0)
+mesh = SubResource("CylinderMesh_hti_spire")
+
+[node name="AltarSanctuary" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, -2.6)
+
+[node name="Steps" type="MeshInstance3D" parent="AltarSanctuary"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0)
+mesh = SubResource("BoxMesh_altar_steps")
+
+[node name="Pedestal" type="MeshInstance3D" parent="AltarSanctuary"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+mesh = SubResource("BoxMesh_altar_pedestal")
+
+[node name="BuddhaBody" type="MeshInstance3D" parent="AltarSanctuary"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+mesh = SubResource("CylinderMesh_buddha_body")
+
+[node name="BuddhaHead" type="MeshInstance3D" parent="AltarSanctuary"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("SphereMesh_buddha_head")
+
+[node name="BuddhaHalo" type="MeshInstance3D" parent="AltarSanctuary"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 2.5, -0.2)
+mesh = SubResource("TorusMesh_buddha_halo")
+
+[node name="HaloLight" type="OmniLight3D" parent="AltarSanctuary"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0.2)
+light_color = Color(1.0, 0.90, 0.55, 1)
+light_energy = 2.8
+omni_range = 8.5
+
+[node name="LotusBowlL" type="MeshInstance3D" parent="AltarSanctuary"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 1.05, 0.4)
+mesh = SubResource("CylinderMesh_offering_bowl")
+
+[node name="LotusL" type="MeshInstance3D" parent="AltarSanctuary"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 1.2, 0.4)
+mesh = SubResource("SphereMesh_lotus_flower")
+
+[node name="LotusBowlR" type="MeshInstance3D" parent="AltarSanctuary"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 1.05, 0.4)
+mesh = SubResource("CylinderMesh_offering_bowl")
+
+[node name="LotusR" type="MeshInstance3D" parent="AltarSanctuary"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 1.2, 0.4)
+mesh = SubResource("SphereMesh_lotus_flower")
+
+[node name="MeditationMats" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.37, 0.8)
+
+[node name="Mat1" type="MeshInstance3D" parent="MeditationMats"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 0)
+mesh = SubResource("BoxMesh_meditation_mat")
+
+[node name="Mat2" type="MeshInstance3D" parent="MeditationMats"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+mesh = SubResource("BoxMesh_meditation_mat")
+
+[node name="Mat3" type="MeshInstance3D" parent="MeditationMats"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+mesh = SubResource("BoxMesh_meditation_mat")
+
+[node name="Mat4" type="MeshInstance3D" parent="MeditationMats"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0, 0)
+mesh = SubResource("BoxMesh_meditation_mat")
+
+[node name="SimaBoundaryStones" type="Node3D" parent="."]
+
+[node name="TheinKyauk_N" type="Node3D" parent="SimaBoundaryStones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.6)
+
+[node name="Base" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_N"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("BoxMesh_stela_base")
+
+[node name="Pillar" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_N"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("CylinderMesh_stela_pillar")
+
+[node name="Lotus" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_N"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+mesh = SubResource("SphereMesh_lotus_bud")
+
+[node name="TheinKyauk_NE" type="Node3D" parent="SimaBoundaryStones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.8, 0, -5.6)
+
+[node name="Base" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_NE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("BoxMesh_stela_base")
+
+[node name="Pillar" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_NE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("CylinderMesh_stela_pillar")
+
+[node name="Lotus" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_NE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+mesh = SubResource("SphereMesh_lotus_bud")
+
+[node name="TheinKyauk_E" type="Node3D" parent="SimaBoundaryStones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.8, 0, 0)
+
+[node name="Base" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_E"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("BoxMesh_stela_base")
+
+[node name="Pillar" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_E"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("CylinderMesh_stela_pillar")
+
+[node name="Lotus" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_E"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+mesh = SubResource("SphereMesh_lotus_bud")
+
+[node name="TheinKyauk_SE" type="Node3D" parent="SimaBoundaryStones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.8, 0, 5.6)
+
+[node name="Base" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_SE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("BoxMesh_stela_base")
+
+[node name="Pillar" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_SE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("CylinderMesh_stela_pillar")
+
+[node name="Lotus" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_SE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+mesh = SubResource("SphereMesh_lotus_bud")
+
+[node name="TheinKyauk_S" type="Node3D" parent="SimaBoundaryStones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.6)
+
+[node name="Base" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_S"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("BoxMesh_stela_base")
+
+[node name="Pillar" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_S"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("CylinderMesh_stela_pillar")
+
+[node name="Lotus" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_S"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+mesh = SubResource("SphereMesh_lotus_bud")
+
+[node name="TheinKyauk_SW" type="Node3D" parent="SimaBoundaryStones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.8, 0, 5.6)
+
+[node name="Base" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_SW"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("BoxMesh_stela_base")
+
+[node name="Pillar" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_SW"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("CylinderMesh_stela_pillar")
+
+[node name="Lotus" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_SW"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+mesh = SubResource("SphereMesh_lotus_bud")
+
+[node name="TheinKyauk_W" type="Node3D" parent="SimaBoundaryStones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.8, 0, 0)
+
+[node name="Base" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_W"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("BoxMesh_stela_base")
+
+[node name="Pillar" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_W"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("CylinderMesh_stela_pillar")
+
+[node name="Lotus" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_W"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+mesh = SubResource("SphereMesh_lotus_bud")
+
+[node name="TheinKyauk_NW" type="Node3D" parent="SimaBoundaryStones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.8, 0, -5.6)
+
+[node name="Base" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_NW"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("BoxMesh_stela_base")
+
+[node name="Pillar" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_NW"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("CylinderMesh_stela_pillar")
+
+[node name="Lotus" type="MeshInstance3D" parent="SimaBoundaryStones/TheinKyauk_NW"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+mesh = SubResource("SphereMesh_lotus_bud")
+
+[node name="SanctuaryLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 0)
+light_color = Color(1.0, 0.94, 0.82, 1)
+light_energy = 2.4
+omni_range = 14.0
+
+[node name="SimaSignboard" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.8, 4.2)
+pixel_size = 0.0032
+text = "မင်းတုန်း မဟာဝိဟာရ ရိုးရာ သိမ်တော်ကြီး 🛕✨"
+font_size = 36
+outline_size = 10
+modulate = Color(1.0, 0.92, 0.45, 1)
