@@ -20,7 +20,7 @@ var is_muted: bool = false
 var horn_player: AudioStreamPlayer = null
 var skid_player: AudioStreamPlayer = null
 var wind_rush_player: AudioStreamPlayer = null
-
+var radio_tuning_player: AudioStreamPlayer = null
 
 const RADIO_STATIONS: Array[String] = [
 	"📻 ရေဒီယို: ပိတ်ထားသည် (Off)",
@@ -31,9 +31,47 @@ const RADIO_STATIONS: Array[String] = [
 ]
 
 func cycle_radio_station() -> String:
+	play_radio_tuning_fx()
 	radio_station_index = (radio_station_index + 1) % RADIO_STATIONS.size()
 	_apply_radio_station()
 	return RADIO_STATIONS[radio_station_index]
+
+func play_radio_tuning_fx() -> void:
+	if is_muted:
+		return
+	if not radio_tuning_player:
+		radio_tuning_player = AudioStreamPlayer.new()
+		radio_tuning_player.name = "RadioTuningAudio"
+		add_child(radio_tuning_player)
+
+	var sample_hz = 22050
+	var duration = 0.32
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+
+	var rng_seed = 12345
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		rng_seed = (rng_seed * 1103515245 + 12345) & 0x7FFFFFFF
+		var white_noise = (float(rng_seed) / 1073741824.0) - 1.0
+
+		var sweep_freq = lerpf(750.0, 2200.0, t / duration)
+		var whistle = sin(t * sweep_freq * TAU) * 0.28
+		var click = exp(-t * 22.0) * 0.65
+
+		var env = sin((t / duration) * PI)
+		var val = (white_noise * 0.45 + whistle + click) * env
+		var int_sample = int(clamp(val, -1.0, 1.0) * 19000.0)
+		data.encode_s16(i * 2, int_sample)
+
+	stream.data = data
+	radio_tuning_player.stream = stream
+	radio_tuning_player.volume_db = -6.0
+	radio_tuning_player.play()
 
 func get_current_radio_station_name() -> String:
 	return RADIO_STATIONS[radio_station_index]

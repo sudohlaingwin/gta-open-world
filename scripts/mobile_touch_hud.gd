@@ -45,6 +45,7 @@ var villagers_talked_count: int = 0
 var pagoda_node: Node3D = null
 var bell_node: Node3D = null
 var teashop_node: Node3D = null
+var prompt_hold_timer: float = 0.0
 
 func _ready() -> void:
 	layer = 15
@@ -252,35 +253,53 @@ func _process(delta: float) -> void:
 			sprint_btn.text = "🏃 အပြေး (SPRINT)"
 
 
+	var prompt_text: String = ""
+	var should_show_prompt: bool = false
+
 	if interact_btn:
 		match player.current_state:
 			player.State.RIDING_MOUNT:
 				interact_btn.text = "🚪 ဆင်းမည် (Dismount)"
-				_show_prompt("စီးနင်းထားသော တိရစ္ဆာန်/လှည်း ပေါ်မှ ဆင်းရန် နှိပ်ပါ")
+				prompt_text = "စီးနင်းထားသော တိရစ္ဆာန်/လှည်း ပေါ်မှ ဆင်းရန် နှိပ်ပါ"
+				should_show_prompt = true
 			player.State.DRIVING_VEHICLE:
 				interact_btn.text = "🚪 ဆင်းမည် (Exit Vehicle)"
-				_show_prompt("ယာဉ်ပေါ်မှ ဆင်းရန် နှိပ်ပါ")
+				prompt_text = "ယာဉ်ပေါ်မှ ဆင်းရန် နှိပ်ပါ"
+				should_show_prompt = true
 			player.State.FLYING_AIRCRAFT:
 				interact_btn.text = "🚪 ဆင်းမည် (Exit Plane)"
-				_show_prompt("လေယာဉ်မှ ဆင်းရန် နှိပ်ပါ")
+				prompt_text = "လေယာဉ်မှ ဆင်းရန် နှိပ်ပါ"
+				should_show_prompt = true
 			player.State.ON_FOOT:
 				if player.nearby_mount:
 					interact_btn.text = "🐂 စီးမည် (Ride Mount)"
-					_show_prompt("နွား/လှည်း/ဆင်/မြင်း တက်စီးရန် နှိပ်ပါ")
+					prompt_text = "နွား/လှည်း/ဆင်/မြင်း တက်စီးရန် နှိပ်ပါ"
+					should_show_prompt = true
 				elif player.nearby_aircraft:
 					interact_btn.text = "✈️ မောင်းမည် (Fly Aircraft)"
-					_show_prompt("လေယာဉ်/ရဟတ်ယာဉ် တက်မောင်းရန် နှိပ်ပါ")
+					prompt_text = "လေယာဉ်/ရဟတ်ယာဉ် တက်မောင်းရန် နှိပ်ပါ"
+					should_show_prompt = true
 				elif player.nearby_vehicle:
 					interact_btn.text = "🚗 မောင်းမည် (Drive Vehicle)"
-					_show_prompt("ကား/ဆိုင်ကယ်/သုံးဘီး/သမ္ဗာန် မောင်းရန် နှိပ်ပါ")
+					prompt_text = "ကား/ဆိုင်ကယ်/သုံးဘီး/သမ္ဗာန် မောင်းရန် နှိပ်ပါ"
+					should_show_prompt = true
 				else:
 					var villager = player._get_nearest_villager(4.0)
 					if villager:
 						interact_btn.text = "💬 စကားပြော (Talk)"
-						_show_prompt("%s နှင့် စကားပြောရန် နှိပ်ပါ" % villager.villager_name)
+						prompt_text = "%s နှင့် စကားပြောရန် နှိပ်ပါ" % villager.villager_name
+						should_show_prompt = true
 					else:
 						interact_btn.text = "⚡ လုပ်ဆောင် (Action)"
-						_hide_prompt()
+						should_show_prompt = false
+
+	if prompt_hold_timer > 0.0:
+		prompt_hold_timer -= delta
+	else:
+		if should_show_prompt:
+			_show_prompt(prompt_text)
+		else:
+			_hide_prompt()
 
 func record_villager_talk() -> void:
 	villagers_talked_count += 1
@@ -308,6 +327,10 @@ func _update_quest_text() -> void:
 	var audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
 	if audio_mgr and audio_mgr.has_method("play_bell_strike"):
 		audio_mgr.play_bell_strike()
+
+func show_temporary_prompt(text: String, duration: float = 3.5) -> void:
+	prompt_hold_timer = duration
+	_show_prompt(text)
 
 func _show_prompt(text: String) -> void:
 	if prompt_banner:
@@ -372,7 +395,7 @@ func _on_view_pressed() -> void:
 		var cam_pivot = player.get_node("CameraPivot")
 		if cam_pivot.has_method("cycle_view_mode"):
 			var mode_name = cam_pivot.cycle_view_mode()
-			_show_prompt("ရှုထောင့်: %s" % mode_name)
+			show_temporary_prompt("ရှုထောင့်: %s" % mode_name, 2.5)
 
 func _on_radio_pressed() -> void:
 	var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
@@ -380,7 +403,7 @@ func _on_radio_pressed() -> void:
 		audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
 	if audio_mgr and audio_mgr.has_method("cycle_radio_station"):
 		var st_name = audio_mgr.cycle_radio_station()
-		_show_prompt(st_name)
+		show_temporary_prompt(st_name, 3.5)
 
 func _on_horn_pressed() -> void:
 	var audio_mgr = get_tree().get_first_node_in_group("audio_manager")

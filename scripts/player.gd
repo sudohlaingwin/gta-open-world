@@ -305,3 +305,11 @@ func _input(event: InputEvent) -> void:
 				var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
 				if audio_mgr and audio_mgr.has_method("play_horn"):
 					audio_mgr.play_horn()
+		elif event.keycode == KEY_R:
+			if current_state != State.ON_FOOT:
+				var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
+				if audio_mgr and audio_mgr.has_method("cycle_radio_station"):
+					var st_name = audio_mgr.cycle_radio_station()
+					var hud = get_tree().get_first_node_in_group("hud")
+					if hud and hud.has_method("show_temporary_prompt"):
+						hud.show_temporary_prompt(st_name, 3.5)
