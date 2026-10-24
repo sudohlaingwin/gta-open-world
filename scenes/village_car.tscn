@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3]
+[gd_scene load_steps=35 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -133,6 +133,17 @@ albedo_color = Color(0.12, 0.12, 0.14, 1)
 emission_enabled = true
 emission = Color(1.0, 0.72, 0.20, 1)
 emission_energy_multiplier = 1.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_smoke"]
+radius = 0.26
+height = 0.52
+radial_segments = 8
+rings = 4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_smoke"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.85, 0.85, 0.85, 0.40)
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
@@ -313,3 +324,38 @@ surface_material_override/0 = SubResource("StandardMaterial3D_mirror_chrome")
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.5, 1.26, -0.86)
 mesh = SubResource("BoxMesh_cluster_housing")
 surface_material_override/0 = SubResource("StandardMaterial3D_cluster_amber")
+
+[node name="TireSmokeL" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 0.18, 1.6)
+emitting = false
+amount = 16
+lifetime = 0.6
+explosiveness = 0.08
+randomness = 0.25
+mesh = SubResource("SphereMesh_smoke")
+material_override = SubResource("StandardMaterial3D_smoke")
+direction = Vector3(0, 0.6, 1)
+spread = 28.0
+gravity = Vector3(0, 1.4, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 4.2
+scale_amount_min = 0.5
+scale_amount_max = 1.6
+
+[node name="TireSmokeR" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15, 0.18, 1.6)
+emitting = false
+amount = 16
+lifetime = 0.6
+explosiveness = 0.08
+randomness = 0.25
+mesh = SubResource("SphereMesh_smoke")
+material_override = SubResource("StandardMaterial3D_smoke")
+direction = Vector3(0, 0.6, 1)
+spread = 28.0
+gravity = Vector3(0, 1.4, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 4.2
+scale_amount_min = 0.5
+scale_amount_max = 1.6
+

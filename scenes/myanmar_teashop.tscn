@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3]
+[gd_scene load_steps=46 format=3]
 
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
@@ -184,6 +184,25 @@ size = Vector3(0.32, 0.22, 0.32)
 albedo_color = Color(0.72, 0.60, 0.40, 1)
 roughness = 0.78
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_speaker_cone"]
+top_radius = 0.28
+bottom_radius = 0.08
+height = 0.42
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_speaker_metal"]
+albedo_color = Color(0.72, 0.74, 0.76, 1)
+metallic = 0.88
+roughness = 0.24
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_speaker_mount"]
+top_radius = 0.04
+bottom_radius = 0.04
+height = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_speaker_iron"]
+albedo_color = Color(0.20, 0.20, 0.22, 1)
+roughness = 0.80
+
 [node name="MyanmarTeaShop" type="StaticBody3D"]
 script = ExtResource("1_lantern")
 
@@ -348,3 +367,17 @@ text = "• လက်ဖက်ရည် (ချိုကျ/ပုံမှန�
 font_size = 36
 outline_size = 10
 modulate = Color(0.95, 0.95, 0.85, 1)
+
+[node name="HornSpeaker" type="Node3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 4.45, 5.75)
+
+[node name="SpeakerCone" type="MeshInstance3D" parent="VisualMesh/HornSpeaker"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.2)
+mesh = SubResource("CylinderMesh_speaker_cone")
+surface_material_override/0 = SubResource("StandardMaterial3D_speaker_metal")
+
+[node name="SpeakerMount" type="MeshInstance3D" parent="VisualMesh/HornSpeaker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.05)
+mesh = SubResource("CylinderMesh_speaker_mount")
+surface_material_override/0 = SubResource("StandardMaterial3D_speaker_iron")
+

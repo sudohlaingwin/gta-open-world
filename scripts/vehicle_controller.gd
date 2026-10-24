@@ -18,6 +18,8 @@ var smoothed_steering: float = 0.0
 @onready var headlight_mesh_r: MeshInstance3D = get_node_or_null("HeadlightR")
 @onready var taillight_mesh_l: MeshInstance3D = get_node_or_null("TaillightL")
 @onready var taillight_mesh_r: MeshInstance3D = get_node_or_null("TaillightR")
+@onready var tire_smoke_l: CPUParticles3D = get_node_or_null("TireSmokeL")
+@onready var tire_smoke_r: CPUParticles3D = get_node_or_null("TireSmokeR")
 
 signal driver_entered(driver)
 signal driver_exited()
@@ -92,11 +94,15 @@ func _physics_process(delta: float) -> void:
 				audio_mgr.play_car_engine(speed_ratio)
 			var lateral_speed = abs(linear_velocity.dot(global_transform.basis.x))
 			var is_skidding = (lateral_speed > 3.8 and forward_speed > 5.0) or (brake > 12.0 and forward_speed > 6.0)
+			if tire_smoke_l: tire_smoke_l.emitting = is_skidding
+			if tire_smoke_r: tire_smoke_r.emitting = is_skidding
 			if is_skidding and audio_mgr.has_method("play_tire_skid"):
 				var skid_intensity = clampf((lateral_speed - 3.0) / 4.0, 0.4, 1.0)
 				audio_mgr.play_tire_skid(skid_intensity)
 
 	else:
+		if tire_smoke_l: tire_smoke_l.emitting = false
+		if tire_smoke_r: tire_smoke_r.emitting = false
 		engine_force = 0.0
 		brake = 10.0
 
@@ -118,6 +124,8 @@ func exit_vehicle() -> void:
 	var driver = current_driver
 	is_driven = false
 	current_driver = null
+	if tire_smoke_l: tire_smoke_l.emitting = false
+	if tire_smoke_r: tire_smoke_r.emitting = false
 	var exit_pos = global_position + (global_transform.basis.x * 2.0)
 	driver.reparent(get_parent())
 	driver.global_position = exit_pos

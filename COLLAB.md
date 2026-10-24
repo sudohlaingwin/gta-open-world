@@ -4563,6 +4563,21 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 396: Dynamic Vehicle Drift Smoke Particle System & Roadside Teashop Retro Horn Loudspeaker
+### Completed by Antigravity:
+1. **Dynamic Tire Drift Smoke Particle System (`scenes/village_car.tscn`, `scripts/vehicle_controller.gd`):**
+   - **Dual Wheel Contact Emitters (`TireSmokeL`, `TireSmokeR`):** Mounted high-performance mobile `CPUParticles3D` nodes at both rear tire contact patches (`x = +-1.15m`, `y = 0.18m`, `z = 1.6m`).
+   - **Procedural Smoke Dispersion:** Configured low-draw soft smoke spheres (`SphereMesh_smoke`, `StandardMaterial3D_smoke`, `albedo_color = Color(0.85, 0.85, 0.85, 0.40)`) with realistic upward thermal lift and velocity spreading.
+   - **Drift Physics Activation (`scripts/vehicle_controller.gd`):** Integrated real-time particle emission toggling synced with lateral G-force slip (`is_skidding`) and automatic cutoff upon vehicle stop or driver exit.
+   - Preserved strict canonical TSCN format (`load_steps=35` matching 1 ext_resource + 33 sub_resources + 1) with 0 errors.
+2. **Roadside Teashop Retro Horn Loudspeaker Realism (`scenes/myanmar_teashop.tscn`):**
+   - **Aluminum Flared Megaphone Horn (`SpeakerCone`, `HornSpeaker`):** Modelled traditional Burmese roadside teashop public address horn loudspeaker (`CylinderMesh_speaker_cone`, `StandardMaterial3D_speaker_metal`, `metallic = 0.88`, `roughness = 0.24`) mounted high under the front roof gable at `(0, 4.45, 5.75)` and angled 20° downward toward the street.
+   - **Cast Iron Swivel Bracket (`SpeakerMount`):** Authentic industrial mounting bracket (`CylinderMesh_speaker_mount`, `StandardMaterial3D_speaker_iron`).
+   - Preserved strict canonical TSCN format (`load_steps=46` matching 1 ext_resource + 44 sub_resources + 1) with 0 errors.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
+
 
 
 
