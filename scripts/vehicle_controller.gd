@@ -21,6 +21,7 @@ var smoothed_steering: float = 0.0
 @onready var tire_smoke_l: CPUParticles3D = get_node_or_null("TireSmokeL")
 @onready var tire_smoke_r: CPUParticles3D = get_node_or_null("TireSmokeR")
 @onready var nitro_flame: CPUParticles3D = get_node_or_null("NitroFlame")
+@onready var body_mesh: MeshInstance3D = get_node_or_null("BodyMesh")
 
 signal driver_entered(driver)
 signal driver_exited()
@@ -71,6 +72,17 @@ func _physics_process(delta: float) -> void:
 		if sw:
 			sw.rotation.z = -smoothed_steering * 3.8
 
+		# Dynamic Chassis Weight Transfer (Roll & Pitch Suspension Reaction)
+		if body_mesh:
+			var target_body_roll = -smoothed_steering * 0.12 * speed_ratio
+			var target_body_pitch = 0.0
+			if brake > 5.0 and forward_speed > 1.0:
+				target_body_pitch = (brake / max_brake_force) * 0.06
+			elif engine_force > 10.0:
+				target_body_pitch = -(engine_force / (max_engine_force * 1.75)) * 0.04
+			body_mesh.rotation.z = lerpf(body_mesh.rotation.z, target_body_roll, delta * 8.0)
+			body_mesh.rotation.x = lerpf(body_mesh.rotation.x, target_body_pitch, delta * 8.0)
+
 		var is_boosting = false
 		if current_driver and current_driver.get("is_sprinting") != null:
 			is_boosting = current_driver.is_sprinting
@@ -112,6 +124,9 @@ func _physics_process(delta: float) -> void:
 				audio_mgr.play_tire_skid(skid_intensity)
 
 	else:
+		if body_mesh:
+			body_mesh.rotation.z = lerpf(body_mesh.rotation.z, 0.0, delta * 6.0)
+			body_mesh.rotation.x = lerpf(body_mesh.rotation.x, 0.0, delta * 6.0)
 		if tire_smoke_l: tire_smoke_l.emitting = false
 		if tire_smoke_r: tire_smoke_r.emitting = false
 		if nitro_flame: nitro_flame.emitting = false

@@ -62,8 +62,13 @@ func _physics_process(delta: float) -> void:
 			rotate_y(-input_dir.x * current_turn_rate * delta)
 			var target_lean = -input_dir.x * deg_to_rad(max_lean_deg) * speed_ratio
 			visual_mesh.rotation.z = lerp_angle(visual_mesh.rotation.z, target_lean, delta * 9.0)
-		else:
-			visual_mesh.rotation.z = lerp_angle(visual_mesh.rotation.z, 0.0, delta * 9.0)
+		# Dynamic Pitch Fork Compression on Braking & Acceleration Squat
+		var target_pitch = 0.0
+		if input_dir.y > 0.1 and current_speed > 1.0:
+			target_pitch = 0.06 # Front fork dip under braking
+		elif input_dir.y < -0.1:
+			target_pitch = -0.04 # Rear squat under acceleration
+		visual_mesh.rotation.x = lerpf(visual_mesh.rotation.x, target_pitch, delta * 8.0)
 
 		# Forward Acceleration, Active Braking & Coasting
 		if input_dir.y < -0.1: # Throttle Forward

@@ -67,6 +67,17 @@ func _physics_process(delta: float) -> void:
 			var target_handle_steer = -input_dir.x * 0.45
 			handlebar_pivot.rotation.y = lerp_angle(handlebar_pivot.rotation.y, target_handle_steer, delta * 12.0)
 
+		# 3-Wheeler Dynamic Body Roll & Brake Dive Reaction
+		if visual_mesh:
+			var target_roll = input_dir.x * 0.12 * speed_ratio
+			var target_pitch = 0.0
+			if input_dir.y > 0.1 and current_speed > 1.0:
+				target_pitch = 0.05
+			elif input_dir.y < -0.1:
+				target_pitch = -0.03
+			visual_mesh.rotation.z = lerpf(visual_mesh.rotation.z, target_roll, delta * 7.0)
+			visual_mesh.rotation.x = lerpf(visual_mesh.rotation.x, target_pitch, delta * 7.0)
+
 		# Progressive Throttle, Active Brake & Coasting
 		if input_dir.y < -0.1: # Forward
 			var power = lerp(0.7, 1.0, 1.0 - speed_ratio * 0.4)

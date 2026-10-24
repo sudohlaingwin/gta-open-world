@@ -4660,6 +4660,19 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 403: Dynamic Vehicle Chassis Weight Transfer, Fork Compression & 3-Wheeler Body Roll Physics
+### Completed by Antigravity:
+1. **Urban Car Chassis Dynamic Weight Transfer (`scripts/vehicle_controller.gd`):**
+   - **Cornering Body Roll:** Calculated speed-dependent body roll (`target_body_roll = -smoothed_steering * 0.12 * speed_ratio`) reacting to centrifugal forces.
+   - **Longitudinal Weight Transfer:** Integrated dynamic front dive under hard braking (`(brake / max_brake_force) * 0.06`) and rear squat under throttle acceleration (`-(engine_force / max) * 0.04`), transforming rigid box handling into organic suspension physics.
+2. **125cc Motorcycle Dynamic Pitch & Fork Compression (`scripts/motorcycle_controller.gd`):**
+   - Simulated realistic hydraulic fork dive (`target_pitch = 0.06`) when braking from speed and rear suspension squat (`target_pitch = -0.04`) during rapid acceleration.
+3. **Mindon 3-Wheeler Tuk-Tuk Dynamic Lean & Dive Physics (`scripts/tuktuk_controller.gd`):**
+   - Modelled the iconic Burmese 3-wheeler tricycle lean (`target_roll = input_dir.x * 0.12 * speed_ratio`) tilting outwards on high-speed turns and nose dip under braking.
+4. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
+
 
 
 
