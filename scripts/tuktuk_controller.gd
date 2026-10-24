@@ -17,6 +17,7 @@ var current_speed: float = 0.0
 @onready var wheel_bl: Node3D = $VisualMesh/WheelBL
 @onready var wheel_br: Node3D = $VisualMesh/WheelBR
 @onready var headlight_beam: SpotLight3D = $VisualMesh.get_node_or_null("HeadlightBeam")
+@onready var handlebar_pivot: Node3D = $VisualMesh.get_node_or_null("HandlebarPivot")
 
 signal driver_entered(driver)
 signal driver_exited()
@@ -60,8 +61,11 @@ func _physics_process(delta: float) -> void:
 		var speed_ratio = clamp(abs(current_speed) / max_speed, 0.0, 1.0)
 		var turn_rate = lerp(low_speed_turn, high_speed_turn, speed_ratio)
 
-		# Steer
+		# Steer body and animate cockpit handlebar
 		rotate_y(-input_dir.x * turn_rate * delta)
+		if handlebar_pivot:
+			var target_handle_steer = -input_dir.x * 0.45
+			handlebar_pivot.rotation.y = lerp_angle(handlebar_pivot.rotation.y, target_handle_steer, delta * 12.0)
 
 		# Progressive Throttle, Active Brake & Coasting
 		if input_dir.y < -0.1: # Forward
@@ -88,6 +92,8 @@ func _physics_process(delta: float) -> void:
 		if wheel_bl: wheel_bl.rotate_object_local(Vector3(0, 1, 0), spin_rate)
 		if wheel_br: wheel_br.rotate_object_local(Vector3(0, 1, 0), spin_rate)
 	else:
+		if handlebar_pivot:
+			handlebar_pivot.rotation.y = lerp_angle(handlebar_pivot.rotation.y, 0.0, delta * 8.0)
 		current_speed = move_toward(current_speed, 0.0, 4.0 * delta)
 		velocity.x = move_toward(velocity.x, 0.0, 4.0 * delta)
 		velocity.z = move_toward(velocity.z, 0.0, 4.0 * delta)

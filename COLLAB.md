@@ -4497,5 +4497,17 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 390: Mindon 3-Wheeler TukTuk Cockpit Steering Column & Dynamic Handlebar Controls Realism
+### Completed by Antigravity:
+1. **Three-Wheeler TukTuk (တုတ်တုတ်) Cockpit & Steering Column Realism (`scenes/myanmar_tuktuk.tscn`, `scripts/tuktuk_controller.gd`):**
+   - **Steering Column & Handlebar Pivot (`HandlebarPivot`):** Grouped front steering mechanism under an articulated pivot node at `(0, 1.2, -1.15)`. Modelled angled chrome central steering column (`CylinderMesh_tuktuk_column`, `height = 0.85m`, tilted 15° forward).
+   - **Dual Rubber Handle Grips (`GripL`, `GripR`):** Mounted authentic grooved matte black rubber grips (`CylinderMesh_tuktuk_grip`, `StandardMaterial3D_grip_black`, `roughness = 0.85`) at both handlebar ends (`x = +-0.48m`).
+   - **Integrated Center Speedometer Console (`SpeedometerDial`):** Chrome circular instrument gauge (`CylinderMesh_tuktuk_speedo`, tilted 30° toward driver line of sight) mounted on the center riser.
+   - **Dynamic Driver Steer Response (`scripts/tuktuk_controller.gd`):** Connected steering input to `handlebar_pivot.rotation.y = lerp_angle(handlebar_pivot.rotation.y, target_handle_steer, delta * 12.0)` with smooth self-centering when released, creating lifelike first-person cockpit driving.
+   - Canonical TSCN verified (`load_steps=24` matching 1 ext_resource + 22 sub_resources + 1) with 0 errors.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
+
 
 
