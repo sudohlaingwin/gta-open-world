@@ -45,6 +45,7 @@ const Realism106Script = preload("res://realism106.gd")
 const Realism107Script = preload("res://realism107.gd")
 const Realism108Script = preload("res://realism108.gd")
 const Realism109Script = preload("res://realism109.gd")
+const Realism110Script = preload("res://realism110.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -762,6 +763,14 @@ func _ready() -> void:
 	# 1842 m away) — 14 honest items (frame >= 360 pass,
 	# after realism108's 340).
 	Realism109Script.dress(get_parent())
+	# Slice 109: core-model rebuild (owner re-point 2026-10-24
+	# 11:14 +07: screenshots prove bus/people/palms/ground/menu
+	# still read as boxes/blobs/sticks/flat) — bus + minibus
+	# stepped bodies sharing the live paint material, arm
+	# separation per figure, village-palm second frond rings +
+	# nuts, ground tufts/patches/tone slabs — (frame >= 380
+	# pass, after realism109's 360).
+	Realism110Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing

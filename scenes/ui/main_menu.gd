@@ -33,6 +33,17 @@ var _pulse: float = 0.0
 var _pulse_button: Button = null
 var _title_label: Label = null
 var _bg_rect: ColorRect = null
+# Slice 109 (owner 2026-10-24 11:14 screenshot: menu reads as
+# flat dark; S61's +-3% pulse + near-black drift do not read
+# on the phone): code-only PUBG-style animated menu scene —
+# sunset gradient sky + pulsing sun + drifting clouds + dark
+# village silhouette row (houses + pagoda) + stronger title
+# animation. Built LAST in _ready so a build failure cannot
+# unwire buttons; inserted behind buttons/panels; old
+# Background rect hidden (drift code left harmless).
+var _title_base_pos: Vector2 = Vector2.ZERO
+var _sun110: Panel = null
+var _clouds110: Array = []
 
 
 func _ready() -> void:
@@ -77,6 +88,100 @@ func _ready() -> void:
 	for b in [continue_button, new_game_button, settings_button, character_button, vehicle_button]:
 		if b != null:
 			b.button_down.connect(_on_menu_button_down.bind(b))
+	_build_scene110()
+
+
+func _build_scene110() -> void:
+	if _bg_rect != null:
+		_bg_rect.visible = false
+	var vs := get_viewport_rect().size
+	if vs.x <= 0.0 or vs.y <= 0.0:
+		vs = Vector2(1280.0, 720.0)
+	var sky := TextureRect.new()
+	sky.name = "Sky110"
+	sky.anchor_left = 0.0
+	sky.anchor_right = 1.0
+	sky.anchor_top = 0.0
+	sky.anchor_bottom = 1.0
+	var grad := Gradient.new()
+	grad.add_point(0.0, Color(1.0, 0.60, 0.24, 1.0))
+	grad.add_point(0.55, Color(1.0, 0.42, 0.54, 1.0))
+	grad.add_point(1.0, Color(0.16, 0.11, 0.31, 1.0))
+	var gt := GradientTexture2D.new()
+	gt.gradient = grad
+	sky.texture = gt
+	add_child(sky)
+	move_child(sky, 0)
+	var sun_style := StyleBoxFlat.new()
+	sun_style.bg_color = Color(1.0, 0.82, 0.40, 1.0)
+	sun_style.set_corner_radius_all(90)
+	_sun110 = Panel.new()
+	_sun110.name = "Sun110"
+	_sun110.add_theme_stylebox_override("panel", sun_style)
+	_sun110.position = Vector2(vs.x * 0.68, vs.y * 0.10)
+	_sun110.size = Vector2(180.0, 180.0)
+	add_child(_sun110)
+	move_child(_sun110, 1)
+	var cloud_defs: Array = [
+		[180.0, 44.0, 0.05, 0.08, 14.0],
+		[140.0, 36.0, 0.45, 0.16, 20.0],
+		[200.0, 48.0, 0.75, 0.05, 10.0],
+		[120.0, 32.0, 0.25, 0.22, 24.0],
+		[160.0, 40.0, 0.60, 0.13, 17.0],
+	]
+	var cstyle := StyleBoxFlat.new()
+	cstyle.bg_color = Color(1.0, 1.0, 1.0, 0.30)
+	cstyle.set_corner_radius_all(18)
+	for ci in range(cloud_defs.size()):
+		var cd: Array = cloud_defs[ci]
+		var cl := Panel.new()
+		cl.name = "Cloud110_%d" % ci
+		cl.add_theme_stylebox_override("panel", cstyle)
+		cl.position = Vector2(vs.x * float(cd[2]), vs.y * float(cd[3]))
+		cl.size = Vector2(float(cd[0]), float(cd[1]))
+		add_child(cl)
+		_clouds110.append([cl, float(cd[4])])
+	var sil := Control.new()
+	sil.name = "Silhouette110"
+	sil.anchor_left = 0.0
+	sil.anchor_right = 1.0
+	sil.anchor_top = 0.0
+	sil.anchor_bottom = 1.0
+	add_child(sil)
+	var house_defs: Array = [
+		[90.0, 80.0, 0.02], [70.0, 110.0, 0.13], [110.0, 65.0, 0.24],
+		[80.0, 95.0, 0.36], [95.0, 120.0, 0.47], [65.0, 70.0, 0.58],
+		[105.0, 85.0, 0.68], [75.0, 100.0, 0.79],
+	]
+	for hi in range(house_defs.size()):
+		var hd: Array = house_defs[hi]
+		var hr := ColorRect.new()
+		hr.name = "House110_%d" % hi
+		hr.color = Color(0.10, 0.06, 0.20, 0.85)
+		hr.position = Vector2(vs.x * float(hd[2]), vs.y - float(hd[1]))
+		hr.size = Vector2(float(hd[0]), float(hd[1]))
+		sil.add_child(hr)
+	var pag_x := vs.x * 0.88
+	var pag_base := ColorRect.new()
+	pag_base.name = "Pagoda110_Base"
+	pag_base.color = Color(0.10, 0.06, 0.20, 0.85)
+	pag_base.position = Vector2(pag_x, vs.y - 70.0)
+	pag_base.size = Vector2(70.0, 70.0)
+	sil.add_child(pag_base)
+	var pag_mid := ColorRect.new()
+	pag_mid.name = "Pagoda110_Mid"
+	pag_mid.color = Color(0.10, 0.06, 0.20, 0.85)
+	pag_mid.position = Vector2(pag_x + 12.5, vs.y - 115.0)
+	pag_mid.size = Vector2(45.0, 45.0)
+	sil.add_child(pag_mid)
+	var pag_spire := ColorRect.new()
+	pag_spire.name = "Pagoda110_Spire"
+	pag_spire.color = Color(0.10, 0.06, 0.20, 0.85)
+	pag_spire.position = Vector2(pag_x + 26.0, vs.y - 170.0)
+	pag_spire.size = Vector2(18.0, 55.0)
+	sil.add_child(pag_spire)
+	if _title_label != null:
+		_title_base_pos = _title_label.position
 
 
 func _on_menu_button_down(b: Button) -> void:
@@ -86,8 +191,22 @@ func _on_menu_button_down(b: Button) -> void:
 func _process(delta: float) -> void:
 	_menu_time += delta
 	if _title_label != null:
-		var sc := 1.0 + 0.03 * sin(_menu_time * 2.0)
+		var sc := 1.0 + 0.04 * sin(_menu_time * 2.0)
 		_title_label.scale = Vector2(sc, sc)
+		_title_label.position = _title_base_pos + Vector2(0.0, 6.0 * sin(_menu_time * 1.2))
+	if _sun110 != null:
+		var ss := 1.0 + 0.03 * sin(_menu_time * 1.0)
+		_sun110.scale = Vector2(ss, ss)
+	if _clouds110.size() > 0:
+		var vw := get_viewport_rect().size.x
+		if vw <= 0.0:
+			vw = 1280.0
+		for ce in _clouds110:
+			var cl: Control = ce[0]
+			var spd: float = ce[1]
+			cl.position.x += spd * delta
+			if cl.position.x > vw:
+				cl.position.x = -cl.size.x
 	if _bg_rect != null:
 		var t := 0.5 + 0.5 * sin(_menu_time * 0.25)
 		_bg_rect.color = Color(0.05, 0.07, 0.14, 1.0).lerp(Color(0.12, 0.08, 0.10, 1.0), t)
