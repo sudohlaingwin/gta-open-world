@@ -4974,3 +4974,16 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - East River Confluence Sandbar Point: Vector3(480, 0.4, -140) ("အရှေ့မြစ်ပြင် ကွေ့ ရိုးရာကွန်ပစ် တံငါစခန်း 🎣🌊").
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 425: Traditional Ayeyarwady River Floating Teak Log Raft Booms & Moored Timber Conveyance Station
+### Completed by Antigravity:
+1. **Scenic River Floating Teak Log Raft Scene (scenes/river_log_raft.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Upper Myanmar river logging culture (ဧရာဝတီ သစ်ဖောင်ဆိပ် ရိုးရာ သစ်လုံးဖောင်ကြီး). Features 7 massive buoyant teak timber logs chained side-by-side (CylinderMesh_teak_log, length 15.2m, radius 0.4m), 3 transverse heavy cross-ties (BoxMesh_cross_tie, 6.4m span), forged iron binder chains (CylinderMesh_chain_binder, metallic 0.85), rafter's raised split-bamboo shelter floor (BoxMesh_shelter_deck, 3.8m x 3.2m), faded blue river-tarp canopy roof (PrismMesh_tarp_roof), 3.4m bamboo flagstaff with crimson river navigation warning flag (BoxMesh_warning_flag), 5.6m steering sweep oar (CylinderMesh_sweep_oar) extending over stern, twin heavy river mooring timber piles (CylinderMesh_mooring_pile, 4.4m tall), nautical dusk amber lantern (OmniLight3D, energy 2.6, range 14m), and authentic river navigation signboard (RaftSign, Label3D).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=22), zero runtime monkey patching, zero load errors.
+2. **Procedural Distribution Along Mindon River Loops & Ayeyarwady Confluence (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_river_log_rafts().
+   - Strategically moored active timber rafts at:
+     - Mindon River Logging Bend: Vector3(-420, -0.2, -60) ("မင်းတုန်းချောင်း သစ်ဖောင်စခန်း 🪵🌲").
+     - Ayeyarwady East River Confluence Logging Boom: Vector3(560, -0.2, 220) ("ဧရာဝတီမြစ်ကွေ့ သစ်ဆိပ် ဖောင်ကွေ့ 🪵🌊").
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

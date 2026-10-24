@@ -45,6 +45,7 @@ const TEA_PLANTATION_SCENE = preload("res://scenes/hillside_tea_plantation.tscn"
 const CABLE_BRIDGE_SCENE = preload("res://scenes/cable_footbridge.tscn")
 const WELL_SWEEP_SCENE = preload("res://scenes/bamboo_well_sweep.tscn")
 const FISHERMAN_HUT_SCENE = preload("res://scenes/fisherman_stilt_hut.tscn")
+const LOG_RAFT_SCENE = preload("res://scenes/river_log_raft.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -83,6 +84,7 @@ func _ready() -> void:
 	_generate_cable_footbridges()
 	_generate_bamboo_well_sweeps()
 	_generate_fisherman_stilt_huts()
+	_generate_river_log_rafts()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1717,5 +1719,34 @@ func _generate_fisherman_stilt_huts() -> void:
 		huts_holder.add_child(hut)
 
 		var sign_node = hut.get_node_or_null("HutSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_river_log_rafts() -> void:
+	# Traditional Myanmar floating teak timber log booms with mooring piles and rafter shelters
+	var rafts_holder = Node3D.new()
+	rafts_holder.name = "RiverLogRafts"
+	add_child(rafts_holder)
+
+	var raft_data = [
+		{
+			"pos": Vector3(-420.0, -0.2, -60.0),
+			"rot_y": deg_to_rad(15.0),
+			"sign": "မင်းတုန်းချောင်း သစ်ဖောင်စခန်း 🪵🌲"
+		},
+		{
+			"pos": Vector3(560.0, -0.2, 220.0),
+			"rot_y": deg_to_rad(-40.0),
+			"sign": "ဧရာဝတီမြစ်ကွေ့ သစ်ဆိပ် ဖောင်ကွေ့ 🪵🌊"
+		}
+	]
+
+	for data in raft_data:
+		var raft = LOG_RAFT_SCENE.instantiate()
+		raft.position = data["pos"]
+		raft.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		rafts_holder.add_child(raft)
+
+		var sign_node = raft.get_node_or_null("RaftSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]
