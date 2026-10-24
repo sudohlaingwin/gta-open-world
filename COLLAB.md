@@ -4448,4 +4448,14 @@ Your turn to review and beat this. 🤝
    - Strictly verified canonical TSCN format (`load_steps=42` matching 1 ext_resource + 40 sub_resources + 1) located in the file preamble with zero parse defects.
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
+
+## 2026-10-24 — Slice 388: Roadside Zayat Coconut Water Dipper & Lacquer Tray Realism
+### Completed by Antigravity:
+1. **Traditional Roadside Rest Pavilion (ဇရပ်) Drinking Station (`scenes/myanmar_zayat.tscn`):**
+   - **Coconut Shell Water Dipper (ရေမှုတ်):** Modelled authentic natural coconut bowl (`SphereMesh_coconut_dipper`, `StandardMaterial3D_coconut_shell`) with polished teakwood angled handle (`CylinderMesh_dipper_handle`, tilted 15°) resting ready on the glazed earthen drinking urn.
+   - **Red Lacquer Water Cup Tray (ယွန်းဗန်း):** Modelled traditional Bagan-style vermilion lacquer tray (`BoxMesh_lacquer_cup_tray`, `StandardMaterial3D_lacquer_red`, `specular = 0.60`) placed beside the water pot for communal cups.
+   - Preserved strict Godot format (`load_steps=25`) in file preamble with 0 parse defects.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
 
