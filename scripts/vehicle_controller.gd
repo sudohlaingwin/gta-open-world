@@ -35,6 +35,7 @@ var smoothed_steering: float = 0.0
 @onready var turn_signal_bl: MeshInstance3D = get_node_or_null("TurnSignalBL")
 @onready var turn_signal_br: MeshInstance3D = get_node_or_null("TurnSignalBR")
 @onready var hazard_display: Label3D = get_node_or_null("HazardBlinkerDisplay")
+@onready var rearview_mirror: MeshInstance3D = get_node_or_null("RearviewMirror")
 
 var prev_throttle_input: float = 0.0
 var prev_boosting: bool = false
@@ -62,6 +63,34 @@ var last_wiper_dir: float = 0.0
 var hazard_active: bool = false
 var blinker_timer: float = 0.0
 var blinker_state: bool = false
+
+var mirror_antiglare_active: bool = false
+const MIRROR_ROT_NORMAL: float = 0.173648
+const MIRROR_ROT_ANTIGLARE: float = 0.244346
+
+func toggle_rearview_mirror() -> String:
+	mirror_antiglare_active = !mirror_antiglare_active
+	if rearview_mirror:
+		if mirror_antiglare_active:
+			rearview_mirror.rotation.x = -MIRROR_ROT_ANTIGLARE
+			var mat = StandardMaterial3D.new()
+			mat.albedo_color = Color(0.18, 0.35, 0.28, 1.0)
+			mat.metallic = 0.92
+			mat.roughness = 0.12
+			mat.specular = 0.65
+			rearview_mirror.set_surface_override_material(0, mat)
+		else:
+			rearview_mirror.rotation.x = -MIRROR_ROT_NORMAL
+			var mat = StandardMaterial3D.new()
+			mat.albedo_color = Color(0.85, 0.90, 0.95, 1.0)
+			mat.metallic = 0.98
+			mat.roughness = 0.08
+			mat.specular = 0.95
+			rearview_mirror.set_surface_override_material(0, mat)
+	var am = get_tree().get_first_node_in_group("audio_manager")
+	if am and am.has_method("play_mirror_flip"):
+		am.play_mirror_flip()
+	return "🪞 နောက်ကြည့်မှန်: ညဘက်အလင်းပြန်ကာစနစ် (Anti-Glare ON)" if mirror_antiglare_active else "🪞 နောက်ကြည့်မှန်: ပုံမှန်အကြည် (Day Mode)"
 
 func toggle_hazard_lights() -> String:
 	hazard_active = !hazard_active

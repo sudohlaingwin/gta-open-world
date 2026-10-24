@@ -82,6 +82,8 @@ func _ready() -> void:
 		window_btn.pressed.connect(_on_window_pressed)
 	if hazard_btn:
 		hazard_btn.pressed.connect(_on_hazard_pressed)
+	if mirror_btn:
+		mirror_btn.pressed.connect(_on_mirror_pressed)
 		
 	if yaw_left_btn:
 		yaw_left_btn.button_down.connect(func(): if player: player.touch_yaw = -1.0)
@@ -259,6 +261,8 @@ func _process(delta: float) -> void:
 		window_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
 	if hazard_btn:
 		hazard_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
+	if mirror_btn:
+		mirror_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
 
 	if sprint_btn:
 		if player.current_state != player.State.ON_FOOT:
@@ -425,6 +429,12 @@ func _on_horn_pressed() -> void:
 		audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
 	if audio_mgr and audio_mgr.has_method("play_horn"):
 		audio_mgr.play_horn()
+
+func _on_mirror_pressed() -> void:
+	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
+		if player.active_vehicle.has_method("toggle_rearview_mirror"):
+			var mode_name = player.active_vehicle.toggle_rearview_mirror()
+			show_temporary_prompt(mode_name, 3.0)
 
 func _on_hazard_pressed() -> void:
 	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:

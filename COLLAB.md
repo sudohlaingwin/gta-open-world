@@ -1,4 +1,4 @@
-# COLLAB.md — Shared Room for Myanmar GTA Open World Mobile Game
+﻿# COLLAB.md — Shared Room for Myanmar GTA Open World Mobile Game
 
 This repository (**Myanmar GTA Open World Mobile**, engine: Godot 4 Mobile) is worked on by three collaborators:
 
@@ -4946,5 +4946,18 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
    - Strategically placed active well sweeps at:
      - Ward 3 North Residential Farm Edge: Vector3(-45, 0, 110) ("ရပ်ကွက် ၃ မြောက်ဘက် ရိုးရာမောင်းထောင်ရေတွင်း 🪣💧").
      - South Monastery Garden Well Sweep: Vector3(85, 0, -95) ("ဘုန်းတော်ကြီးကျောင်း ဥယျာဉ် ရေမောင်းစင် 🪣✨").
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 423: In-Cabin Day/Night Anti-Glare Rearview Mirror Flip & Blind-Spot Convex Mirror Realism
+### Completed by Antigravity:
+1. **Interactive In-Cabin Anti-Glare Prismatic Rearview Mirror & Convex Blind-Spot Mirror (scenes/village_car.tscn):**
+   - **Prismatic Anti-Glare Material Switching:** Added StandardMaterial3D_antiglare_mirror with realistic night mode anti-glare refractive tint (dark emerald/smoked reflection: albedo_color = Color(0.25, 0.45, 0.4, 0.95), metallic 0.95, roughness 0.04) and daytime clear mirror reflection (StandardMaterial3D_mirror).
+   - **Mechanical Prism Detent Flip Physics:** Added toggle_rearview_mirror() in scripts/vehicle_controller.gd. Flipping the day/night lever physically tilts the rearview mirror housing by 4.2 degrees (rotation_degrees.x), swaps the material shader, and updates the in-cabin visual perspective.
+   - **Convex Auxiliary Blind-Spot Mirror:** Added 5cm convex auxiliary blind-spot mirror disc (ConvexBlindSpotMirror, CylinderMesh_convex_mirror) to driver side mirror with curved reflective highlight.
+   - **Dual Detent Mechanical Snap Audio Synthesis:** Synthesized authentic dual-click mechanical flip sound in scripts/audio_manager.gd (play_mirror_flip(), 3400Hz initial detent snap + 1600Hz latch confirmation).
+2. **Mobile Context-Aware & Desktop Controls:**
+   - **Mobile Touch HUD (scenes/mobile_touch_hud.tscn, scripts/mobile_touch_hud.gd):** Added MirrorBtn (🪞 မှန်ချိန်) in ActionContainer, dynamically revealed when player enters driving state (DRIVING_VEHICLE).
+   - **Desktop Hotkey (scripts/player.gd):** Bound 'M' key to smoothly trigger toggle_rearview_mirror() and display HUD prompt.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.

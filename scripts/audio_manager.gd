@@ -1199,3 +1199,38 @@ func play_turn_signal_tick(is_on: bool) -> void:
 	turn_signal_player.stream = stream
 	turn_signal_player.volume_db = -8.0
 	turn_signal_player.play()
+
+var mirror_flip_player: AudioStreamPlayer = null
+
+func play_mirror_flip() -> void:
+	if is_muted:
+		return
+	if not mirror_flip_player:
+		mirror_flip_player = AudioStreamPlayer.new()
+		mirror_flip_player.name = "MirrorFlipAudio"
+		add_child(mirror_flip_player)
+
+	var sample_hz = 22050
+	var duration = 0.06
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Dual mechanical detent snap (3400Hz + 1600Hz)
+		var snap1 = exp(-t * 110.0) * sin(t * 3400.0 * TAU) * 0.7
+		var snap2 = 0.0
+		if t > 0.018:
+			snap2 = exp(-(t - 0.018) * 95.0) * sin((t - 0.018) * 1600.0 * TAU) * 0.5
+		var val = snap1 + snap2
+		var int_sample = int(clamp(val, -1.0, 1.0) * 19000.0)
+		data.encode_s16(i * 2, int_sample)
+
+	stream.data = data
+	mirror_flip_player.stream = stream
+	mirror_flip_player.volume_db = -5.0
+	mirror_flip_player.play()
