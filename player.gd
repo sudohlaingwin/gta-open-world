@@ -52,6 +52,7 @@ const Realism113Script = preload("res://realism113.gd")
 const Realism114Script = preload("res://realism114.gd")
 const Realism115Script = preload("res://realism115.gd")
 const Realism116Script = preload("res://realism116.gd")
+const Realism117Script = preload("res://realism117.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -807,6 +808,12 @@ func _ready() -> void:
 	# LongTraffic prefix) + traffic drivers for all 9 traffic
 	# vehicles (frame >= 520 pass, after realism115's 500).
 	Realism116Script.dress(get_parent())
+	# Slice 116: waiting + alighted bus-stop passenger figures
+	# (cylinder + ball since S74/S75) gain arms, tapered
+	# longyi, hair cap, bold waist band — additive only,
+	# Body74/Head74 untouched, seated riders mirror-hidden
+	# (frame >= 540 pass + 1.0 s re-scan, after realism116's 520).
+	Realism117Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
