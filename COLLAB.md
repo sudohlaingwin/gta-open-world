@@ -5179,3 +5179,15 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - South Agricultural Plains Trail: Vector3(180.0, 0.0, 360.0), rot_y = -55 deg ("တောင်ဘက် စိုက်ခင်း ရိုးရာ မြေပဲဆီဆုံကြီး 🥜🛢️").
 4. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+## 2026-10-24 — Slice 438: In-Cabin Center Cup Holder, Myanmar Teashop Iced Tea & Straw Sip Realism
+### Completed by Antigravity:
+1. **Interactive In-Cabin Cup Holder & Myanmar Teashop Iced Tea (scenes/village_car.tscn):**
+   - **Dashboard Center Cup Holder Model:** Modelled circular recessed cup holder well (CenterCupHolder, CylinderMesh_cupholder_recess, StandardMaterial3D_console_plastic) located on the center console between the front bucket seats.
+   - **Authentic Teashop Takeaway Iced Tea Cup:** Modelled authentic takeaway iced milk tea plastic cup (TakeawayTeaCup, CylinderMesh_cup_body, StandardMaterial3D_cup_plastic with translucent plastic sheen), containing golden Myanmar milk tea liquid (TeaLiquid, CylinderMesh_tea_liquid, StandardMaterial3D_iced_tea), fitted translucent cup lid (CupLid, CylinderMesh_cup_lid), and angled red beverage straw (BeverageStraw, CylinderMesh_straw, StandardMaterial3D_straw_red).
+   - **Interactive Straw Sip Action & Stamina Recovery:** Implemented sip_iced_tea() in scripts/vehicle_controller.gd allowing drivers to take a chilled sip of Myanmar milk tea while cruising, recovering +25 stamina. Synthesized authentic straw suction slurp and ice cube clinking audio in scripts/audio_manager.gd (play_straw_sip(), 2100Hz suction slurp + 920Hz liquid gurgle + 3900Hz ice cube clink).
+   - **Canonical Declarative Architecture:** Updated scenes/village_car.tscn to load_steps=95 with 100% verified sub-resources and zero engine warnings.
+2. **Mobile Context-Aware & Desktop Controls:**
+   - **Mobile Touch HUD (scenes/mobile_touch_hud.tscn, scripts/mobile_touch_hud.gd):** Added TeaBtn (🥤 ရေနွေး/အေး) in ActionContainer, dynamically revealed during driving state (DRIVING_VEHICLE).
+   - **Desktop Hotkey (scripts/player.gd):** Bound 'T' hotkey to sip iced tea and display Burmese prompt.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

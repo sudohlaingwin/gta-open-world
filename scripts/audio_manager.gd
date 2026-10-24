@@ -1558,3 +1558,33 @@ func play_oil_press_creak() -> void:
 	stream.data = data
 	oil_press_player.stream = stream
 	oil_press_player.play()
+var tea_sip_player: AudioStreamPlayer = null
+
+func play_straw_sip() -> void:
+	if is_muted: return
+	if not tea_sip_player:
+		tea_sip_player = AudioStreamPlayer.new()
+		tea_sip_player.name = "TeaStrawSipAudio"
+		tea_sip_player.volume_db = -6.5
+		add_child(tea_sip_player)
+	var sample_hz = 22050
+	var duration = 0.38
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Suction straw slurp + liquid bubble gurgle + ice cube clink
+		var slurp = exp(-t * 12.0) * (sin(t * 2100.0 * TAU + sin(t * 45.0) * 3.0) * 0.45 + sin(t * 920.0 * TAU) * 0.35)
+		var clink = 0.0
+		if t > 0.18 and t < 0.25:
+			clink = exp(-(t - 0.18) * 85.0) * sin((t - 0.18) * 3900.0 * TAU) * 0.3
+		var val = slurp + clink
+		var int_sample = int(clamp(val, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	tea_sip_player.stream = stream
+	tea_sip_player.play()

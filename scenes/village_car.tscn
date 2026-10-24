@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=85 format=3]
+﻿[gd_scene load_steps=95 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -375,6 +375,58 @@ emission_energy_multiplier = 0.8
 material = SubResource("StandardMaterial3D_aroma_mist")
 radius = 0.015
 height = 0.03
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_console_plastic"]
+albedo_color = Color(0.18, 0.18, 0.2, 1)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cupholder_recess"]
+material = SubResource("StandardMaterial3D_console_plastic")
+top_radius = 0.048
+bottom_radius = 0.045
+height = 0.065
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cup_plastic"]
+transparency = 1
+albedo_color = Color(0.92, 0.95, 0.98, 0.5)
+roughness = 0.08
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cup_body"]
+material = SubResource("StandardMaterial3D_cup_plastic")
+top_radius = 0.042
+bottom_radius = 0.032
+height = 0.12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iced_tea"]
+albedo_color = Color(0.82, 0.52, 0.25, 0.95)
+roughness = 0.15
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tea_liquid"]
+material = SubResource("StandardMaterial3D_iced_tea")
+top_radius = 0.04
+bottom_radius = 0.033
+height = 0.09
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_straw_red"]
+albedo_color = Color(0.92, 0.15, 0.15, 1)
+roughness = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_straw"]
+material = SubResource("StandardMaterial3D_straw_red")
+top_radius = 0.004
+bottom_radius = 0.004
+height = 0.16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cup_lid"]
+transparency = 1
+albedo_color = Color(0.95, 0.95, 0.95, 0.6)
+roughness = 0.1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cup_lid"]
+material = SubResource("StandardMaterial3D_cup_lid")
+top_radius = 0.044
+bottom_radius = 0.044
+height = 0.012
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
@@ -856,3 +908,22 @@ initial_velocity_min = 0.15
 initial_velocity_max = 0.45
 scale_amount_min = 0.5
 scale_amount_max = 1.4
+[node name="CenterCupHolder" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.96, -0.32)
+mesh = SubResource("CylinderMesh_cupholder_recess")
+
+[node name="TakeawayTeaCup" type="MeshInstance3D" parent="CenterCupHolder"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+mesh = SubResource("CylinderMesh_cup_body")
+
+[node name="TeaLiquid" type="MeshInstance3D" parent="CenterCupHolder/TakeawayTeaCup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.015, 0)
+mesh = SubResource("CylinderMesh_tea_liquid")
+
+[node name="CupLid" type="MeshInstance3D" parent="CenterCupHolder/TakeawayTeaCup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0)
+mesh = SubResource("CylinderMesh_cup_lid")
+
+[node name="BeverageStraw" type="MeshInstance3D" parent="CenterCupHolder/TakeawayTeaCup"]
+transform = Transform3D(0.985, -0.174, 0, 0.174, 0.985, 0, 0, 0, 1, 0.015, 0.08, 0)
+mesh = SubResource("CylinderMesh_straw")

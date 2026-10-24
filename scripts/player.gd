@@ -383,3 +383,10 @@ func _input(event: InputEvent) -> void:
 					var hud = get_tree().get_first_node_in_group("hud")
 					if hud and hud.has_method("show_temporary_prompt"):
 						hud.show_temporary_prompt(aroma_msg, 2.5)
+		elif event.keycode == KEY_T:
+			if current_state == State.DRIVING_VEHICLE and active_vehicle:
+				if active_vehicle.has_method("sip_iced_tea"):
+					var tea_msg = active_vehicle.sip_iced_tea()
+					var hud = get_tree().get_first_node_in_group("hud")
+					if hud and hud.has_method("show_temporary_prompt"):
+						hud.show_temporary_prompt(tea_msg, 2.5)

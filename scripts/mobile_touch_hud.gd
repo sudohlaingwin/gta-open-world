@@ -19,6 +19,7 @@
 @onready var glove_btn: Button = $ActionContainer.get_node_or_null("GloveBtn")
 @onready var visor_btn: Button = $ActionContainer.get_node_or_null("VisorBtn")
 @onready var aroma_btn: Button = $ActionContainer.get_node_or_null("AromaBtn")
+@onready var tea_btn: Button = $ActionContainer.get_node_or_null("TeaBtn")
 @onready var quest_banner: Label = $TopCenterHUD/QuestBanner
 @onready var player_icon: ColorRect = $TopLeftHUD/MiniMap/PlayerIcon
 @onready var pagoda_icon: ColorRect = $TopLeftHUD/MiniMap/PagodaIcon
@@ -101,6 +102,8 @@ func _ready() -> void:
 		visor_btn.pressed.connect(_on_visor_pressed)
 	if aroma_btn:
 		aroma_btn.pressed.connect(_on_aroma_pressed)
+	if tea_btn:
+		tea_btn.pressed.connect(_on_tea_pressed)
 		
 	if yaw_left_btn:
 		yaw_left_btn.button_down.connect(func(): if player: player.touch_yaw = -1.0)
@@ -290,6 +293,8 @@ func _process(delta: float) -> void:
 		visor_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
 	if aroma_btn:
 		aroma_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
+	if tea_btn:
+		tea_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
 
 	if sprint_btn:
 		if player.current_state != player.State.ON_FOOT:
@@ -486,6 +491,12 @@ func _on_visor_pressed() -> void:
 		if player.active_vehicle.has_method("toggle_sun_visors"):
 			var mode_name = player.active_vehicle.toggle_sun_visors()
 			show_temporary_prompt(mode_name, 3.0)
+
+func _on_tea_pressed() -> void:
+	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
+		if player.active_vehicle.has_method("sip_iced_tea"):
+			var msg = player.active_vehicle.sip_iced_tea()
+			show_temporary_prompt(msg, 3.0)
 
 func _on_aroma_pressed() -> void:
 	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:

@@ -84,6 +84,14 @@ var mirror_antiglare_active: bool = false
 const MIRROR_ROT_NORMAL: float = 0.173648
 const MIRROR_ROT_ANTIGLARE: float = 0.244346
 
+func sip_iced_tea() -> String:
+	var am = get_tree().get_first_node_in_group("audio_manager")
+	if am and am.has_method("play_straw_sip"):
+		am.play_straw_sip()
+	if current_driver and current_driver.get("stamina") != null:
+		current_driver.stamina = minf(current_driver.stamina + 25.0, 100.0)
+	return "🥤 ရိုးရာ လက်ဖက်ရည် အအေးခွက်မှ တစ်ငုံ အရသာခံ သောက်သုံးလိုက်ပါသည် (အမောပြေ စွမ်းအင်တိုး)"
+
 func toggle_aroma_diffuser() -> String:
 	aroma_diffuser_active = !aroma_diffuser_active
 	if aroma_particles:
