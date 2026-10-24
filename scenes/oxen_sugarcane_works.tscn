@@ -1,0 +1,282 @@
+﻿[gd_scene load_steps=32 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mill_col"]
+size = Vector3(6.8, 2.6, 6.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hearth_col"]
+size = Vector3(3.6, 1.8, 3.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hardwood_press"]
+albedo_color = Color(0.32, 0.2, 0.12, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_mill_base"]
+material = SubResource("StandardMaterial3D_hardwood_press")
+size = Vector3(2.4, 0.45, 1.8)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_press_roller"]
+material = SubResource("StandardMaterial3D_hardwood_press")
+top_radius = 0.28
+bottom_radius = 0.28
+height = 1.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iron_cauldron"]
+albedo_color = Color(0.2, 0.2, 0.22, 1)
+metallic = 0.85
+roughness = 0.45
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_roller_journal"]
+material = SubResource("StandardMaterial3D_iron_cauldron")
+top_radius = 0.06
+bottom_radius = 0.06
+height = 1.45
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sweep_pole"]
+material = SubResource("StandardMaterial3D_hardwood_press")
+top_radius = 0.08
+bottom_radius = 0.14
+height = 5.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_yoke_beam"]
+material = SubResource("StandardMaterial3D_hardwood_press")
+size = Vector3(1.6, 0.12, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hearth_stone"]
+albedo_color = Color(0.48, 0.45, 0.42, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hearth_furnace"]
+material = SubResource("StandardMaterial3D_hearth_stone")
+top_radius = 1.3
+bottom_radius = 1.45
+height = 0.85
+
+[sub_resource type="SphereMesh" id="SphereMesh_boiling_cauldron"]
+material = SubResource("StandardMaterial3D_iron_cauldron")
+radius = 1.15
+height = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jaggery_syrup"]
+albedo_color = Color(0.48, 0.24, 0.08, 1)
+roughness = 0.15
+specular = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_syrup_surface"]
+material = SubResource("StandardMaterial3D_jaggery_syrup")
+top_radius = 1.08
+bottom_radius = 1.08
+height = 0.06
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_syrup_mist"]
+transparency = 1
+albedo_color = Color(1, 0.9, 0.75, 0.45)
+roughness = 0.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_syrup_vapor"]
+material = SubResource("StandardMaterial3D_syrup_mist")
+radius = 0.35
+height = 0.7
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sugarcane_stalk"]
+albedo_color = Color(0.68, 0.72, 0.35, 1)
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sugarcane_stalk"]
+material = SubResource("StandardMaterial3D_sugarcane_stalk")
+top_radius = 0.03
+bottom_radius = 0.035
+height = 2.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_firewood_bark"]
+albedo_color = Color(0.38, 0.26, 0.18, 1)
+roughness = 0.88
+
+[sub_resource type="BoxMesh" id="BoxMesh_firewood_stack"]
+material = SubResource("StandardMaterial3D_firewood_bark")
+size = Vector3(2.2, 0.9, 1.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_basket"]
+albedo_color = Color(0.72, 0.58, 0.34, 1)
+roughness = 0.75
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_woven_basket"]
+material = SubResource("StandardMaterial3D_bamboo_basket")
+top_radius = 0.38
+bottom_radius = 0.28
+height = 0.55
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_shelter_post"]
+material = SubResource("StandardMaterial3D_hardwood_press")
+top_radius = 0.1
+bottom_radius = 0.12
+height = 3.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thatch_roof"]
+albedo_color = Color(0.62, 0.5, 0.3, 1)
+roughness = 0.92
+
+[sub_resource type="PrismMesh" id="PrismMesh_shelter_roof"]
+material = SubResource("StandardMaterial3D_thatch_roof")
+left_to_right = 0.5
+size = Vector3(8.4, 1.8, 6.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rest_bench"]
+material = SubResource("StandardMaterial3D_bamboo_basket")
+size = Vector3(2.4, 0.45, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brass_lantern"]
+albedo_color = Color(0.85, 0.72, 0.25, 1)
+metallic = 0.9
+roughness = 0.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_lantern_housing"]
+material = SubResource("StandardMaterial3D_brass_lantern")
+size = Vector3(0.22, 0.36, 0.22)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sign_post"]
+material = SubResource("StandardMaterial3D_hardwood_press")
+size = Vector3(0.12, 1.8, 0.12)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold_sign"]
+albedo_color = Color(0.95, 0.82, 0.25, 1)
+roughness = 0.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_sign_board"]
+material = SubResource("StandardMaterial3D_gold_sign")
+size = Vector3(2.4, 0.52, 0.06)
+
+[node name="OxenSugarcaneWorks" type="StaticBody3D"]
+
+[node name="MillCol" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+shape = SubResource("BoxShape3D_mill_col")
+
+[node name="HearthCol" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 0.9, 0)
+shape = SubResource("BoxShape3D_hearth_col")
+
+[node name="MillBase" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
+mesh = SubResource("BoxMesh_mill_base")
+
+[node name="Roller1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.9, 0)
+mesh = SubResource("CylinderMesh_press_roller")
+
+[node name="Roller2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.9, 0)
+mesh = SubResource("CylinderMesh_press_roller")
+
+[node name="RollerShaftMain" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+mesh = SubResource("CylinderMesh_roller_journal")
+
+[node name="OxenSweepPole" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 2.8, 1.8, 0)
+mesh = SubResource("CylinderMesh_sweep_pole")
+
+[node name="OxenYokeBeam" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 1.7, 0)
+mesh = SubResource("BoxMesh_yoke_beam")
+
+[node name="HearthFurnace" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 0.42, 0)
+mesh = SubResource("CylinderMesh_hearth_furnace")
+
+[node name="BoilingCauldron" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 0.75, 0)
+mesh = SubResource("SphereMesh_boiling_cauldron")
+
+[node name="SyrupSurface" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 0.88, 0)
+mesh = SubResource("CylinderMesh_syrup_surface")
+
+[node name="CauldronFireLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 0.5, 0)
+light_color = Color(1, 0.45, 0.15, 1)
+light_energy = 2.8
+omni_range = 9.0
+omni_attenuation = 1.3
+
+[node name="SyrupSteamParticles" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 1.1, 0)
+amount = 14
+lifetime = 1.8
+mesh = SubResource("SphereMesh_syrup_vapor")
+direction = Vector3(0, 1, 0)
+spread = 22.0
+gravity = Vector3(0, 0.4, 0)
+initial_velocity_min = 0.4
+initial_velocity_max = 0.9
+scale_amount_min = 0.6
+scale_amount_max = 1.5
+
+[node name="SugarcaneBundle1" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, -1.8, 1.1, -1.2)
+mesh = SubResource("CylinderMesh_sugarcane_stalk")
+
+[node name="SugarcaneBundle2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.939693, -0.34202, 0, 0.34202, 0.939693, 0, 0, 0, 1, -1.9, 1.1, -0.9)
+mesh = SubResource("CylinderMesh_sugarcane_stalk")
+
+[node name="FirewoodPile" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 0.45, -2.4)
+mesh = SubResource("BoxMesh_firewood_stack")
+
+[node name="JaggeryBasket1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.28, 1.6)
+mesh = SubResource("CylinderMesh_woven_basket")
+
+[node name="JaggeryBasket2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9, 0.28, 1.8)
+mesh = SubResource("CylinderMesh_woven_basket")
+
+[node name="ShelterPost1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, 1.6, 2.8)
+mesh = SubResource("CylinderMesh_shelter_post")
+
+[node name="ShelterPost2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 1.6, 2.8)
+mesh = SubResource("CylinderMesh_shelter_post")
+
+[node name="ShelterPost3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, 1.6, -2.8)
+mesh = SubResource("CylinderMesh_shelter_post")
+
+[node name="ShelterPost4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 1.6, -2.8)
+mesh = SubResource("CylinderMesh_shelter_post")
+
+[node name="ShelterRoof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9, 0)
+mesh = SubResource("PrismMesh_shelter_roof")
+
+[node name="RestBench" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0.22, 2.2)
+mesh = SubResource("BoxMesh_rest_bench")
+
+[node name="DuskLantern" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, 2.4, 2.6)
+mesh = SubResource("BoxMesh_lantern_housing")
+
+[node name="DuskLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, 2.3, 2.6)
+light_color = Color(1, 0.85, 0.55, 1)
+light_energy = 2.2
+omni_range = 10.0
+omni_attenuation = 1.25
+
+[node name="SignPost" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 3.4)
+mesh = SubResource("BoxMesh_sign_post")
+
+[node name="SignBoard" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 3.4)
+mesh = SubResource("BoxMesh_sign_board")
+
+[node name="MillSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 3.45)
+pixel_size = 0.005
+text = "မင်းတုန်း ရှေးဟောင်း နွားလည် ကျံရည်ကြိတ်ဆုံနှင့် သကာရည်ကျိုဖို 🎋🍯"
+font_size = 30
+outline_size = 8

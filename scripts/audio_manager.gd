@@ -2138,3 +2138,68 @@ func play_engine_crank() -> void:
 	stream.data = data
 	engine_crank_player.stream = stream
 	engine_crank_player.play()
+
+var sugarcane_roller_player: AudioStreamPlayer = null
+var jaggery_syrup_player: AudioStreamPlayer = null
+
+func play_sugarcane_roller_creak() -> void:
+	if is_muted: return
+	if not sugarcane_roller_player:
+		sugarcane_roller_player = AudioStreamPlayer.new()
+		sugarcane_roller_player.name = "SugarcaneRollerAudio"
+		sugarcane_roller_player.volume_db = -5.5
+		add_child(sugarcane_roller_player)
+	var sample_hz = 22050
+	var duration = 0.55
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Heavy hardwood roller rotational groan + fiber crunch squeak
+		var roller_groan = sin(t * 125.0 * TAU + sin(t * 18.0) * 1.6) * exp(-t * 4.2) * 0.55
+		var harmonic = sin(t * 250.0 * TAU) * exp(-t * 6.5) * 0.3
+		var fiber_crunch = sin(t * 1750.0 * TAU) * exp(-t * 12.0) * 0.2
+		var val = roller_groan + harmonic + fiber_crunch
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	sugarcane_roller_player.stream = stream
+	sugarcane_roller_player.play()
+
+func play_jaggery_syrup_bubble() -> void:
+	if is_muted: return
+	if not jaggery_syrup_player:
+		jaggery_syrup_player = AudioStreamPlayer.new()
+		jaggery_syrup_player.name = "JaggerySyrupAudio"
+		jaggery_syrup_player.volume_db = -6.0
+		add_child(jaggery_syrup_player)
+	var sample_hz = 22050
+	var duration = 0.48
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Low hearth fire draft + viscous thick syrup simmering bubble pops
+		var hearth = exp(-t * 6.0) * sin(t * 95.0 * TAU) * 0.35
+		var bubble1 = 0.0
+		if t > 0.04 and t < 0.22:
+			var dt1 = t - 0.04
+			bubble1 = exp(-dt1 * 25.0) * sin(dt1 * 320.0 * TAU) * 0.45
+		var bubble2 = 0.0
+		if t > 0.18:
+			var dt2 = t - 0.18
+			bubble2 = exp(-dt2 * 32.0) * sin(dt2 * 580.0 * TAU) * 0.35
+		var val = hearth + bubble1 + bubble2
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23500.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	jaggery_syrup_player.stream = stream
+	jaggery_syrup_player.play()

@@ -61,6 +61,7 @@ const WATER_PAVILION_SCENE = preload("res://scenes/martaban_water_pavilion.tscn"
 const COUNTRYSIDE_WATER_WELL_SCENE = preload("res://scenes/countryside_water_well.tscn")
 const MONASTERY_BELL_TOWER_SCENE = preload("res://scenes/monastery_bell_tower.tscn")
 const COVERED_BRIDGE_SCENE = preload("res://scenes/covered_wooden_bridge.tscn")
+const SUGARCANE_WORKS_SCENE = preload("res://scenes/oxen_sugarcane_works.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -115,6 +116,7 @@ func _ready() -> void:
 	_generate_countryside_water_wells()
 	_generate_monastery_bell_towers()
 	_generate_covered_wooden_bridges()
+	_generate_oxen_sugarcane_works()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -2206,5 +2208,34 @@ func _generate_covered_wooden_bridges() -> void:
 		bridges_holder.add_child(bridge)
 
 		var sign_node = bridge.get_node_or_null("BridgeSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_oxen_sugarcane_works() -> void:
+	# Traditional Myanmar oxen-driven sugarcane juice mills and jaggery boiling cauldron furnaces (နွားလည် ကျံရည်ကြိတ်ဆုံကြီးများနှင့် သကာရည်ကျို မီးဖိုယန္တရားများ)
+	var mills_holder = Node3D.new()
+	mills_holder.name = "OxenSugarcaneWorks"
+	add_child(mills_holder)
+
+	var mill_data = [
+		{
+			"pos": Vector3(-75.0, 0.0, 310.0),
+			"rot_y": deg_to_rad(25.0),
+			"sign": "မင်းတုန်း ရှေးဟောင်း နွားလည် ကျံရည်ကြိတ်ဆုံနှင့် သကာရည်ကျိုဖို 🎋🍯"
+		},
+		{
+			"pos": Vector3(190.0, 0.0, -220.0),
+			"rot_y": deg_to_rad(-60.0),
+			"sign": "မြောက်ဘက် ချိုင့်ဝှမ်း ကျံရည်ကြိတ်စခန်း 🎋✨"
+		}
+	]
+
+	for data in mill_data:
+		var mill = SUGARCANE_WORKS_SCENE.instantiate()
+		mill.position = data["pos"]
+		mill.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		mills_holder.add_child(mill)
+
+		var sign_node = mill.get_node_or_null("MillSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]
