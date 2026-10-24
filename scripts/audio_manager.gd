@@ -1,4 +1,4 @@
-extends Node
+﻿extends Node
 
 # --- Authentic Myanmar Ambient & Sound Effects Generator ---
 # Procedural Synthesized Audio Streams for Mobile Performance
@@ -1129,3 +1129,42 @@ func play_power_window(roll_down: bool) -> void:
 	power_window_player.stream = stream
 	power_window_player.volume_db = -6.0
 	power_window_player.play()
+
+var exhaust_pop_player: AudioStreamPlayer = null
+
+func play_exhaust_pop() -> void:
+	if is_muted:
+		return
+	if not exhaust_pop_player:
+		exhaust_pop_player = AudioStreamPlayer.new()
+		exhaust_pop_player.name = "ExhaustPopAudio"
+		add_child(exhaust_pop_player)
+
+	var sample_hz = 22050
+	var duration = 0.16
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+
+	var rng_seed = 98765
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		rng_seed = (rng_seed * 1103515245 + 12345) & 0x7FFFFFFF
+		var noise = (float(rng_seed) / 1073741824.0) - 1.0
+
+		# Deep muffled bass explosion (92Hz) + crackle (840Hz)
+		var pop = exp(-t * 38.0) * (sin(t * 92.0 * TAU) * 0.75 + sin(t * 840.0 * TAU) * 0.35)
+		var crackle = exp(-t * 55.0) * noise * 0.4
+		var env = sin(clampf((t / duration) * PI, 0.0, PI))
+		var val = (pop + crackle) * env
+		var int_sample = int(clamp(val, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+
+	stream.data = data
+	exhaust_pop_player.stream = stream
+	exhaust_pop_player.volume_db = -4.5
+	exhaust_pop_player.pitch_scale = randf_range(0.92, 1.15)
+	exhaust_pop_player.play()

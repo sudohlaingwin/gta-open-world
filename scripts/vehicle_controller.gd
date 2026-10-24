@@ -28,6 +28,23 @@ var smoothed_steering: float = 0.0
 @onready var side_window_l: MeshInstance3D = get_node_or_null("SideWindowL")
 @onready var side_window_r: MeshInstance3D = get_node_or_null("SideWindowR")
 @onready var dashboard_display: Label3D = get_node_or_null("DashboardDisplay")
+@onready var exhaust_backfire: CPUParticles3D = get_node_or_null("ExhaustBackfire")
+@onready var radio_eq_display: Label3D = get_node_or_null("RadioEqualizerDisplay")
+
+var prev_throttle_input: float = 0.0
+var prev_boosting: bool = false
+var eq_frame_timer: float = 0.0
+var eq_frame_index: int = 0
+const VU_BARS: Array[String] = [
+	"[ ▅█▇▅▃ ]",
+	"[ ▃▅█▇▅ ]",
+	"[ ▂▄▆█▄ ]",
+	"[ ▄▆█▇▆ ]",
+	"[ ▆▇█▆▄ ]",
+	"[ ▃▅▆▅▃ ]",
+	"[ ▄▆▇█▇ ]",
+	"[ █▇▆▅▃ ]"
+]
 
 var charm_roll: float = 0.0
 var charm_roll_vel: float = 0.0
@@ -194,6 +211,28 @@ func _physics_process(delta: float) -> void:
 			else: compass_dir = "NW"
 			dashboard_display.text = "%s | %s | %d°C | %d KM/H" % [time_str, compass_dir, temp_c, int(abs(forward_speed) * 3.6)]
 
+		# Dashboard Radio Audio Visualizer VU Meter Animation
+		if radio_eq_display:
+			var am_radio = get_tree().get_first_node_in_group("audio_manager")
+			var station_idx = am_radio.get("radio_station_index") if am_radio else 1
+			if station_idx == 0:
+				radio_eq_display.text = "📻 [ - - - - - ] OFF"
+				radio_eq_display.modulate = Color(0.65, 0.65, 0.65, 0.7)
+			else:
+				eq_frame_timer += delta
+				if eq_frame_timer >= 0.11:
+					eq_frame_timer = 0.0
+					eq_frame_index = (eq_frame_index + 1) % VU_BARS.size()
+				var bar_str = VU_BARS[eq_frame_index]
+				var st_name = "98.5 MHz"
+				match station_idx:
+					1: st_name = "Acoustic"
+					2: st_name = "Nature"
+					3: st_name = "Saung"
+					4: st_name = "Pop FM"
+				radio_eq_display.text = "📻 %s %s" % [bar_str, st_name]
+				radio_eq_display.modulate = Color(0.25, 0.95, 0.75, 1.0)
+
 		# Dynamic Chassis Weight Transfer (Roll & Pitch Suspension Reaction)
 		if body_mesh:
 			var target_body_roll = -smoothed_steering * 0.12 * speed_ratio
@@ -211,6 +250,20 @@ func _physics_process(delta: float) -> void:
 
 		if nitro_flame:
 			nitro_flame.emitting = (is_boosting and input_dir.y < -0.1)
+
+		# Exhaust Backfire & Pop / Burble on Throttle Lift-Off or Turbo Cutoff
+		var current_throttle = -input_dir.y if input_dir.y < -0.1 else 0.0
+		var sharp_throttle_lift = (prev_throttle_input > 0.65 and current_throttle < 0.15 and forward_speed > 6.0)
+		var boost_cutoff = (prev_boosting and not is_boosting and forward_speed > 8.0)
+		if sharp_throttle_lift or boost_cutoff:
+			if exhaust_backfire:
+				exhaust_backfire.restart()
+				exhaust_backfire.emitting = true
+			var am_pop = get_tree().get_first_node_in_group("audio_manager")
+			if am_pop and am_pop.has_method("play_exhaust_pop"):
+				am_pop.play_exhaust_pop()
+		prev_throttle_input = current_throttle
+		prev_boosting = is_boosting
 
 		# Progressive Acceleration & Dual-Power Braking
 		if input_dir.y < -0.1: # Forward Throttle

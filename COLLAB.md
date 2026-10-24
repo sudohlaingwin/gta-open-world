@@ -4850,3 +4850,19 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
    - Synchronized live in-game time (get_time_string(), 12-hour AM/PM), dynamic ambient temperature (get_ambient_temp_celsius(), 22°C to 34°C based on solar daylight), 8-point magnetic compass heading (N/NE/E/SE/S/SW/W/NW), and digital KM/H speedometer.
 4. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 416: Dynamic Dashboard Radio VU Equalizer & Exhaust Backfire Pop/Burble Realism
+### Completed by Antigravity:
+1. **Dynamic Dashboard Radio VU Equalizer Meter (scenes/village_car.tscn, scripts/vehicle_controller.gd):**
+   - Added cyan/emerald digital LED VU equalizer meter (RadioEqualizerDisplay, Label3D) positioned at the center console.
+   - Synchronized dynamic oscillating 8-frame audio spectrum bars ([ ▅█▇▅▃ ], [ ▃▅█▇▅ ], etc.) pulsing in real-time with the active radio station (Acoustic, Nature, Saung, Mandalay Pop FM 98.5 MHz).
+   - Dormant standby readout (📻 [ - - - - - ] OFF) when radio is switched off.
+2. **Exhaust Backfire Flame Emitter (scenes/village_car.tscn):**
+   - Added high-velocity flame particle emitter (ExhaustBackfire, CPUParticles3D, 8 explosive particles, SphereMesh_backfire, StandardMaterial3D_backfire, luminous orange-red).
+   - Preserved canonical Godot 4 scene structure (load_steps=50), zero errors, zero monkey patching.
+3. **Procedural Exhaust Pop / Throttle Burble Audio Synthesis (scripts/audio_manager.gd):**
+   - Synthesized play_exhaust_pop(): explosive low-frequency muffled bass transient (92Hz) paired with high-frequency acoustic crackle (840Hz) and randomized pitch variance.
+4. **Throttle Lift-Off & Turbo Boost Cutoff Physics Integration (scripts/vehicle_controller.gd):**
+   - Detects sharp throttle lift-off (prev_throttle > 0.65 dropping to < 0.15) or turbo boost termination above 6 m/s, triggering dynamic backfire flame bursts and visceral exhaust popping audio.
+5. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.
