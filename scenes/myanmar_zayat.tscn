@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene load_steps=25 format=3]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_zayat"]
 size = Vector3(17.5, 8.5, 13.5)
@@ -75,6 +75,28 @@ height = 0.85
 albedo_color = Color(0.38, 0.28, 0.20, 1)
 roughness = 0.42
 specular = 0.45
+
+[sub_resource type="SphereMesh" id="SphereMesh_coconut_dipper"]
+radius = 0.12
+height = 0.12
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_dipper_handle"]
+top_radius = 0.015
+bottom_radius = 0.015
+height = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_coconut_shell"]
+albedo_color = Color(0.28, 0.18, 0.10, 1)
+roughness = 0.65
+specular = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_lacquer_cup_tray"]
+size = Vector3(0.55, 0.08, 0.40)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lacquer_red"]
+albedo_color = Color(0.65, 0.12, 0.08, 1)
+roughness = 0.28
+specular = 0.60
 
 [node name="MyanmarZayat" type="StaticBody3D"]
 
@@ -153,6 +175,21 @@ surface_material_override/0 = SubResource("StandardMaterial3D_teak")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 1.75, -4.5)
 mesh = SubResource("CylinderMesh_drinking_urn")
 surface_material_override/0 = SubResource("StandardMaterial3D_glazed_pottery")
+
+[node name="CoconutDipperBowl" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 2.22, -4.5)
+mesh = SubResource("SphereMesh_coconut_dipper")
+surface_material_override/0 = SubResource("StandardMaterial3D_coconut_shell")
+
+[node name="CoconutDipperHandle" type="MeshInstance3D" parent="VisualMesh/CoconutDipperBowl"]
+transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, 0.22, 0.05, 0)
+mesh = SubResource("CylinderMesh_dipper_handle")
+surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+
+[node name="LacquerCupTray" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4, 1.35, -4.5)
+mesh = SubResource("BoxMesh_lacquer_cup_tray")
+surface_material_override/0 = SubResource("StandardMaterial3D_lacquer_red")
 
 [node name="ZayatLantern" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.2, 0)
