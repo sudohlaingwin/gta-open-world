@@ -56,6 +56,7 @@ const Realism117Script = preload("res://realism117.gd")
 const Realism118Script = preload("res://realism118.gd")
 const Realism119Script = preload("res://realism119.gd")
 const Perf120Script = preload("res://perf120.gd")
+const Realism121Script = preload("res://realism121.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -836,6 +837,15 @@ func _ready() -> void:
 	# never touches the player forward light, bus system, minibus,
 	# or big bus. Wired last so its cache builds after dressing.
 	Perf120Script.dress(get_parent())
+	# Slice 121: owner-supplied GLB villager models (STATIC, no rig,
+	# no animations — bob only, never skeletal walking; fighter
+	# weapon status unverified headless, owner phone check required).
+	# Children of figure nodes so bus boarding + NPC paths carry
+	# them; old procedural parts hidden (S95 hide-and-replace).
+	# (frame >= 600 pass + 1.0 s re-scan for late alighted figures,
+	# after realism119's 580; added after Perf120 so its _process
+	# runs after realism117's mirror and the re-hide wins same-frame).
+	Realism121Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
