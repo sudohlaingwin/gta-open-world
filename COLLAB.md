@@ -4815,3 +4815,21 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - East Straightaway Junction: Vector3(520, 0, -135) ("မင်းတုန်း (အရှေ့ဘက်) ၂၄ နာရီ စက်သုံးဆီ & လေထိုးကျွတ်ဖာ ⛽✨").
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 414: In-Cabin Interactive Power Windows & Acoustic Cabin Wind/Atmosphere Realism
+### Completed by Antigravity:
+1. **Articulated Cabin Power Windows & UV Tint Materials (scenes/village_car.tscn):**
+   - Modelled driver-side (SideWindowL) and passenger-side (SideWindowR) articulated window panes (BoxMesh_side_window,  .04m x 0.44m x 0.88m) fitted within the door frames.
+   - Applied UV heat-rejection green/smoke tint glass material (StandardMaterial3D_window_tint, transparency 1, roughness 0.05, metallic 0.4, specular 0.95).
+   - Preserved canonical Godot 4 scene structure (load_steps=48), 0 errors, 0 monkey patching.
+2. **Smooth Power Window Regulator Animation (scripts/vehicle_controller.gd):**
+   - Implemented vertical sliding physics (lerpf(WINDOW_Y_CLOSED, WINDOW_Y_OPEN, window_slide_pos)), sliding smoothly into the door cavity from y = 1.48m down to y = 1.06m.
+   - Created 	oggle_windows() state function with prompt notifications (🪟 တံခါးမှန်: ချထားသည်/တင်ထားသည်).
+3. **Procedural 12V Window Regulator Motor & Acoustic Cabin Wind Audio (scripts/audio_manager.gd):**
+   - Synthesized play_power_window(roll_down): 12V DC servo motor hum (260Hz - 310Hz) with mechanical window channel end-stop thump.
+   - Dynamic Acoustic Coupling in set_wind_rush(speed_ratio, windows_open): rolling down windows boosts wind turbulence volume by +7.5 dB and elevates pitch to 1.45x, delivering visceral open-air driving immersion.
+4. **Mobile & Desktop Controls (scenes/mobile_touch_hud.tscn, scripts/mobile_touch_hud.gd, scripts/player.gd):**
+   - Added context-aware mobile touch button 🪟 မှန်ချ in ActionContainer (auto-displayed only while driving).
+   - Bound desktop 'J' key for instant window roll-down/roll-up.
+5. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

@@ -984,7 +984,7 @@ func play_tire_skid(intensity: float = 1.0) -> void:
 	skid_player.stream = stream
 	skid_player.play()
 
-func set_wind_rush(speed_ratio: float) -> void:
+func set_wind_rush(speed_ratio: float, windows_open: bool = false) -> void:
 	if is_muted:
 		if wind_rush_player and wind_rush_player.playing: wind_rush_player.stop()
 		return
@@ -1016,9 +1016,11 @@ func set_wind_rush(speed_ratio: float) -> void:
 	if speed_ratio > 0.15:
 		if not wind_rush_player.playing:
 			wind_rush_player.play()
-		var target_vol = lerpf(-30.0, -8.0, clampf((speed_ratio - 0.15) / 0.85, 0.0, 1.0))
+		var base_vol = lerpf(-30.0, -8.0, clampf((speed_ratio - 0.15) / 0.85, 0.0, 1.0))
+		var target_vol = (base_vol + 7.5) if windows_open else base_vol
 		wind_rush_player.volume_db = target_vol
-		wind_rush_player.pitch_scale = lerpf(0.85, 1.35, speed_ratio)
+		var max_pitch = 1.45 if windows_open else 1.35
+		wind_rush_player.pitch_scale = lerpf(0.85, max_pitch, speed_ratio)
 	else:
 		if wind_rush_player.playing:
 			wind_rush_player.stop()
@@ -1089,4 +1091,41 @@ func play_wiper_sweep() -> void:
 	wiper_sfx_player.volume_db = -8.0
 	wiper_sfx_player.play()
 
-
+var power_window_player: AudioStreamPlayer = null
+
+func play_power_window(roll_down: bool) -> void:
+	if is_muted:
+		return
+	if not power_window_player:
+		power_window_player = AudioStreamPlayer.new()
+		power_window_player.name = "PowerWindowAudio"
+		add_child(power_window_player)
+
+	var sample_hz = 22050
+	var duration = 0.42
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# 12V DC window motor hum (260Hz - 310Hz)
+		var motor_freq = lerpf(290.0, 260.0, t / duration) if roll_down else lerpf(260.0, 310.0, t / duration)
+		var motor = (sin(t * motor_freq * TAU) * 0.45 + sin(t * motor_freq * 2.0 * TAU) * 0.25)
+		var glass_slide = sin(t * 1400.0 * TAU) * 0.12 * sin(t * 30.0 * TAU)
+		var thump = 0.0
+		if t > (duration - 0.06):
+			var thump_t = t - (duration - 0.06)
+			thump = exp(-thump_t * 80.0) * sin(thump_t * 90.0 * TAU) * 0.75
+		var env = sin(clampf((t / duration) * PI, 0.0, PI))
+		var val = (motor + glass_slide) * env + thump
+		var int_sample = int(clamp(val, -1.0, 1.0) * 17000.0)
+		data.encode_s16(i * 2, int_sample)
+
+	stream.data = data
+	power_window_player.stream = stream
+	power_window_player.volume_db = -6.0
+	power_window_player.play()

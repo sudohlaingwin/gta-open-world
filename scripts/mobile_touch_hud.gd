@@ -1,4 +1,4 @@
-extends CanvasLayer
+﻿extends CanvasLayer
 
 # --- Mobile Touch HUD & Multi-Vehicle Speedometer System ---
 
@@ -10,7 +10,8 @@ extends CanvasLayer
 @onready var view_btn: Button = $ActionContainer.get_node_or_null("ViewBtn")
 @onready var radio_btn: Button = $ActionContainer.get_node_or_null("RadioBtn")
 @onready var horn_btn: Button = $ActionContainer.get_node_or_null("HornBtn")
-@onready var headlight_btn: Button = $ActionContainer.get_node_or_null("HeadlightBtn")
+@onready var headlight_btn: Button = .get_node_or_null("HeadlightBtn")
+@onready var window_btn: Button = .get_node_or_null("WindowBtn")
 @onready var quest_banner: Label = $TopCenterHUD/QuestBanner
 @onready var player_icon: ColorRect = $TopLeftHUD/MiniMap/PlayerIcon
 @onready var pagoda_icon: ColorRect = $TopLeftHUD/MiniMap/PagodaIcon
@@ -77,6 +78,8 @@ func _ready() -> void:
 		horn_btn.pressed.connect(_on_horn_pressed)
 	if headlight_btn:
 		headlight_btn.pressed.connect(_on_headlight_pressed)
+	if window_btn:
+		window_btn.pressed.connect(_on_window_pressed)
 		
 	if yaw_left_btn:
 		yaw_left_btn.button_down.connect(func(): if player: player.touch_yaw = -1.0)
@@ -250,6 +253,8 @@ func _process(delta: float) -> void:
 		horn_btn.visible = (player.current_state != player.State.ON_FOOT)
 	if headlight_btn:
 		headlight_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
+	if window_btn:
+		window_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
 
 	if sprint_btn:
 		if player.current_state != player.State.ON_FOOT:
@@ -416,6 +421,12 @@ func _on_horn_pressed() -> void:
 		audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
 	if audio_mgr and audio_mgr.has_method("play_horn"):
 		audio_mgr.play_horn()
+
+func _on_window_pressed() -> void:
+	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
+		if player.active_vehicle.has_method("toggle_windows"):
+			var mode_name = player.active_vehicle.toggle_windows()
+			show_temporary_prompt(mode_name, 3.0)
 
 func _on_headlight_pressed() -> void:
 	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:

@@ -1,4 +1,4 @@
-extends VehicleBody3D
+﻿extends VehicleBody3D
 
 @export var max_engine_force: float = 850.0
 @export var max_brake_force: float = 80.0
@@ -25,6 +25,8 @@ var smoothed_steering: float = 0.0
 @onready var charm_pivot: Node3D = get_node_or_null("HangingCharmPivot")
 @onready var wiper_pivot_l: Node3D = get_node_or_null("WiperPivotL")
 @onready var wiper_pivot_r: Node3D = get_node_or_null("WiperPivotR")
+@onready var side_window_l: MeshInstance3D = get_node_or_null("SideWindowL")
+@onready var side_window_r: MeshInstance3D = get_node_or_null("SideWindowR")
 
 var charm_roll: float = 0.0
 var charm_roll_vel: float = 0.0
@@ -135,6 +137,13 @@ func cycle_headlight_mode() -> String:
 
 func _physics_process(delta: float) -> void:
 	_update_headlights()
+	var target_slide = 1.0 if windows_down else 0.0
+	window_slide_pos = move_toward(window_slide_pos, target_slide, delta * 1.8)
+	var cur_window_y = lerpf(WINDOW_Y_CLOSED, WINDOW_Y_OPEN, window_slide_pos)
+	if side_window_l:
+		side_window_l.position.y = cur_window_y
+	if side_window_r:
+		side_window_r.position.y = cur_window_y
 	if wipers_active and (wiper_pivot_l or wiper_pivot_r):
 		wiper_phase += delta * 4.2
 		var sweep = (sin(wiper_phase) * 0.5 + 0.5)
@@ -212,7 +221,7 @@ func _physics_process(delta: float) -> void:
 			if tire_smoke_l: tire_smoke_l.emitting = is_skidding
 			if tire_smoke_r: tire_smoke_r.emitting = is_skidding
 			if audio_mgr.has_method("set_wind_rush"):
-				audio_mgr.set_wind_rush(speed_ratio)
+				audio_mgr.set_wind_rush(speed_ratio, windows_down)
 			if is_skidding and audio_mgr.has_method("play_tire_skid"):
 				var skid_intensity = clampf((lateral_speed - 3.0) / 4.0, 0.4, 1.0)
 				audio_mgr.play_tire_skid(skid_intensity)

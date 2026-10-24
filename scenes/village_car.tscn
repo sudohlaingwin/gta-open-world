@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3]
+﻿[gd_scene load_steps=48 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -194,6 +194,16 @@ albedo_color = Color(0.12, 0.12, 0.14, 1)
 metallic = 0.65
 roughness = 0.45
 
+[sub_resource type="BoxMesh" id="BoxMesh_side_window"]
+size = Vector3(0.04, 0.44, 0.88)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_window_tint"]
+transparency = 1
+cull_mode = 2
+albedo_color = Color(0.08, 0.16, 0.20, 0.45)
+roughness = 0.05
+metallic = 0.4
+specular = 0.95
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
 
@@ -474,4 +484,12 @@ initial_velocity_max = 9.5
 scale_amount_min = 0.4
 scale_amount_max = 1.4
 
+[node name="SideWindowL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.985, 1.48, -0.45)
+mesh = SubResource("BoxMesh_side_window")
+surface_material_override/0 = SubResource("StandardMaterial3D_window_tint")
 
+[node name="SideWindowR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.985, 1.48, -0.45)
+mesh = SubResource("BoxMesh_side_window")
+surface_material_override/0 = SubResource("StandardMaterial3D_window_tint")
