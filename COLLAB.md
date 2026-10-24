@@ -5139,3 +5139,17 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - East Cart Trail Junction Forge: Vector3(320.0, 0.0, -40.0), rot_y = -75 deg ("အရှေ့လှည်းလမ်းဆုံ ပန်းပဲဖို 🔨✨").
 4. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+## 2026-10-24 — Slice 435: Traditional Countryside Charcoal Burning Kiln, Embers & Firewood Realism
+### Completed by Antigravity:
+1. **Traditional Countryside Charcoal Burning Kiln Scene (scenes/charcoal_burning_kiln.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Upper Myanmar rural earthen mound charcoal kiln complex (မင်းတုန်း ကျေးလက် ရိုးရာ မီးသွေးဖိုစခန်း 🪵💨). Features massive truncated-cone baked earthen dome (CylinderMesh_kiln_dome, 5.0m base diameter, 2.6m height) with rounded clay cap (SphereMesh_kiln_cap), firebrick portal loading arch (BoxMesh_portal_arch) with charred interior cavity and smoldering ember ventilation slit (BoxMesh_ember_slit) emitting hot orange glow (OmniLight3D, range 8m, energy 2.8), dual angled clay smoke chimneys (CylinderMesh_chimney), stacked firewood cords (FirewoodPile, 6 layered raw teak logs, CylinderMesh_log), large pile of finished lump charcoal (BoxMesh_charcoal_pile, StandardMaterial3D_charcoal_carbon with matte sheen), dual traditional woven split-bamboo charcoal baskets (CharcoalBasket1, CharcoalBasket2, CylinderMesh_basket), 4-post thatch rest shelter for the kiln master with bamboo rest bench and brass dusk hanging lantern, and carved calligraphic signboard (KilnSign, Label3D).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=29), zero runtime monkey patching, zero load errors.
+2. **Procedural Native Audio Synthesis (scripts/audio_manager.gd):**
+   - Implemented play_charcoal_crackle(): deep smoldering kiln draft resonance (68Hz + 136Hz) paired with sporadic sharp ember crackle pops (1850Hz & 2300Hz).
+3. **Procedural Map Integration (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_charcoal_burning_kilns().
+   - Strategically placed at:
+     - Southwest Foothills Trail: Vector3(-280.0, 0.0, 310.0), rot_y = 40 deg ("မင်းတုန်း အနောက်တောင် ရိုးရာ သဘာဝ မီးသွေးဖိုစခန်း 🪵💨").
+     - Northwest Forest Edge: Vector3(-410.0, 0.0, -180.0), rot_y = -60 deg ("တောင်ခြေ သစ်တောစပ် မီးသွေးဖို 🪵✨").
+4. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

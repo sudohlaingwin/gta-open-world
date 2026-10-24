@@ -68,3 +68,4 @@ Antigravity has issued a formal Senior Game Architect & Systems Engineer Review 
 - **Slice 432:** Traditional Roadside Sugarcane Juice Press & Clay Pot Refreshment Oasis Realism (roadside_sugarcane_press.tscn, mindon_map_builder.gd).
 - **Slice 433:** In-Cabin Interactive Articulated Sun Visors, Protection Talisman & Toll Card Realism (village_car.tscn, audio_manager.gd, mobile_touch_hud.tscn).
 - **Slice 434:** Traditional Countryside Village Blacksmith Forge, Cart Wheel Iron Tire & Anvil Realism (village_blacksmith_forge.tscn, audio_manager.gd, mindon_map_builder.gd).
+- **Slice 435:** Traditional Countryside Charcoal Burning Kiln, Embers & Firewood Realism (charcoal_burning_kiln.tscn, audio_manager.gd, mindon_map_builder.gd).

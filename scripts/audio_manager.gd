@@ -1466,3 +1466,36 @@ func play_anvil_strike() -> void:
 	stream.data = data
 	anvil_player.stream = stream
 	anvil_player.play()
+var kiln_player: AudioStreamPlayer = null
+
+func play_charcoal_crackle() -> void:
+	if is_muted: return
+	if not kiln_player:
+		kiln_player = AudioStreamPlayer.new()
+		kiln_player.name = "CharcoalKilnAudio"
+		kiln_player.volume_db = -8.0
+		add_child(kiln_player)
+	var sample_hz = 22050
+	var duration = 0.55
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Deep smoldering kiln draft hum (68Hz) + sporadic sharp ember pop crackles
+		var hum = sin(t * 68.0 * TAU) * 0.35 + sin(t * 136.0 * TAU) * 0.15
+		var pop1 = 0.0
+		if t > 0.12 and t < 0.16:
+			pop1 = exp(-(t - 0.12) * 90.0) * sin((t - 0.12) * 1850.0 * TAU) * 0.4
+		var pop2 = 0.0
+		if t > 0.34 and t < 0.38:
+			pop2 = exp(-(t - 0.34) * 90.0) * sin((t - 0.34) * 2300.0 * TAU) * 0.35
+		var val = hum + pop1 + pop2
+		var int_sample = int(clamp(val, -1.0, 1.0) * 19000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	kiln_player.stream = stream
+	kiln_player.play()

@@ -51,6 +51,7 @@ const SILK_SHED_SCENE = preload("res://scenes/silk_weaving_shed.tscn")
 const CAVE_SHRINE_SCENE = preload("res://scenes/buddhist_cave_shrine.tscn")
 const SUGARCANE_PRESS_SCENE = preload("res://scenes/roadside_sugarcane_press.tscn")
 const BLACKSMITH_FORGE_SCENE = preload("res://scenes/village_blacksmith_forge.tscn")
+const CHARCOAL_KILN_SCENE = preload("res://scenes/charcoal_burning_kiln.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -95,6 +96,7 @@ func _ready() -> void:
 	_generate_buddhist_cave_shrines()
 	_generate_roadside_sugarcane_presses()
 	_generate_village_blacksmith_forges()
+	_generate_charcoal_burning_kilns()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1903,5 +1905,33 @@ func _generate_village_blacksmith_forges() -> void:
 		forges_holder.add_child(forge)
 
 		var sign_node = forge.get_node_or_null("ForgeSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+func _generate_charcoal_burning_kilns() -> void:
+	# Traditional Myanmar countryside earthen mound charcoal kilns with smoking chimneys, firewood cords & charcoal baskets
+	var kilns_holder = Node3D.new()
+	kilns_holder.name = "CharcoalBurningKilns"
+	add_child(kilns_holder)
+
+	var kiln_data = [
+		{
+			"pos": Vector3(-280.0, 0.0, 310.0),
+			"rot_y": deg_to_rad(40.0),
+			"sign": "မင်းတုန်း အနောက်တောင် ရိုးရာ သဘာဝ မီးသွေးဖိုစခန်း 🪵💨"
+		},
+		{
+			"pos": Vector3(-410.0, 0.0, -180.0),
+			"rot_y": deg_to_rad(-60.0),
+			"sign": "တောင်ခြေ သစ်တောစပ် မီးသွေးဖို 🪵✨"
+		}
+	]
+
+	for data in kiln_data:
+		var kiln = CHARCOAL_KILN_SCENE.instantiate()
+		kiln.position = data["pos"]
+		kiln.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		kilns_holder.add_child(kiln)
+
+		var sign_node = kiln.get_node_or_null("KilnSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

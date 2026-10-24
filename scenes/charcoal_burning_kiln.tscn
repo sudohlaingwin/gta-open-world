@@ -1,0 +1,259 @@
+[gd_scene load_steps=29 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kiln_col"]
+size = Vector3(9.6, 4.8, 8.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_earth_dome"]
+albedo_color = Color(0.28, 0.22, 0.18, 1)
+roughness = 0.94
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_kiln_dome"]
+material = SubResource("StandardMaterial3D_earth_dome")
+top_radius = 1.6
+bottom_radius = 2.5
+height = 2.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clay_cap"]
+albedo_color = Color(0.22, 0.17, 0.14, 1)
+roughness = 0.96
+
+[sub_resource type="SphereMesh" id="SphereMesh_kiln_cap"]
+material = SubResource("StandardMaterial3D_clay_cap")
+radius = 1.7
+height = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_portal_brick"]
+albedo_color = Color(0.45, 0.22, 0.16, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_portal_arch"]
+material = SubResource("StandardMaterial3D_portal_brick")
+size = Vector3(1.2, 1.4, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ember_dark"]
+albedo_color = Color(0.08, 0.08, 0.08, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_portal_interior"]
+material = SubResource("StandardMaterial3D_ember_dark")
+size = Vector3(0.8, 1.0, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ember_glow"]
+albedo_color = Color(1, 0.4, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.35, 0.05, 1)
+emission_energy_multiplier = 2.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_ember_slit"]
+material = SubResource("StandardMaterial3D_ember_glow")
+size = Vector3(0.5, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chimney_clay"]
+albedo_color = Color(0.35, 0.25, 0.2, 1)
+roughness = 0.92
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_chimney"]
+material = SubResource("StandardMaterial3D_chimney_clay")
+top_radius = 0.12
+bottom_radius = 0.15
+height = 1.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood_logs"]
+albedo_color = Color(0.38, 0.28, 0.18, 1)
+roughness = 0.88
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_log"]
+material = SubResource("StandardMaterial3D_wood_logs")
+top_radius = 0.12
+bottom_radius = 0.14
+height = 2.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_charcoal_carbon"]
+albedo_color = Color(0.06, 0.06, 0.07, 1)
+metallic = 0.15
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_charcoal_pile"]
+material = SubResource("StandardMaterial3D_charcoal_carbon")
+size = Vector3(2.4, 0.65, 1.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_basket"]
+albedo_color = Color(0.68, 0.56, 0.36, 1)
+roughness = 0.82
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_basket"]
+material = SubResource("StandardMaterial3D_bamboo_basket")
+top_radius = 0.42
+bottom_radius = 0.3
+height = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thatch_canopy"]
+albedo_color = Color(0.55, 0.45, 0.28, 1)
+roughness = 0.95
+
+[sub_resource type="PrismMesh" id="PrismMesh_shelter_roof"]
+material = SubResource("StandardMaterial3D_thatch_canopy")
+left_to_right = 0.5
+size = Vector3(4.2, 1.2, 3.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak_post"]
+albedo_color = Color(0.36, 0.25, 0.17, 1)
+roughness = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_shelter_post"]
+material = SubResource("StandardMaterial3D_teak_post")
+top_radius = 0.09
+bottom_radius = 0.11
+height = 2.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_bench"]
+material = SubResource("StandardMaterial3D_teak_post")
+size = Vector3(1.8, 0.45, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lantern_brass"]
+albedo_color = Color(0.75, 0.6, 0.25, 1)
+metallic = 0.8
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lantern"]
+material = SubResource("StandardMaterial3D_lantern_brass")
+top_radius = 0.12
+bottom_radius = 0.14
+height = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sign_wood"]
+albedo_color = Color(0.42, 0.28, 0.16, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_sign_board"]
+material = SubResource("StandardMaterial3D_sign_wood")
+size = Vector3(3.2, 0.6, 0.08)
+
+[node name="CharcoalBurningKiln" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+shape = SubResource("BoxShape3D_kiln_col")
+
+[node name="KilnMound" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 1.3, 0)
+mesh = SubResource("CylinderMesh_kiln_dome")
+
+[node name="KilnCap" type="MeshInstance3D" parent="KilnMound"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+mesh = SubResource("SphereMesh_kiln_cap")
+
+[node name="PortalArch" type="MeshInstance3D" parent="KilnMound"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, 2.45)
+mesh = SubResource("BoxMesh_portal_arch")
+
+[node name="PortalInterior" type="MeshInstance3D" parent="KilnMound/PortalArch"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.1)
+mesh = SubResource("BoxMesh_portal_interior")
+
+[node name="EmberSlit" type="MeshInstance3D" parent="KilnMound/PortalArch"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0.15)
+mesh = SubResource("BoxMesh_ember_slit")
+
+[node name="KilnChimney1" type="MeshInstance3D" parent="KilnMound"]
+transform = Transform3D(0.966, 0.259, 0, -0.259, 0.966, 0, 0, 0, 1, 1.2, 1.4, -0.6)
+mesh = SubResource("CylinderMesh_chimney")
+
+[node name="KilnChimney2" type="MeshInstance3D" parent="KilnMound"]
+transform = Transform3D(0.966, -0.259, 0, 0.259, 0.966, 0, 0, 0, 1, -1.2, 1.4, -0.6)
+mesh = SubResource("CylinderMesh_chimney")
+
+[node name="FireGlowLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.8, 2.6)
+light_color = Color(1, 0.45, 0.15, 1)
+light_energy = 2.8
+omni_range = 8.0
+
+[node name="FirewoodPile" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0, -3.2)
+
+[node name="Log1" type="MeshInstance3D" parent="FirewoodPile"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 0.15, 0)
+mesh = SubResource("CylinderMesh_log")
+
+[node name="Log2" type="MeshInstance3D" parent="FirewoodPile"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.3, 0.15, 0)
+mesh = SubResource("CylinderMesh_log")
+
+[node name="Log3" type="MeshInstance3D" parent="FirewoodPile"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.3, 0.15, 0)
+mesh = SubResource("CylinderMesh_log")
+
+[node name="Log4" type="MeshInstance3D" parent="FirewoodPile"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.15, 0.38, 0)
+mesh = SubResource("CylinderMesh_log")
+
+[node name="Log5" type="MeshInstance3D" parent="FirewoodPile"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.15, 0.38, 0)
+mesh = SubResource("CylinderMesh_log")
+
+[node name="Log6" type="MeshInstance3D" parent="FirewoodPile"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 0.6, 0)
+mesh = SubResource("CylinderMesh_log")
+
+[node name="CharcoalLumpPile" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4, 0.32, 0.8)
+mesh = SubResource("BoxMesh_charcoal_pile")
+
+[node name="CharcoalBasket1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.38, 2.2)
+mesh = SubResource("CylinderMesh_basket")
+
+[node name="CharcoalBasket2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0.38, 2.3)
+mesh = SubResource("CylinderMesh_basket")
+
+[node name="RestShelter" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, 0)
+
+[node name="ShelterPost1" type="MeshInstance3D" parent="RestShelter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 1.4, -1.5)
+mesh = SubResource("CylinderMesh_shelter_post")
+
+[node name="ShelterPost2" type="MeshInstance3D" parent="RestShelter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 1.4, -1.5)
+mesh = SubResource("CylinderMesh_shelter_post")
+
+[node name="ShelterPost3" type="MeshInstance3D" parent="RestShelter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 1.4, 1.5)
+mesh = SubResource("CylinderMesh_shelter_post")
+
+[node name="ShelterPost4" type="MeshInstance3D" parent="RestShelter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 1.4, 1.5)
+mesh = SubResource("CylinderMesh_shelter_post")
+
+[node name="ShelterRoof" type="MeshInstance3D" parent="RestShelter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("PrismMesh_shelter_roof")
+
+[node name="RestBench" type="MeshInstance3D" parent="RestShelter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("BoxMesh_bench")
+
+[node name="HangingLantern" type="MeshInstance3D" parent="RestShelter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("CylinderMesh_lantern")
+
+[node name="LanternLight" type="OmniLight3D" parent="RestShelter/HangingLantern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
+light_color = Color(1, 0.85, 0.55, 1)
+light_energy = 2.2
+omni_range = 10.0
+
+[node name="SignBoard" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 3.8)
+mesh = SubResource("BoxMesh_sign_board")
+
+[node name="KilnSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 3.86)
+text = "မင်းတုန်း ကျေးလက် ရိုးရာ မီးသွေးဖိုစခန်း 🪵💨"
+font_size = 28
+outline_size = 6
+modulate = Color(1, 0.95, 0.7, 1)
+outline_modulate = Color(0.12, 0.08, 0.04, 1)
