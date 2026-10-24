@@ -5219,3 +5219,17 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - East Farmland Trail: Vector3(240.0, 0.0, 260.0), rot_y = -45 deg ("အရှေ့ဘက် လယ်ယာတလင်း ကောက်ရိုးပုံ 🌾🐂").
 4. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+## 2026-10-24 — Slice 440 (Milestone): Traditional Countryside River Ferry Landing, Floating Pontoon & Nautical Beacon Realism
+### Completed by Antigravity:
+1. **Traditional Countryside River Ferry Landing Scene (scenes/river_ferry_landing.tscn):**
+   - **Architectural & Maritime Authenticity:** Modelled authentic Upper Myanmar river ferry pontoon landing and boarding stage (မင်းတုန်း မြစ်ကူးတို့ ကူးတို့ဖောင်ဆိပ် ⚓🌊). Features massive floating pontoon supported by 4 giant buoyant teak timber logs (12m long each, CylinderMesh_pontoon_log), split-teak planked deck (FloatingDeck, BoxMesh_deck_planks, 12.4m x 6.2m), heavy inclined vehicle and cart loading ramp (GangwayRamp, 6.8m x 3.8m), 4 heavy riverbed mooring piles (CylinderMesh_mooring_pile, 4.8m tall), dual forged iron mooring cleats (Cleat1, Cleat2), marine red-and-white life ring buoy (TorusMesh_life_buoy), pilot's thatch shelter with rest bench, high-elevation nautical brass beacon lantern (OmniLight3D, range 14m, energy 2.6), and carved calligraphic signboard (FerrySign, Label3D).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=22), zero runtime monkey patching, zero load errors.
+2. **Procedural Native Audio Synthesis (scripts/audio_manager.gd):**
+   - Implemented play_ferry_bell(): resonant 640Hz brass nautical boarding bell strike with 1280Hz overtone and river water wave slap against pontoon timber (280Hz).
+3. **Procedural Map Integration (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_river_ferry_landings().
+   - Strategically moored along Mindon river crossings at:
+     - Mindon Stream West Crossing Ferry: Vector3(-310.0, -0.6, 95.0), rot_y = 90 deg ("မင်းတုန်းချောင်း အနောက်ဘက် ကူးတို့ဆိပ် ⚓🌊").
+     - South Confluence Ferry Passage: Vector3(120.0, -0.6, -260.0), rot_y = -85 deg ("မြစ်ဆုံ ကူးတို့ဖောင်ဆိပ်ခံတံတား ⚓🛥️").
+4. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

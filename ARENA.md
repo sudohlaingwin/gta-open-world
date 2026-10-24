@@ -73,3 +73,4 @@ Antigravity has issued a formal Senior Game Architect & Systems Engineer Review 
 - **Slice 437:** Traditional Countryside Sesame & Groundnut Oil Mill Realism (traditional_oil_press.tscn, audio_manager.gd, mindon_map_builder.gd).
 - **Slice 438:** In-Cabin Center Cup Holder, Myanmar Teashop Iced Tea & Straw Sip Realism (village_car.tscn, audio_manager.gd, mobile_touch_hud.tscn, mobile_touch_hud.gd, player.gd).
 - **Slice 439:** Traditional Countryside Threshing Floor & Golden Straw Haystack Mound Realism (village_threshing_floor.tscn, audio_manager.gd, mindon_map_builder.gd).
+- **Slice 440 (Milestone):** Traditional Countryside River Ferry Landing, Floating Pontoon & Nautical Beacon Realism (river_ferry_landing.tscn, audio_manager.gd, mindon_map_builder.gd).

@@ -1616,3 +1616,34 @@ func play_hay_rustle() -> void:
 	stream.data = data
 	hay_rustle_player.stream = stream
 	hay_rustle_player.play()
+var ferry_bell_player: AudioStreamPlayer = null
+
+func play_ferry_bell() -> void:
+	if is_muted: return
+	if not ferry_bell_player:
+		ferry_bell_player = AudioStreamPlayer.new()
+		ferry_bell_player.name = "FerryBellAudio"
+		ferry_bell_player.volume_db = -6.0
+		add_child(ferry_bell_player)
+	var sample_hz = 22050
+	var duration = 1.2
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Clear resonant 640Hz nautical brass bell with 1280Hz overtone and water lap
+		var decay = exp(-t * 3.8)
+		var bell = (sin(t * 640.0 * TAU) * 0.6 + sin(t * 1280.0 * TAU) * 0.3) * decay
+		var lap = 0.0
+		if t > 0.15:
+			lap = exp(-(t - 0.15) * 4.0) * sin((t - 0.15) * 280.0 * TAU) * 0.2
+		var val = bell + lap
+		var int_sample = int(clamp(val, -1.0, 1.0) * 24000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	ferry_bell_player.stream = stream
+	ferry_bell_player.play()

@@ -54,6 +54,7 @@ const BLACKSMITH_FORGE_SCENE = preload("res://scenes/village_blacksmith_forge.ts
 const CHARCOAL_KILN_SCENE = preload("res://scenes/charcoal_burning_kiln.tscn")
 const OIL_PRESS_SCENE = preload("res://scenes/traditional_oil_press.tscn")
 const THRESHING_FLOOR_SCENE = preload("res://scenes/village_threshing_floor.tscn")
+const FERRY_LANDING_SCENE = preload("res://scenes/river_ferry_landing.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -101,6 +102,7 @@ func _ready() -> void:
 	_generate_charcoal_burning_kilns()
 	_generate_traditional_oil_presses()
 	_generate_village_threshing_floors()
+	_generate_river_ferry_landings()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1993,5 +1995,33 @@ func _generate_village_threshing_floors() -> void:
 		floors_holder.add_child(floor)
 
 		var sign_node = floor.get_node_or_null("ThreshingSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+func _generate_river_ferry_landings() -> void:
+	# Traditional Myanmar riverside vehicle & passenger floating teak pontoon ferry landings (မြစ်ကူးတို့ဆိပ်များ)
+	var landings_holder = Node3D.new()
+	landings_holder.name = "RiverFerryLandings"
+	add_child(landings_holder)
+
+	var landing_data = [
+		{
+			"pos": Vector3(-310.0, -0.6, 95.0),
+			"rot_y": deg_to_rad(90.0),
+			"sign": "မင်းတုန်းချောင်း အနောက်ဘက် ကူးတို့ဆိပ် ⚓🌊"
+		},
+		{
+			"pos": Vector3(120.0, -0.6, -260.0),
+			"rot_y": deg_to_rad(-85.0),
+			"sign": "မြစ်ဆုံ ကူးတို့ဖောင်ဆိပ်ခံတံတား ⚓🛥️"
+		}
+	]
+
+	for data in landing_data:
+		var landing = FERRY_LANDING_SCENE.instantiate()
+		landing.position = data["pos"]
+		landing.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		landings_holder.add_child(landing)
+
+		var sign_node = landing.get_node_or_null("FerrySign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]
