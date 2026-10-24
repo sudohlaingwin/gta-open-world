@@ -4606,6 +4606,21 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 399: Ayeyarwady Traditional Rowboat Prow Lantern & Hydrodynamic Water Roll/Pitch Realism
+### Completed by Antigravity:
+1. **Traditional Ayeyarwady Rowboat (သမ္ဗာန်လှေ) Prow Lantern & River Gong (`scenes/ayeyarwady_rowboat.tscn`):**
+   - **Prow Brass Lantern Globe (`ProwLanternGlobe`):** Modelled authentic boat bow lantern (`SphereMesh_bow_lantern_globe`, `StandardMaterial3D_bow_lantern_glow`, `emission = Color(1.0, 0.76, 0.22)`, `energy = 2.8`) resting on the forward brass prow bracket at `(0, 1.45, -3.7)`.
+   - **Night Water OmniLight Reflection (`ProwLanternLight`):** Warm amber light (`Color(1.0, 0.80, 0.35)`, `range = 16.0m`, `energy = 2.2`) reflecting off the flowing water surface of the Mindon river loop.
+   - **Cast Bronze River Gong Bell (`RiverGongBell`):** Modelled traditional river warning gong bell (`CylinderMesh_river_bell`, `StandardMaterial3D_bell_bronze`, `metallic = 0.92`, `roughness = 0.22`) suspended from the center bamboo canopy arch.
+   - Strictly verified canonical TSCN format (`load_steps=26` matching 1 ext_resource + 24 sub_resources + 1) with 0 errors.
+2. **Hydrodynamic Water Physics Realism (`scripts/rowboat_controller.gd`):**
+   - **Steer Roll Banking:** Connected steering input to realistic hull roll banking (`target_roll = -steer_smooth * 0.12`).
+   - **Prow Acceleration Rise (Hydrodynamic Pitch):** Integrated dynamic bow rise (`target_pitch = (current_speed / max_speed) * 0.08`) simulating water displacement and buoyancy under forward propulsion.
+   - **Automated Day/Night Light Sensing:** Integrated day/night cycle detection seamlessly illuminating the prow lantern at dusk.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
+
 
 
 

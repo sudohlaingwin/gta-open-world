@@ -19,6 +19,8 @@ var steer_smooth: float = 0.0
 @onready var interaction_area: Area3D = $InteractionArea
 @onready var oar_left: Node3D = $VisualMesh/OarL
 @onready var oar_right: Node3D = $VisualMesh/OarR
+@onready var visual_mesh: Node3D = $VisualMesh
+@onready var prow_lantern_light: OmniLight3D = $VisualMesh.get_node_or_null("ProwLanternGlobe/ProwLanternLight")
 
 signal rower_entered(rower)
 signal rower_exited()
@@ -79,6 +81,21 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0.0, coast_drag * delta)
 		if oar_left: oar_left.rotation.y = 0.0
 		if oar_right: oar_right.rotation.y = 0.0
+
+	# Dynamic Day/Night Prow Lantern Lighting
+	if prow_lantern_light:
+		var dnc = get_tree().get_first_node_in_group("day_night")
+		var is_night = false
+		if dnc and dnc.has_method("get_daylight"):
+			is_night = (dnc.get_daylight() < 0.38)
+		prow_lantern_light.visible = (is_night or is_rowing)
+
+	# Hydrodynamic roll banking & pitch acceleration bobbing
+	if visual_mesh:
+		var target_roll = -steer_smooth * 0.12
+		var target_pitch = (current_speed / max_speed) * 0.08
+		visual_mesh.rotation.z = lerpf(visual_mesh.rotation.z, target_roll, delta * 6.0)
+		visual_mesh.rotation.x = lerpf(visual_mesh.rotation.x, target_pitch, delta * 4.0)
 
 	# Gentle water buoyancy bobbing
 	velocity.y = sin(Time.get_ticks_msec() * 0.003) * 0.2
