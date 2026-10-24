@@ -134,6 +134,38 @@ func _ready() -> void:
 		var w := get_node_or_null(wname)
 		if w != null:
 			wheels.append(w)
+	# Slice 112: the scene file's three wheel blocks carry a bare
+	# Transform3D line (missing "transform = "), so the engine
+	# drops the whole block: at load the wheels sit at the
+	# vehicle origin with NULL mesh, which produced the 3
+	# load-time p_surface errors and the ~454 per-run
+	# "Parameter m is null" errors (the null meshes were queried
+	# every frame until Slice 110's frame-400 restore). Restore
+	# here, in _ready, so the wheels are correct from frame 1:
+	# EXACTLY Slice 110's values (basis + origins + cylinder
+	# r 0.35 h 0.20 + dark metal). Only touches wheels whose
+	# mesh is null, so healthy wheels are never disturbed, and
+	# the frame-400 restore re-applies identical values.
+	if true:
+		var _basis := Basis(Vector3(0, 1, 0), Vector3(-1, 0, 0), Vector3(0, 0, 1))
+		var _spots := {
+			"TukWheelF": Vector3(0.0, -0.65, -1.1),
+			"TukWheelL": Vector3(-0.7, -0.65, 0.9),
+			"TukWheelR": Vector3(0.7, -0.65, 0.9),
+		}
+		for _wn in _spots:
+			var _wh := get_node_or_null(_wn) as MeshInstance3D
+			if _wh != null and _wh.mesh == null:
+				_wh.transform = Transform3D(_basis, _spots[_wn])
+				var _cm := CylinderMesh.new()
+				_cm.top_radius = 0.35
+				_cm.bottom_radius = 0.35
+				_cm.height = 0.20
+				_wh.mesh = _cm
+				var _dark := StandardMaterial3D.new()
+				_dark.albedo_color = Color(0.12, 0.12, 0.14, 1.0)
+				_dark.roughness = 0.6
+				_wh.set_surface_override_material(0, _dark)
 
 func start_driving(p: Node) -> void:
 	driver = p

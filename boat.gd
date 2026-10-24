@@ -61,6 +61,16 @@ const CamSteer97 = preload("res://camera_steer97.gd")
 var driver: Node = null
 var speed: float = 0.0
 var steer_smooth: float = 0.0
+# Slice 112: rowing animation + hull bob (the file's own header
+# admitted both were missing since Slice 14/46: "NO oar
+# animation and NO water bob"). Applies to Boat AND Boat2 (both
+# use this script). Oars dip/sweep together in phase; the hull
+# bobs gently, stronger with speed. Movement code never touches
+# position.y (forward has y = 0), so the bob cannot fight it.
+# Tuning, enter/exit, camera retargeting untouched.
+var _row_phase: float = 0.0
+var _oar_base_z: float = 0.0
+var _oar_init: bool = false
 
 func start_driving(p: Node) -> void:
 	driver = p
@@ -126,6 +136,22 @@ func _process(delta: float) -> void:
 	rotation.y -= steer_smooth * turn * delta * (1.0 if speed >= 0.0 else -1.0)
 	var forward := Vector3(-sin(rotation.y), 0.0, -cos(rotation.y))
 	position += forward * speed * delta
+	# Slice 112 rowing + bob: oars row in phase with speed, hull
+	# bobs on the water. At rest the oars ease back to base.
+	if not _oar_init:
+		var _ol0 := get_node_or_null("OarL")
+		if _ol0 != null:
+			_oar_base_z = _ol0.rotation.z
+		_oar_init = true
+	var _spd_ratio := absf(speed) / max_speed
+	_row_phase += (2.0 + 6.0 * _spd_ratio) * delta
+	var _dip := sin(_row_phase) * (0.10 + 0.25 * _spd_ratio)
+	for _oname in ["OarL", "OarR"]:
+		var _oar := get_node_or_null(_oname)
+		if _oar != null:
+			_oar.rotation.z = _oar_base_z + _dip
+	var _t := Time.get_ticks_msec() / 1000.0
+	position.y = sin(_t * 2.2) * 0.06 * (0.3 + _spd_ratio)
 
 ## Slice 8 touch exit: the on-screen Vehicle button calls this.
 func exit_vehicle() -> void:
@@ -144,6 +170,12 @@ func _exit_boat() -> void:
 	driver = null
 	speed = 0.0
 	steer_smooth = 0.0
+	# Slice 112: park the oars and the hull when stepping out.
+	for _oname in ["OarL", "OarR"]:
+		var _oar := get_node_or_null(_oname)
+		if _oar != null:
+			_oar.rotation.z = _oar_base_z
+	position.y = 0.0
 	p.global_position = spot
 	var cam := get_node_or_null("../FollowCamera")
 	if cam != null:
