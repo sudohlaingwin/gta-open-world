@@ -4771,6 +4771,21 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 4. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 412: Dual Articulated Windshield Wipers & Rubber Friction Sweep Audio Realism
+### Completed by Antigravity:
+1. **Dual Articulated Windshield Wipers (`scenes/village_car.tscn`):**
+   - **Visual & Cockpit Realism:** Modelled driver-side (`WiperPivotL`) and passenger-side (`WiperPivotR`) cowl pivots, articulated black wiper arms (`BoxMesh_wiper_arm`), and flexible rubber wiper blades (`BoxMesh_wiper_blade`, `StandardMaterial3D_wiper_black`).
+   - Preserved canonical Godot 4 scene structure (`load_steps=46`), 0 errors, 0 monkey patching.
+2. **Harmonic Wiper Sweep Animation & Physics (`scripts/vehicle_controller.gd`):**
+   - Built continuous harmonic oscillating sweep across the windshield slope (0° to 72° arc, `wiper_phase += delta * 4.2`).
+   - Reversible directional sweep detection triggering friction audio at each stroke apex.
+3. **Procedural Rubber-on-Glass Friction Sweep Audio (`scripts/audio_manager.gd`):**
+   - Synthesized natural rubber wiper squeak / slide on glass (`play_wiper_sweep()`) combining multi-tone friction harmonics (1850Hz + 2650Hz + 880Hz) with mechanical flutter.
+4. **Desktop 'K' Hotkey Integration (`scripts/player.gd`):**
+   - Added instant wiper toggle ('K') with HUD prompt feedback (`🌧️ မိုးရေသုတ်တံ: ဖွင့်ထားသည်/ပိတ်ထားသည်`).
+5. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
 
 
 

@@ -23,11 +23,28 @@ var smoothed_steering: float = 0.0
 @onready var nitro_flame: CPUParticles3D = get_node_or_null("NitroFlame")
 @onready var body_mesh: MeshInstance3D = get_node_or_null("BodyMesh")
 @onready var charm_pivot: Node3D = get_node_or_null("HangingCharmPivot")
+@onready var wiper_pivot_l: Node3D = get_node_or_null("WiperPivotL")
+@onready var wiper_pivot_r: Node3D = get_node_or_null("WiperPivotR")
 
 var charm_roll: float = 0.0
 var charm_roll_vel: float = 0.0
 var charm_pitch: float = 0.0
 var charm_pitch_vel: float = 0.0
+var wipers_active: bool = false
+var wiper_phase: float = 0.0
+var last_wiper_dir: float = 0.0
+
+func toggle_wipers() -> String:
+	wipers_active = !wipers_active
+	if wipers_active:
+		var am = get_tree().get_first_node_in_group("audio_manager")
+		if am and am.has_method("play_wiper_sweep"):
+			am.play_wiper_sweep()
+		return "🌧️ မိုးရေသုတ်တံ: ဖွင့်ထားသည် (Wipers ON)"
+	else:
+		if wiper_pivot_l: wiper_pivot_l.rotation.z = 0.0
+		if wiper_pivot_r: wiper_pivot_r.rotation.z = 0.0
+		return "🌧️ မိုးရေသုတ်တံ: ပိတ်ထားသည် (Wipers OFF)"
 
 signal driver_entered(driver)
 signal driver_exited()
@@ -118,6 +135,19 @@ func cycle_headlight_mode() -> String:
 
 func _physics_process(delta: float) -> void:
 	_update_headlights()
+	if wipers_active and (wiper_pivot_l or wiper_pivot_r):
+		wiper_phase += delta * 4.2
+		var sweep = (sin(wiper_phase) * 0.5 + 0.5)
+		var sweep_angle = deg_to_rad(lerpf(0.0, 72.0, sweep))
+		if wiper_pivot_l: wiper_pivot_l.rotation.z = -sweep_angle
+		if wiper_pivot_r: wiper_pivot_r.rotation.z = -sweep_angle
+		var cur_dir = cos(wiper_phase)
+		if (last_wiper_dir > 0.0 and cur_dir <= 0.0) or (last_wiper_dir < 0.0 and cur_dir >= 0.0):
+			var am = get_tree().get_first_node_in_group("audio_manager")
+			if am and am.has_method("play_wiper_sweep"):
+				am.play_wiper_sweep()
+		last_wiper_dir = cur_dir
+
 	if is_driven and current_driver:
 		var input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 		if current_driver.get("touch_input_vector") != null and current_driver.touch_input_vector != Vector2.ZERO:

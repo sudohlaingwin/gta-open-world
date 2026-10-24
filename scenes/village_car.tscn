@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3]
+[gd_scene load_steps=46 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -182,6 +182,17 @@ height = 0.015
 albedo_color = Color(0.96, 0.82, 0.18, 1)
 metallic = 0.95
 roughness = 0.22
+
+[sub_resource type="BoxMesh" id="BoxMesh_wiper_arm"]
+size = Vector3(0.025, 0.42, 0.02)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wiper_blade"]
+size = Vector3(0.02, 0.46, 0.015)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wiper_black"]
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+metallic = 0.65
+roughness = 0.45
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
@@ -385,6 +396,32 @@ surface_material_override/0 = SubResource("StandardMaterial3D_gold_amulet")
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.5, 1.26, -0.86)
 mesh = SubResource("BoxMesh_cluster_housing")
 surface_material_override/0 = SubResource("StandardMaterial3D_cluster_amber")
+
+[node name="WiperPivotL" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.45, 1.16, -1.68)
+
+[node name="ArmL" type="MeshInstance3D" parent="WiperPivotL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21, 0)
+mesh = SubResource("BoxMesh_wiper_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_wiper_black")
+
+[node name="BladeL" type="MeshInstance3D" parent="WiperPivotL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, 0.23, 0.01)
+mesh = SubResource("BoxMesh_wiper_blade")
+surface_material_override/0 = SubResource("StandardMaterial3D_wiper_black")
+
+[node name="WiperPivotR" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0.22, 1.16, -1.68)
+
+[node name="ArmR" type="MeshInstance3D" parent="WiperPivotR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21, 0)
+mesh = SubResource("BoxMesh_wiper_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_wiper_black")
+
+[node name="BladeR" type="MeshInstance3D" parent="WiperPivotR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, 0.23, 0.01)
+mesh = SubResource("BoxMesh_wiper_blade")
+surface_material_override/0 = SubResource("StandardMaterial3D_wiper_black")
 
 [node name="TireSmokeL" type="CPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 0.18, 1.6)

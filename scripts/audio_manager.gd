@@ -1057,4 +1057,36 @@ func play_headlight_switch() -> void:
 	headlight_switch_player.volume_db = -4.0
 	headlight_switch_player.play()
 
+var wiper_sfx_player: AudioStreamPlayer = null
+
+func play_wiper_sweep() -> void:
+	if is_muted:
+		return
+	if not wiper_sfx_player:
+		wiper_sfx_player = AudioStreamPlayer.new()
+		wiper_sfx_player.name = "WiperSweepAudio"
+		add_child(wiper_sfx_player)
+
+	var sample_hz = 22050
+	var duration = 0.22
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env = sin((t / duration) * PI)
+		var squeak = (sin(t * 1850.0 * TAU) * 0.4 + sin(t * 2650.0 * TAU) * 0.35 + sin(t * 880.0 * TAU) * 0.25)
+		var flutter = (1.0 + 0.3 * sin(t * 45.0 * TAU))
+		var int_sample = int(clamp(squeak * flutter * env, -1.0, 1.0) * 16000.0)
+		data.encode_s16(i * 2, int_sample)
+
+	stream.data = data
+	wiper_sfx_player.stream = stream
+	wiper_sfx_player.volume_db = -8.0
+	wiper_sfx_player.play()
+
 
