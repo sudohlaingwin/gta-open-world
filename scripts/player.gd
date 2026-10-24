@@ -397,3 +397,10 @@ func _input(event: InputEvent) -> void:
 					var hud = get_tree().get_first_node_in_group("hud")
 					if hud and hud.has_method("show_temporary_prompt"):
 						hud.show_temporary_prompt(vanity_msg, 2.5)
+		elif event.keycode == KEY_U:
+			if current_state == State.DRIVING_VEHICLE and active_vehicle:
+				if active_vehicle.has_method("cycle_transmission_gear"):
+					var gear_msg = active_vehicle.cycle_transmission_gear()
+					var hud = get_tree().get_first_node_in_group("hud")
+					if hud and hud.has_method("show_temporary_prompt"):
+						hud.show_temporary_prompt(gear_msg, 2.5)

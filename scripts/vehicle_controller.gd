@@ -43,6 +43,9 @@ var glovebox_open: bool = false
 @onready var stalk_pivot: Node3D = get_node_or_null("TurnSignalStalkPivot")
 var vanity_shutter_open: bool = false
 @onready var vanity_shutter: MeshInstance3D = get_node_or_null("SunVisorPivotR/VanityShutterCover")
+@onready var gear_shift_pivot: Node3D = get_node_or_null("GearShiftAssembly/GearShiftLeverPivot")
+@onready var shift_indicator: Label3D = get_node_or_null("GearShiftAssembly/ShiftIndicatorDisplay")
+var current_gear: String = "P"
 var aroma_diffuser_active: bool = false
 @onready var aroma_particles: CPUParticles3D = get_node_or_null("AirFreshenerDiffuser/DiffuserBottle/AromaVaporParticles")
 var sun_visors_down: bool = false
@@ -88,6 +91,41 @@ var mirror_antiglare_active: bool = false
 const MIRROR_ROT_NORMAL: float = 0.173648
 const MIRROR_ROT_ANTIGLARE: float = 0.244346
 
+func cycle_transmission_gear() -> String:
+	var next_gear = "D"
+	match current_gear:
+		"P": next_gear = "R"
+		"R": next_gear = "N"
+		"N": next_gear = "D"
+		"D": next_gear = "P"
+	_set_gear_state(next_gear)
+	var gear_desc = "P (ရပ်နား/ပါကင်)"
+	match current_gear:
+		"R": gear_desc = "R (နောက်ဆုတ်)"
+		"N": gear_desc = "N (ဂီယာလွတ်)"
+		"D": gear_desc = "D (ရှေ့သို့မောင်းနှင်)"
+	return "⚙️ ဂီယာ: [%s] သို့ ပြောင်းလဲလိုက်ပါသည်" % gear_desc
+
+func _set_gear_state(p_gear: String) -> void:
+	if current_gear != p_gear:
+		current_gear = p_gear
+		var am_shift = get_tree().get_first_node_in_group("audio_manager")
+		if am_shift and am_shift.has_method("play_gear_shift"):
+			am_shift.play_gear_shift()
+		if shift_indicator:
+			match current_gear:
+				"P":
+					shift_indicator.text = "[P]  R   N   D"
+					shift_indicator.modulate = Color(1.0, 0.42, 0.35, 1.0)
+				"R":
+					shift_indicator.text = " P  [R]  N   D"
+					shift_indicator.modulate = Color(1.0, 0.58, 0.25, 1.0)
+				"N":
+					shift_indicator.text = " P   R  [N]  D"
+					shift_indicator.modulate = Color(0.95, 0.9, 0.35, 1.0)
+				"D":
+					shift_indicator.text = " P   R   N  [D]"
+					shift_indicator.modulate = Color(0.25, 1.0, 0.55, 1.0)
 func sip_iced_tea() -> String:
 	var am = get_tree().get_first_node_in_group("audio_manager")
 	if am and am.has_method("play_straw_sip"):

@@ -1862,3 +1862,32 @@ func play_well_bucket_dip() -> void:
 	stream.data = data
 	well_bucket_player.stream = stream
 	well_bucket_player.play()
+
+var gear_shift_player: AudioStreamPlayer = null
+
+func play_gear_shift() -> void:
+	if is_muted: return
+	if not gear_shift_player:
+		gear_shift_player = AudioStreamPlayer.new()
+		gear_shift_player.name = "GearShiftAudio"
+		gear_shift_player.volume_db = -6.5
+		add_child(gear_shift_player)
+	var sample_hz = 22050
+	var duration = 0.09
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Mechanical gate detent click + solid transmission gate notch snap
+		var notch_thud = exp(-t * 80.0) * sin(t * 180.0 * TAU) * 0.55
+		var detent_snap = exp(-t * 120.0) * (sin(t * 2400.0 * TAU) * 0.45 + sin(t * 1750.0 * TAU) * 0.3)
+		var val = notch_thud + detent_snap
+		var int_sample = int(clamp(val, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	gear_shift_player.stream = stream
+	gear_shift_player.play()

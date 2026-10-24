@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=108 format=3]
+﻿[gd_scene load_steps=117 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -487,6 +487,47 @@ size = Vector3(0.18, 0.08, 0.002)
 [sub_resource type="BoxMesh" id="BoxMesh_vanity_shutter"]
 material = SubResource("StandardMaterial3D_vanity_frame")
 size = Vector3(0.2, 0.085, 0.004)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_shift_chrome"]
+albedo_color = Color(0.9, 0.92, 0.95, 1)
+metallic = 0.95
+roughness = 0.15
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_shift_leather"]
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_shift_padauk"]
+albedo_color = Color(0.48, 0.16, 0.08, 1)
+roughness = 0.3
+specular = 0.7
+
+[sub_resource type="BoxMesh" id="BoxMesh_shift_bezel"]
+material = SubResource("StandardMaterial3D_shift_chrome")
+size = Vector3(0.14, 0.015, 0.22)
+
+[sub_resource type="BoxMesh" id="BoxMesh_shift_gate"]
+material = SubResource("StandardMaterial3D_stalk_plastic")
+size = Vector3(0.12, 0.018, 0.2)
+
+[sub_resource type="PrismMesh" id="PrismMesh_shift_boot"]
+material = SubResource("StandardMaterial3D_shift_leather")
+size = Vector3(0.09, 0.06, 0.12)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_shift_stalk"]
+material = SubResource("StandardMaterial3D_shift_chrome")
+top_radius = 0.007
+bottom_radius = 0.008
+height = 0.15
+
+[sub_resource type="SphereMesh" id="SphereMesh_shift_knob"]
+material = SubResource("StandardMaterial3D_shift_padauk")
+radius = 0.026
+height = 0.05
+
+[sub_resource type="BoxMesh" id="BoxMesh_release_button"]
+material = SubResource("StandardMaterial3D_shift_chrome")
+size = Vector3(0.008, 0.014, 0.012)
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
@@ -1020,3 +1061,41 @@ mesh = SubResource("CylinderMesh_cup_lid")
 [node name="BeverageStraw" type="MeshInstance3D" parent="CenterCupHolder/TakeawayTeaCup"]
 transform = Transform3D(0.985, -0.174, 0, 0.174, 0.985, 0, 0, 0, 1, 0.015, 0.08, 0)
 mesh = SubResource("CylinderMesh_straw")
+
+[node name="GearShiftAssembly" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06, 0.94, -0.48)
+
+[node name="ShiftBezel" type="MeshInstance3D" parent="GearShiftAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.008, 0)
+mesh = SubResource("BoxMesh_shift_bezel")
+
+[node name="ShiftGatePlate" type="MeshInstance3D" parent="GearShiftAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+mesh = SubResource("BoxMesh_shift_gate")
+
+[node name="ShiftIndicatorDisplay" type="Label3D" parent="GearShiftAssembly"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.038, 0.022, 0)
+pixel_size = 0.0016
+text = "P R N [D]"
+font_size = 28
+outline_size = 6
+modulate = Color(1, 0.85, 0.3, 1)
+
+[node name="ShiftBoot" type="MeshInstance3D" parent="GearShiftAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.015, 0.035, 0)
+mesh = SubResource("PrismMesh_shift_boot")
+
+[node name="GearShiftLeverPivot" type="Node3D" parent="GearShiftAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.015, 0.035, 0)
+
+[node name="ShiftStalk" type="MeshInstance3D" parent="GearShiftAssembly/GearShiftLeverPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0)
+mesh = SubResource("CylinderMesh_shift_stalk")
+
+[node name="ShiftKnob" type="MeshInstance3D" parent="GearShiftAssembly/GearShiftLeverPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+mesh = SubResource("SphereMesh_shift_knob")
+
+[node name="ReleaseButton" type="MeshInstance3D" parent="GearShiftAssembly/GearShiftLeverPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.024, 0.15, 0)
+mesh = SubResource("BoxMesh_release_button")
