@@ -1891,3 +1891,64 @@ func play_gear_shift() -> void:
 	stream.data = data
 	gear_shift_player.stream = stream
 	gear_shift_player.play()
+
+var monastery_bell_player: AudioStreamPlayer = null
+var kyeezee_player: AudioStreamPlayer = null
+
+func play_monastery_bell() -> void:
+	if is_muted: return
+	if not monastery_bell_player:
+		monastery_bell_player = AudioStreamPlayer.new()
+		monastery_bell_player.name = "MonasteryBellAudio"
+		monastery_bell_player.volume_db = -4.0
+		add_child(monastery_bell_player)
+	var sample_hz = 22050
+	var duration = 1.4
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Deep reverberating bronze pagoda bell strike + rich harmonic overtone bloom
+		var fundamental = sin(t * 280.0 * TAU) * exp(-t * 2.2) * 0.55
+		var octave = sin(t * 560.0 * TAU) * exp(-t * 3.4) * 0.3
+		var overtone = sin(t * 840.0 * TAU) * exp(-t * 5.5) * 0.15
+		var strike_transient = exp(-t * 45.0) * sin(t * 1120.0 * TAU) * 0.4
+		var val = fundamental + octave + overtone + strike_transient
+		var int_sample = int(clamp(val, -1.0, 1.0) * 24000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	monastery_bell_player.stream = stream
+	monastery_bell_player.play()
+
+func play_kyeezee_chime() -> void:
+	if is_muted: return
+	if not kyeezee_player:
+		kyeezee_player = AudioStreamPlayer.new()
+		kyeezee_player.name = "KyeezeeAudio"
+		kyeezee_player.volume_db = -5.0
+		add_child(kyeezee_player)
+	var sample_hz = 22050
+	var duration = 1.2
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Classic rotary spinning Myanmar triangular Kyeezee brass vibrato
+		var spin_mod = sin(t * 12.0 * TAU) * 28.0
+		var strike = exp(-t * 60.0) * sin(t * 2400.0 * TAU) * 0.35
+		var shimmer = sin(t * (1650.0 + spin_mod) * TAU) * exp(-t * 2.8) * 0.45
+		var shimmer_hi = sin(t * (2280.0 - spin_mod * 0.7) * TAU) * exp(-t * 3.8) * 0.25
+		var val = strike + shimmer + shimmer_hi
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	kyeezee_player.stream = stream
+	kyeezee_player.play()

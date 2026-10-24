@@ -1,0 +1,256 @@
+﻿[gd_scene load_steps=28 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_plinth_col"]
+size = Vector3(6.6, 0.8, 6.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tower_col"]
+size = Vector3(4.4, 5.8, 4.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_plinth_white"]
+albedo_color = Color(0.9, 0.88, 0.84, 1)
+roughness = 0.88
+
+[sub_resource type="BoxMesh" id="BoxMesh_plinth_base"]
+material = SubResource("StandardMaterial3D_plinth_white")
+size = Vector3(6.4, 0.6, 6.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_plinth_step"]
+material = SubResource("StandardMaterial3D_plinth_white")
+size = Vector3(2.4, 0.2, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carved_teak"]
+albedo_color = Color(0.32, 0.2, 0.13, 1)
+roughness = 0.82
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tower_pillar"]
+material = SubResource("StandardMaterial3D_carved_teak")
+top_radius = 0.15
+bottom_radius = 0.18
+height = 5.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_cross_beam"]
+material = SubResource("StandardMaterial3D_carved_teak")
+size = Vector3(4.4, 0.35, 0.35)
+
+[sub_resource type="BoxMesh" id="BoxMesh_railing_beam"]
+material = SubResource("StandardMaterial3D_carved_teak")
+size = Vector3(4.0, 0.12, 0.08)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_railing_baluster"]
+material = SubResource("StandardMaterial3D_carved_teak")
+top_radius = 0.03
+bottom_radius = 0.03
+height = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bell_bronze"]
+albedo_color = Color(0.78, 0.62, 0.28, 1)
+metallic = 0.92
+roughness = 0.28
+specular = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_bell_body"]
+material = SubResource("StandardMaterial3D_bell_bronze")
+top_radius = 0.28
+bottom_radius = 0.62
+height = 1.25
+
+[sub_resource type="TorusMesh" id="TorusMesh_bell_lip"]
+material = SubResource("StandardMaterial3D_bell_bronze")
+inner_radius = 0.54
+outer_radius = 0.64
+rings = 24
+ring_segments = 12
+
+[sub_resource type="TorusMesh" id="TorusMesh_bell_hanger"]
+material = SubResource("StandardMaterial3D_bell_bronze")
+inner_radius = 0.1
+outer_radius = 0.18
+rings = 16
+ring_segments = 8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_striker_baton"]
+material = SubResource("StandardMaterial3D_carved_teak")
+top_radius = 0.05
+bottom_radius = 0.06
+height = 1.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kyeezee_gold"]
+albedo_color = Color(0.92, 0.82, 0.32, 1)
+metallic = 0.96
+roughness = 0.18
+specular = 0.9
+
+[sub_resource type="PrismMesh" id="PrismMesh_kyeezee"]
+material = SubResource("StandardMaterial3D_kyeezee_gold")
+left_to_right = 0.5
+size = Vector3(0.65, 0.55, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_roof_terracotta"]
+albedo_color = Color(0.58, 0.26, 0.18, 1)
+roughness = 0.65
+
+[sub_resource type="PrismMesh" id="PrismMesh_roof_tier1"]
+material = SubResource("StandardMaterial3D_roof_terracotta")
+left_to_right = 0.5
+size = Vector3(6.8, 1.4, 6.8)
+
+[sub_resource type="PrismMesh" id="PrismMesh_roof_tier2"]
+material = SubResource("StandardMaterial3D_roof_terracotta")
+left_to_right = 0.5
+size = Vector3(4.6, 1.2, 4.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spire_gold"]
+albedo_color = Color(0.95, 0.85, 0.3, 1)
+metallic = 0.95
+roughness = 0.22
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_spire_finial"]
+material = SubResource("StandardMaterial3D_spire_gold")
+top_radius = 0.02
+bottom_radius = 0.14
+height = 1.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brass_lantern"]
+albedo_color = Color(0.85, 0.72, 0.25, 1)
+metallic = 0.9
+roughness = 0.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_lantern_housing"]
+material = SubResource("StandardMaterial3D_brass_lantern")
+size = Vector3(0.24, 0.38, 0.24)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sign_post"]
+material = SubResource("StandardMaterial3D_carved_teak")
+size = Vector3(0.12, 1.8, 0.12)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sign_text"]
+albedo_color = Color(0.95, 0.82, 0.25, 1)
+roughness = 0.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_sign_board"]
+material = SubResource("StandardMaterial3D_sign_text")
+size = Vector3(2.2, 0.5, 0.06)
+
+[node name="MonasteryBellTower" type="StaticBody3D"]
+
+[node name="PlinthCol" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+shape = SubResource("BoxShape3D_plinth_col")
+
+[node name="TowerCol" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+shape = SubResource("BoxShape3D_tower_col")
+
+[node name="PlinthBase" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("BoxMesh_plinth_base")
+
+[node name="PlinthStep1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 3.4)
+mesh = SubResource("BoxMesh_plinth_step")
+
+[node name="PlinthStep2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 3.0)
+mesh = SubResource("BoxMesh_plinth_step")
+
+[node name="PillarFL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 3.5, 1.9)
+mesh = SubResource("CylinderMesh_tower_pillar")
+
+[node name="PillarFR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 3.5, 1.9)
+mesh = SubResource("CylinderMesh_tower_pillar")
+
+[node name="PillarBL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 3.5, -1.9)
+mesh = SubResource("CylinderMesh_tower_pillar")
+
+[node name="PillarBR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 3.5, -1.9)
+mesh = SubResource("CylinderMesh_tower_pillar")
+
+[node name="BeamTopFront" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.2, 1.9)
+mesh = SubResource("BoxMesh_cross_beam")
+
+[node name="BeamTopBack" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.2, -1.9)
+mesh = SubResource("BoxMesh_cross_beam")
+
+[node name="BeamTopLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.9, 6.2, 0)
+mesh = SubResource("BoxMesh_cross_beam")
+
+[node name="BeamTopRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.9, 6.2, 0)
+mesh = SubResource("BoxMesh_cross_beam")
+
+[node name="BellCrossBeam" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.2, 0)
+mesh = SubResource("BoxMesh_cross_beam")
+
+[node name="BronzeBellHanger" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 4.9, 0)
+mesh = SubResource("TorusMesh_bell_hanger")
+
+[node name="BronzeBellBody" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 4.1, 0)
+mesh = SubResource("CylinderMesh_bell_body")
+
+[node name="BronzeBellLip" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 3.5, 0)
+mesh = SubResource("TorusMesh_bell_lip")
+
+[node name="StrikerBaton" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.45, 3.5, 0)
+mesh = SubResource("CylinderMesh_striker_baton")
+
+[node name="KyeezeeGong" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 4.4, 0)
+mesh = SubResource("PrismMesh_kyeezee")
+
+[node name="RailingFront" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 1.9)
+mesh = SubResource("BoxMesh_railing_beam")
+
+[node name="RailingBack" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, -1.9)
+mesh = SubResource("BoxMesh_railing_beam")
+
+[node name="RoofTier1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.9, 0)
+mesh = SubResource("PrismMesh_roof_tier1")
+
+[node name="RoofTier2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.0, 0)
+mesh = SubResource("PrismMesh_roof_tier2")
+
+[node name="GoldenSpire" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.2, 0)
+mesh = SubResource("CylinderMesh_spire_finial")
+
+[node name="DuskLanternHousing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.6, 1.8)
+mesh = SubResource("BoxMesh_lantern_housing")
+
+[node name="BellTowerDuskLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 1.8)
+light_color = Color(1, 0.85, 0.55, 1)
+light_energy = 2.6
+omni_range = 12.0
+omni_attenuation = 1.25
+
+[node name="SignPost" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 3.8)
+mesh = SubResource("BoxMesh_sign_post")
+
+[node name="SignBoard" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 3.8)
+mesh = SubResource("BoxMesh_sign_board")
+
+[node name="TowerSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 3.85)
+pixel_size = 0.005
+text = "မင်းတုန်း ကျောင်းတိုက် ခေါင်းလောင်းစင်တော်ကြီး 🔔✨"
+font_size = 32
+outline_size = 8

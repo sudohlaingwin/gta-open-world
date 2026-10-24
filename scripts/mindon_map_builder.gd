@@ -59,6 +59,7 @@ const WHEELWRIGHT_WORKSHOP_SCENE = preload("res://scenes/wheelwright_workshop.ts
 const GRANARY_SCENE = preload("res://scenes/traditional_granary.tscn")
 const WATER_PAVILION_SCENE = preload("res://scenes/martaban_water_pavilion.tscn")
 const COUNTRYSIDE_WATER_WELL_SCENE = preload("res://scenes/countryside_water_well.tscn")
+const MONASTERY_BELL_TOWER_SCENE = preload("res://scenes/monastery_bell_tower.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -111,6 +112,7 @@ func _ready() -> void:
 	_generate_traditional_granaries()
 	_generate_martaban_water_pavilions()
 	_generate_countryside_water_wells()
+	_generate_monastery_bell_towers()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -2144,5 +2146,34 @@ func _generate_countryside_water_wells() -> void:
 		wells_holder.add_child(well)
 
 		var sign_node = well.get_node_or_null("WellSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_monastery_bell_towers() -> void:
+	# Traditional Myanmar two-tier pyatthat monastic bell towers with astrological cast bronze pagoda bell and spinning Kyeezee gong (ဘုန်းတော်ကြီးကျောင်း ခေါင်းလောင်းစင်တော်ကြီးများနှင့် ကြေးစည်တော်များ)
+	var towers_holder = Node3D.new()
+	towers_holder.name = "MonasteryBellTowers"
+	add_child(towers_holder)
+
+	var tower_data = [
+		{
+			"pos": Vector3(-148.0, 0.0, 110.0),
+			"rot_y": deg_to_rad(15.0),
+			"sign": "မင်းတုန်း ကျောင်းတိုက် ခေါင်းလောင်းစင်တော်ကြီး 🔔✨"
+		},
+		{
+			"pos": Vector3(220.0, 0.0, -95.0),
+			"rot_y": deg_to_rad(-45.0),
+			"sign": "ရွှေမင်းတုန်း စေတီတော် မဟာခေါင်းလောင်းစင်ကြီး 🔔✨"
+		}
+	]
+
+	for data in tower_data:
+		var tower = MONASTERY_BELL_TOWER_SCENE.instantiate()
+		tower.position = data["pos"]
+		tower.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		towers_holder.add_child(tower)
+
+		var sign_node = tower.get_node_or_null("TowerSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]
