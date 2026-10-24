@@ -49,6 +49,13 @@ var current_gear: String = "P"
 @onready var handbrake_pivot: Node3D = get_node_or_null("HandbrakeLeverAssembly/HandbrakePivot")
 @onready var brake_warning_display: Label3D = get_node_or_null("HandbrakeLeverAssembly/BrakeWarningDisplay")
 var handbrake_engaged: bool = false
+@onready var ignition_key_pivot: Node3D = get_node_or_null("IgnitionKeyAssembly/IgnitionKeyPivot")
+@onready var keyring_pivot: Node3D = get_node_or_null("IgnitionKeyAssembly/IgnitionKeyPivot/DanglingKeyringPivot")
+var engine_ignition_on: bool = true
+var keyring_roll: float = 0.0
+var keyring_roll_vel: float = 0.0
+var keyring_pitch: float = 0.0
+var keyring_pitch_vel: float = 0.0
 var aroma_diffuser_active: bool = false
 @onready var aroma_particles: CPUParticles3D = get_node_or_null("AirFreshenerDiffuser/DiffuserBottle/AromaVaporParticles")
 var sun_visors_down: bool = false
@@ -129,6 +136,21 @@ func _set_gear_state(p_gear: String) -> void:
 				"D":
 					shift_indicator.text = " P   R   N  [D]"
 					shift_indicator.modulate = Color(0.25, 1.0, 0.55, 1.0)
+func toggle_engine_ignition() -> String:
+	engine_ignition_on = !engine_ignition_on
+	var am = get_tree().get_first_node_in_group("audio_manager")
+	if am:
+		if am.has_method("play_ignition_key_turn"):
+			am.play_ignition_key_turn()
+		if engine_ignition_on and am.has_method("play_engine_crank"):
+			am.play_engine_crank()
+	if ignition_key_pivot:
+		ignition_key_pivot.rotation.z = deg_to_rad(45.0) if engine_ignition_on else 0.0
+	if engine_ignition_on:
+		return "🔑 စက်နှိုးခလုတ်: စက်နှိုးထားသည် (Engine ON - Key Turned)"
+	else:
+		engine_force = 0.0
+		return "🔑 စက်နှိုးခလုတ်: စက်သတ်လိုက်သည် (Engine OFF - Key Turned LOCK)"
 func toggle_handbrake() -> String:
 	handbrake_engaged = !handbrake_engaged
 	var am = get_tree().get_first_node_in_group("audio_manager")

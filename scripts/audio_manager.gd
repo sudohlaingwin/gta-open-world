@@ -2078,3 +2078,63 @@ func play_river_pile_lap() -> void:
 	stream.data = data
 	river_pile_player.stream = stream
 	river_pile_player.play()
+
+var ignition_key_player: AudioStreamPlayer = null
+var engine_crank_player: AudioStreamPlayer = null
+
+func play_ignition_key_turn() -> void:
+	if is_muted: return
+	if not ignition_key_player:
+		ignition_key_player = AudioStreamPlayer.new()
+		ignition_key_player.name = "IgnitionKeyAudio"
+		ignition_key_player.volume_db = -6.0
+		add_child(ignition_key_player)
+	var sample_hz = 22050
+	var duration = 0.11
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Mechanical cylinder tumbler detent snap + brass keyring jingle
+		var tumbler = exp(-t * 110.0) * (sin(t * 2950.0 * TAU) * 0.5 + sin(t * 1850.0 * TAU) * 0.35)
+		var jingle = 0.0
+		if t > 0.02:
+			jingle = exp(-(t - 0.02) * 55.0) * sin((t - 0.02) * 4400.0 * TAU) * 0.25
+		var val = tumbler + jingle
+		var int_sample = int(clamp(val, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	ignition_key_player.stream = stream
+	ignition_key_player.play()
+
+func play_engine_crank() -> void:
+	if is_muted: return
+	if not engine_crank_player:
+		engine_crank_player = AudioStreamPlayer.new()
+		engine_crank_player.name = "EngineCrankAudio"
+		engine_crank_player.volume_db = -4.5
+		add_child(engine_crank_player)
+	var sample_hz = 22050
+	var duration = 0.38
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Starter motor solenoid engagement + compression cylinder chug
+		var starter_whir = sin(t * 880.0 * TAU) * exp(-t * 4.0) * 0.25
+		var crank_pulse = (sin(t * 78.0 * TAU) + sin(t * 156.0 * TAU) * 0.5) * exp(-t * 2.5) * 0.55
+		var click = exp(-t * 80.0) * sin(t * 1650.0 * TAU) * 0.35
+		var val = starter_whir + crank_pulse + click
+		var int_sample = int(clamp(val, -1.0, 1.0) * 24000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	engine_crank_player.stream = stream
+	engine_crank_player.play()

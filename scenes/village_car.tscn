@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=123 format=3]
+﻿[gd_scene load_steps=129 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -560,6 +560,39 @@ material = SubResource("StandardMaterial3D_shift_chrome")
 top_radius = 0.006
 bottom_radius = 0.007
 height = 0.018
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ignition_bezel"]
+material = SubResource("StandardMaterial3D_shift_chrome")
+top_radius = 0.018
+bottom_radius = 0.02
+height = 0.015
+
+[sub_resource type="BoxMesh" id="BoxMesh_key_bow"]
+material = SubResource("StandardMaterial3D_stalk_plastic")
+size = Vector3(0.024, 0.005, 0.028)
+
+[sub_resource type="TorusMesh" id="TorusMesh_split_ring"]
+material = SubResource("StandardMaterial3D_shift_chrome")
+inner_radius = 0.008
+outer_radius = 0.011
+rings = 12
+ring_segments = 6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_chain_link"]
+material = SubResource("StandardMaterial3D_gold_finial")
+top_radius = 0.002
+bottom_radius = 0.002
+height = 0.035
+
+[sub_resource type="BoxMesh" id="BoxMesh_teak_amulet"]
+material = SubResource("StandardMaterial3D_shift_padauk")
+size = Vector3(0.022, 0.032, 0.008)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_gold_tassel"]
+material = SubResource("StandardMaterial3D_red_cord")
+top_radius = 0.004
+bottom_radius = 0.006
+height = 0.025
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
@@ -1166,3 +1199,36 @@ mesh = SubResource("CylinderMesh_handbrake_grip")
 [node name="ReleasePin" type="MeshInstance3D" parent="HandbrakeLeverAssembly/HandbrakePivot"]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0.18, -0.105)
 mesh = SubResource("CylinderMesh_handbrake_pin")
+
+[node name="IgnitionKeyAssembly" type="Node3D" parent="."]
+transform = Transform3D(0.965926, 0.109382, 0.234388, 0, 0.906308, -0.422618, -0.258819, 0.408218, 0.875426, -0.38, 1.22, -0.72)
+
+[node name="IgnitionBezel" type="MeshInstance3D" parent="IgnitionKeyAssembly"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_ignition_bezel")
+
+[node name="IgnitionKeyPivot" type="Node3D" parent="IgnitionKeyAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.01)
+
+[node name="KeyBowHead" type="MeshInstance3D" parent="IgnitionKeyAssembly/IgnitionKeyPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.014)
+mesh = SubResource("BoxMesh_key_bow")
+
+[node name="DanglingKeyringPivot" type="Node3D" parent="IgnitionKeyAssembly/IgnitionKeyPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.028)
+
+[node name="SplitRing" type="MeshInstance3D" parent="IgnitionKeyAssembly/IgnitionKeyPivot/DanglingKeyringPivot"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.008, 0)
+mesh = SubResource("TorusMesh_split_ring")
+
+[node name="BrassChain" type="MeshInstance3D" parent="IgnitionKeyAssembly/IgnitionKeyPivot/DanglingKeyringPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.025, 0)
+mesh = SubResource("CylinderMesh_chain_link")
+
+[node name="TeakAmuletCharm" type="MeshInstance3D" parent="IgnitionKeyAssembly/IgnitionKeyPivot/DanglingKeyringPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.055, 0)
+mesh = SubResource("BoxMesh_teak_amulet")
+
+[node name="GoldTassel" type="MeshInstance3D" parent="IgnitionKeyAssembly/IgnitionKeyPivot/DanglingKeyringPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0)
+mesh = SubResource("CylinderMesh_gold_tassel")
