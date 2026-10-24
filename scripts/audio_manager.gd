@@ -1529,3 +1529,32 @@ func play_diffuser_spray() -> void:
 	stream.data = data
 	diffuser_player.stream = stream
 	diffuser_player.play()
+var oil_press_player: AudioStreamPlayer = null
+
+func play_oil_press_creak() -> void:
+	if is_muted: return
+	if not oil_press_player:
+		oil_press_player = AudioStreamPlayer.new()
+		oil_press_player.name = "OilPressAudio"
+		oil_press_player.volume_db = -7.5
+		add_child(oil_press_player)
+	var sample_hz = 22050
+	var duration = 0.65
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env = sin(t / duration * PI)
+		# Deep rhythmic hardwood mortise friction & rotational groan
+		var groan = sin(t * 115.0 * TAU + sin(t * 35.0) * 3.5) * 0.6 + sin(t * 230.0 * TAU) * 0.3
+		var creak = sin(t * 460.0 * TAU) * exp(-t * 8.0) * 0.2
+		var val = (groan + creak) * env
+		var int_sample = int(clamp(val, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	oil_press_player.stream = stream
+	oil_press_player.play()

@@ -70,3 +70,4 @@ Antigravity has issued a formal Senior Game Architect & Systems Engineer Review 
 - **Slice 434:** Traditional Countryside Village Blacksmith Forge, Cart Wheel Iron Tire & Anvil Realism (village_blacksmith_forge.tscn, audio_manager.gd, mindon_map_builder.gd).
 - **Slice 435:** Traditional Countryside Charcoal Burning Kiln, Embers & Firewood Realism (charcoal_burning_kiln.tscn, audio_manager.gd, mindon_map_builder.gd).
 - **Slice 436:** In-Cabin Dashboard Aromatic Vent Fragrance Diffuser, Citrus Mist & Multi-Action HUD Realism (village_car.tscn, audio_manager.gd, mobile_touch_hud.tscn, mobile_touch_hud.gd, player.gd).
+- **Slice 437:** Traditional Countryside Sesame & Groundnut Oil Mill Realism (traditional_oil_press.tscn, audio_manager.gd, mindon_map_builder.gd).

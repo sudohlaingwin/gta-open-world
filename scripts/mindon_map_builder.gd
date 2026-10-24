@@ -52,6 +52,7 @@ const CAVE_SHRINE_SCENE = preload("res://scenes/buddhist_cave_shrine.tscn")
 const SUGARCANE_PRESS_SCENE = preload("res://scenes/roadside_sugarcane_press.tscn")
 const BLACKSMITH_FORGE_SCENE = preload("res://scenes/village_blacksmith_forge.tscn")
 const CHARCOAL_KILN_SCENE = preload("res://scenes/charcoal_burning_kiln.tscn")
+const OIL_PRESS_SCENE = preload("res://scenes/traditional_oil_press.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -97,6 +98,7 @@ func _ready() -> void:
 	_generate_roadside_sugarcane_presses()
 	_generate_village_blacksmith_forges()
 	_generate_charcoal_burning_kilns()
+	_generate_traditional_oil_presses()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1933,5 +1935,33 @@ func _generate_charcoal_burning_kilns() -> void:
 		kilns_holder.add_child(kiln)
 
 		var sign_node = kiln.get_node_or_null("KilnSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+func _generate_traditional_oil_presses() -> void:
+	# Traditional Myanmar countryside heavy hardwood sesame & groundnut oil presses (ဆီဆုံကြီးများ)
+	var presses_holder = Node3D.new()
+	presses_holder.name = "TraditionalOilPresses"
+	add_child(presses_holder)
+
+	var press_data = [
+		{
+			"pos": Vector3(-60.0, 0.0, 180.0),
+			"rot_y": deg_to_rad(15.0),
+			"sign": "မင်းတုန်း ကျေးလက် ရိုးရာ နှမ်းဆီကြိတ်ဆုံကြီး 🛢️✨"
+		},
+		{
+			"pos": Vector3(180.0, 0.0, 360.0),
+			"rot_y": deg_to_rad(-55.0),
+			"sign": "တောင်ဘက် စိုက်ခင်း ရိုးရာ မြေပဲဆီဆုံကြီး 🥜🛢️"
+		}
+	]
+
+	for data in press_data:
+		var press = OIL_PRESS_SCENE.instantiate()
+		press.position = data["pos"]
+		press.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		presses_holder.add_child(press)
+
+		var sign_node = press.get_node_or_null("OilSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

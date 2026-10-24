@@ -5165,3 +5165,17 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
    - **Desktop Hotkey (scripts/player.gd):** Bound 'P' hotkey to smoothly toggle fragrance diffuser on/off and display Burmese status prompt.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+## 2026-10-24 — Slice 437: Traditional Countryside Sesame & Groundnut Oil Mill Realism
+### Completed by Antigravity:
+1. **Traditional Countryside Sesame & Groundnut Oil Mill Scene (scenes/traditional_oil_press.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Upper Myanmar Dry Zone traditional hardwood oil mill (မင်းတုန်း ကျေးလက် ရိုးရာ နှမ်းဆီကြိတ်ဆုံကြီး 🛢️✨). Features 4 heavy weathered teak pillars (CylinderMesh_shed_pillar, 3.4m tall) under open palm thatch roof (PrismMesh_shed_roof, 8.4m x 1.8m x 7.2m), massive central mortar base hollowed from a single aged tamarind trunk (CylinderMesh_mortar_base, 1.9m diameter) filled with pure roasted amber sesame oil (CylinderMesh_oil_basin, StandardMaterial3D_sesame_oil with 0.08 roughness and golden sheen), inclined heavy hardwood pestle beam (CylinderMesh_pestle_shaft) with 4.8m horizontal lever sweep arm (BoxMesh_lever_beam), dual earthenware oil collection jars (SphereMesh_oil_jar, StandardMaterial3D_clay_pot), woven split-bamboo basket heaped with dark roasted sesame seeds (CylinderMesh_sesame_basket, SphereMesh_sesame_pile), stacked burlap sacks of unshelled groundnuts (BoxMesh_peanut_sack), rustic bamboo rest bench for traveling drivers, dusk brass hanging lantern, and carved calligraphic signboard (OilSign, Label3D).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=26), zero runtime monkey patching, zero load errors.
+2. **Procedural Native Audio Synthesis (scripts/audio_manager.gd):**
+   - Implemented play_oil_press_creak(): deep rhythmic hardwood mortise friction and slow rotational groan (115Hz + 230Hz timber resonance) with high-frequency surface creaks.
+3. **Procedural Map Integration (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_traditional_oil_presses().
+   - Strategically placed at:
+     - Mindon Ward 1 Agricultural Quarter: Vector3(-60.0, 0.0, 180.0), rot_y = 15 deg ("မင်းတုန်း ကျေးလက် ရိုးရာ နှမ်းဆီကြိတ်ဆုံကြီး 🛢️✨").
+     - South Agricultural Plains Trail: Vector3(180.0, 0.0, 360.0), rot_y = -55 deg ("တောင်ဘက် စိုက်ခင်း ရိုးရာ မြေပဲဆီဆုံကြီး 🥜🛢️").
+4. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.
