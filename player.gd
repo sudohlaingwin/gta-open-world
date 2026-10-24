@@ -53,6 +53,7 @@ const Realism114Script = preload("res://realism114.gd")
 const Realism115Script = preload("res://realism115.gd")
 const Realism116Script = preload("res://realism116.gd")
 const Realism117Script = preload("res://realism117.gd")
+const Realism118Script = preload("res://realism118.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -814,6 +815,12 @@ func _ready() -> void:
 	# Body74/Head74 untouched, seated riders mirror-hidden
 	# (frame >= 540 pass + 1.0 s re-scan, after realism116's 520).
 	Realism117Script.dress(get_parent())
+	# Slice 117: traffic brake lights — the traffic fleet had no
+	# taillight meshes and no brake visualization at all despite
+	# real deceleration in traffic_car.gd, so 2 lenses per traffic
+	# vehicle brighten on measured deceleration + 1.0 s brake-hold
+	# (frame >= 560 pass + 1.0 s re-scan, after realism117's 540).
+	Realism118Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
