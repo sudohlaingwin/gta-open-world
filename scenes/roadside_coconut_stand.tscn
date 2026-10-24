@@ -1,0 +1,198 @@
+[gd_scene load_steps=23 format=3]
+
+[ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_stall"]
+size = Vector3(6.5, 3.8, 4.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_plinth"]
+size = Vector3(6.2, 0.25, 3.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dirt_ground"]
+albedo_color = Color(0.48, 0.40, 0.30, 1)
+roughness = 0.95
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_bamboo_post"]
+top_radius = 0.08
+bottom_radius = 0.08
+height = 3.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yellow_bamboo"]
+albedo_color = Color(0.72, 0.60, 0.35, 1)
+roughness = 0.72
+specular = 0.2
+
+[sub_resource type="PrismMesh" id="PrismMesh_thatch_roof"]
+left_to_right = 0.5
+size = Vector3(6.8, 1.4, 4.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_palm_thatch"]
+albedo_color = Color(0.55, 0.46, 0.28, 1)
+roughness = 0.92
+
+[sub_resource type="BoxMesh" id="BoxMesh_fruit_counter"]
+size = Vector3(4.8, 0.75, 1.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_counter"]
+albedo_color = Color(0.65, 0.52, 0.32, 1)
+roughness = 0.8
+
+[sub_resource type="SphereMesh" id="SphereMesh_coconut"]
+radius = 0.16
+height = 0.34
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_green_coconut"]
+albedo_color = Color(0.32, 0.58, 0.22, 1)
+roughness = 0.5
+specular = 0.35
+
+[sub_resource type="SphereMesh" id="SphereMesh_watermelon"]
+radius = 0.24
+height = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_striped_watermelon"]
+albedo_color = Color(0.12, 0.42, 0.18, 1)
+roughness = 0.35
+specular = 0.45
+
+[sub_resource type="SphereMesh" id="SphereMesh_mango"]
+radius = 0.12
+height = 0.22
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yellow_mango"]
+albedo_color = Color(0.96, 0.76, 0.12, 1)
+roughness = 0.4
+specular = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_rest_bench"]
+size = Vector3(2.6, 0.45, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bench_wood"]
+albedo_color = Color(0.42, 0.28, 0.16, 1)
+roughness = 0.75
+
+[sub_resource type="SphereMesh" id="SphereMesh_clay_pot"]
+radius = 0.22
+height = 0.44
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_terracotta"]
+albedo_color = Color(0.70, 0.35, 0.18, 1)
+roughness = 0.65
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_night_lantern"]
+top_radius = 0.07
+bottom_radius = 0.07
+height = 0.16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_amber_lantern"]
+transparency = 1
+albedo_color = Color(1.0, 0.85, 0.4, 0.75)
+emission_enabled = true
+emission = Color(1.0, 0.75, 0.2, 1)
+emission_energy_multiplier = 2.4
+
+[node name="RoadsideCoconutStand" type="StaticBody3D"]
+script = ExtResource("1_lantern")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+shape = SubResource("BoxShape3D_stall")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+[node name="Plinth" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+mesh = SubResource("BoxMesh_plinth")
+surface_material_override/0 = SubResource("StandardMaterial3D_dirt_ground")
+
+[node name="PostFL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 1.7, 1.6)
+mesh = SubResource("CylinderMesh_bamboo_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_bamboo")
+
+[node name="PostFR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 1.7, 1.6)
+mesh = SubResource("CylinderMesh_bamboo_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_bamboo")
+
+[node name="PostBL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 1.7, -1.6)
+mesh = SubResource("CylinderMesh_bamboo_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_bamboo")
+
+[node name="PostBR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 1.7, -1.6)
+mesh = SubResource("CylinderMesh_bamboo_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_bamboo")
+
+[node name="ThatchRoof" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 0)
+mesh = SubResource("PrismMesh_thatch_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_palm_thatch")
+
+[node name="FruitCounter" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.2)
+mesh = SubResource("BoxMesh_fruit_counter")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_counter")
+
+[node name="CoconutCluster1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1.25, 0.2)
+mesh = SubResource("SphereMesh_coconut")
+surface_material_override/0 = SubResource("StandardMaterial3D_green_coconut")
+
+[node name="CoconutCluster2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 1.25, 0.2)
+mesh = SubResource("SphereMesh_coconut")
+surface_material_override/0 = SubResource("StandardMaterial3D_green_coconut")
+
+[node name="CoconutCluster3" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3, 1.45, 0.2)
+mesh = SubResource("SphereMesh_coconut")
+surface_material_override/0 = SubResource("StandardMaterial3D_green_coconut")
+
+[node name="Watermelon1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 1.3, 0.2)
+mesh = SubResource("SphereMesh_watermelon")
+surface_material_override/0 = SubResource("StandardMaterial3D_striped_watermelon")
+
+[node name="Watermelon2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 1.3, 0.2)
+mesh = SubResource("SphereMesh_watermelon")
+surface_material_override/0 = SubResource("StandardMaterial3D_striped_watermelon")
+
+[node name="MangoPile1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 1.2, 0.2)
+mesh = SubResource("SphereMesh_mango")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_mango")
+
+[node name="MangoPile2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.2, 0.2)
+mesh = SubResource("SphereMesh_mango")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_mango")
+
+[node name="RestBench" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -1.1)
+mesh = SubResource("BoxMesh_rest_bench")
+surface_material_override/0 = SubResource("StandardMaterial3D_bench_wood")
+
+[node name="ClayWaterPot" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.65, -0.9)
+mesh = SubResource("SphereMesh_clay_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_terracotta")
+
+[node name="HangingLantern" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+mesh = SubResource("CylinderMesh_night_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_amber_lantern")
+
+[node name="LanternLight" type="OmniLight3D" parent="VisualMesh/HangingLantern"]
+light_color = Color(1.0, 0.8, 0.4, 1)
+light_energy = 2.0
+omni_range = 14.0
+
+[node name="StandSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 1.7)
+text = "မင်းတုန်း အုန်းစိမ်းနုနုနှင့် သစ်သီးစုံ 🥥🍉🥭"
+font_size = 28
+outline_size = 8
+modulate = Color(1.0, 0.92, 0.35, 1)

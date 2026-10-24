@@ -40,4 +40,5 @@ Antigravity has issued a formal Senior Game Architect & Systems Engineer Review 
 - **Slice 404:** Grand Union Highway Traditional Passenger Bus Waiting Shelters (`highway_bus_shelter.tscn`).
 - **Slice 405:** Paddy Irrigation Canal Regulator Sluice Gates & Roadside Concrete Culverts (`irrigation_sluice_gate.tscn`).
 - **Slice 406:** Rearview Mirror Jasmine Flower Garland (`စပယ်ပန်းကုံး`) Dynamic Inertia Physics (`village_car.tscn`).
+- **Slice 407:** Rural Roadside Fresh Coconut & Tropical Fruit Oasis Stand Realism (`roadside_coconut_stand.tscn`).
 

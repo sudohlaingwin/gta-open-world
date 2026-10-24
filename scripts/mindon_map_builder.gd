@@ -34,6 +34,7 @@ const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 const AIRDROP_SCENE = preload("res://scenes/airdrop_crate.tscn")
 const BUS_SHELTER_SCENE = preload("res://scenes/highway_bus_shelter.tscn")
 const SLUICE_GATE_SCENE = preload("res://scenes/irrigation_sluice_gate.tscn")
+const COCONUT_STAND_SCENE = preload("res://scenes/roadside_coconut_stand.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -61,6 +62,7 @@ func _ready() -> void:
 	_generate_highway_milestone_posts()
 	_generate_highway_bus_shelters()
 	_generate_irrigation_sluice_gates()
+	_generate_roadside_coconut_stands()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1358,5 +1360,39 @@ func _generate_irrigation_sluice_gates() -> void:
 		sluice_holder.add_child(gate)
 
 		var sign_node = gate.get_node_or_null("SignLabel")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_roadside_coconut_stands() -> void:
+	# Scenic highway rest stops with fresh green coconuts, tropical fruit piles & terracotta water pots
+	var stands_holder = Node3D.new()
+	stands_holder.name = "RoadsideCoconutStands"
+	add_child(stands_holder)
+
+	var stand_data = [
+		{
+			"pos": Vector3(-920.0, 0.0, -132.0),
+			"rot_y": 0.0,
+			"sign": "မင်းတုန်း အနောက်တောင်ကြား အုန်းစိမ်းနုနုနှင့် သစ်သီးဆိုင် 🥥🍉"
+		},
+		{
+			"pos": Vector3(380.0, 0.0, -130.0),
+			"rot_y": 0.0,
+			"sign": "မင်းတုန်း မြစ်ကမ်းနဖူး အပန်းဖြေ သစ်သီးနှင့် သောက်ရေစင် 🥭🥥"
+		},
+		{
+			"pos": Vector3(980.0, 0.0, -132.0),
+			"rot_y": 0.0,
+			"sign": "အရှေ့တောင်ခြေ အမြန်လမ်းမကြီး အုန်းရည်သောက်နားနေစခန်း 🥥✨"
+		}
+	]
+
+	for data in stand_data:
+		var stand = COCONUT_STAND_SCENE.instantiate()
+		stand.position = data["pos"]
+		stand.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		stands_holder.add_child(stand)
+
+		var sign_node = stand.get_node_or_null("StandSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]
