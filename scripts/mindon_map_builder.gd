@@ -56,6 +56,7 @@ func _ready() -> void:
 	_generate_distant_mountain_horizons()
 	_generate_vast_paddy_terraces_and_farms()
 	_generate_airdrop_supply_drops()
+	_generate_highway_milestone_posts()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1228,6 +1229,66 @@ func _generate_airdrop_supply_drops() -> void:
 	drop2.crate_id = "drop_hilltop"
 	airdrop_holder.add_child(drop2)
 	drop2.global_position = Vector3(-680.0, 32.0, 410.0)
+
+func _generate_highway_milestone_posts() -> void:
+	var milestone_holder = Node3D.new()
+	milestone_holder.name = "HighwayMilestones"
+	add_child(milestone_holder)
+
+	var concrete_mat = StandardMaterial3D.new()
+	concrete_mat.albedo_color = Color(0.93, 0.94, 0.95, 1.0)
+	concrete_mat.roughness = 0.82
+
+	var yellow_band_mat = StandardMaterial3D.new()
+	yellow_band_mat.albedo_color = Color(0.96, 0.78, 0.12, 1.0)
+	yellow_band_mat.roughness = 0.5
+
+	var post_locations = [
+		{"pos": Vector3(-1200.0, 0.0, -112.0), "mindon_km": 12, "other": "ပြည် ၅၀"},
+		{"pos": Vector3(-900.0, 0.0, -112.0), "mindon_km": 9, "other": "ပြည် ၅၃"},
+		{"pos": Vector3(-600.0, 0.0, -112.0), "mindon_km": 6, "other": "ပြည် ၅၆"},
+		{"pos": Vector3(-300.0, 0.0, -112.0), "mindon_km": 3, "other": "ပြည် ၅၉"},
+		{"pos": Vector3(0.0, 0.0, -112.0), "mindon_km": 0, "other": "မင်းတုန်း ဗဟို"},
+		{"pos": Vector3(300.0, 0.0, -112.0), "mindon_km": 3, "other": "ပုသိမ် ၁၈၁"},
+		{"pos": Vector3(600.0, 0.0, -112.0), "mindon_km": 6, "other": "ပုသိမ် ၁၇၈"},
+		{"pos": Vector3(900.0, 0.0, -112.0), "mindon_km": 9, "other": "ပုသိမ် ၁၇၅"},
+		{"pos": Vector3(1200.0, 0.0, -112.0), "mindon_km": 12, "other": "ပုသိမ် ၁၇၂"}
+	]
+
+	for data in post_locations:
+		var p = Node3D.new()
+		p.name = "Milestone_%d" % int(data["mindon_km"])
+		milestone_holder.add_child(p)
+		p.global_position = data["pos"]
+
+		var base_mesh = MeshInstance3D.new()
+		var bm = BoxMesh.new()
+		bm.size = Vector3(0.55, 0.75, 0.35)
+		base_mesh.mesh = bm
+		base_mesh.position = Vector3(0, 0.375, 0)
+		base_mesh.set_surface_override_material(0, concrete_mat)
+		p.add_child(base_mesh)
+
+		var crown_mesh = MeshInstance3D.new()
+		var cm = CylinderMesh.new()
+		cm.top_radius = 0.27
+		cm.bottom_radius = 0.27
+		cm.height = 0.35
+		crown_mesh.mesh = cm
+		crown_mesh.position = Vector3(0, 0.75, 0)
+		crown_mesh.rotation = Vector3(deg_to_rad(90.0), 0, 0)
+		crown_mesh.set_surface_override_material(0, yellow_band_mat)
+		p.add_child(crown_mesh)
+
+		var lbl = Label3D.new()
+		lbl.position = Vector3(0, 0.45, 0.19)
+		lbl.text = "မင်းတုန်း\n%d KM\n%s" % [data["mindon_km"], data["other"]]
+		lbl.font_size = 28
+		lbl.outline_size = 8
+		lbl.modulate = Color(0.12, 0.12, 0.14, 1.0)
+		lbl.outline_modulate = Color(1.0, 1.0, 1.0, 0.9)
+		p.add_child(lbl)
+
 
 
 

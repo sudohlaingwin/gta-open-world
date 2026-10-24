@@ -25,7 +25,8 @@ const RADIO_STATIONS: Array[String] = [
 	"📻 ရေဒီယို: ပိတ်ထားသည် (Off)",
 	"📻 ရေဒီယို: မြန်မာအကူးစတစ်နှင့် ပလွေ (Acoustic & Flute)",
 	"📻 ရေဒီယို: သဘာဝတောတောင်နှင့် လေညင်း (Mountain Wind)",
-	"📻 ရေဒီယို: ရိုးရာစောင်းနှင့် အေးချမ်းသံ (Harp & Chimes)"
+	"📻 ရေဒီယို: ရိုးရာစောင်းနှင့် အေးချမ်းသံ (Harp & Chimes)",
+	"📻 ရေဒီယို: မန္တလေး FM ပေါ့ပ်ဂစ်တာ (Mandalay Pop FM 98.5 MHz)"
 ]
 
 func cycle_radio_station() -> String:
@@ -48,6 +49,8 @@ func _apply_radio_station() -> void:
 			_synthesize_nature_ambience_loop()
 		3:
 			_synthesize_myanmar_harp_song()
+		4:
+			_synthesize_mandalay_pop_song()
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -118,6 +121,58 @@ func _synthesize_myanmar_harp_song() -> void:
 	stream.data = data
 	bgm_music_player.stream = stream
 	bgm_music_player.play()
+
+func _synthesize_mandalay_pop_song() -> void:
+	# Upbeat 120 BPM Myanmar Radio Pop with rhythmic guitar chords & patala xylophone shimmer
+	var sample_hz = 22050
+	var duration = 10.0
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	stream.loop_begin = 0
+	stream.loop_end = total_frames
+
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+
+	var bpm = 120.0
+	var beat_sec = 60.0 / bpm
+
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var beat_progress = fmod(t, beat_sec) / beat_sec
+		var bar_num = int(t / (beat_sec * 4.0)) % 4
+
+		var root_f = 196.0 # G
+		if bar_num == 1: root_f = 164.8 # Em
+		elif bar_num == 2: root_f = 130.8 # C
+		elif bar_num == 3: root_f = 146.8 # D
+
+		var strum_env = exp(-beat_progress * 5.5)
+		var chord = (sin(t * root_f * TAU) * 0.45 + sin(t * root_f * 1.25 * TAU) * 0.35 + sin(t * root_f * 1.5 * TAU) * 0.3) * strum_env
+
+		var melody_step = int(t / (beat_sec * 0.5)) % 8
+		var patala_f = root_f * 4.0
+		if melody_step == 1: patala_f *= 1.125
+		elif melody_step == 3: patala_f *= 1.25
+		elif melody_step == 5: patala_f *= 1.5
+		elif melody_step == 7: patala_f *= 1.667
+
+		var sub_beat = fmod(t, beat_sec * 0.5) / (beat_sec * 0.5)
+		var patala_env = exp(-sub_beat * 8.0)
+		var patala = sin(t * patala_f * TAU) * patala_env * 0.22
+		var bass = sin(t * (root_f * 0.5) * TAU) * (0.3 + 0.2 * strum_env)
+
+		var total_sample = (chord * 0.5 + patala + bass * 0.4)
+		var int_sample = int(clamp(total_sample, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+
+	stream.data = data
+	bgm_music_player.stream = stream
+	bgm_music_player.play()
+
 
 func _process(delta: float) -> void:
 	if is_muted:
