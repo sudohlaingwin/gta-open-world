@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3]
+[gd_scene load_steps=31 format=3]
 
 [ext_resource type="Script" path="res://scripts/mount_controller.gd" id="1_cart"]
 
@@ -111,6 +111,25 @@ height = 1.65
 albedo_color = Color(0.82, 0.72, 0.45, 1)
 roughness = 0.75
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_khamauk_cone"]
+top_radius = 0.02
+bottom_radius = 0.38
+height = 0.16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_khamauk_bamboo"]
+albedo_color = Color(0.82, 0.72, 0.48, 1)
+roughness = 0.82
+specular = 0.25
+
+[sub_resource type="SphereMesh" id="SphereMesh_water_flask"]
+radius = 0.16
+height = 0.32
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glazed_flask"]
+albedo_color = Color(0.62, 0.32, 0.16, 1)
+roughness = 0.35
+specular = 0.50
+
 [node name="BullockCart" type="CharacterBody3D"]
 script = ExtResource("1_cart")
 mount_type = 1
@@ -152,6 +171,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_wood")
 transform = Transform3D(0.965926, -0.183013, 0.183013, 0.258819, 0.683013, -0.683013, 0, 0.707107, 0.707107, 0.72, 1.85, -1.1)
 mesh = SubResource("CylinderMesh_whip_rod")
 surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_whip")
+
+[node name="KhamaukHat" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -0.65, 1.48, -0.5)
+mesh = SubResource("CylinderMesh_khamauk_cone")
+surface_material_override/0 = SubResource("StandardMaterial3D_khamauk_bamboo")
+
+[node name="WaterFlask" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.92, 1.95, -0.45)
+mesh = SubResource("SphereMesh_water_flask")
+surface_material_override/0 = SubResource("StandardMaterial3D_glazed_flask")
 
 [node name="OxYokeBeam" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 1.35, -4.6)
