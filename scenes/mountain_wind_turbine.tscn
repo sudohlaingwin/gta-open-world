@@ -1,0 +1,139 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://scripts/wind_turbine_controller.gd" id="1_turbine"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_base"]
+height = 35.0
+radius = 2.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tower"]
+top_radius = 0.95
+bottom_radius = 2.2
+height = 34.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_turbine_white"]
+albedo_color = Color(0.92, 0.94, 0.96, 1)
+metallic = 0.15
+roughness = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_nacelle"]
+size = Vector3(2.2, 2.4, 6.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nacelle_grey"]
+albedo_color = Color(0.82, 0.84, 0.88, 1)
+roughness = 0.4
+
+[sub_resource type="SphereMesh" id="SphereMesh_hub_cone"]
+radius = 0.72
+height = 1.45
+
+[sub_resource type="BoxMesh" id="BoxMesh_blade"]
+size = Vector3(0.55, 14.5, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blade_white"]
+albedo_color = Color(0.94, 0.95, 0.97, 1)
+roughness = 0.28
+
+[sub_resource type="BoxMesh" id="BoxMesh_red_tip"]
+size = Vector3(0.56, 2.2, 0.20)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red_tip"]
+albedo_color = Color(0.88, 0.18, 0.14, 1)
+roughness = 0.4
+
+[sub_resource type="SphereMesh" id="SphereMesh_beacon"]
+radius = 0.18
+height = 0.36
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_beacon_red"]
+transparency = 1
+albedo_color = Color(1.0, 0.2, 0.2, 0.8)
+emission_enabled = true
+emission = Color(1.0, 0.1, 0.1, 1)
+emission_energy_multiplier = 3.5
+
+[node name="MountainWindTurbine" type="StaticBody3D"]
+script = ExtResource("1_turbine")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17.5, 0)
+shape = SubResource("CylinderShape3D_base")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+[node name="Tower" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17.0, 0)
+mesh = SubResource("CylinderMesh_tower")
+surface_material_override/0 = SubResource("StandardMaterial3D_turbine_white")
+
+[node name="Nacelle" type="Node3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 34.0, 0)
+
+[node name="Housing" type="MeshInstance3D" parent="VisualMesh/Nacelle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6)
+mesh = SubResource("BoxMesh_nacelle")
+surface_material_override/0 = SubResource("StandardMaterial3D_nacelle_grey")
+
+[node name="BeaconMesh" type="MeshInstance3D" parent="VisualMesh/Nacelle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, -2.2)
+mesh = SubResource("SphereMesh_beacon")
+surface_material_override/0 = SubResource("StandardMaterial3D_beacon_red")
+
+[node name="BeaconLight" type="OmniLight3D" parent="VisualMesh/Nacelle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -2.2)
+light_color = Color(1.0, 0.15, 0.15, 1)
+light_energy = 3.5
+omni_range = 35.0
+
+[node name="RotorHub" type="Node3D" parent="VisualMesh/Nacelle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.5)
+
+[node name="NoseCone" type="MeshInstance3D" parent="VisualMesh/Nacelle/RotorHub"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3)
+mesh = SubResource("SphereMesh_hub_cone")
+surface_material_override/0 = SubResource("StandardMaterial3D_turbine_white")
+
+[node name="Blade1" type="Node3D" parent="VisualMesh/Nacelle/RotorHub"]
+
+[node name="MainBlade" type="MeshInstance3D" parent="VisualMesh/Nacelle/RotorHub/Blade1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5, 0)
+mesh = SubResource("BoxMesh_blade")
+surface_material_override/0 = SubResource("StandardMaterial3D_blade_white")
+
+[node name="TipRed" type="MeshInstance3D" parent="VisualMesh/Nacelle/RotorHub/Blade1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.8, 0)
+mesh = SubResource("BoxMesh_red_tip")
+surface_material_override/0 = SubResource("StandardMaterial3D_red_tip")
+
+[node name="Blade2" type="Node3D" parent="VisualMesh/Nacelle/RotorHub"]
+transform = Transform3D(-0.5, -0.866025, 0, 0.866025, -0.5, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="MainBlade" type="MeshInstance3D" parent="VisualMesh/Nacelle/RotorHub/Blade2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5, 0)
+mesh = SubResource("BoxMesh_blade")
+surface_material_override/0 = SubResource("StandardMaterial3D_blade_white")
+
+[node name="TipRed" type="MeshInstance3D" parent="VisualMesh/Nacelle/RotorHub/Blade2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.8, 0)
+mesh = SubResource("BoxMesh_red_tip")
+surface_material_override/0 = SubResource("StandardMaterial3D_red_tip")
+
+[node name="Blade3" type="Node3D" parent="VisualMesh/Nacelle/RotorHub"]
+transform = Transform3D(-0.5, 0.866025, 0, -0.866025, -0.5, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="MainBlade" type="MeshInstance3D" parent="VisualMesh/Nacelle/RotorHub/Blade3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5, 0)
+mesh = SubResource("BoxMesh_blade")
+surface_material_override/0 = SubResource("StandardMaterial3D_blade_white")
+
+[node name="TipRed" type="MeshInstance3D" parent="VisualMesh/Nacelle/RotorHub/Blade3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.8, 0)
+mesh = SubResource("BoxMesh_red_tip")
+surface_material_override/0 = SubResource("StandardMaterial3D_red_tip")
+
+[node name="TurbineSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 2.4)
+text = "မင်းတုန်းတောင်တန်း လေအားလျှပ်စစ် တာဘိုင် ⚡"
+font_size = 28
+outline_size = 8
+modulate = Color(0.90, 0.95, 1.0, 1)

@@ -35,6 +35,7 @@ const AIRDROP_SCENE = preload("res://scenes/airdrop_crate.tscn")
 const BUS_SHELTER_SCENE = preload("res://scenes/highway_bus_shelter.tscn")
 const SLUICE_GATE_SCENE = preload("res://scenes/irrigation_sluice_gate.tscn")
 const COCONUT_STAND_SCENE = preload("res://scenes/roadside_coconut_stand.tscn")
+const WIND_TURBINE_SCENE = preload("res://scenes/mountain_wind_turbine.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -63,6 +64,7 @@ func _ready() -> void:
 	_generate_highway_bus_shelters()
 	_generate_irrigation_sluice_gates()
 	_generate_roadside_coconut_stands()
+	_generate_mountain_wind_turbines()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1396,3 +1398,34 @@ func _generate_roadside_coconut_stands() -> void:
 		var sign_node = stand.get_node_or_null("StandSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]
+
+func _generate_mountain_wind_turbines() -> void:
+	# Distant majestic wind turbines on mountain crests providing scale & cinematic depth
+	var turbines_holder = Node3D.new()
+	turbines_holder.name = "MountainWindTurbines"
+	add_child(turbines_holder)
+
+	var turbine_data = [
+		{
+			"pos": Vector3(-1420.0, 38.0, -420.0),
+			"rot_y": deg_to_rad(25.0)
+		},
+		{
+			"pos": Vector3(-1680.0, 52.0, -560.0),
+			"rot_y": deg_to_rad(35.0)
+		},
+		{
+			"pos": Vector3(1380.0, 42.0, 420.0),
+			"rot_y": deg_to_rad(-45.0)
+		},
+		{
+			"pos": Vector3(1620.0, 56.0, 580.0),
+			"rot_y": deg_to_rad(-55.0)
+		}
+	]
+
+	for data in turbine_data:
+		var turbine = WIND_TURBINE_SCENE.instantiate()
+		turbine.position = data["pos"]
+		turbine.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		turbines_holder.add_child(turbine)

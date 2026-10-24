@@ -4719,6 +4719,19 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 408: Mountain Ridge Majestic Wind Turbines Realism & Scale
+### Completed by Antigravity:
+1. **Mountain Wind Turbine Scene (`scenes/mountain_wind_turbine.tscn`):**
+   - **Monumental Scale & Visual Grandeur:** Modelled 34-meter tall tapered mast tower (`CylinderMesh_tower`), 6.2m streamlined generator nacelle (`BoxMesh_nacelle`), aerodynamic rotor nose cone (`SphereMesh_hub_cone`), and three 14.5-meter long aerodynamic rotor blades (`BoxMesh_blade`) tipped with international safety vermilion bands (`StandardMaterial3D_red_tip`).
+   - **Night Hazard Aviation Warning Beacon:** Modelled pulsed amber/red navigation hazard strobe beacon light (`OmniLight3D`, `energy = 3.5`, `range = 35m`) synchronized with beacon glass shader pulsing.
+   - **Clean Declarative Architecture:** 100% strictly formatted canonical Godot 4 scene (`load_steps=14`), 0 runtime monkey patching, 0 load errors.
+2. **Procedural Rotor Aerodynamics Controller (`scripts/wind_turbine_controller.gd`):**
+   - Built realistic slow continuous aerodynamic rotation (`rotor_speed_rpm = 8.5`) with positional phase offsets so adjacent turbines rotate naturally without artificial synchronization.
+3. **Procedural Horizon Placement on High Mountain Ridges (`scripts/mindon_map_builder.gd`):**
+   - Positioned 4 towering wind turbines across the western mountain pass peaks (`(-1420, 38, -420)`, `(-1680, 52, -560)`) and eastern ridge overlooks (`(1380, 42, 420)`, `(1620, 56, 580)`), providing cinematic horizon landmarks visible across the entire 8km x 8km valley.
+4. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
 
 
 
