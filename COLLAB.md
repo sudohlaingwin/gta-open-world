@@ -4879,3 +4879,16 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - East River Confluence Clay Bluff: Vector3(560, 0, -45) ("အရှေ့မြစ်ဆုံ စဉ့်အိုးနှင့် မြေထည်လုပ်ငန်း 🏺✨").
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 418: Traditional Toddy Palm Jaggery Boiling Camp & Sweet Sap Cauldron Realism
+### Completed by Antigravity:
+1. **Toddy Palm Jaggery Boiling Camp Scene (scenes/toddy_jaggery_camp.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Upper Myanmar dry-zone toddy palm farm camp featuring compacted loam plinth (BoxMesh_plinth, 10.2m x 8.2m), 4 sturdy timber posts (CylinderMesh_timber_post), palm-thatched roof shelter (PrismMesh_thatch_roof, 7.4m x 1.6m x 5.8m), traditional earthen mud-brick boiling stove (BoxMesh_stove), 2 large cast-iron boiling cauldrons (CylinderMesh_cauldron, radius 0.68m) with golden simmering jaggery sap (StandardMaterial3D_jaggery_sap, emission 0.8), rising cooking steam particles (CPUParticles3D, 16 steam puffs), twin-hearth glowing fire light (OmniLight3D, warm orange Color(1.0, 0.45, 0.12), energy 2.6, range 7m), 5.2m bamboo palm climber's ladder (CylinderMesh_ladder_pole), 3 hanging clay toddy collection pots (SphereMesh_toddy_pot), woven palm-leaf jaggery gift boxes (BoxMesh_jaggery_box), bamboo resting bench (BoxMesh_bamboo_bench), and dusk amber lantern (OmniLight3D, energy 2.4, range 16m).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=26), zero runtime monkey patching, zero load errors.
+2. **Procedural Distribution in Mindon Toddy Palm Groves (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_toddy_jaggery_camps().
+   - Strategically positioned camps in active palm groves:
+     - South Toddy Palm Grove Trail: Vector3(-140, 0, 440) ("မင်းတုန်း တောင်ပိုင်း ထန်းတော ထန်းလျက်ဖို 🌴🍯").
+     - East Valley Foothills Grove: Vector3(480, 0, 260) ("အရှေ့လွင်ပြင် သဘာဝ ထန်းရည်ချိုနှင့် ထန်းလျက်စခန်း 🌴✨").
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

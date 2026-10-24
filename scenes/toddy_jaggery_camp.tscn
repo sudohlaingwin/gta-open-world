@@ -1,0 +1,245 @@
+[gd_scene load_steps=26 format=3]
+
+[ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_camp"]
+size = Vector3(10.5, 4.6, 8.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_plinth"]
+size = Vector3(10.2, 0.22, 8.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dry_earth"]
+albedo_color = Color(0.55, 0.44, 0.30, 1)
+roughness = 0.95
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_timber_post"]
+top_radius = 0.08
+bottom_radius = 0.10
+height = 3.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_timber"]
+albedo_color = Color(0.36, 0.24, 0.14, 1)
+roughness = 0.80
+
+[sub_resource type="PrismMesh" id="PrismMesh_thatch_roof"]
+left_to_right = 0.5
+size = Vector3(7.4, 1.6, 5.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_palm_thatch"]
+albedo_color = Color(0.68, 0.58, 0.36, 1)
+roughness = 0.92
+
+[sub_resource type="BoxMesh" id="BoxMesh_stove"]
+size = Vector3(3.2, 0.75, 1.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mud_brick"]
+albedo_color = Color(0.48, 0.35, 0.25, 1)
+roughness = 0.90
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cauldron"]
+top_radius = 0.68
+bottom_radius = 0.45
+height = 0.42
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cast_iron"]
+albedo_color = Color(0.18, 0.18, 0.20, 1)
+metallic = 0.80
+roughness = 0.45
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sap"]
+top_radius = 0.64
+bottom_radius = 0.64
+height = 0.06
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jaggery_sap"]
+albedo_color = Color(0.85, 0.52, 0.12, 1)
+roughness = 0.20
+specular = 0.85
+emission_enabled = true
+emission = Color(0.75, 0.42, 0.08, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="SphereMesh" id="SphereMesh_steam"]
+radius = 0.22
+height = 0.44
+radial_segments = 8
+rings = 4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_steam"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.92, 0.90, 0.88, 0.30)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ladder_pole"]
+top_radius = 0.04
+bottom_radius = 0.05
+height = 5.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo"]
+albedo_color = Color(0.65, 0.55, 0.32, 1)
+roughness = 0.82
+
+[sub_resource type="SphereMesh" id="SphereMesh_toddy_pot"]
+radius = 0.24
+height = 0.48
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clay_pot"]
+albedo_color = Color(0.66, 0.32, 0.18, 1)
+roughness = 0.72
+
+[sub_resource type="BoxMesh" id="BoxMesh_jaggery_box"]
+size = Vector3(0.45, 0.32, 0.45)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_palm_leaf"]
+albedo_color = Color(0.58, 0.52, 0.35, 1)
+roughness = 0.88
+
+[sub_resource type="BoxMesh" id="BoxMesh_bamboo_bench"]
+size = Vector3(2.6, 0.42, 0.75)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lantern"]
+top_radius = 0.08
+bottom_radius = 0.08
+height = 0.18
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_amber_lantern"]
+transparency = 1
+albedo_color = Color(1.0, 0.85, 0.45, 0.75)
+emission_enabled = true
+emission = Color(1.0, 0.75, 0.25, 1)
+emission_energy_multiplier = 2.4
+
+[node name="ToddyJaggeryCamp" type="StaticBody3D"]
+script = ExtResource("1_lantern")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
+shape = SubResource("BoxShape3D_camp")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+[node name="EarthPlinth" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11, 0)
+mesh = SubResource("BoxMesh_plinth")
+surface_material_override/0 = SubResource("StandardMaterial3D_dry_earth")
+
+[node name="PostFL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 1.6, 2.4)
+mesh = SubResource("CylinderMesh_timber_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="PostFR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 1.6, 2.4)
+mesh = SubResource("CylinderMesh_timber_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="PostBL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 1.6, -2.4)
+mesh = SubResource("CylinderMesh_timber_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="PostBR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 1.6, -2.4)
+mesh = SubResource("CylinderMesh_timber_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_timber")
+
+[node name="ThatchRoof" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7, 0)
+mesh = SubResource("PrismMesh_thatch_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_palm_thatch")
+
+[node name="MudStove" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.38, -0.4)
+mesh = SubResource("BoxMesh_stove")
+surface_material_override/0 = SubResource("StandardMaterial3D_mud_brick")
+
+[node name="StoveFireGlow" type="OmniLight3D" parent="VisualMesh/MudStove"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 1.1)
+light_color = Color(1.0, 0.45, 0.12, 1)
+light_energy = 2.6
+omni_range = 7.0
+
+[node name="Cauldron1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.85, -0.4)
+mesh = SubResource("CylinderMesh_cauldron")
+surface_material_override/0 = SubResource("StandardMaterial3D_cast_iron")
+
+[node name="Sap1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.98, -0.4)
+mesh = SubResource("CylinderMesh_sap")
+surface_material_override/0 = SubResource("StandardMaterial3D_jaggery_sap")
+
+[node name="Cauldron2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.85, -0.4)
+mesh = SubResource("CylinderMesh_cauldron")
+surface_material_override/0 = SubResource("StandardMaterial3D_cast_iron")
+
+[node name="Sap2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.98, -0.4)
+mesh = SubResource("CylinderMesh_sap")
+surface_material_override/0 = SubResource("StandardMaterial3D_jaggery_sap")
+
+[node name="BoilingSteam" type="CPUParticles3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 1.1, -0.4)
+amount = 16
+lifetime = 1.8
+gravity = Vector3(0, 0.8, 0)
+initial_velocity_min = 0.5
+initial_velocity_max = 1.4
+spread = 32.0
+scale_amount_min = 0.5
+scale_amount_max = 1.8
+mesh = SubResource("SphereMesh_steam")
+material_override = SubResource("StandardMaterial3D_steam")
+
+[node name="Ladder" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, 3.8, 2.4, -1.8)
+mesh = SubResource("CylinderMesh_ladder_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="Pot1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.35, -1.2)
+mesh = SubResource("SphereMesh_toddy_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_clay_pot")
+
+[node name="Pot2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0.35, -1.2)
+mesh = SubResource("SphereMesh_toddy_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_clay_pot")
+
+[node name="Pot3" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.72, -1.2)
+mesh = SubResource("SphereMesh_toddy_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_clay_pot")
+
+[node name="JaggeryBox1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0.32, 1.4)
+mesh = SubResource("BoxMesh_jaggery_box")
+surface_material_override/0 = SubResource("StandardMaterial3D_palm_leaf")
+
+[node name="JaggeryBox2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3, 0.32, 1.4)
+mesh = SubResource("BoxMesh_jaggery_box")
+surface_material_override/0 = SubResource("StandardMaterial3D_palm_leaf")
+
+[node name="BambooBench" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.32, 2.1)
+mesh = SubResource("BoxMesh_bamboo_bench")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="HangingLantern" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
+mesh = SubResource("CylinderMesh_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_amber_lantern")
+
+[node name="LanternLight" type="OmniLight3D" parent="VisualMesh/HangingLantern"]
+light_color = Color(1.0, 0.8, 0.4, 1)
+light_energy = 2.4
+omni_range = 16.0
+
+[node name="CampSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4, 2.6)
+text = "မင်းတုန်း ကျေးလက် သဘာဝ ထန်းတဲနှင့် ထန်းလျက်ဖို 🌴🍯"
+font_size = 28
+outline_size = 8
+modulate = Color(1.0, 0.90, 0.35, 1)

@@ -40,6 +40,7 @@ const BAMBOO_GAZEBO_SCENE = preload("res://scenes/riverside_bamboo_gazebo.tscn")
 const FUEL_DEPOT_SCENE = preload("res://scenes/highway_fuel_depot.tscn")
 const CATTLE_STATION_SCENE = preload("res://scenes/cattle_rest_station.tscn")
 const POTTERY_KILN_SCENE = preload("res://scenes/rural_pottery_kiln.tscn")
+const TODDY_CAMP_SCENE = preload("res://scenes/toddy_jaggery_camp.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -73,6 +74,7 @@ func _ready() -> void:
 	_generate_highway_fuel_depots()
 	_generate_cattle_rest_stations()
 	_generate_rural_pottery_kilns()
+	_generate_toddy_jaggery_camps()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1562,5 +1564,34 @@ func _generate_rural_pottery_kilns() -> void:
 		kilns_holder.add_child(kiln)
 
 		var sign_node = kiln.get_node_or_null("KilnSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_toddy_jaggery_camps() -> void:
+	# Traditional Myanmar Upper Dry Zone toddy palm jaggery boiling camps with sap cauldrons & palm huts
+	var camps_holder = Node3D.new()
+	camps_holder.name = "ToddyJaggeryCamps"
+	add_child(camps_holder)
+
+	var camp_data = [
+		{
+			"pos": Vector3(-140.0, 0.0, 440.0),
+			"rot_y": deg_to_rad(-15.0),
+			"sign": "မင်းတုန်း တောင်ပိုင်း ထန်းတော ထန်းလျက်ဖို 🌴🍯"
+		},
+		{
+			"pos": Vector3(480.0, 0.0, 260.0),
+			"rot_y": deg_to_rad(45.0),
+			"sign": "အရှေ့လွင်ပြင် သဘာဝ ထန်းရည်ချိုနှင့် ထန်းလျက်စခန်း 🌴✨"
+		}
+	]
+
+	for data in camp_data:
+		var camp = TODDY_CAMP_SCENE.instantiate()
+		camp.position = data["pos"]
+		camp.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		camps_holder.add_child(camp)
+
+		var sign_node = camp.get_node_or_null("CampSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]
