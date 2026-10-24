@@ -1434,3 +1434,35 @@ func play_sun_visor_flip(is_down: bool) -> void:
 	stream.data = data
 	sun_visor_player.stream = stream
 	sun_visor_player.play()
+
+var anvil_player: AudioStreamPlayer = null
+
+func play_anvil_strike() -> void:
+	if is_muted: return
+	if not anvil_player:
+		anvil_player = AudioStreamPlayer.new()
+		anvil_player.name = "AnvilAudio"
+		anvil_player.volume_db = -5.0
+		add_child(anvil_player)
+	var sample_hz = 22050
+	var duration = 0.45
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Crisp metallic hammer impact + high overtone ping + brief quench sizzle
+		var ping = sin(t * 1450.0 * TAU) * 0.6 + sin(t * 2900.0 * TAU) * 0.3 + sin(t * 4350.0 * TAU) * 0.15
+		var strike = exp(-t * 16.0) * ping
+		var sizzle = 0.0
+		if t > 0.08:
+			sizzle = exp(-(t - 0.08) * 8.0) * sin(t * 3100.0 * TAU + sin(t * 120.0) * 8.0) * 0.2
+		var val = strike + sizzle
+		var int_sample = int(clamp(val, -1.0, 1.0) * 26000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	anvil_player.stream = stream
+	anvil_player.play()

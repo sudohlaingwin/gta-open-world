@@ -50,6 +50,7 @@ const WATERMILL_SCENE = preload("res://scenes/bamboo_watermill.tscn")
 const SILK_SHED_SCENE = preload("res://scenes/silk_weaving_shed.tscn")
 const CAVE_SHRINE_SCENE = preload("res://scenes/buddhist_cave_shrine.tscn")
 const SUGARCANE_PRESS_SCENE = preload("res://scenes/roadside_sugarcane_press.tscn")
+const BLACKSMITH_FORGE_SCENE = preload("res://scenes/village_blacksmith_forge.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -93,6 +94,7 @@ func _ready() -> void:
 	_generate_silk_weaving_sheds()
 	_generate_buddhist_cave_shrines()
 	_generate_roadside_sugarcane_presses()
+	_generate_village_blacksmith_forges()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1872,5 +1874,34 @@ func _generate_roadside_sugarcane_presses() -> void:
 		presses_holder.add_child(press)
 
 		var sign_node = press.get_node_or_null("PressSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_village_blacksmith_forges() -> void:
+	# Traditional Myanmar countryside village blacksmith forges with red brick hearth, twin air bellows, anvil & cart wheel iron tires
+	var forges_holder = Node3D.new()
+	forges_holder.name = "VillageBlacksmithForges"
+	add_child(forges_holder)
+
+	var forge_data = [
+		{
+			"pos": Vector3(95.0, 0.0, 140.0),
+			"rot_y": deg_to_rad(20.0),
+			"sign": "မင်းတုန်း ရိုးရာ ပန်းပဲဖိုနှင့် လှည်းဘီး သံကွင်းခတ်ရုံ 🔨🔥"
+		},
+		{
+			"pos": Vector3(320.0, 0.0, -40.0),
+			"rot_y": deg_to_rad(-75.0),
+			"sign": "အရှေ့လှည်းလမ်းဆုံ ပန်းပဲဖို 🔨✨"
+		}
+	]
+
+	for data in forge_data:
+		var forge = BLACKSMITH_FORGE_SCENE.instantiate()
+		forge.position = data["pos"]
+		forge.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		forges_holder.add_child(forge)
+
+		var sign_node = forge.get_node_or_null("ForgeSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

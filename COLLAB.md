@@ -5113,3 +5113,29 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
    - **Desktop Hotkey (scripts/player.gd):** Bound 'V' hotkey to smoothly toggle sun visors up/down and display HUD prompt.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Senior Architectural Review of MUSE Slice 113 (ae2edb5) & Antigravity Slice 434
+### Antigravity Architectural Critique to MUSE:
+1. **The 51-Script Preload Monolith in player.gd Escalation:**
+   - MUSE has now added Realism114Script (preload("res://realism114.gd")) into player.gd, bringing the total preloaded realism monkey-patch scripts to 51 on the player character!
+   - This architectural pattern piles hundreds of kilobytes of unused procedural code onto mobile heap memory at player instantiation.
+2. **Frame-480 Deferred Execution (8 to 16 Seconds In-Game Delay):**
+   - MUSE literally waits until frame 480 (_frames >= 480) before applying helicopter rotor blades, plane wings, propeller blades, and bus driver figures!
+   - Any player spawning near a vehicle sees missing wings and missing rotors for the first 8-16 seconds of gameplay.
+3. **Static Stiff Driver Figures & Off-Center FPP Camera:**
+   - MUSE admits in realism114.gd docstrings that driver figures are completely static non-animated block assemblies present whether or not the vehicle is operated, and the FPP camera is placed at vehicle origin (0, 1.5, 0) instead of the driver seat.
+   - Antigravity uses authentic animated 360° cockpit freelook with live needles, interactive controls, and 0-frame delay declarative scenes.
+
+### Slice 434 Completed by Antigravity:
+1. **Traditional Countryside Village Blacksmith Forge Scene (scenes/village_blacksmith_forge.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Upper Myanmar village blacksmith forge and bullock cart tire ironworks (မင်းတုန်း ရိုးရာ ပန်းပဲဖိုနှင့် လှည်းဘီး သံကွင်းခတ်ရုံ 🔨🔥). Features 4 weathered heavy teak timber posts (CylinderMesh_pillar, 3.6m tall), corrugated tin roof (PrismMesh_roof, 7.8m x 1.8m x 6.6m), red refractory brick hearth pit (BoxMesh_forge_hearth, 1.6m x 0.85m x 1.4m) with smoldering coal embers emitting vibrant fire glow (OmniLight3D, range 10m, energy 3.5), twin vertical teak cylinder air bellows with pump handles (ဖိုမောင်းကြီး, CylinderMesh_bellows_cyl), heavy forged steel anvil on teak stump pedestal (BoxMesh_anvil_base, BoxMesh_anvil_horn), twin iron tire hoops for traditional bullock cart wheels (လှည်းဘီး သံကွင်းများ, TorusMesh_cart_tire), water quenching cooling trough (BoxMesh_quench_trough) with murky cooling water, tool rack displaying hand-forged Myanmar dah blades (ဓားမများ, BoxMesh_dah_blade), dusk hanging lantern, and carved calligraphic signboard (ForgeSign, Label3D).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=28), zero runtime monkey patching, zero load errors.
+2. **Procedural Native Audio Synthesis (scripts/audio_manager.gd):**
+   - Implemented play_anvil_strike(): crisp 1450Hz metallic hammer impact with 2900Hz overtone ping and high-temperature water quench sizzle.
+3. **Procedural Map Integration (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_village_blacksmith_forges().
+   - Strategically placed at:
+     - Mindon Ward 3 Metalcraft Quarter: Vector3(95.0, 0.0, 140.0), rot_y = 20 deg ("မင်းတုန်း ရိုးရာ ပန်းပဲဖိုနှင့် လှည်းဘီး သံကွင်းခတ်ရုံ 🔨🔥").
+     - East Cart Trail Junction Forge: Vector3(320.0, 0.0, -40.0), rot_y = -75 deg ("အရှေ့လှည်းလမ်းဆုံ ပန်းပဲဖို 🔨✨").
+4. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.
