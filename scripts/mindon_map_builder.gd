@@ -55,6 +55,7 @@ const CHARCOAL_KILN_SCENE = preload("res://scenes/charcoal_burning_kiln.tscn")
 const OIL_PRESS_SCENE = preload("res://scenes/traditional_oil_press.tscn")
 const THRESHING_FLOOR_SCENE = preload("res://scenes/village_threshing_floor.tscn")
 const FERRY_LANDING_SCENE = preload("res://scenes/river_ferry_landing.tscn")
+const WHEELWRIGHT_WORKSHOP_SCENE = preload("res://scenes/wheelwright_workshop.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -103,6 +104,7 @@ func _ready() -> void:
 	_generate_traditional_oil_presses()
 	_generate_village_threshing_floors()
 	_generate_river_ferry_landings()
+	_generate_wheelwright_workshops()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -2023,5 +2025,33 @@ func _generate_river_ferry_landings() -> void:
 		landings_holder.add_child(landing)
 
 		var sign_node = landing.get_node_or_null("FerrySign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+func _generate_wheelwright_workshops() -> void:
+	# Traditional Myanmar countryside wheelwright & bullock cart repair workshops (လှည်းပြင်ဖိုနှင့် လှည်းဘီးဖိုများ)
+	var workshops_holder = Node3D.new()
+	workshops_holder.name = "WheelwrightWorkshops"
+	add_child(workshops_holder)
+
+	var workshop_data = [
+		{
+			"pos": Vector3(145.0, 0.0, 85.0),
+			"rot_y": deg_to_rad(-25.0),
+			"sign": "မင်းတုန်း ရိုးရာ လှည်းပြင်ဖိုနှင့် လှည်းဘီးဖို 🛞🔨"
+		},
+		{
+			"pos": Vector3(-80.0, 0.0, 390.0),
+			"rot_y": deg_to_rad(65.0),
+			"sign": "တောင်ဘက် လှည်းလမ်းဆုံ လှည်းပြင်ဖို 🛞✨"
+		}
+	]
+
+	for data in workshop_data:
+		var workshop = WHEELWRIGHT_WORKSHOP_SCENE.instantiate()
+		workshop.position = data["pos"]
+		workshop.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		workshops_holder.add_child(workshop)
+
+		var sign_node = workshop.get_node_or_null("WorkshopSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

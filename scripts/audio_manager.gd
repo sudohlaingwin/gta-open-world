@@ -1677,3 +1677,31 @@ func play_stalk_click() -> void:
 	stream.data = data
 	stalk_click_player.stream = stream
 	stalk_click_player.play()
+var wood_adze_player: AudioStreamPlayer = null
+
+func play_wood_adze_chop() -> void:
+	if is_muted: return
+	if not wood_adze_player:
+		wood_adze_player = AudioStreamPlayer.new()
+		wood_adze_player.name = "WoodAdzeAudio"
+		wood_adze_player.volume_db = -6.5
+		add_child(wood_adze_player)
+	var sample_hz = 22050
+	var duration = 0.28
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Deep hardwood adze blade impact + crisp timber splinter chip crackle
+		var thud = exp(-t * 22.0) * (sin(t * 140.0 * TAU) * 0.65 + sin(t * 280.0 * TAU) * 0.35)
+		var chip = exp(-t * 45.0) * sin(t * 1850.0 * TAU) * 0.4
+		var val = thud + chip
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	wood_adze_player.stream = stream
+	wood_adze_player.play()

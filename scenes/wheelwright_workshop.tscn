@@ -1,0 +1,214 @@
+[gd_scene load_steps=24 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_workshop_col"]
+size = Vector3(9.6, 4.4, 7.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_heavy_teak"]
+albedo_color = Color(0.34, 0.24, 0.16, 1)
+roughness = 0.88
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_shed_pillar"]
+material = SubResource("StandardMaterial3D_heavy_teak")
+top_radius = 0.12
+bottom_radius = 0.14
+height = 3.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_palm_thatch"]
+albedo_color = Color(0.56, 0.46, 0.28, 1)
+roughness = 0.95
+
+[sub_resource type="PrismMesh" id="PrismMesh_shed_roof"]
+material = SubResource("StandardMaterial3D_palm_thatch")
+left_to_right = 0.5
+size = Vector3(9.4, 1.8, 7.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cart_timber"]
+albedo_color = Color(0.42, 0.3, 0.2, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_cart_chassis"]
+material = SubResource("StandardMaterial3D_cart_timber")
+size = Vector3(2.6, 0.22, 1.4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_jack_block"]
+material = SubResource("StandardMaterial3D_heavy_teak")
+top_radius = 0.18
+bottom_radius = 0.2
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_finished_wheel"]
+albedo_color = Color(0.38, 0.26, 0.16, 1)
+roughness = 0.72
+
+[sub_resource type="TorusMesh" id="TorusMesh_cart_wheel_rim"]
+material = SubResource("StandardMaterial3D_finished_wheel")
+inner_radius = 0.65
+outer_radius = 0.75
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wheel_hub"]
+material = SubResource("StandardMaterial3D_finished_wheel")
+top_radius = 0.14
+bottom_radius = 0.14
+height = 0.25
+
+[sub_resource type="BoxMesh" id="BoxMesh_wheel_spoke"]
+material = SubResource("StandardMaterial3D_finished_wheel")
+size = Vector3(1.3, 0.04, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iron_tire"]
+albedo_color = Color(0.22, 0.22, 0.24, 1)
+metallic = 0.85
+roughness = 0.38
+
+[sub_resource type="TorusMesh" id="TorusMesh_iron_tire_hoop"]
+material = SubResource("StandardMaterial3D_iron_tire")
+inner_radius = 0.73
+outer_radius = 0.76
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tool_rack"]
+albedo_color = Color(0.36, 0.25, 0.16, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_workbench"]
+material = SubResource("StandardMaterial3D_tool_rack")
+size = Vector3(2.2, 0.75, 0.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bench"]
+material = SubResource("StandardMaterial3D_heavy_teak")
+size = Vector3(1.8, 0.42, 0.55)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stone_pit"]
+albedo_color = Color(0.45, 0.42, 0.4, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fire_pit"]
+material = SubResource("StandardMaterial3D_stone_pit")
+top_radius = 0.95
+bottom_radius = 1.05
+height = 0.22
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brass_lantern"]
+albedo_color = Color(0.8, 0.65, 0.28, 1)
+metallic = 0.8
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lantern"]
+material = SubResource("StandardMaterial3D_brass_lantern")
+top_radius = 0.11
+bottom_radius = 0.13
+height = 0.32
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sign_wood"]
+albedo_color = Color(0.42, 0.28, 0.16, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_sign_board"]
+material = SubResource("StandardMaterial3D_sign_wood")
+size = Vector3(3.6, 0.65, 0.08)
+
+[node name="WheelwrightWorkshop" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+shape = SubResource("BoxShape3D_workshop_col")
+
+[node name="Pillar1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2, 1.7, -3.2)
+mesh = SubResource("CylinderMesh_shed_pillar")
+
+[node name="Pillar2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 1.7, -3.2)
+mesh = SubResource("CylinderMesh_shed_pillar")
+
+[node name="Pillar3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2, 1.7, 3.2)
+mesh = SubResource("CylinderMesh_shed_pillar")
+
+[node name="Pillar4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 1.7, 3.2)
+mesh = SubResource("CylinderMesh_shed_pillar")
+
+[node name="ThatchRoof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7, 0)
+mesh = SubResource("PrismMesh_shed_roof")
+
+[node name="CartFrameUnderRepair" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0, 0)
+
+[node name="Jack1" type="MeshInstance3D" parent="CartFrameUnderRepair"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.25, -0.5)
+mesh = SubResource("CylinderMesh_jack_block")
+
+[node name="Jack2" type="MeshInstance3D" parent="CartFrameUnderRepair"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0.25, -0.5)
+mesh = SubResource("CylinderMesh_jack_block")
+
+[node name="Jack3" type="MeshInstance3D" parent="CartFrameUnderRepair"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0.5)
+mesh = SubResource("CylinderMesh_jack_block")
+
+[node name="CartChassis" type="MeshInstance3D" parent="CartFrameUnderRepair"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("BoxMesh_cart_chassis")
+
+[node name="LeaningCartWheel" type="Node3D" parent="."]
+transform = Transform3D(0.966, -0.259, 0, 0.259, 0.966, 0, 0, 0, 1, 2.5, 0.72, -2.4)
+
+[node name="WheelRim" type="MeshInstance3D" parent="LeaningCartWheel"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+mesh = SubResource("TorusMesh_cart_wheel_rim")
+
+[node name="WheelHub" type="MeshInstance3D" parent="LeaningCartWheel"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+mesh = SubResource("CylinderMesh_wheel_hub")
+
+[node name="Spoke1" type="MeshInstance3D" parent="LeaningCartWheel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_wheel_spoke")
+
+[node name="Spoke2" type="MeshInstance3D" parent="LeaningCartWheel"]
+transform = Transform3D(0.5, 0.866, 0, -0.866, 0.5, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_wheel_spoke")
+
+[node name="Spoke3" type="MeshInstance3D" parent="LeaningCartWheel"]
+transform = Transform3D(-0.5, 0.866, 0, -0.866, -0.5, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_wheel_spoke")
+
+[node name="IronTireHoop" type="MeshInstance3D" parent="LeaningCartWheel"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+mesh = SubResource("TorusMesh_iron_tire_hoop")
+
+[node name="Workbench" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0.38, 0.8)
+mesh = SubResource("BoxMesh_workbench")
+
+[node name="RestBench" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0.21, 2.2)
+mesh = SubResource("BoxMesh_bench")
+
+[node name="OutdoorFirePit" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11, 4.2)
+mesh = SubResource("CylinderMesh_fire_pit")
+
+[node name="HangingLantern" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.0, 0)
+mesh = SubResource("CylinderMesh_lantern")
+
+[node name="LanternLight" type="OmniLight3D" parent="HangingLantern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
+light_color = Color(1, 0.85, 0.55, 1)
+light_energy = 2.4
+omni_range = 10.0
+
+[node name="SignBoard" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 3.4)
+mesh = SubResource("BoxMesh_sign_board")
+
+[node name="WorkshopSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 3.46)
+text = "မင်းတုန်း ကျေးလက် ရိုးရာ လှည်းပြင်ဖိုနှင့် လှည်းဘီးဖို 🛞🔨"
+font_size = 28
+outline_size = 6
+modulate = Color(1, 0.95, 0.65, 1)
+outline_modulate = Color(0.12, 0.08, 0.04, 1)
