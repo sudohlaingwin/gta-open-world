@@ -20,6 +20,7 @@ var smoothed_steering: float = 0.0
 @onready var taillight_mesh_r: MeshInstance3D = get_node_or_null("TaillightR")
 @onready var tire_smoke_l: CPUParticles3D = get_node_or_null("TireSmokeL")
 @onready var tire_smoke_r: CPUParticles3D = get_node_or_null("TireSmokeR")
+@onready var nitro_flame: CPUParticles3D = get_node_or_null("NitroFlame")
 
 signal driver_entered(driver)
 signal driver_exited()
@@ -70,10 +71,18 @@ func _physics_process(delta: float) -> void:
 		if sw:
 			sw.rotation.z = -smoothed_steering * 3.8
 
+		var is_boosting = false
+		if current_driver and current_driver.get("is_sprinting") != null:
+			is_boosting = current_driver.is_sprinting
+
+		if nitro_flame:
+			nitro_flame.emitting = (is_boosting and input_dir.y < -0.1)
+
 		# Progressive Acceleration & Dual-Power Braking
 		if input_dir.y < -0.1: # Forward Throttle
-			var throttle_curve = lerp(0.65, 1.0, 1.0 - speed_ratio * 0.5)
-			engine_force = -input_dir.y * max_engine_force * throttle_curve
+			var boost_mult = 1.75 if is_boosting else 1.0
+			var throttle_curve = lerp(0.65, 1.0, 1.0 - speed_ratio * 0.45)
+			engine_force = -input_dir.y * max_engine_force * throttle_curve * boost_mult
 			brake = 0.0
 		elif input_dir.y > 0.1: # Reverse input / Active Braking
 			if forward_speed > 0.5: # Hard forward brake
@@ -103,6 +112,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		if tire_smoke_l: tire_smoke_l.emitting = false
 		if tire_smoke_r: tire_smoke_r.emitting = false
+		if nitro_flame: nitro_flame.emitting = false
 		engine_force = 0.0
 		brake = 10.0
 
@@ -126,6 +136,7 @@ func exit_vehicle() -> void:
 	current_driver = null
 	if tire_smoke_l: tire_smoke_l.emitting = false
 	if tire_smoke_r: tire_smoke_r.emitting = false
+	if nitro_flame: nitro_flame.emitting = false
 	var exit_pos = global_position + (global_transform.basis.x * 2.0)
 	driver.reparent(get_parent())
 	driver.global_position = exit_pos

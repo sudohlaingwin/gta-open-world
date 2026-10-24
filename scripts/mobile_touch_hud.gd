@@ -245,6 +245,13 @@ func _process(delta: float) -> void:
 	if horn_btn:
 		horn_btn.visible = (player.current_state != player.State.ON_FOOT)
 
+	if sprint_btn:
+		if player.current_state != player.State.ON_FOOT:
+			sprint_btn.text = "🚀 အရှိန်တင် (BOOST)"
+		else:
+			sprint_btn.text = "🏃 အပြေး (SPRINT)"
+
+
 	if interact_btn:
 		match player.current_state:
 			player.State.RIDING_MOUNT:

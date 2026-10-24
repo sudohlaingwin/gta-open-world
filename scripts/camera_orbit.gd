@@ -97,8 +97,14 @@ func _physics_process(delta: float) -> void:
 			# Mount (Cow / Horse / Elephant)
 			target_pivot_offset = Vector3(0.0, 1.55, 0.0)
 
-		# FOV is natural and wide to take in the windows and cabin
-		target_fov = 80.0
+		# Dynamic Cockpit Speed-FOV expansion looking through windshield
+		var v_speed = 0.0
+		if current_veh and current_veh.get("linear_velocity") != null:
+			v_speed = current_veh.linear_velocity.length()
+		elif current_veh and current_veh.get("velocity") != null:
+			v_speed = current_veh.velocity.length()
+		var speed_factor = clampf(v_speed / 36.0, 0.0, 1.0)
+		target_fov = lerpf(80.0, 92.0, speed_factor)
 
 	elif is_in_vehicle and current_view_mode == ViewMode.TPP:
 		# --- VEHICLE CHASE CAMERA ---
@@ -112,8 +118,9 @@ func _physics_process(delta: float) -> void:
 		elif current_veh and current_veh.get("velocity") != null:
 			v_speed = current_veh.velocity.length()
 		
-		var speed_factor = clampf(v_speed / 28.0, 0.0, 1.0)
-		target_fov = lerpf(default_fov, default_fov + 12.0, speed_factor)
+		var speed_factor = clampf(v_speed / 36.0, 0.0, 1.0)
+		target_fov = lerpf(default_fov, default_fov + 15.0, speed_factor)
+
 
 	else:
 		# --- ON FOOT OVER-SHOULDER ---
