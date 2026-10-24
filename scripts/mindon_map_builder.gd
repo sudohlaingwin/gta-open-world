@@ -64,6 +64,7 @@ const COVERED_BRIDGE_SCENE = preload("res://scenes/covered_wooden_bridge.tscn")
 const SUGARCANE_WORKS_SCENE = preload("res://scenes/oxen_sugarcane_works.tscn")
 const BAMBOO_TIMBER_BOOM_SCENE = preload("res://scenes/bamboo_timber_boom.tscn")
 const MONASTIC_SIMA_HALL_SCENE = preload("res://scenes/monastic_sima_hall.tscn")
+const ANCIENT_BANYAN_SHRINE_SCENE = preload("res://scenes/ancient_banyan_nat_shrine.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -121,6 +122,7 @@ func _ready() -> void:
 	_generate_oxen_sugarcane_works()
 	_generate_bamboo_timber_booms()
 	_generate_monastic_sima_halls()
+	_generate_ancient_banyan_shrines()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -2299,5 +2301,34 @@ func _generate_monastic_sima_halls() -> void:
 		sima_holder.add_child(sima)
 
 		var sign_node = sima.get_node_or_null("SimaSignboard")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_ancient_banyan_shrines() -> void:
+	# Sacred Ancient Banyan Trees & Village Guardian Nat Shrines (မင်းတုန်း ရှေးဟောင်းညောင်ပင်ကြီးများနှင့် ရွာစောင့်နတ်စင်များ)
+	var banyan_holder = Node3D.new()
+	banyan_holder.name = "AncientBanyanNatShrines"
+	add_child(banyan_holder)
+
+	var banyan_locations = [
+		{
+			"pos": Vector3(-120.0, 0.0, 95.0),
+			"rot_y": deg_to_rad(15.0),
+			"sign": "မင်းတုန်း အနောက်တံခါး ညောင်ပင်ကြီးနှင့် ရွာစောင့်နတ်စင် 🌳⛩️"
+		},
+		{
+			"pos": Vector3(260.0, 2.0, -90.0),
+			"rot_y": deg_to_rad(-45.0),
+			"sign": "အရှေ့ရွာမ လမ်းဆုံ ရှေးဟောင်းညောင်ပင်စောင့်နတ်နန်း 🌳✨"
+		}
+	]
+
+	for data in banyan_locations:
+		var shrine = ANCIENT_BANYAN_SHRINE_SCENE.instantiate()
+		shrine.position = data["pos"]
+		shrine.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		banyan_holder.add_child(shrine)
+
+		var sign_node = shrine.get_node_or_null("NatSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

@@ -27,6 +27,8 @@ var sima_chant_player: AudioStreamPlayer = null
 var deep_gong_player: AudioStreamPlayer = null
 var door_lock_player: AudioStreamPlayer = null
 var door_latch_player: AudioStreamPlayer = null
+var banyan_wind_player: AudioStreamPlayer = null
+var nat_chime_player: AudioStreamPlayer = null
 
 const RADIO_STATIONS: Array[String] = [
 	"📻 ရေဒီယို: ပိတ်ထားသည် (Off)",
@@ -2479,3 +2481,61 @@ func play_door_latch_pull() -> void:
 	stream.data = data
 	door_latch_player.stream = stream
 	door_latch_player.play()
+
+func play_banyan_wind_whisper() -> void:
+	if is_muted: return
+	if not banyan_wind_player:
+		banyan_wind_player = AudioStreamPlayer.new()
+		banyan_wind_player.name = "BanyanWindAudio"
+		banyan_wind_player.volume_db = -6.0
+		add_child(banyan_wind_player)
+	var sample_hz = 22050
+	var duration = 1.6
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Deep rustling of large sacred Banyan canopy leaves in mountain breeze
+		var leaf_rustle1 = sin(t * 240.0 * TAU + sin(t * 7.5) * 1.8) * 0.35 * exp(-t * 1.2)
+		var leaf_rustle2 = sin(t * 520.0 * TAU + sin(t * 14.0) * 1.2) * 0.22 * exp(-t * 1.6)
+		# Delicate fluttering bronze wind bell chimes
+		var chime_spin = sin(t * 8.0 * TAU) * 0.5 + 0.5
+		var bell_tinkle = (sin(t * 3400.0 * TAU) * 0.18 + sin(t * 4200.0 * TAU) * 0.12) * chime_spin * exp(-t * 2.5)
+		var val = leaf_rustle1 + leaf_rustle2 + bell_tinkle
+		var int_sample = int(clamp(val, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	banyan_wind_player.stream = stream
+	banyan_wind_player.play()
+
+func play_nat_shrine_chime() -> void:
+	if is_muted: return
+	if not nat_chime_player:
+		nat_chime_player = AudioStreamPlayer.new()
+		nat_chime_player.name = "NatChimeAudio"
+		nat_chime_player.volume_db = -5.0
+		add_child(nat_chime_player)
+	var sample_hz = 22050
+	var duration = 1.4
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# High-pitched sacred brass wind bell strike with harmonic resonance
+		var strike = sin(t * 1850.0 * TAU) * exp(-t * 3.8) * 0.55
+		var overtone = sin(t * 2650.0 * TAU) * exp(-t * 5.2) * 0.35
+		var hum = sin(t * 925.0 * TAU) * exp(-t * 2.2) * 0.2
+		var val = strike + overtone + hum
+		var int_sample = int(clamp(val, -1.0, 1.0) * 24000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	nat_chime_player.stream = stream
+	nat_chime_player.play()
