@@ -49,6 +49,7 @@ const Realism110Script = preload("res://realism110.gd")
 const Realism111Script = preload("res://realism111.gd")
 const Realism112Script = preload("res://realism112.gd")
 const Realism113Script = preload("res://realism113.gd")
+const Realism114Script = preload("res://realism114.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -792,6 +793,11 @@ func _ready() -> void:
 	# + tuk-tuk wheel _ready restore + boat rowing/bob (boat.gd,
 	# tuktuk.gd edits — no scene touched).
 	Realism113Script.dress(get_parent())
+	# Slice 113: heli rotor blades (slab Rotor was visible),
+	# plane wings + propeller (slabs visible), bus/minibus
+	# driver figures (seats were empty), Cow2 harness/reins/
+	# bell parity (frame >= 480 pass, after realism113's 460).
+	Realism114Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
