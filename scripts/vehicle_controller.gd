@@ -64,6 +64,11 @@ var keyring_pitch_vel: float = 0.0
 @onready var footwell_light: OmniLight3D = get_node_or_null("PedalsAssembly/FootwellLight")
 var prev_throttle_depressed: bool = false
 var prev_brake_depressed: bool = false
+var doors_locked: bool = false
+@onready var lock_peg_l: MeshInstance3D = get_node_or_null("DoorInteriorAssembly/DoorInteriorL/LockPegL")
+@onready var lock_peg_r: MeshInstance3D = get_node_or_null("DoorInteriorAssembly/DoorInteriorR/LockPegR")
+@onready var handle_pivot_l: Node3D = get_node_or_null("DoorInteriorAssembly/DoorInteriorL/HandlePivotL")
+@onready var handle_pivot_r: Node3D = get_node_or_null("DoorInteriorAssembly/DoorInteriorR/HandlePivotR")
 var engine_rpm: float = 0.0
 var rev_limiter_cooldown: float = 0.0
 var aroma_diffuser_active: bool = false
@@ -220,6 +225,16 @@ func toggle_glovebox() -> String:
 	if am and am.has_method("play_glovebox_latch"):
 		am.play_glovebox_latch(glovebox_open)
 	return "📦 အံဆွဲ: ဖွင့်ထားသည် (ရိုးရာကွမ်းအစ်နှင့် ခရီးဆောင်မြေပုံ)" if glovebox_open else "📦 အံဆွဲ: ပြန်ပိတ်ထားသည် (Glove Box Closed)"
+
+func toggle_door_locks() -> String:
+	doors_locked = !doors_locked
+	var peg_target_y = 0.165 if doors_locked else 0.185
+	if lock_peg_l: lock_peg_l.position.y = peg_target_y
+	if lock_peg_r: lock_peg_r.position.y = peg_target_y
+	var am = get_tree().get_first_node_in_group("audio_manager")
+	if am and am.has_method("play_door_lock_click"):
+		am.play_door_lock_click(doors_locked)
+	return "🔒 ဗဟိုတံခါးလော့ခ်: လော့ခ်ချထားသည် (Central Door Locks ENGAGED)" if doors_locked else "🔓 ဗဟိုတံခါးလော့ခ်: ဖွင့်လိုက်သည် (Doors UNLOCKED)"
 
 func toggle_dome_light() -> String:
 	dome_light_on = !dome_light_on
@@ -682,6 +697,9 @@ func enter_vehicle(driver: Node3D) -> void:
 	driver.rotation = Vector3.ZERO
 	if driver.has_method("set_driving_state"):
 		driver.set_driving_state(true, self)
+	var am_latch = get_tree().get_first_node_in_group("audio_manager")
+	if am_latch and am_latch.has_method("play_door_latch_pull"):
+		am_latch.play_door_latch_pull()
 	driver_entered.emit(driver)
 
 func exit_vehicle() -> void:
@@ -701,6 +719,9 @@ func exit_vehicle() -> void:
 	driver.global_position = exit_pos
 	if driver.has_method("set_driving_state"):
 		driver.set_driving_state(false, null)
+	var am_exit_latch = get_tree().get_first_node_in_group("audio_manager")
+	if am_exit_latch and am_exit_latch.has_method("play_door_latch_pull"):
+		am_exit_latch.play_door_latch_pull()
 	driver_exited.emit()
 
 func _on_interaction_area_entered(body: Node3D) -> void:

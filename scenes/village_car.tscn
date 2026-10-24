@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=144 format=3]
+﻿[gd_scene load_steps=150 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -666,6 +666,33 @@ size = Vector3(0.076, 0.062, 0.016)
 [sub_resource type="BoxMesh" id="BoxMesh_dead_pedal"]
 material = SubResource("StandardMaterial3D_pedal_metal")
 size = Vector3(0.072, 0.17, 0.016)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_door_chrome"]
+albedo_color = Color(0.92, 0.94, 0.96, 1)
+metallic = 0.96
+roughness = 0.12
+specular = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_door_armrest"]
+size = Vector3(0.06, 0.08, 0.38)
+
+[sub_resource type="BoxMesh" id="BoxMesh_latch_bezel"]
+size = Vector3(0.02, 0.06, 0.12)
+
+[sub_resource type="BoxMesh" id="BoxMesh_chrome_handle"]
+size = Vector3(0.015, 0.035, 0.08)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lock_bezel"]
+material = SubResource("StandardMaterial3D_door_chrome")
+top_radius = 0.012
+bottom_radius = 0.014
+height = 0.008
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lock_peg"]
+material = SubResource("StandardMaterial3D_door_chrome")
+top_radius = 0.006
+bottom_radius = 0.006
+height = 0.032
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
@@ -1404,3 +1431,67 @@ mesh = SubResource("BoxMesh_throttle_plate")
 [node name="ThrottleRubber" type="MeshInstance3D" parent="PedalsAssembly/ThrottlePivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0.007)
 mesh = SubResource("BoxMesh_throttle_rubber")
+
+[node name="DoorInteriorAssembly" type="Node3D" parent="."]
+
+[node name="DoorInteriorL" type="Node3D" parent="DoorInteriorAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.96, 1.05, -0.38)
+
+[node name="ArmrestL" type="MeshInstance3D" parent="DoorInteriorAssembly/DoorInteriorL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_door_armrest")
+surface_material_override/0 = SubResource("StandardMaterial3D_dash")
+
+[node name="LatchBezelL" type="MeshInstance3D" parent="DoorInteriorAssembly/DoorInteriorL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.015, 0.08, -0.06)
+mesh = SubResource("BoxMesh_latch_bezel")
+surface_material_override/0 = SubResource("StandardMaterial3D_dash")
+
+[node name="HandlePivotL" type="Node3D" parent="DoorInteriorAssembly/DoorInteriorL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, 0.08, -0.02)
+
+[node name="HandleLeverL" type="MeshInstance3D" parent="DoorInteriorAssembly/DoorInteriorL/HandlePivotL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.035)
+mesh = SubResource("BoxMesh_chrome_handle")
+surface_material_override/0 = SubResource("StandardMaterial3D_door_chrome")
+
+[node name="LockBezelL" type="MeshInstance3D" parent="DoorInteriorAssembly/DoorInteriorL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.17, 0.12)
+mesh = SubResource("CylinderMesh_lock_bezel")
+surface_material_override/0 = SubResource("StandardMaterial3D_door_chrome")
+
+[node name="LockPegL" type="MeshInstance3D" parent="DoorInteriorAssembly/DoorInteriorL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.185, 0.12)
+mesh = SubResource("CylinderMesh_lock_peg")
+surface_material_override/0 = SubResource("StandardMaterial3D_door_chrome")
+
+[node name="DoorInteriorR" type="Node3D" parent="DoorInteriorAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.96, 1.05, -0.38)
+
+[node name="ArmrestR" type="MeshInstance3D" parent="DoorInteriorAssembly/DoorInteriorR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_door_armrest")
+surface_material_override/0 = SubResource("StandardMaterial3D_dash")
+
+[node name="LatchBezelR" type="MeshInstance3D" parent="DoorInteriorAssembly/DoorInteriorR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.015, 0.08, -0.06)
+mesh = SubResource("BoxMesh_latch_bezel")
+surface_material_override/0 = SubResource("StandardMaterial3D_dash")
+
+[node name="HandlePivotR" type="Node3D" parent="DoorInteriorAssembly/DoorInteriorR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, 0.08, -0.02)
+
+[node name="HandleLeverR" type="MeshInstance3D" parent="DoorInteriorAssembly/DoorInteriorR/HandlePivotR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.035)
+mesh = SubResource("BoxMesh_chrome_handle")
+surface_material_override/0 = SubResource("StandardMaterial3D_door_chrome")
+
+[node name="LockBezelR" type="MeshInstance3D" parent="DoorInteriorAssembly/DoorInteriorR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.17, 0.12)
+mesh = SubResource("CylinderMesh_lock_bezel")
+surface_material_override/0 = SubResource("StandardMaterial3D_door_chrome")
+
+[node name="LockPegR" type="MeshInstance3D" parent="DoorInteriorAssembly/DoorInteriorR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.185, 0.12)
+mesh = SubResource("CylinderMesh_lock_peg")
+surface_material_override/0 = SubResource("StandardMaterial3D_door_chrome")

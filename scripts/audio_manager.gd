@@ -25,6 +25,8 @@ var throttle_pedal_player: AudioStreamPlayer = null
 var brake_pedal_player: AudioStreamPlayer = null
 var sima_chant_player: AudioStreamPlayer = null
 var deep_gong_player: AudioStreamPlayer = null
+var door_lock_player: AudioStreamPlayer = null
+var door_latch_player: AudioStreamPlayer = null
 
 const RADIO_STATIONS: Array[String] = [
 	"📻 ရေဒီယို: ပိတ်ထားသည် (Off)",
@@ -2415,3 +2417,65 @@ func play_temple_gong_deep() -> void:
 	stream.data = data
 	deep_gong_player.stream = stream
 	deep_gong_player.play()
+
+func play_door_lock_click(locked: bool) -> void:
+	if is_muted: return
+	if not door_lock_player:
+		door_lock_player = AudioStreamPlayer.new()
+		door_lock_player.name = "DoorLockAudio"
+		door_lock_player.volume_db = -6.5
+		add_child(door_lock_player)
+	var sample_hz = 22050
+	var duration = 0.18
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Heavy central locking electric solenoid thunk + metal lock tumbler snap
+		var freq1 = 280.0 if locked else 440.0
+		var freq2 = 140.0 if locked else 220.0
+		var solenoid = sin(t * freq1 * TAU) * exp(-t * 26.0) * 0.55
+		var tumbler = sin(t * freq2 * TAU) * exp(-t * 38.0) * 0.4
+		var body_thud = 0.0
+		if t > 0.04:
+			body_thud = sin((t - 0.04) * 95.0 * TAU) * exp(-(t - 0.04) * 28.0) * 0.35
+		var val = solenoid + tumbler + body_thud
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	door_lock_player.stream = stream
+	door_lock_player.play()
+
+func play_door_latch_pull() -> void:
+	if is_muted: return
+	if not door_latch_player:
+		door_latch_player = AudioStreamPlayer.new()
+		door_latch_player.name = "DoorLatchAudio"
+		door_latch_player.volume_db = -7.0
+		add_child(door_latch_player)
+	var sample_hz = 22050
+	var duration = 0.22
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Spring-loaded interior chrome pull handle pivot snap + door striker pin release
+		var spring_flick = sin(t * 1450.0 * TAU) * exp(-t * 40.0) * 0.35
+		var latch_release = sin(t * 360.0 * TAU) * exp(-t * 22.0) * 0.45
+		var hollow_door = 0.0
+		if t > 0.05:
+			hollow_door = sin((t - 0.05) * 120.0 * TAU) * exp(-(t - 0.05) * 18.0) * 0.3
+		var val = spring_flick + latch_release + hollow_door
+		var int_sample = int(clamp(val, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	door_latch_player.stream = stream
+	door_latch_player.play()

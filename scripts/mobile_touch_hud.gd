@@ -23,7 +23,8 @@
 @onready var vanity_btn: Button = $ActionContainer.get_node_or_null("VanityBtn")
 @onready var gear_btn: Button = $ActionContainer.get_node_or_null("GearBtn")
 @onready var handbrake_btn: Button = $ActionContainer.get_node_or_null("HandbrakeBtn")
-@onready var ignition_btn: Button = $ActionContainer.get_node_or_null("IgnitionBtn")
+@onready var ignition_btn: Button = .get_node_or_null("IgnitionBtn")
+@onready var door_lock_btn: Button = .get_node_or_null("DoorLockBtn")
 @onready var quest_banner: Label = $TopCenterHUD/QuestBanner
 @onready var player_icon: ColorRect = $TopLeftHUD/MiniMap/PlayerIcon
 @onready var pagoda_icon: ColorRect = $TopLeftHUD/MiniMap/PagodaIcon
@@ -516,6 +517,12 @@ func _on_handbrake_pressed() -> void:
 	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
 		if player.active_vehicle.has_method("toggle_handbrake"):
 			var msg = player.active_vehicle.toggle_handbrake()
+			show_temporary_prompt(msg, 2.5)
+
+func _on_door_lock_pressed() -> void:
+	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
+		if player.active_vehicle.has_method("toggle_door_locks"):
+			var msg = player.active_vehicle.toggle_door_locks()
 			show_temporary_prompt(msg, 2.5)
 
 func _on_ignition_pressed() -> void:
