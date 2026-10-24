@@ -91,6 +91,8 @@ func _ready() -> void:
 		ac_btn.pressed.connect(_on_ac_pressed)
 	if dome_btn:
 		dome_btn.pressed.connect(_on_dome_pressed)
+	if glove_btn:
+		glove_btn.pressed.connect(_on_glove_pressed)
 		
 	if yaw_left_btn:
 		yaw_left_btn.button_down.connect(func(): if player: player.touch_yaw = -1.0)
@@ -274,6 +276,8 @@ func _process(delta: float) -> void:
 		ac_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
 	if dome_btn:
 		dome_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
+	if glove_btn:
+		glove_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
 
 	if sprint_btn:
 		if player.current_state != player.State.ON_FOOT:
@@ -457,6 +461,12 @@ func _on_dome_pressed() -> void:
 	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
 		if player.active_vehicle.has_method("toggle_dome_light"):
 			var mode_name = player.active_vehicle.toggle_dome_light()
+			show_temporary_prompt(mode_name, 3.0)
+
+func _on_glove_pressed() -> void:
+	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
+		if player.active_vehicle.has_method("toggle_glovebox"):
+			var mode_name = player.active_vehicle.toggle_glovebox()
 			show_temporary_prompt(mode_name, 3.0)
 
 func _on_hazard_pressed() -> void:

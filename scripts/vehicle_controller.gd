@@ -37,6 +37,8 @@ var trip_km: float = 0.0
 @onready var dome_light: OmniLight3D = get_node_or_null("DomeLightFixture/DomeLight")
 @onready var dome_lens: MeshInstance3D = get_node_or_null("DomeLightFixture/DomeLightGlass")
 @onready var trip_display: Label3D = get_node_or_null("TripCounterDisplay")
+var glovebox_open: bool = false
+@onready var glove_door: MeshInstance3D = get_node_or_null("GloveCompartmentPivot/GloveDoor")
 @onready var exhaust_backfire: CPUParticles3D = get_node_or_null("ExhaustBackfire")
 @onready var radio_eq_display: Label3D = get_node_or_null("RadioEqualizerDisplay")
 @onready var turn_signal_fl: MeshInstance3D = get_node_or_null("TurnSignalFL")
@@ -76,6 +78,15 @@ var blinker_state: bool = false
 var mirror_antiglare_active: bool = false
 const MIRROR_ROT_NORMAL: float = 0.173648
 const MIRROR_ROT_ANTIGLARE: float = 0.244346
+
+func toggle_glovebox() -> String:
+	glovebox_open = !glovebox_open
+	if glove_door:
+		glove_door.rotation.x = -0.58 if glovebox_open else 0.0
+	var am = get_tree().get_first_node_in_group("audio_manager")
+	if am and am.has_method("play_glovebox_latch"):
+		am.play_glovebox_latch(glovebox_open)
+	return "📦 အံဆွဲ: ဖွင့်ထားသည် (ရိုးရာကွမ်းအစ်နှင့် ခရီးဆောင်မြေပုံ)" if glovebox_open else "📦 အံဆွဲ: ပြန်ပိတ်ထားသည် (Glove Box Closed)"
 
 func toggle_dome_light() -> String:
 	dome_light_on = !dome_light_on

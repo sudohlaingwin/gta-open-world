@@ -5061,3 +5061,18 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - Southeast Rocky Pass Cavern Shrine: Vector3(680, 32.0, 290) ("အရှေ့တောင် တောင်ကြား ကျောက်ဂူဘုရား သမိုင်းဝင်ကျောက်စာ 🏛️🙏").
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 431: In-Cabin Interactive Glove Compartment Drawer, Traditional Betel Box & Map Realism
+### Completed by Antigravity:
+1. **Interactive In-Cabin Dashboard Glove Compartment (scenes/village_car.tscn):**
+   - **Articulated Dashboard Storage Drawer:** Modelled passenger-side dashboard glove compartment (GloveCompartmentPivot, GloveDoor, BoxMesh_glove_door, StandardMaterial3D_glove_door, size 0.42m x 0.22m) with horizontal pull-latch handle (GloveLatch).
+   - **Cultural Interior Props Inside Drawer:**
+     - Traditional Myanmar lacquerware betel nut box (KunIttBox, CylinderMesh_kun_itt, StandardMaterial3D_kun_itt_lacquer, vermilion red & black glossy lacquer finish).
+     - Folded Mindon regional topographic exploration road map booklet (MapBooklet, BoxMesh_map_booklet, StandardMaterial3D_map_paper).
+   - **Drawer Door Physics & Audio Synthesis:** Added toggle_glovebox() in scripts/vehicle_controller.gd tilting the door smoothly by -33 degrees (rotation.x = -0.58). Synthesized authentic spring latch click and plastic drop thump audio in scripts/audio_manager.gd (play_glovebox_latch(), 2400Hz/1650Hz snap + 120Hz hollow thump).
+   - **Canonical Declarative Architecture:** Updated scenes/village_car.tscn to load_steps=71 with 100% verified sub-resources and zero engine warnings.
+2. **Mobile Context-Aware & Desktop Controls:**
+   - **Mobile Touch HUD (scenes/mobile_touch_hud.tscn, scripts/mobile_touch_hud.gd):** Added GloveBtn (📦 အံဆွဲ) in ActionContainer, dynamically revealed when player enters driving state (DRIVING_VEHICLE).
+   - **Desktop Hotkey (scripts/player.gd):** Bound 'G' hotkey to smoothly toggle glove compartment open/close and display HUD prompt.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.
