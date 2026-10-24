@@ -2015,3 +2015,66 @@ func play_handbrake_release() -> void:
 	stream.data = data
 	handbrake_release_player.stream = stream
 	handbrake_release_player.play()
+
+var bridge_groan_player: AudioStreamPlayer = null
+var river_pile_player: AudioStreamPlayer = null
+
+func play_bridge_timber_groan() -> void:
+	if is_muted: return
+	if not bridge_groan_player:
+		bridge_groan_player = AudioStreamPlayer.new()
+		bridge_groan_player.name = "BridgeGroanAudio"
+		bridge_groan_player.volume_db = -5.5
+		add_child(bridge_groan_player)
+	var sample_hz = 22050
+	var duration = 0.52
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Heavy teak timber boardwalk plank flex groan + structural mortise friction
+		var groan = sin(t * 115.0 * TAU + sin(t * 16.0) * 1.8) * exp(-t * 5.0) * 0.55
+		var harmonic = sin(t * 230.0 * TAU) * exp(-t * 7.5) * 0.3
+		var friction = sin(t * 680.0 * TAU) * exp(-t * 14.0) * 0.15
+		var val = groan + harmonic + friction
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	bridge_groan_player.stream = stream
+	bridge_groan_player.play()
+
+func play_river_pile_lap() -> void:
+	if is_muted: return
+	if not river_pile_player:
+		river_pile_player = AudioStreamPlayer.new()
+		river_pile_player.name = "RiverPileLapAudio"
+		river_pile_player.volume_db = -6.0
+		add_child(river_pile_player)
+	var sample_hz = 22050
+	var duration = 0.46
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# River current wave lapping against heavy submerged stilt pile logs
+		var surge = exp(-t * 7.0) * sin(t * 95.0 * TAU) * 0.45
+		var slap = 0.0
+		if t > 0.05:
+			slap = exp(-(t - 0.05) * 15.0) * (sin((t - 0.05) * 540.0 * TAU) * 0.4 + sin((t - 0.05) * 980.0 * TAU) * 0.3)
+		var trickle = 0.0
+		if t > 0.16:
+			trickle = exp(-(t - 0.16) * 20.0) * sin((t - 0.16) * 1420.0 * TAU + sin(t * 40.0) * 2.0) * 0.25
+		var val = surge + slap + trickle
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	river_pile_player.stream = stream
+	river_pile_player.play()

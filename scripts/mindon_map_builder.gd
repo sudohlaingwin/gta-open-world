@@ -60,6 +60,7 @@ const GRANARY_SCENE = preload("res://scenes/traditional_granary.tscn")
 const WATER_PAVILION_SCENE = preload("res://scenes/martaban_water_pavilion.tscn")
 const COUNTRYSIDE_WATER_WELL_SCENE = preload("res://scenes/countryside_water_well.tscn")
 const MONASTERY_BELL_TOWER_SCENE = preload("res://scenes/monastery_bell_tower.tscn")
+const COVERED_BRIDGE_SCENE = preload("res://scenes/covered_wooden_bridge.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -113,6 +114,7 @@ func _ready() -> void:
 	_generate_martaban_water_pavilions()
 	_generate_countryside_water_wells()
 	_generate_monastery_bell_towers()
+	_generate_covered_wooden_bridges()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -2175,5 +2177,34 @@ func _generate_monastery_bell_towers() -> void:
 		towers_holder.add_child(tower)
 
 		var sign_node = tower.get_node_or_null("TowerSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_covered_wooden_bridges() -> void:
+	# Traditional Myanmar covered teak footbridges with pier resting zayats across Mindon streams (ချောင်းကူး ရှေးဟောင်း သစ်သားတံတားကြီးများနှင့် ဇရပ်ဆောင်များ)
+	var bridges_holder = Node3D.new()
+	bridges_holder.name = "CoveredWoodenBridges"
+	add_child(bridges_holder)
+
+	var bridge_data = [
+		{
+			"pos": Vector3(-110.0, 0.0, -80.0),
+			"rot_y": deg_to_rad(12.0),
+			"sign": "မင်းတုန်း ရှေးဟောင်း ချောင်းကူးကျွန်းတံတားကြီး 🌉✨"
+		},
+		{
+			"pos": Vector3(160.0, 0.0, 290.0),
+			"rot_y": deg_to_rad(-35.0),
+			"sign": "တောင်ဘက် စိုက်ပျိုးရေး ချောင်းကူးဇရပ်တံတား 🌉🌿"
+		}
+	]
+
+	for data in bridge_data:
+		var bridge = COVERED_BRIDGE_SCENE.instantiate()
+		bridge.position = data["pos"]
+		bridge.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		bridges_holder.add_child(bridge)
+
+		var sign_node = bridge.get_node_or_null("BridgeSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]
