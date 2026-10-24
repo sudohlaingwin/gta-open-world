@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3]
+[gd_scene load_steps=43 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -155,6 +155,33 @@ rings = 4
 transparency = 1
 shading_mode = 0
 albedo_color = Color(0.15, 0.82, 1.0, 0.95)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_charm_cord"]
+top_radius = 0.003
+bottom_radius = 0.003
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red_cord"]
+albedo_color = Color(0.85, 0.15, 0.15, 1)
+roughness = 0.6
+
+[sub_resource type="TorusMesh" id="TorusMesh_jasmine"]
+inner_radius = 0.015
+outer_radius = 0.035
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jasmine"]
+albedo_color = Color(0.96, 0.98, 0.92, 1)
+roughness = 0.7
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_gold_amulet"]
+top_radius = 0.025
+bottom_radius = 0.025
+height = 0.015
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold_amulet"]
+albedo_color = Color(0.96, 0.82, 0.18, 1)
+metallic = 0.95
+roughness = 0.22
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
@@ -330,6 +357,29 @@ surface_material_override/0 = SubResource("StandardMaterial3D_steering")
 transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 1.72, -0.9)
 mesh = SubResource("BoxMesh_rearview_mirror")
 surface_material_override/0 = SubResource("StandardMaterial3D_mirror_chrome")
+
+[node name="HangingCharmPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.68, -0.88)
+
+[node name="CharmCord" type="MeshInstance3D" parent="HangingCharmPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.07, 0)
+mesh = SubResource("CylinderMesh_charm_cord")
+surface_material_override/0 = SubResource("StandardMaterial3D_red_cord")
+
+[node name="JasmineGarland1" type="MeshInstance3D" parent="HangingCharmPivot"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.05, 0)
+mesh = SubResource("TorusMesh_jasmine")
+surface_material_override/0 = SubResource("StandardMaterial3D_jasmine")
+
+[node name="JasmineGarland2" type="MeshInstance3D" parent="HangingCharmPivot"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.09, 0)
+mesh = SubResource("TorusMesh_jasmine")
+surface_material_override/0 = SubResource("StandardMaterial3D_jasmine")
+
+[node name="GoldAmulet" type="MeshInstance3D" parent="HangingCharmPivot"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.14, 0)
+mesh = SubResource("CylinderMesh_gold_amulet")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold_amulet")
 
 [node name="InstrumentCluster" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.5, 1.26, -0.86)

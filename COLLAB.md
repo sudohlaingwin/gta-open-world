@@ -4696,6 +4696,18 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 406: Rearview Mirror Jasmine Flower Garland (`စပယ်ပန်းကုံး`) Dynamic Inertia Physics
+### Completed by Antigravity:
+1. **Traditional Myanmar Cabin Amulet & Jasmine Garland (`scenes/village_car.tscn`):**
+   - **Cultural & Visual Authenticity:** Modelled traditional hanging rearview mirror ornament featuring red silk suspension cord (`CylinderMesh_charm_cord`), dual tiered white jasmine blossom rings (`TorusMesh_jasmine`), and solid gold pendant amulet (`CylinderMesh_gold_amulet`, metallic = 0.95).
+   - **Clean Declarative Architecture:** Preserved canonical scene format (`load_steps=43`), 0 runtime script monkeying, 0 errors.
+2. **Dynamic Damped Pendulum Inertia Physics (`scripts/vehicle_controller.gd`):**
+   - **Centrifugal Lateral Roll Sway:** The hanging garland reacts smoothly to steering inputs and cornering G-forces (`spring_k = 36.0`, `damping = 4.2`), swinging outward on tight highway bends.
+   - **Longitudinal Pitch Swing:** Realistic nose-ward pitch under hard braking and backward swing during throttle acceleration.
+   - Natural damping settling when parked, giving the cockpit a living, immersive breathing feel while chilling in the driver's seat.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
 
 
 

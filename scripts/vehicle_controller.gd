@@ -22,6 +22,12 @@ var smoothed_steering: float = 0.0
 @onready var tire_smoke_r: CPUParticles3D = get_node_or_null("TireSmokeR")
 @onready var nitro_flame: CPUParticles3D = get_node_or_null("NitroFlame")
 @onready var body_mesh: MeshInstance3D = get_node_or_null("BodyMesh")
+@onready var charm_pivot: Node3D = get_node_or_null("HangingCharmPivot")
+
+var charm_roll: float = 0.0
+var charm_roll_vel: float = 0.0
+var charm_pitch: float = 0.0
+var charm_pitch_vel: float = 0.0
 
 signal driver_entered(driver)
 signal driver_exited()
@@ -123,10 +129,32 @@ func _physics_process(delta: float) -> void:
 				var skid_intensity = clampf((lateral_speed - 3.0) / 4.0, 0.4, 1.0)
 				audio_mgr.play_tire_skid(skid_intensity)
 
+		# Hanging Jasmine Charm Inertia Physics (Rearview Mirror Garland Sway)
+		if charm_pivot:
+			var spring_k: float = 36.0
+			var damping: float = 4.2
+			var target_roll_force = -smoothed_steering * speed_ratio * 0.55
+			var target_pitch_force = ((brake / max_brake_force) * 0.4) - ((engine_force / max_engine_force) * 0.3)
+			charm_roll_vel += (-spring_k * charm_roll - damping * charm_roll_vel + target_roll_force * 32.0) * delta
+			charm_roll += charm_roll_vel * delta
+			charm_roll = clampf(charm_roll, -0.65, 0.65)
+			charm_pitch_vel += (-spring_k * charm_pitch - damping * charm_pitch_vel + target_pitch_force * 32.0) * delta
+			charm_pitch += charm_pitch_vel * delta
+			charm_pitch = clampf(charm_pitch, -0.55, 0.55)
+			charm_pivot.rotation.z = charm_roll
+			charm_pivot.rotation.x = charm_pitch
+
 	else:
 		if body_mesh:
 			body_mesh.rotation.z = lerpf(body_mesh.rotation.z, 0.0, delta * 6.0)
 			body_mesh.rotation.x = lerpf(body_mesh.rotation.x, 0.0, delta * 6.0)
+		if charm_pivot:
+			charm_roll_vel += (-20.0 * charm_roll - 4.0 * charm_roll_vel) * delta
+			charm_roll += charm_roll_vel * delta
+			charm_pitch_vel += (-20.0 * charm_pitch - 4.0 * charm_pitch_vel) * delta
+			charm_pitch += charm_pitch_vel * delta
+			charm_pivot.rotation.z = charm_roll
+			charm_pivot.rotation.x = charm_pitch
 		if tire_smoke_l: tire_smoke_l.emitting = false
 		if tire_smoke_r: tire_smoke_r.emitting = false
 		if nitro_flame: nitro_flame.emitting = false
