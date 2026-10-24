@@ -1647,3 +1647,33 @@ func play_ferry_bell() -> void:
 	stream.data = data
 	ferry_bell_player.stream = stream
 	ferry_bell_player.play()
+var stalk_click_player: AudioStreamPlayer = null
+
+func play_stalk_click() -> void:
+	if is_muted: return
+	if not stalk_click_player:
+		stalk_click_player = AudioStreamPlayer.new()
+		stalk_click_player.name = "StalkClickAudio"
+		stalk_click_player.volume_db = -6.0
+		add_child(stalk_click_player)
+	var sample_hz = 22050
+	var duration = 0.06
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Crisp automotive column switch detent snap
+		var snap = exp(-t * 120.0) * sin(t * 3100.0 * TAU) * 0.75
+		var spring = 0.0
+		if t > 0.015:
+			spring = exp(-(t - 0.015) * 85.0) * sin((t - 0.015) * 1950.0 * TAU) * 0.4
+		var val = snap + spring
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	stalk_click_player.stream = stream
+	stalk_click_player.play()

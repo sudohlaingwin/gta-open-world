@@ -39,6 +39,8 @@ var trip_km: float = 0.0
 @onready var trip_display: Label3D = get_node_or_null("TripCounterDisplay")
 var glovebox_open: bool = false
 @onready var glove_door: MeshInstance3D = get_node_or_null("GloveCompartmentPivot/GloveDoor")
+@onready var steering_wheel_pivot: Node3D = get_node_or_null("SteeringWheelPivot")
+@onready var stalk_pivot: Node3D = get_node_or_null("TurnSignalStalkPivot")
 var aroma_diffuser_active: bool = false
 @onready var aroma_particles: CPUParticles3D = get_node_or_null("AirFreshenerDiffuser/DiffuserBottle/AromaVaporParticles")
 var sun_visors_down: bool = false
@@ -192,6 +194,11 @@ func toggle_rearview_mirror() -> String:
 	return "🪞 နောက်ကြည့်မှန်: ညဘက်အလင်းပြန်ကာစနစ် (Anti-Glare ON)" if mirror_antiglare_active else "🪞 နောက်ကြည့်မှန်: ပုံမှန်အကြည် (Day Mode)"
 
 func toggle_hazard_lights() -> String:
+	if stalk_pivot:
+		stalk_pivot.rotation.z = 0.24 if not hazard_active else 0.0
+	var am_stalk = get_tree().get_first_node_in_group("audio_manager")
+	if am_stalk and am_stalk.has_method("play_stalk_click"):
+		am_stalk.play_stalk_click()
 	hazard_active = !hazard_active
 	if not hazard_active:
 		_set_blinkers_visible(false)

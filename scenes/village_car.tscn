@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=95 format=3]
+﻿[gd_scene load_steps=104 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -428,6 +428,50 @@ top_radius = 0.044
 bottom_radius = 0.044
 height = 0.012
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_padauk_wood"]
+albedo_color = Color(0.48, 0.22, 0.12, 1)
+roughness = 0.24
+specular = 0.75
+
+[sub_resource type="TorusMesh" id="TorusMesh_padauk_rim"]
+material = SubResource("StandardMaterial3D_padauk_wood")
+inner_radius = 0.165
+outer_radius = 0.205
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chrome_spoke"]
+albedo_color = Color(0.85, 0.87, 0.9, 1)
+metallic = 0.95
+roughness = 0.18
+
+[sub_resource type="BoxMesh" id="BoxMesh_spoke_horizontal"]
+material = SubResource("StandardMaterial3D_chrome_spoke")
+size = Vector3(0.34, 0.024, 0.015)
+
+[sub_resource type="BoxMesh" id="BoxMesh_spoke_vertical"]
+material = SubResource("StandardMaterial3D_chrome_spoke")
+size = Vector3(0.024, 0.16, 0.015)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold_crest"]
+albedo_color = Color(0.92, 0.78, 0.25, 1)
+metallic = 0.88
+roughness = 0.25
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_horn_pad"]
+material = SubResource("StandardMaterial3D_gold_crest")
+top_radius = 0.055
+bottom_radius = 0.055
+height = 0.02
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stalk_plastic"]
+albedo_color = Color(0.15, 0.15, 0.16, 1)
+roughness = 0.7
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_stalk_arm"]
+material = SubResource("StandardMaterial3D_stalk_plastic")
+top_radius = 0.007
+bottom_radius = 0.008
+height = 0.14
+
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
 
@@ -593,10 +637,31 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -0.92)
 mesh = SubResource("BoxMesh_dashboard")
 surface_material_override/0 = SubResource("StandardMaterial3D_dash")
 
-[node name="SteeringWheel" type="MeshInstance3D" parent="."]
+[node name="SteeringWheelPivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, -0.5, 1.25, -0.65)
-mesh = SubResource("TorusMesh_steering")
-surface_material_override/0 = SubResource("StandardMaterial3D_steering")
+
+[node name="SteeringRim" type="MeshInstance3D" parent="SteeringWheelPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("TorusMesh_padauk_rim")
+
+[node name="SpokeHorizontal" type="MeshInstance3D" parent="SteeringWheelPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_spoke_horizontal")
+
+[node name="SpokeVertical" type="MeshInstance3D" parent="SteeringWheelPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0)
+mesh = SubResource("BoxMesh_spoke_vertical")
+
+[node name="HornPad" type="MeshInstance3D" parent="SteeringWheelPivot"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.012)
+mesh = SubResource("CylinderMesh_horn_pad")
+
+[node name="TurnSignalStalkPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, -0.5, 1.25, -0.7)
+
+[node name="StalkArm" type="MeshInstance3D" parent="TurnSignalStalkPivot"]
+transform = Transform3D(0.259, 0.966, 0, -0.966, 0.259, 0, 0, 0, 1, -0.12, 0.02, 0)
+mesh = SubResource("CylinderMesh_stalk_arm")
 
 [node name="RearviewMirror" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 1.72, -0.9)

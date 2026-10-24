@@ -5233,3 +5233,14 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - South Confluence Ferry Passage: Vector3(120.0, -0.6, -260.0), rot_y = -85 deg ("မြစ်ဆုံ ကူးတို့ဖောင်ဆိပ်ခံတံတား ⚓🛥️").
 4. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+## 2026-10-24 — Slice 441: In-Cabin Padauk Wood Steering Wheel Assembly, Lock-to-Lock Dynamic Rotation & Column Stalk Switch Realism
+### Completed by Antigravity:
+1. **Interactive In-Cabin Padauk Wood Steering Wheel Assembly (scenes/village_car.tscn):**
+   - **Burmese Padauk Hardwood Rim:** Upgraded the flat steering wheel into a full multi-part assembly (SteeringWheelPivot, SteeringRim, TorusMesh_padauk_rim, StandardMaterial3D_padauk_wood, Color(0.48, 0.22, 0.12) with 0.24 roughness and rich wood grain specular highlights).
+   - **Tri-Spoke Chrome Armature & Golden Peacock Horn Crest:** Modelled horizontal and vertical brushed chrome armature spokes (SpokeHorizontal, SpokeVertical, BoxMesh, StandardMaterial3D_chrome_spoke with 0.95 metallic) and central circular horn boss pad (HornPad, CylinderMesh_horn_pad) embossed with Myanmar sacred golden peacock crest (StandardMaterial3D_gold_crest).
+   - **Column Turn Signal Stalk Switch:** Added column-mounted directional indicator stalk (TurnSignalStalkPivot, StalkArm, CylinderMesh_stalk_arm) behind the steering wheel that tilts realistically with mechanical detent snap audio.
+   - **Lock-to-Lock Dynamic Steering Wheel Physics:** Added 1:1 steering synchronization in scripts/vehicle_controller.gd (steering_wheel_pivot.rotation.z = -smoothed_steering * 3.6), rotating smoothly up to 210 degrees lock-to-lock in response to touch joystick and keyboard steering!
+   - **Native Audio Synthesis (scripts/audio_manager.gd):** Implemented play_stalk_click() synthesizing crisp automotive switch detent click (3100Hz/1950Hz dual-frequency snap).
+   - **Canonical Declarative Architecture:** Updated scenes/village_car.tscn to load_steps=104 with 100% verified sub-resources and zero engine warnings.
+2. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.
