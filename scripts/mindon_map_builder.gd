@@ -42,6 +42,7 @@ const CATTLE_STATION_SCENE = preload("res://scenes/cattle_rest_station.tscn")
 const POTTERY_KILN_SCENE = preload("res://scenes/rural_pottery_kiln.tscn")
 const TODDY_CAMP_SCENE = preload("res://scenes/toddy_jaggery_camp.tscn")
 const TEA_PLANTATION_SCENE = preload("res://scenes/hillside_tea_plantation.tscn")
+const CABLE_BRIDGE_SCENE = preload("res://scenes/cable_footbridge.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -77,6 +78,7 @@ func _ready() -> void:
 	_generate_rural_pottery_kilns()
 	_generate_toddy_jaggery_camps()
 	_generate_hillside_tea_plantations()
+	_generate_cable_footbridges()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1624,5 +1626,34 @@ func _generate_hillside_tea_plantations() -> void:
 		plantations_holder.add_child(plantation)
 
 		var sign_node = plantation.get_node_or_null("PlantationSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_cable_footbridges() -> void:
+	# Traditional Myanmar teak timber & steel catenary suspension footbridges with nat shrines over river rapids
+	var bridges_holder = Node3D.new()
+	bridges_holder.name = "CableFootbridges"
+	add_child(bridges_holder)
+
+	var bridge_data = [
+		{
+			"pos": Vector3(-380.0, 1.2, 85.0),
+			"rot_y": deg_to_rad(15.0),
+			"sign": "မင်းတုန်းချောင်း အနောက်ရိုး ရှုခင်းသာ ကြိုးတံတား 🌉✨"
+		},
+		{
+			"pos": Vector3(640.0, 1.2, -65.0),
+			"rot_y": deg_to_rad(-70.0),
+			"sign": "အရှေ့မြစ်ဆုံကျွန်း ကူး သဘာဝ ကြိုးတံတား 🌉🌊"
+		}
+	]
+
+	for data in bridge_data:
+		var bridge = CABLE_BRIDGE_SCENE.instantiate()
+		bridge.position = data["pos"]
+		bridge.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		bridges_holder.add_child(bridge)
+
+		var sign_node = bridge.get_node_or_null("BridgeSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

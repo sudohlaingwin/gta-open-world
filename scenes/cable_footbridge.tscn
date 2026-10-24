@@ -1,0 +1,215 @@
+[gd_scene load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bridge_deck"]
+size = Vector3(3.2, 0.4, 24.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pylon_north"]
+size = Vector3(4.5, 6.2, 2.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pylon_south"]
+size = Vector3(4.5, 6.2, 2.0)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tower_post"]
+top_radius = 0.12
+bottom_radius = 0.15
+height = 5.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_weathered_teak"]
+albedo_color = Color(0.32, 0.22, 0.14, 1)
+roughness = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tower_beam"]
+top_radius = 0.11
+bottom_radius = 0.11
+height = 3.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cable_main"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 24.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_steel_cable"]
+albedo_color = Color(0.25, 0.25, 0.28, 1)
+metallic = 0.85
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hanger"]
+top_radius = 0.015
+bottom_radius = 0.015
+height = 2.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_plank_deck"]
+size = Vector3(2.6, 0.22, 23.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_deck_wood"]
+albedo_color = Color(0.44, 0.34, 0.22, 1)
+roughness = 0.88
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_handrail"]
+top_radius = 0.045
+bottom_radius = 0.045
+height = 23.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_shrine_base"]
+size = Vector3(0.9, 1.2, 0.7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red_lacquer"]
+albedo_color = Color(0.72, 0.18, 0.14, 1)
+roughness = 0.45
+
+[sub_resource type="PrismMesh" id="PrismMesh_shrine_roof"]
+left_to_right = 0.5
+size = Vector3(1.1, 0.5, 0.9)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lantern"]
+top_radius = 0.08
+bottom_radius = 0.08
+height = 0.18
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_amber_lantern"]
+transparency = 1
+albedo_color = Color(1.0, 0.85, 0.45, 0.75)
+emission_enabled = true
+emission = Color(1.0, 0.75, 0.25, 1)
+emission_energy_multiplier = 2.4
+
+[node name="CableFootbridge" type="StaticBody3D"]
+script = ExtResource("1_lantern")
+
+[node name="CollisionDeck" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("BoxShape3D_bridge_deck")
+
+[node name="CollisionPylonN" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, -11.5)
+shape = SubResource("BoxShape3D_pylon_north")
+
+[node name="CollisionPylonS" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 11.5)
+shape = SubResource("BoxShape3D_pylon_south")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+[node name="PlankDeck" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11, 0)
+mesh = SubResource("BoxMesh_plank_deck")
+surface_material_override/0 = SubResource("StandardMaterial3D_deck_wood")
+
+[node name="HandrailL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -1.25, 1.1, 0)
+mesh = SubResource("CylinderMesh_handrail")
+surface_material_override/0 = SubResource("StandardMaterial3D_weathered_teak")
+
+[node name="HandrailR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 1.25, 1.1, 0)
+mesh = SubResource("CylinderMesh_handrail")
+surface_material_override/0 = SubResource("StandardMaterial3D_weathered_teak")
+
+[node name="PylonN_PostL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.984808, 0, 0.173648, 0, 1, 0, -0.173648, 0, 0.984808, -1.5, 2.9, -11.5)
+mesh = SubResource("CylinderMesh_tower_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_weathered_teak")
+
+[node name="PylonN_PostR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, 0.984808, 1.5, 2.9, -11.5)
+mesh = SubResource("CylinderMesh_tower_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_weathered_teak")
+
+[node name="PylonN_Beam" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 5.2, -11.5)
+mesh = SubResource("CylinderMesh_tower_beam")
+surface_material_override/0 = SubResource("StandardMaterial3D_weathered_teak")
+
+[node name="PylonS_PostL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, 0.984808, -1.5, 2.9, 11.5)
+mesh = SubResource("CylinderMesh_tower_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_weathered_teak")
+
+[node name="PylonS_PostR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0.984808, 0, 0.173648, 0, 1, 0, -0.173648, 0, 0.984808, 1.5, 2.9, 11.5)
+mesh = SubResource("CylinderMesh_tower_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_weathered_teak")
+
+[node name="PylonS_Beam" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 5.2, 11.5)
+mesh = SubResource("CylinderMesh_tower_beam")
+surface_material_override/0 = SubResource("StandardMaterial3D_weathered_teak")
+
+[node name="MainCableL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -1.4, 3.2, 0)
+mesh = SubResource("CylinderMesh_cable_main")
+surface_material_override/0 = SubResource("StandardMaterial3D_steel_cable")
+
+[node name="MainCableR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 1.4, 3.2, 0)
+mesh = SubResource("CylinderMesh_cable_main")
+surface_material_override/0 = SubResource("StandardMaterial3D_steel_cable")
+
+[node name="HangerL1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 2.1, -6.0)
+mesh = SubResource("CylinderMesh_hanger")
+surface_material_override/0 = SubResource("StandardMaterial3D_steel_cable")
+
+[node name="HangerR1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 2.1, -6.0)
+mesh = SubResource("CylinderMesh_hanger")
+surface_material_override/0 = SubResource("StandardMaterial3D_steel_cable")
+
+[node name="HangerL2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 2.1, 0.0)
+mesh = SubResource("CylinderMesh_hanger")
+surface_material_override/0 = SubResource("StandardMaterial3D_steel_cable")
+
+[node name="HangerR2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 2.1, 0.0)
+mesh = SubResource("CylinderMesh_hanger")
+surface_material_override/0 = SubResource("StandardMaterial3D_steel_cable")
+
+[node name="HangerL3" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 2.1, 6.0)
+mesh = SubResource("CylinderMesh_hanger")
+surface_material_override/0 = SubResource("StandardMaterial3D_steel_cable")
+
+[node name="HangerR3" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 2.1, 6.0)
+mesh = SubResource("CylinderMesh_hanger")
+surface_material_override/0 = SubResource("StandardMaterial3D_steel_cable")
+
+[node name="NatShrineBase" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0.6, -12.2)
+mesh = SubResource("BoxMesh_shrine_base")
+surface_material_override/0 = SubResource("StandardMaterial3D_red_lacquer")
+
+[node name="NatShrineRoof" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 1.45, -12.2)
+mesh = SubResource("PrismMesh_shrine_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_weathered_teak")
+
+[node name="LanternNorth" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.6, -11.5)
+mesh = SubResource("CylinderMesh_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_amber_lantern")
+
+[node name="LightNorth" type="OmniLight3D" parent="VisualMesh/LanternNorth"]
+light_color = Color(1.0, 0.8, 0.4, 1)
+light_energy = 2.4
+omni_range = 15.0
+
+[node name="LanternSouth" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.6, 11.5)
+mesh = SubResource("CylinderMesh_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_amber_lantern")
+
+[node name="LightSouth" type="OmniLight3D" parent="VisualMesh/LanternSouth"]
+light_color = Color(1.0, 0.8, 0.4, 1)
+light_energy = 2.4
+omni_range = 15.0
+
+[node name="BridgeSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8, -11.5)
+text = "မင်းတုန်းချောင်း သဘာဝ ကြိုးတံတားကြီး 🌉✨"
+font_size = 28
+outline_size = 8
+modulate = Color(1.0, 0.90, 0.35, 1)
