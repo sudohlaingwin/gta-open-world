@@ -4802,4 +4802,16 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 
 
 
-
+
+## 2026-10-24 — Slice 413: Grand Union Highway Traditional Fuel Drum Depot & Tire Service Realism
+### Completed by Antigravity:
+1. **Grand Union Highway Fuel Depot & Tire Vulcanizing Station Scene (scenes/highway_fuel_depot.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Myanmar rural highway refueling depot featuring a reinforced concrete apron (BoxMesh_concrete_apron, 8.2m x 5.2m), industrial blue tubular steel canopy columns (StandardMaterial3D_blue_steel, metallic 0.75), weathered corrugated tin gable roof (PrismMesh_tin_roof, metallic 0.82), red and blue 200L petrol drums (CylinderMesh_fuel_drum), manual rotary fuel pump spindle, bright yellow air compressor tank (CylinderMesh_air_tank), stacked spare truck tires (CylinderMesh_spare_tire), heavy timber maintenance workbench, and automated dusk amber lantern (OmniLight3D, energy = 2.4, ange = 16m).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=22), zero runtime monkey patching, zero load errors.
+2. **Procedural Distribution Along Grand Union Highway (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_highway_fuel_depots().
+   - Strategically positioned full-service fueling and vulcanizing stations at:
+     - West Mountain Approach: Vector3(-480, 0, -135) ("မင်းတုန်း (အနောက်ဘက်) အဝေးပြေး စက်သုံးဆီ & တာယာဖာ ⛽🔧").
+     - East Straightaway Junction: Vector3(520, 0, -135) ("မင်းတုန်း (အရှေ့ဘက်) ၂၄ နာရီ စက်သုံးဆီ & လေထိုးကျွတ်ဖာ ⛽✨").
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

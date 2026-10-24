@@ -1,4 +1,4 @@
-# ARENA.md — Myanmar GTA Open World Game Task Board
+﻿# ARENA.md — Myanmar GTA Open World Game Task Board
 
 Tasks here follow the Owner-ordered Duel Protocol:
 Build → Review & Critique → Improve & Beat → Owner's Play Verdict.
@@ -46,4 +46,4 @@ Antigravity has issued a formal Senior Game Architect & Systems Engineer Review 
 - **Slice 410:** Riverside Bamboo Gazebo Overlooks & Lounging Daybeds Realism (`riverside_bamboo_gazebo.tscn`).
 - **Slice 411:** Multi-Beam Vehicle Headlight Projector & Relay Switch Audio Realism (`mobile_touch_hud.tscn`).
 - **Slice 412:** Dual Articulated Windshield Wipers & Rubber Friction Sweep Audio Realism (`village_car.tscn`).
-
+- **Slice 413:** Grand Union Highway Fuel Drum Depot & Tire Vulcanizing Station (highway_fuel_depot.tscn).

@@ -37,6 +37,7 @@ const SLUICE_GATE_SCENE = preload("res://scenes/irrigation_sluice_gate.tscn")
 const COCONUT_STAND_SCENE = preload("res://scenes/roadside_coconut_stand.tscn")
 const WIND_TURBINE_SCENE = preload("res://scenes/mountain_wind_turbine.tscn")
 const BAMBOO_GAZEBO_SCENE = preload("res://scenes/riverside_bamboo_gazebo.tscn")
+const FUEL_DEPOT_SCENE = preload("res://scenes/highway_fuel_depot.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -67,6 +68,7 @@ func _ready() -> void:
 	_generate_roadside_coconut_stands()
 	_generate_mountain_wind_turbines()
 	_generate_riverside_bamboo_gazebos()
+	_generate_highway_fuel_depots()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1463,5 +1465,35 @@ func _generate_riverside_bamboo_gazebos() -> void:
 		gazebos_holder.add_child(gazebo)
 
 		var sign_node = gazebo.get_node_or_null("GazeboSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+
+func _generate_highway_fuel_depots() -> void:
+	# Authentic Myanmar highway roadside 200L fuel drum filling & vulcanizing tire repair shops
+	var depots_holder = Node3D.new()
+	depots_holder.name = "HighwayFuelDepots"
+	add_child(depots_holder)
+
+	var depot_data = [
+		{
+			"pos": Vector3(-480.0, 0.0, -135.0),
+			"rot_y": deg_to_rad(180.0),
+			"sign": "မင်းတုန်း (အနောက်ဘက်) အဝေးပြေး စက်သုံးဆီ & တာယာဖာ ⛽🔧"
+		},
+		{
+			"pos": Vector3(520.0, 0.0, -135.0),
+			"rot_y": deg_to_rad(180.0),
+			"sign": "မင်းတုန်း (အရှေ့ဘက်) ၂၄ နာရီ စက်သုံးဆီ & လေထိုးကျွတ်ဖာ ⛽✨"
+		}
+	]
+
+	for data in depot_data:
+		var depot = FUEL_DEPOT_SCENE.instantiate()
+		depot.position = data["pos"]
+		depot.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		depots_holder.add_child(depot)
+
+		var sign_node = depot.get_node_or_null("DepotSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

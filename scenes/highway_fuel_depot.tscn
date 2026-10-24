@@ -1,0 +1,196 @@
+[gd_scene load_steps=22 format=3]
+
+[ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_depot"]
+size = Vector3(8.5, 4.2, 5.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_concrete_apron"]
+size = Vector3(8.2, 0.25, 5.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_apron_concrete"]
+albedo_color = Color(0.58, 0.55, 0.50, 1)
+roughness = 0.88
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_steel_column"]
+top_radius = 0.09
+bottom_radius = 0.09
+height = 3.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blue_steel"]
+albedo_color = Color(0.18, 0.38, 0.65, 1)
+metallic = 0.75
+roughness = 0.35
+
+[sub_resource type="PrismMesh" id="PrismMesh_tin_roof"]
+left_to_right = 0.5
+size = Vector3(8.6, 1.3, 5.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_corrugated_tin"]
+albedo_color = Color(0.50, 0.54, 0.56, 1)
+metallic = 0.82
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fuel_drum"]
+top_radius = 0.30
+bottom_radius = 0.30
+height = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_drum_red"]
+albedo_color = Color(0.78, 0.16, 0.14, 1)
+metallic = 0.6
+roughness = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_drum_blue"]
+albedo_color = Color(0.15, 0.35, 0.72, 1)
+metallic = 0.6
+roughness = 0.45
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_manual_pump"]
+top_radius = 0.04
+bottom_radius = 0.04
+height = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cast_iron"]
+albedo_color = Color(0.25, 0.25, 0.27, 1)
+metallic = 0.85
+roughness = 0.55
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_air_tank"]
+top_radius = 0.22
+bottom_radius = 0.22
+height = 0.85
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tank_yellow"]
+albedo_color = Color(0.92, 0.72, 0.14, 1)
+metallic = 0.5
+roughness = 0.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_spare_tire"]
+top_radius = 0.42
+bottom_radius = 0.42
+height = 0.28
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tire_rubber"]
+albedo_color = Color(0.14, 0.14, 0.15, 1)
+roughness = 0.92
+
+[sub_resource type="BoxMesh" id="BoxMesh_workbench"]
+size = Vector3(2.4, 0.85, 0.75)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_workbench_wood"]
+albedo_color = Color(0.38, 0.26, 0.16, 1)
+roughness = 0.75
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lantern_globe"]
+top_radius = 0.08
+bottom_radius = 0.08
+height = 0.18
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_amber_lantern"]
+transparency = 1
+albedo_color = Color(1.0, 0.85, 0.45, 0.75)
+emission_enabled = true
+emission = Color(1.0, 0.75, 0.25, 1)
+emission_energy_multiplier = 2.4
+
+[node name="HighwayFuelDepot" type="StaticBody3D"]
+script = ExtResource("1_lantern")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+shape = SubResource("BoxShape3D_depot")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+[node name="Apron" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+mesh = SubResource("BoxMesh_concrete_apron")
+surface_material_override/0 = SubResource("StandardMaterial3D_apron_concrete")
+
+[node name="ColumnFL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, 1.7, 2.2)
+mesh = SubResource("CylinderMesh_steel_column")
+surface_material_override/0 = SubResource("StandardMaterial3D_blue_steel")
+
+[node name="ColumnFR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 1.7, 2.2)
+mesh = SubResource("CylinderMesh_steel_column")
+surface_material_override/0 = SubResource("StandardMaterial3D_blue_steel")
+
+[node name="ColumnBL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, 1.7, -2.2)
+mesh = SubResource("CylinderMesh_steel_column")
+surface_material_override/0 = SubResource("StandardMaterial3D_blue_steel")
+
+[node name="ColumnBR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 1.7, -2.2)
+mesh = SubResource("CylinderMesh_steel_column")
+surface_material_override/0 = SubResource("StandardMaterial3D_blue_steel")
+
+[node name="CanopyRoof" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.85, 0)
+mesh = SubResource("PrismMesh_tin_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_corrugated_tin")
+
+[node name="RedDrum1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0.6, 0.4)
+mesh = SubResource("CylinderMesh_fuel_drum")
+surface_material_override/0 = SubResource("StandardMaterial3D_drum_red")
+
+[node name="RedDrum2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0.6, 0.4)
+mesh = SubResource("CylinderMesh_fuel_drum")
+surface_material_override/0 = SubResource("StandardMaterial3D_drum_red")
+
+[node name="BlueDrum1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.6, 0.4)
+mesh = SubResource("CylinderMesh_fuel_drum")
+surface_material_override/0 = SubResource("StandardMaterial3D_drum_blue")
+
+[node name="PumpSpindle" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 1.4, 0.4)
+mesh = SubResource("CylinderMesh_manual_pump")
+surface_material_override/0 = SubResource("StandardMaterial3D_cast_iron")
+
+[node name="AirCompressor" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.55, 0.5)
+mesh = SubResource("CylinderMesh_air_tank")
+surface_material_override/0 = SubResource("StandardMaterial3D_tank_yellow")
+
+[node name="TireStack1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0.26, 0.4)
+mesh = SubResource("CylinderMesh_spare_tire")
+surface_material_override/0 = SubResource("StandardMaterial3D_tire_rubber")
+
+[node name="TireStack2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0.54, 0.4)
+mesh = SubResource("CylinderMesh_spare_tire")
+surface_material_override/0 = SubResource("StandardMaterial3D_tire_rubber")
+
+[node name="TireStack3" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0.82, 0.4)
+mesh = SubResource("CylinderMesh_spare_tire")
+surface_material_override/0 = SubResource("StandardMaterial3D_tire_rubber")
+
+[node name="Workbench" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -1.5)
+mesh = SubResource("BoxMesh_workbench")
+surface_material_override/0 = SubResource("StandardMaterial3D_workbench_wood")
+
+[node name="HangingLantern" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
+mesh = SubResource("CylinderMesh_lantern_globe")
+surface_material_override/0 = SubResource("StandardMaterial3D_amber_lantern")
+
+[node name="LanternLight" type="OmniLight3D" parent="VisualMesh/HangingLantern"]
+light_color = Color(1.0, 0.8, 0.4, 1)
+light_energy = 2.4
+omni_range = 16.0
+
+[node name="DepotSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4, 2.5)
+text = "မင်းတုန်း အဝေးပြေး စက်သုံးဆီ & တာယာဖာလုပ်ငန်း ⛽🔧"
+font_size = 28
+outline_size = 8
+modulate = Color(1.0, 0.90, 0.35, 1)
