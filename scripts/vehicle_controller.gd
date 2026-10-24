@@ -105,6 +105,8 @@ func _physics_process(delta: float) -> void:
 			var is_skidding = (lateral_speed > 3.8 and forward_speed > 5.0) or (brake > 12.0 and forward_speed > 6.0)
 			if tire_smoke_l: tire_smoke_l.emitting = is_skidding
 			if tire_smoke_r: tire_smoke_r.emitting = is_skidding
+			if audio_mgr.has_method("set_wind_rush"):
+				audio_mgr.set_wind_rush(speed_ratio)
 			if is_skidding and audio_mgr.has_method("play_tire_skid"):
 				var skid_intensity = clampf((lateral_speed - 3.0) / 4.0, 0.4, 1.0)
 				audio_mgr.play_tire_skid(skid_intensity)
@@ -113,6 +115,9 @@ func _physics_process(delta: float) -> void:
 		if tire_smoke_l: tire_smoke_l.emitting = false
 		if tire_smoke_r: tire_smoke_r.emitting = false
 		if nitro_flame: nitro_flame.emitting = false
+		var am = get_tree().get_first_node_in_group("audio_manager")
+		if am and am.has_method("set_wind_rush"):
+			am.set_wind_rush(0.0)
 		engine_force = 0.0
 		brake = 10.0
 
@@ -137,6 +142,9 @@ func exit_vehicle() -> void:
 	if tire_smoke_l: tire_smoke_l.emitting = false
 	if tire_smoke_r: tire_smoke_r.emitting = false
 	if nitro_flame: nitro_flame.emitting = false
+	var am_exit = get_tree().get_first_node_in_group("audio_manager")
+	if am_exit and am_exit.has_method("set_wind_rush"):
+		am_exit.set_wind_rush(0.0)
 	var exit_pos = global_position + (global_transform.basis.x * 2.0)
 	driver.reparent(get_parent())
 	driver.global_position = exit_pos

@@ -19,6 +19,7 @@ var cart_bell_timer: float = 0.0
 var is_muted: bool = false
 var horn_player: AudioStreamPlayer = null
 var skid_player: AudioStreamPlayer = null
+var wind_rush_player: AudioStreamPlayer = null
 
 
 const RADIO_STATIONS: Array[String] = [
@@ -944,4 +945,44 @@ func play_tire_skid(intensity: float = 1.0) -> void:
 	stream.data = data
 	skid_player.stream = stream
 	skid_player.play()
+
+func set_wind_rush(speed_ratio: float) -> void:
+	if is_muted:
+		if wind_rush_player and wind_rush_player.playing: wind_rush_player.stop()
+		return
+	if not wind_rush_player:
+		wind_rush_player = AudioStreamPlayer.new()
+		wind_rush_player.name = "HighwayWindRushAudio"
+		add_child(wind_rush_player)
+		var sample_hz = 22050
+		var duration = 2.0
+		var total_frames = int(sample_hz * duration)
+		var stream = AudioStreamWAV.new()
+		stream.format = AudioStreamWAV.FORMAT_16_BITS
+		stream.mix_rate = sample_hz
+		stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+		stream.loop_begin = 0
+		stream.loop_end = total_frames
+		var data = PackedByteArray()
+		data.resize(total_frames * 2)
+		for i in range(total_frames):
+			var t = float(i) / float(sample_hz)
+			var buffeting = (sin(t * 85.0 * TAU) * 0.45 + sin(t * 145.0 * TAU) * 0.35 + sin(t * 220.0 * TAU) * 0.20)
+			var hiss = sin(t * 1650.0 * TAU) * (0.8 + 0.2 * sin(t * 12.0 * TAU)) * 0.15
+			var val = (buffeting + hiss)
+			var int_sample = int(clamp(val, -1.0, 1.0) * 18000.0)
+			data.encode_s16(i * 2, int_sample)
+		stream.data = data
+		wind_rush_player.stream = stream
+
+	if speed_ratio > 0.15:
+		if not wind_rush_player.playing:
+			wind_rush_player.play()
+		var target_vol = lerpf(-30.0, -8.0, clampf((speed_ratio - 0.15) / 0.85, 0.0, 1.0))
+		wind_rush_player.volume_db = target_vol
+		wind_rush_player.pitch_scale = lerpf(0.85, 1.35, speed_ratio)
+	else:
+		if wind_rush_player.playing:
+			wind_rush_player.stop()
+
 

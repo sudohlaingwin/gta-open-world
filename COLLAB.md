@@ -4648,6 +4648,19 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 402: Highway Aerodynamic Wind Rush Audio & Vehicular Cruise Smooth Camera Auto-Centering
+### Completed by Antigravity:
+1. **Highway Aerodynamic Wind Rush Audio (`scripts/audio_manager.gd`, `scripts/vehicle_controller.gd`):**
+   - **Procedural High-Speed Wind Turbulence (`set_wind_rush()`):** Synthesized real-time looping low-frequency buffeting (85Hz-220Hz) and high-speed window air turbulence hiss (1650Hz).
+   - Dynamic volume and pitch modulation scaling with vehicle speed ratio (`speed_ratio > 0.15`), providing authentic highway driving immersion up to 137 km/h.
+   - Clean auto-stop upon vehicle exit or stopping.
+2. **Vehicular Cruise Smooth Camera Auto-Centering (`scripts/camera_orbit.gd`):**
+   - Integrated touch idle sensing (`last_look_time`): when cruising at speed (`v_spd > 3.5 m/s`) after 3.2 seconds of look inactivity, the camera gracefully and smoothly lerps its yaw back to the vehicle forward vector (`lerp_angle(rotation.y, 0.0, 1.4 * delta)`).
+   - Allows full 360° freelook to admire the scenery, with natural recentering when focused on long highway stretches.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
+
 
 
 

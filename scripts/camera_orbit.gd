@@ -24,6 +24,7 @@ var target_fov: float = 75.0
 var base_pivot_offset: Vector3 = Vector3(0, 1.45, 0)
 var target_pivot_offset: Vector3 = Vector3(0, 1.45, 0)
 var current_pivot_offset: Vector3 = Vector3(0, 1.45, 0)
+var last_look_time: int = 0
 
 signal view_mode_changed(mode_name: String)
 
@@ -133,6 +134,17 @@ func _physics_process(delta: float) -> void:
 	position = current_pivot_offset
 	camera.fov = lerpf(camera.fov, target_fov, 6.0 * delta)
 
+	# Gentle vehicular cruise auto-centering (recenters forward after looking around)
+	if is_in_vehicle and (Time.get_ticks_msec() - last_look_time > 3200):
+		var v_spd = 0.0
+		if current_veh and current_veh.get("linear_velocity") != null:
+			v_spd = current_veh.linear_velocity.length()
+		elif current_veh and current_veh.get("velocity") != null:
+			v_spd = current_veh.velocity.length()
+		if v_spd > 3.5:
+			rotation.y = lerp_angle(rotation.y, 0.0, 1.4 * delta)
+
+
 	# Raycast obstruction clearance (only relevant for TPP modes)
 	if target_arm_length > 0.5:
 		var space_state = get_world_3d().direct_space_state
@@ -180,6 +192,7 @@ func _input(event: InputEvent) -> void:
 			# Horizontal yaw: full 360-degree free look!
 			rotation.y -= event.relative.x * sens
 			rotation.y = wrapf(rotation.y, -PI, PI)
+			last_look_time = Time.get_ticks_msec()
 
 			# Vertical pitch: look up at sky/roof or down at steering/dashboard
 			rotation.x -= event.relative.y * sens
