@@ -33,6 +33,7 @@ const GUESTHOUSE_SCENE = preload("res://scenes/myanmar_guesthouse.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 const AIRDROP_SCENE = preload("res://scenes/airdrop_crate.tscn")
 const BUS_SHELTER_SCENE = preload("res://scenes/highway_bus_shelter.tscn")
+const SLUICE_GATE_SCENE = preload("res://scenes/irrigation_sluice_gate.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -59,6 +60,7 @@ func _ready() -> void:
 	_generate_airdrop_supply_drops()
 	_generate_highway_milestone_posts()
 	_generate_highway_bus_shelters()
+	_generate_irrigation_sluice_gates()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1322,5 +1324,39 @@ func _generate_highway_bus_shelters() -> void:
 		shelters_holder.add_child(shelter)
 
 		var sign_node = shelter.get_node_or_null("BusSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_irrigation_sluice_gates() -> void:
+	# Rural irrigation canal regulator sluice gates & concrete road culverts
+	var sluice_holder = Node3D.new()
+	sluice_holder.name = "IrrigationSluiceGates"
+	add_child(sluice_holder)
+
+	var sluice_data = [
+		{
+			"pos": Vector3(260.0, 0.0, -85.0),
+			"rot_y": deg_to_rad(90.0),
+			"sign": "မင်းတုန်း အရှေ့ဘက် ကွင်းပြင် ရေထိန်းတံခါး (၁) 🌊"
+		},
+		{
+			"pos": Vector3(-360.0, 0.0, -95.0),
+			"rot_y": deg_to_rad(75.0),
+			"sign": "မင်းတုန်း အနောက်ဘက် ချောင်းရေသွယ်မြောင်း (၂) 🌊"
+		},
+		{
+			"pos": Vector3(-80.0, 0.0, 310.0),
+			"rot_y": 0.0,
+			"sign": "ဘုန်းတော်ကြီးကျောင်း အောက်ဘက် ရေလွှဲတံခါး (၃) 🌊"
+		}
+	]
+
+	for data in sluice_data:
+		var gate = SLUICE_GATE_SCENE.instantiate()
+		gate.position = data["pos"]
+		gate.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		sluice_holder.add_child(gate)
+
+		var sign_node = gate.get_node_or_null("SignLabel")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

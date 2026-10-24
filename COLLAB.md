@@ -4684,6 +4684,18 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 405: Paddy Irrigation Canal Regulator Sluice Gates & Road Culverts Realism
+### Completed by Antigravity:
+1. **Myanmar Countryside Irrigation Sluice Gate Scene (`scenes/irrigation_sluice_gate.tscn`):**
+   - **Heavy Civil Infrastructure Authenticity:** Modelled reinforced concrete deck bridge (`BoxMesh_concrete_deck`, `4.6m x 0.45m x 4.8m`) enabling seamless vehicular traffic over canals, flanking mossy wing-walls (`BoxMesh_wing_wall`), overhead rusted iron support beam, dual vertical threaded regulator spindles (`CylinderMesh`), and red-primer manual handwheels (`TorusMesh_handwheel`).
+   - **Hydraulics & Water Simulation:** Modelled wet teakwood timber sluice gate plank (`2.4m x 1.4m x 0.12m`), reflective flowing canal water plane (`StandardMaterial3D_canal_water`), yellow and black marked depth indicator gauge post, and dynamic water spray foam particle emitter (`CPUParticles3D`, `SphereMesh`, `amount=16`).
+   - **Clean Declarative Architecture:** 100% strictly formatted canonical Godot 4 scene (`load_steps=19`), zero runtime monkey patching, zero engine errors.
+2. **Procedural Distribution Across Agricultural Zones (`scripts/mindon_map_builder.gd`):**
+   - Built `_generate_irrigation_sluice_gates()` generator.
+   - Positioned authentic sluice regulators at East Paddy Terraces (`Vector3(260, 0, -85)`), West Stream Intake Canal (`Vector3(-360, 0, -95)`), and Southern Monastery Farmlands (`Vector3(-80, 0, 310)`).
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
 
 
 
