@@ -30,6 +30,11 @@ var smoothed_steering: float = 0.0
 @onready var dashboard_display: Label3D = get_node_or_null("DashboardDisplay")
 @onready var exhaust_backfire: CPUParticles3D = get_node_or_null("ExhaustBackfire")
 @onready var radio_eq_display: Label3D = get_node_or_null("RadioEqualizerDisplay")
+@onready var turn_signal_fl: MeshInstance3D = get_node_or_null("TurnSignalFL")
+@onready var turn_signal_fr: MeshInstance3D = get_node_or_null("TurnSignalFR")
+@onready var turn_signal_bl: MeshInstance3D = get_node_or_null("TurnSignalBL")
+@onready var turn_signal_br: MeshInstance3D = get_node_or_null("TurnSignalBR")
+@onready var hazard_display: Label3D = get_node_or_null("HazardBlinkerDisplay")
 
 var prev_throttle_input: float = 0.0
 var prev_boosting: bool = false
@@ -53,6 +58,31 @@ var charm_pitch_vel: float = 0.0
 var wipers_active: bool = false
 var wiper_phase: float = 0.0
 var last_wiper_dir: float = 0.0
+
+var hazard_active: bool = false
+var blinker_timer: float = 0.0
+var blinker_state: bool = false
+
+func toggle_hazard_lights() -> String:
+	hazard_active = !hazard_active
+	if not hazard_active:
+		_set_blinkers_visible(false)
+		return "⚠️ အရေးပေါ်မီး: ပိတ်ထားသည် (Hazard Lights OFF)"
+	else:
+		blinker_timer = 0.0
+		blinker_state = true
+		_set_blinkers_visible(true)
+		var am = get_tree().get_first_node_in_group("audio_manager")
+		if am and am.has_method("play_turn_signal_tick"):
+			am.play_turn_signal_tick(true)
+		return "⚠️ အရေးပေါ်မီး: ဖွင့်ထားသည် (Hazard Lights ON)"
+
+func _set_blinkers_visible(p_vis: bool) -> void:
+	if turn_signal_fl: turn_signal_fl.visible = p_vis
+	if turn_signal_fr: turn_signal_fr.visible = p_vis
+	if turn_signal_bl: turn_signal_bl.visible = p_vis
+	if turn_signal_br: turn_signal_br.visible = p_vis
+	if hazard_display: hazard_display.visible = p_vis
 
 func toggle_wipers() -> String:
 	wipers_active = !wipers_active
@@ -157,6 +187,15 @@ func _physics_process(delta: float) -> void:
 	_update_headlights()
 	var target_slide = 1.0 if windows_down else 0.0
 	window_slide_pos = move_toward(window_slide_pos, target_slide, delta * 1.8)
+	if hazard_active:
+		blinker_timer += delta
+		if blinker_timer >= 0.35:
+			blinker_timer = 0.0
+			blinker_state = !blinker_state
+			_set_blinkers_visible(blinker_state)
+			var am_tick = get_tree().get_first_node_in_group("audio_manager")
+			if am_tick and am_tick.has_method("play_turn_signal_tick"):
+				am_tick.play_turn_signal_tick(blinker_state)
 	var cur_window_y = lerpf(WINDOW_Y_CLOSED, WINDOW_Y_OPEN, window_slide_pos)
 	if side_window_l:
 		side_window_l.position.y = cur_window_y

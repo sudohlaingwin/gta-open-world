@@ -1168,3 +1168,34 @@ func play_exhaust_pop() -> void:
 	exhaust_pop_player.volume_db = -4.5
 	exhaust_pop_player.pitch_scale = randf_range(0.92, 1.15)
 	exhaust_pop_player.play()
+
+var turn_signal_player: AudioStreamPlayer = null
+
+func play_turn_signal_tick(is_on: bool) -> void:
+	if is_muted:
+		return
+	if not turn_signal_player:
+		turn_signal_player = AudioStreamPlayer.new()
+		turn_signal_player.name = "TurnSignalAudio"
+		add_child(turn_signal_player)
+
+	var sample_hz = 22050
+	var duration = 0.04
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+
+	var tick_freq = 2800.0 if is_on else 1850.0
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var snap = exp(-t * 160.0) * sin(t * tick_freq * TAU) * 0.75
+		var int_sample = int(clamp(snap, -1.0, 1.0) * 19000.0)
+		data.encode_s16(i * 2, int_sample)
+
+	stream.data = data
+	turn_signal_player.stream = stream
+	turn_signal_player.volume_db = -8.0
+	turn_signal_player.play()

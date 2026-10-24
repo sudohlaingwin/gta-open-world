@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=50 format=3]
+﻿[gd_scene load_steps=52 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -215,6 +215,14 @@ albedo_color = Color(0.08, 0.16, 0.20, 0.45)
 roughness = 0.05
 metallic = 0.4
 specular = 0.95
+[sub_resource type="BoxMesh" id="BoxMesh_turn_signal"]
+size = Vector3(0.14, 0.18, 0.10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_amber_blinker"]
+albedo_color = Color(1.0, 0.65, 0.10, 1)
+emission_enabled = true
+emission = Color(1.0, 0.60, 0.05, 1)
+emission_energy_multiplier = 3.2
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
 
@@ -536,3 +544,35 @@ surface_material_override/0 = SubResource("StandardMaterial3D_window_tint")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.985, 1.48, -0.45)
 mesh = SubResource("BoxMesh_side_window")
 surface_material_override/0 = SubResource("StandardMaterial3D_window_tint")
+
+[node name="TurnSignalFL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05, 0.78, -2.44)
+visible = false
+mesh = SubResource("BoxMesh_turn_signal")
+surface_material_override/0 = SubResource("StandardMaterial3D_amber_blinker")
+
+[node name="TurnSignalFR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 0.78, -2.44)
+visible = false
+mesh = SubResource("BoxMesh_turn_signal")
+surface_material_override/0 = SubResource("StandardMaterial3D_amber_blinker")
+
+[node name="TurnSignalBL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05, 0.78, 2.44)
+visible = false
+mesh = SubResource("BoxMesh_turn_signal")
+surface_material_override/0 = SubResource("StandardMaterial3D_amber_blinker")
+
+[node name="TurnSignalBR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 0.78, 2.44)
+visible = false
+mesh = SubResource("BoxMesh_turn_signal")
+surface_material_override/0 = SubResource("StandardMaterial3D_amber_blinker")
+
+[node name="HazardBlinkerDisplay" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.5, 1.34, -0.82)
+visible = false
+text = "◀ ⚠️ ▶"
+font_size = 14
+outline_size = 4
+modulate = Color(1.0, 0.65, 0.1, 1)

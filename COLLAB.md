@@ -4892,3 +4892,20 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - East Valley Foothills Grove: Vector3(480, 0, 260) ("အရှေ့လွင်ပြင် သဘာဝ ထန်းရည်ချိုနှင့် ထန်းလျက်စခန်း 🌴✨").
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 419: Interactive Vehicle Hazard & Dual Amber Turn Signal Blinker System Realism
+### Completed by Antigravity:
+1. **Four-Corner Amber Turn Signal Blinkers & Dashboard Hazard Icon (scenes/village_car.tscn):**
+   - Modelled 4 corner amber blinkers: front-left (TurnSignalFL), front-right (TurnSignalFR), rear-left (TurnSignalBL), and rear-right (TurnSignalBR) with dedicated emission material (StandardMaterial3D_amber_blinker, emission energy 3.2).
+   - Added instrument cluster hazard flasher readout (HazardBlinkerDisplay, Label3D, "◀ ⚠️ ▶"), flashing in synchronization with the exterior turn signals.
+   - Preserved canonical Godot 4 scene structure (load_steps=52), zero errors, zero monkey patching.
+2. **Harmonic Dual-Frequency Relay Flasher Audio Synthesis (scripts/audio_manager.gd):**
+   - Synthesized play_turn_signal_tick(is_on): authentic automotive bimetallic flasher relay snap alternating between 2800Hz ('tick') on activation and 1850Hz ('tock') on release at 0.35s intervals (1.43 Hz).
+3. **Hazard Flasher Controller & Auto-Cancellation Logic (scripts/vehicle_controller.gd):**
+   - Implemented 	oggle_hazard_lights() and continuous oscillating blinker timer (linker_timer += delta).
+   - Automatically synchronizes audio clicks and visual 4-corner amber flashes.
+4. **Mobile & Desktop Controls (scenes/mobile_touch_hud.tscn, scripts/mobile_touch_hud.gd, scripts/player.gd):**
+   - Added context-aware mobile touch button ⚠️ အရေးပေါ် in ActionContainer (auto-displayed only while driving).
+   - Bound desktop 'U' hotkey for instant hazard activation with HUD prompt feedback.
+5. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.
