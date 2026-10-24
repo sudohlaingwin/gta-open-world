@@ -22,6 +22,7 @@ var current_drive_speed: float = 0.0
 @onready var saddle_point: Marker3D = $SaddlePoint
 @onready var visual_mesh: Node3D = $VisualMesh
 @onready var interaction_area: Area3D = $InteractionArea
+@onready var lantern_light: OmniLight3D = visual_mesh.get_node_or_null("HurricaneLantern/LanternLight")
 
 # Legs & Wheels for physical rolling / walking animation
 var legs: Array = []
@@ -54,6 +55,14 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
+
+	# Dynamic Day/Night Hurricane Lantern Lighting
+	if lantern_light:
+		var dnc = get_tree().get_first_node_in_group("day_night")
+		var is_night = false
+		if dnc and dnc.has_method("get_daylight"):
+			is_night = (dnc.get_daylight() < 0.38)
+		lantern_light.visible = (is_night or is_mounted)
 
 	if is_mounted and current_rider:
 		# Process rider driving inputs

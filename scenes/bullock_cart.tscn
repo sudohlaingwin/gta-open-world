@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3]
+[gd_scene load_steps=36 format=3]
 
 [ext_resource type="Script" path="res://scripts/mount_controller.gd" id="1_cart"]
 
@@ -129,6 +129,32 @@ height = 0.32
 albedo_color = Color(0.62, 0.32, 0.16, 1)
 roughness = 0.35
 specular = 0.50
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lantern_base"]
+top_radius = 0.12
+bottom_radius = 0.14
+height = 0.16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lantern_tin"]
+albedo_color = Color(0.22, 0.18, 0.14, 1)
+metallic = 0.75
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lantern_glass"]
+top_radius = 0.09
+bottom_radius = 0.09
+height = 0.22
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lantern_glass"]
+transparency = 1
+albedo_color = Color(1.0, 0.85, 0.40, 0.55)
+emission_enabled = true
+emission = Color(1.0, 0.70, 0.15, 1)
+emission_energy_multiplier = 2.5
+
+[sub_resource type="TorusMesh" id="TorusMesh_lantern_handle"]
+inner_radius = 0.11
+outer_radius = 0.13
 
 [node name="BullockCart" type="CharacterBody3D"]
 script = ExtResource("1_cart")
@@ -301,3 +327,28 @@ text = "မြန်မာ့ရိုးရာ နွားလှည်းယ�
 font_size = 38
 outline_size = 10
 modulate = Color(1.0, 0.90, 0.40, 1)
+
+[node name="HurricaneLantern" type="Node3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, -2.45)
+
+[node name="LanternBase" type="MeshInstance3D" parent="VisualMesh/HurricaneLantern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+mesh = SubResource("CylinderMesh_lantern_base")
+surface_material_override/0 = SubResource("StandardMaterial3D_lantern_tin")
+
+[node name="LanternGlass" type="MeshInstance3D" parent="VisualMesh/HurricaneLantern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+mesh = SubResource("CylinderMesh_lantern_glass")
+surface_material_override/0 = SubResource("StandardMaterial3D_lantern_glass")
+
+[node name="LanternHandle" type="MeshInstance3D" parent="VisualMesh/HurricaneLantern"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.2, 0)
+mesh = SubResource("TorusMesh_lantern_handle")
+surface_material_override/0 = SubResource("StandardMaterial3D_lantern_tin")
+
+[node name="LanternLight" type="OmniLight3D" parent="VisualMesh/HurricaneLantern"]
+light_color = Color(1.0, 0.78, 0.35, 1)
+light_energy = 2.0
+omni_range = 18.0
+omni_attenuation = 1.2
+

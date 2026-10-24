@@ -4593,6 +4593,20 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 4. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 398: Traditional Bullock Cart Hanging Hurricane Lantern & Dynamic Night Illumination Realism
+### Completed by Antigravity:
+1. **Burmese Rural Bullock Cart Hanging Hurricane Lantern (`scenes/bullock_cart.tscn`, `scripts/mount_controller.gd`):**
+   - **Vintage Pressed-Tin Oil Tank (`LanternBase`):** Modelled vintage dark enamel oil base (`CylinderMesh_lantern_base`, `StandardMaterial3D_lantern_tin`, `metallic = 0.75`, `roughness = 0.35`) mounted at `(0, 1.47, -2.45)` suspended from the front yoke beam between the two oxen.
+   - **Amber Kerosene Glass Chimney (`LanternGlass`):** Transparent glass globe (`CylinderMesh_lantern_glass`, `StandardMaterial3D_lantern_glass`, `emission = Color(1.0, 0.70, 0.15)`, `emission_energy_multiplier = 2.5`).
+   - **Wire Bail Hanging Handle (`LanternHandle`):** Wire handle (`TorusMesh_lantern_handle`, `inner_radius = 0.11m`) looped over the center wooden yoke.
+   - **Warm Night Omnidirectional Glow (`LanternLight`):** Warm amber light (`Color(1.0, 0.78, 0.35)`, `range = 18.0m`, `energy = 2.0`) casting authentic rural illumination across the oxen's horns, yokes, and cart track.
+   - Strictly preserved canonical TSCN format (`load_steps=36` matching 1 ext_resource + 34 sub_resources + 1) with 0 errors.
+2. **Dynamic Day/Night Lantern Logic (`scripts/mount_controller.gd`):**
+   - Wired automated day/night sensing (`dnc.get_daylight() < 0.38`) and rider mount state, seamlessly igniting the lantern as dusk falls over the Mindon countryside or when ridden.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
+
 
 
 
