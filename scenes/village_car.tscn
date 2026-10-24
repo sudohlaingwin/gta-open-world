@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=158 format=3]
+﻿[gd_scene load_steps=161 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -727,6 +727,27 @@ material = SubResource("StandardMaterial3D_sunglass_lens")
 top_radius = 0.024
 bottom_radius = 0.024
 height = 0.003
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fog_amber"]
+albedo_color = Color(1.0, 0.72, 0.12, 1)
+roughness = 0.2
+specular = 0.8
+emission_enabled = false
+emission = Color(1.0, 0.75, 0.15, 1)
+emission_energy_multiplier = 3.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fog_lens"]
+material = SubResource("StandardMaterial3D_fog_amber")
+top_radius = 0.08
+bottom_radius = 0.08
+height = 0.04
+
+[sub_resource type="TorusMesh" id="TorusMesh_fog_bezel"]
+material = SubResource("StandardMaterial3D_rack_metal")
+inner_radius = 0.078
+outer_radius = 0.095
+rings = 12
+ring_segments = 8
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
@@ -1565,3 +1586,46 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14, 0.15)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.022, -0.15)
 mesh = SubResource("BoxMesh_armrest_lid")
 surface_material_override/0 = SubResource("StandardMaterial3D_dash")
+
+[node name="FogLampAssembly" type="Node3D" parent="."]
+
+[node name="FogLightL" type="MeshInstance3D" parent="FogLampAssembly"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.72, 0.42, -2.48)
+mesh = SubResource("CylinderMesh_fog_lens")
+
+[node name="FogBezelL" type="MeshInstance3D" parent="FogLampAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.72, 0.42, -2.49)
+mesh = SubResource("TorusMesh_fog_bezel")
+
+[node name="FogBeamL" type="SpotLight3D" parent="FogLampAssembly"]
+transform = Transform3D(1, 0, 0, 0, 0.997564, 0.0697565, 0, -0.0697565, 0.997564, -0.72, 0.42, -2.52)
+visible = false
+light_color = Color(1.0, 0.78, 0.16, 1)
+light_energy = 3.6
+spot_range = 35.0
+spot_angle = 65.0
+
+[node name="FogLightR" type="MeshInstance3D" parent="FogLampAssembly"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.72, 0.42, -2.48)
+mesh = SubResource("CylinderMesh_fog_lens")
+
+[node name="FogBezelR" type="MeshInstance3D" parent="FogLampAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.72, 0.42, -2.49)
+mesh = SubResource("TorusMesh_fog_bezel")
+
+[node name="FogBeamR" type="SpotLight3D" parent="FogLampAssembly"]
+transform = Transform3D(1, 0, 0, 0, 0.997564, 0.0697565, 0, -0.0697565, 0.997564, 0.72, 0.42, -2.52)
+visible = false
+light_color = Color(1.0, 0.78, 0.16, 1)
+light_energy = 3.6
+spot_range = 35.0
+spot_angle = 65.0
+
+[node name="FogIndicatorDisplay" type="Label3D" parent="FogLampAssembly"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.38, 1.31, -0.62)
+pixel_size = 0.0011
+text = "🌁 FOG"
+font_size = 20
+outline_size = 5
+modulate = Color(1.0, 0.78, 0.18, 1)
+visible = false

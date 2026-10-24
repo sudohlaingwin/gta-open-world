@@ -432,3 +432,10 @@ func _input(event: InputEvent) -> void:
 					var hud = get_tree().get_first_node_in_group("hud")
 					if hud and hud.has_method("show_temporary_prompt"):
 						hud.show_temporary_prompt(armrest_msg, 2.5)
+		elif event.keycode == KEY_F:
+			if current_state == State.DRIVING_VEHICLE and active_vehicle:
+				if active_vehicle.has_method("toggle_fog_lights"):
+					var fog_msg = active_vehicle.toggle_fog_lights()
+					var hud = get_tree().get_first_node_in_group("hud")
+					if hud and hud.has_method("show_temporary_prompt"):
+						hud.show_temporary_prompt(fog_msg, 2.5)

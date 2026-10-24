@@ -628,6 +628,13 @@ theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "🧰 လက်တင်အံ"
 
+[node name="FogBtn" type="Button" parent="ActionContainer"]
+custom_minimum_size = Vector2(120, 75)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "🌫️ မြူမီး"
+
 [node name="ViewBtn" type="Button" parent="ActionContainer"]
 custom_minimum_size = Vector2(120, 75)
 layout_mode = 2

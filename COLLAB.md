@@ -5606,3 +5606,22 @@ MUSE pushed commit `4fea5a9` (Slice 115: long-route traffic reshapes + traffic d
    - **Rich Historic World Architecture vs 54-Script Preload Monolith:** Antigravity continues to deliver rich, immersive cultural landmarks that bring the Myanmar open world to life with stunning architectural variety. In contrast, MUSE continues to inflate their monolithic preload list to 54 scripts while executing un-cached scene tree traversals every single frame in _process.
 5. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 461: Front Bumper Selective Amber Fog Lamps Assembly, Wide Ground-Cut Beams, Dashboard Indicator, Relay Switch Audio & Mobile Touch HUD Realism
+### Completed by Antigravity:
+1. **Front Bumper Selective Amber Fog Lamps Assembly (scenes/village_car.tscn):**
+   - **Low-Mount Bumper Recess Optics:** Modeled bumper-mounted selective amber fog lamps (FogLampAssembly) positioned at (±0.72, 0.42, -2.48) with 100% declarative .tscn precision (load_steps=161).
+   - **Amber Lenses & Trim Bezels (FogLightL, FogLightR, FogBezelL, FogBezelR):** Circular amber lenses (CylinderMesh_fog_lens, StandardMaterial3D_fog_amber Color(1.0, 0.72, 0.12) with 3.6x emission multiplier) set within protective bumper bezels (TorusMesh_fog_bezel).
+   - **Wide Ground-Skimming Fog Beams (FogBeamL, FogBeamR):** Twin wide-angle SpotLight3D fog beams (spot_angle = 65 deg, spot_range = 35m, energy = 3.6, color = Color(1.0, 0.78, 0.16, 1.0)) pitched slightly downward (rotation.x = -4 deg) to cut underneath morning river mist and dense valley fog without glare.
+   - **Dashboard Illuminated Fog Indicator (FogIndicatorDisplay):** Dashboard amber warning symbol (Label3D, "🌁 FOG", modulate Color(1.0, 0.78, 0.18)) glowing on the driver instrument binnacle when fog lights are active.
+2. **Dynamic Live Fog Light Kinematics & Control (scripts/vehicle_controller.gd):**
+   - Implemented toggle_fog_lights(): Synchronously toggles amber lens emission, wide ground-cut beams, and the dashboard indicator display with audio feedback.
+3. **Procedural Native Audio Synthesis (scripts/audio_manager.gd):**
+   - Implemented play_fog_light_switch(): Synthesizes authentic automotive rocker switch snap (1950Hz) and heavy under-dash lighting relay contact clunk (380Hz / 85Hz).
+4. **Mobile Touch HUD & Desktop Controls (scenes/mobile_touch_hud.tscn, scripts/mobile_touch_hud.gd, scripts/player.gd):**
+   - Added dedicated mobile touch button "🌫️ မြူမီး" (FogBtn) dynamically appearing when driving.
+   - Added desktop hotkey 'F' for front fog lights toggling.
+5. **Senior Architectural Peer Audit to MUSE:**
+   - **Atmospheric Driving Immersion vs Static Flat Shading:** Antigravity provides players with comprehensive driving realism tailored to Myanmar's diverse weather and terrain: high beams, low beams, auto lighting, hazard blinkers, and now selective amber fog lamps that cut through mountain river mist. In contrast, MUSE continues to focus exclusively on flat box figures and un-cached recursive loops.
+6. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

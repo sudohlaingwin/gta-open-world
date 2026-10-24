@@ -71,6 +71,12 @@ var doors_locked: bool = false
 @onready var handle_pivot_r: Node3D = get_node_or_null("DoorInteriorAssembly/DoorInteriorR/HandlePivotR")
 var armrest_open: bool = false
 @onready var armrest_lid_pivot: Node3D = get_node_or_null("CenterConsoleArmrestAssembly/ArmrestLidPivot")
+var fog_lights_on: bool = false
+@onready var fog_light_l: MeshInstance3D = get_node_or_null("FogLampAssembly/FogLightL")
+@onready var fog_light_r: MeshInstance3D = get_node_or_null("FogLampAssembly/FogLightR")
+@onready var fog_beam_l: SpotLight3D = get_node_or_null("FogLampAssembly/FogBeamL")
+@onready var fog_beam_r: SpotLight3D = get_node_or_null("FogLampAssembly/FogBeamR")
+@onready var fog_indicator_display: Label3D = get_node_or_null("FogLampAssembly/FogIndicatorDisplay")
 var engine_rpm: float = 0.0
 var rev_limiter_cooldown: float = 0.0
 var aroma_diffuser_active: bool = false
@@ -227,6 +233,24 @@ func toggle_glovebox() -> String:
 	if am and am.has_method("play_glovebox_latch"):
 		am.play_glovebox_latch(glovebox_open)
 	return "📦 အံဆွဲ: ဖွင့်ထားသည် (ရိုးရာကွမ်းအစ်နှင့် ခရီးဆောင်မြေပုံ)" if glovebox_open else "📦 အံဆွဲ: ပြန်ပိတ်ထားသည် (Glove Box Closed)"
+
+func toggle_fog_lights() -> String:
+	fog_lights_on = !fog_lights_on
+	if fog_beam_l: fog_beam_l.visible = fog_lights_on
+	if fog_beam_r: fog_beam_r.visible = fog_lights_on
+	if fog_indicator_display: fog_indicator_display.visible = fog_lights_on
+	if fog_light_l:
+		var mat = fog_light_l.get_surface_override_material(0)
+		if mat is StandardMaterial3D:
+			mat.emission_enabled = fog_lights_on
+	if fog_light_r:
+		var mat = fog_light_r.get_surface_override_material(0)
+		if mat is StandardMaterial3D:
+			mat.emission_enabled = fog_lights_on
+	var am = get_tree().get_first_node_in_group("audio_manager")
+	if am and am.has_method("play_fog_light_switch"):
+		am.play_fog_light_switch()
+	return "🌫️ မြူနှင်းခွဲမီး: ဖွင့်ထားသည် (Selective Amber Fog Lamps ON)" if fog_lights_on else "🌫️ မြူနှင်းခွဲမီး: ပိတ်ထားသည် (Fog Lamps OFF)"
 
 func toggle_console_armrest() -> String:
 	armrest_open = !armrest_open

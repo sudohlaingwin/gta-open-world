@@ -32,6 +32,7 @@ var nat_chime_player: AudioStreamPlayer = null
 var armrest_player: AudioStreamPlayer = null
 var palm_leaf_player: AudioStreamPlayer = null
 var temple_chime_player: AudioStreamPlayer = null
+var fog_switch_player: AudioStreamPlayer = null
 
 const RADIO_STATIONS: Array[String] = [
 	"📻 ရေဒီယို: ပိတ်ထားသည် (Off)",
@@ -2636,3 +2637,33 @@ func play_sacred_temple_chime() -> void:
 	stream.data = data
 	temple_chime_player.stream = stream
 	temple_chime_player.play()
+
+func play_fog_light_switch() -> void:
+	if is_muted: return
+	if not fog_switch_player:
+		fog_switch_player = AudioStreamPlayer.new()
+		fog_switch_player.name = "FogSwitchAudio"
+		fog_switch_player.volume_db = -6.5
+		add_child(fog_switch_player)
+	var sample_hz = 22050
+	var duration = 0.16
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Heavy rocker switch snap + automotive lighting relay click
+		var switch_snap = sin(t * 1950.0 * TAU) * exp(-t * 36.0) * 0.45
+		var relay_clunk = sin(t * 380.0 * TAU) * exp(-t * 22.0) * 0.35
+		var contact_thud = 0.0
+		if t > 0.03:
+			contact_thud = sin((t - 0.03) * 85.0 * TAU) * exp(-(t - 0.03) * 28.0) * 0.4
+		var val = switch_snap + relay_clunk + contact_thud
+		var int_sample = int(clamp(val, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	fog_switch_player.stream = stream
+	fog_switch_player.play()
