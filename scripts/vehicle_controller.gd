@@ -28,6 +28,9 @@ var smoothed_steering: float = 0.0
 @onready var side_window_l: MeshInstance3D = get_node_or_null("SideWindowL")
 @onready var side_window_r: MeshInstance3D = get_node_or_null("SideWindowR")
 @onready var dashboard_display: Label3D = get_node_or_null("DashboardDisplay")
+@onready var ac_led: MeshInstance3D = get_node_or_null("ACIndicatorLED")
+var ac_level: int = 0
+var cabin_temp: float = 32.0
 @onready var exhaust_backfire: CPUParticles3D = get_node_or_null("ExhaustBackfire")
 @onready var radio_eq_display: Label3D = get_node_or_null("RadioEqualizerDisplay")
 @onready var turn_signal_fl: MeshInstance3D = get_node_or_null("TurnSignalFL")
@@ -67,6 +70,36 @@ var blinker_state: bool = false
 var mirror_antiglare_active: bool = false
 const MIRROR_ROT_NORMAL: float = 0.173648
 const MIRROR_ROT_ANTIGLARE: float = 0.244346
+
+func toggle_ac() -> String:
+	ac_level = (ac_level + 1) % 3
+	var am = get_tree().get_first_node_in_group("audio_manager")
+	if am and am.has_method("play_ac_blower"):
+		am.play_ac_blower(ac_level)
+
+	if ac_led:
+		var mat = StandardMaterial3D.new()
+		if ac_level == 0:
+			mat.albedo_color = Color(0.12, 0.14, 0.16, 1.0)
+			mat.emission_enabled = false
+		elif ac_level == 1:
+			mat.albedo_color = Color(0.2, 0.8, 1.0, 1.0)
+			mat.emission_enabled = true
+			mat.emission = Color(0.2, 0.85, 1.0, 1.0)
+			mat.emission_energy_multiplier = 2.4
+		else:
+			mat.albedo_color = Color(0.6, 1.0, 1.0, 1.0)
+			mat.emission_enabled = true
+			mat.emission = Color(0.5, 0.95, 1.0, 1.0)
+			mat.emission_energy_multiplier = 4.2
+		ac_led.set_surface_override_material(0, mat)
+
+	if ac_level == 0:
+		return "❄️ လေအေးပေးစက်: ပိတ်ထားသည် (A/C OFF ☀️)"
+	elif ac_level == 1:
+		return "❄️ လေအေးပေးစက်: အဆင့် ၁ (လေနုအေး 22°C)"
+	else:
+		return "❄️❄️ လေအေးပေးစက်: အဆင့် ၂ (အအေးဆုံး မုန်တိုင်းလေ 18°C)"
 
 func toggle_rearview_mirror() -> String:
 	mirror_antiglare_active = !mirror_antiglare_active
@@ -277,7 +310,16 @@ func _physics_process(delta: float) -> void:
 			elif deg < 247.5: compass_dir = "SW"
 			elif deg < 292.5: compass_dir = "W"
 			else: compass_dir = "NW"
-			dashboard_display.text = "%s | %s | %d°C | %d KM/H" % [time_str, compass_dir, temp_c, int(abs(forward_speed) * 3.6)]
+						if ac_level == 0:
+				cabin_temp = lerpf(cabin_temp, float(temp_c), delta * 0.08)
+			elif ac_level == 1:
+				cabin_temp = lerpf(cabin_temp, 22.0, delta * 0.15)
+			else:
+				cabin_temp = lerpf(cabin_temp, 17.5, delta * 0.28)
+			var ac_str = "☀️"
+			if ac_level == 1: ac_str = "❄️L1"
+			elif ac_level == 2: ac_str = "❄️❄️MAX"
+			dashboard_display.text = "%s | %s | %d°C %s | %d KM/H" % [time_str, compass_dir, int(cabin_temp), ac_str, int(abs(forward_speed) * 3.6)]
 
 		# Dashboard Radio Audio Visualizer VU Meter Animation
 		if radio_eq_display:

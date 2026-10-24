@@ -1234,3 +1234,51 @@ func play_mirror_flip() -> void:
 	mirror_flip_player.stream = stream
 	mirror_flip_player.volume_db = -5.0
 	mirror_flip_player.play()
+
+var ac_blower_player: AudioStreamPlayer = null
+
+func play_ac_blower(level: int) -> void:
+	if is_muted:
+		if ac_blower_player and ac_blower_player.playing: ac_blower_player.stop()
+		return
+	if not ac_blower_player:
+		ac_blower_player = AudioStreamPlayer.new()
+		ac_blower_player.name = "ACBlowerAudio"
+		add_child(ac_blower_player)
+		var sample_hz = 22050
+		var duration = 2.0
+		var total_frames = int(sample_hz * duration)
+		var stream = AudioStreamWAV.new()
+		stream.format = AudioStreamWAV.FORMAT_16_BITS
+		stream.mix_rate = sample_hz
+		stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+		stream.loop_begin = 0
+		stream.loop_end = total_frames
+		var data = PackedByteArray()
+		data.resize(total_frames * 2)
+		var rng_seed = 13579
+		for i in range(total_frames):
+			var t = float(i) / float(sample_hz)
+			rng_seed = (rng_seed * 1103515245 + 12345) & 0x7FFFFFFF
+			var noise = (float(rng_seed) / 1073741824.0) - 1.0
+			var blower = sin(t * 180.0 * TAU) * 0.45 + sin(t * 360.0 * TAU) * 0.25
+			var air_hiss = noise * 0.35
+			var val = (blower + air_hiss) * 0.65
+			var int_sample = int(clamp(val, -1.0, 1.0) * 16000.0)
+			data.encode_s16(i * 2, int_sample)
+		stream.data = data
+		ac_blower_player.stream = stream
+
+	if level <= 0:
+		if ac_blower_player.playing:
+			ac_blower_player.stop()
+	elif level == 1:
+		if not ac_blower_player.playing:
+			ac_blower_player.play()
+		ac_blower_player.volume_db = -16.0
+		ac_blower_player.pitch_scale = 0.95
+	else:
+		if not ac_blower_player.playing:
+			ac_blower_player.play()
+		ac_blower_player.volume_db = -10.5
+		ac_blower_player.pitch_scale = 1.35

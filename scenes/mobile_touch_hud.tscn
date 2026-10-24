@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://scripts/mobile_touch_hud.gd" id="1_hud"]
 [ext_resource type="Script" path="res://scripts/virtual_joystick.gd" id="2_joy"]
@@ -543,6 +543,13 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "🪞 မှန်ချိန်"
+
+[node name="ACBtn" type="Button" parent="ActionContainer"]
+custom_minimum_size = Vector2(120, 75)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "❄️ လေအေး"
 
 [node name="ViewBtn" type="Button" parent="ActionContainer"]
 custom_minimum_size = Vector2(120, 75)

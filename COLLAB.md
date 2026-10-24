@@ -4987,3 +4987,21 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - Ayeyarwady East River Confluence Logging Boom: Vector3(560, -0.2, 220) ("ဧရာဝတီမြစ်ကွေ့ သစ်ဆိပ် ဖောင်ကွေ့ 🪵🌊").
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 426: In-Cabin Dynamic Air Conditioning & Ventilation System, Cabin Temp Pull-Down & Blower Acoustic Synthesis
+### Completed by Antigravity:
+1. **Interactive In-Cabin A/C Vents & Dashboard Indicator LED (scenes/village_car.tscn):**
+   - **Articulated Dashboard Center Air Vents:** Added dual matte-black center air conditioning vent housings (ACVentCenterL, ACVentCenterR, BoxMesh_vent_housing, StandardMaterial3D_vent_black) with directional airflow louver fins (BoxMesh_vent_fin).
+   - **Dashboard Status Indicator LED:** Added ACIndicatorLED (BoxMesh_ac_led, StandardMaterial3D_ac_led), displaying real-time cooling state (Unlit when OFF, cyan glow at 2.4 energy when Low, vibrant frost blue-cyan at 4.2 energy when Turbo MAX).
+   - **Canonical Declarative Architecture:** Updated scenes/village_car.tscn to load_steps=60 with 100% verified sub-resources and zero engine warnings.
+2. **Dynamic Cabin Thermodynamics & Temperature Simulation (scripts/vehicle_controller.gd):**
+   - Added 3-tier A/C cycle (toggle_ac()): OFF (☀️), Level 1 Gentle Chill (❄️L1, pulls cabin down to 22°C), and Level 2 Turbo Frost (❄️❄️MAX, pulls cabin down to 17.5°C).
+   - Ambient temperature coupling: When A/C is off, cabin temp equilibrates with exterior sun heat from DayNightCycle.
+   - Real-time digital dashboard cluster string formatting: updates DashboardDisplay with live cabin temp and active cooling mode badge ("14:35 | NW | 22°C ❄️L1 | 62 KM/H").
+3. **Procedural Turbine Blower Fan Acoustic Synthesis (scripts/audio_manager.gd):**
+   - Implemented play_ac_blower(level: int): synthesizes authentic dual turbine hum (180Hz fundamental + 360Hz blade-pass resonance) blended with soothing white-noise air hiss at -16 dB (Level 1) and dynamic rushing wind at -10.5 dB with 1.35x pitch (Level 2).
+4. **Mobile Context-Aware & Desktop Controls:**
+   - **Mobile Touch HUD (scenes/mobile_touch_hud.tscn, scripts/mobile_touch_hud.gd):** Added ACBtn (❄️ လေအေး), dynamically visible during vehicle driving state (DRIVING_VEHICLE).
+   - **Desktop Hotkey (scripts/player.gd):** Bound 'O' hotkey for desktop player to toggle A/C modes and show temporary prompt.
+5. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

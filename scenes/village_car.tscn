@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=54 format=3]
+﻿[gd_scene load_steps=60 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -233,6 +233,32 @@ specular = 0.65
 top_radius = 0.045
 bottom_radius = 0.045
 height = 0.015
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vent_black"]
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+roughness = 0.55
+
+[sub_resource type="BoxMesh" id="BoxMesh_vent_housing"]
+material = SubResource("StandardMaterial3D_vent_black")
+size = Vector3(0.14, 0.08, 0.03)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vent_fin"]
+albedo_color = Color(0.2, 0.22, 0.24, 1)
+roughness = 0.45
+
+[sub_resource type="BoxMesh" id="BoxMesh_vent_fin"]
+material = SubResource("StandardMaterial3D_vent_fin")
+size = Vector3(0.12, 0.012, 0.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ac_led"]
+albedo_color = Color(0.1, 0.2, 0.2, 1)
+emission_enabled = false
+emission = Color(0.2, 0.9, 1.0, 1)
+emission_energy_multiplier = 2.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_ac_led"]
+material = SubResource("StandardMaterial3D_ac_led")
+size = Vector3(0.04, 0.02, 0.015)
+
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
 
@@ -442,6 +468,34 @@ text = "12:00 PM | N | 0 KM/H"
 font_size = 14
 outline_size = 4
 modulate = Color(1.0, 0.85, 0.25, 1)
+
+[node name="ACVentCenterL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.16, 1.34, -0.88)
+mesh = SubResource("BoxMesh_vent_housing")
+
+[node name="ACFinL1" type="MeshInstance3D" parent="ACVentCenterL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0.005)
+mesh = SubResource("BoxMesh_vent_fin")
+
+[node name="ACFinL2" type="MeshInstance3D" parent="ACVentCenterL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0.005)
+mesh = SubResource("BoxMesh_vent_fin")
+
+[node name="ACVentCenterR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0.16, 1.34, -0.88)
+mesh = SubResource("BoxMesh_vent_housing")
+
+[node name="ACFinR1" type="MeshInstance3D" parent="ACVentCenterR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0.005)
+mesh = SubResource("BoxMesh_vent_fin")
+
+[node name="ACFinR2" type="MeshInstance3D" parent="ACVentCenterR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0.005)
+mesh = SubResource("BoxMesh_vent_fin")
+
+[node name="ACIndicatorLED" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.34, -0.87)
+mesh = SubResource("BoxMesh_ac_led")
 
 [node name="RadioEqualizerDisplay" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.25, -0.9)
