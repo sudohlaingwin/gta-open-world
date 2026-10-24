@@ -1735,3 +1735,36 @@ func play_granary_latch() -> void:
 	stream.data = data
 	granary_latch_player.stream = stream
 	granary_latch_player.play()
+var water_ladle_player: AudioStreamPlayer = null
+
+func play_water_ladle_dip() -> void:
+	if is_muted: return
+	if not water_ladle_player:
+		water_ladle_player = AudioStreamPlayer.new()
+		water_ladle_player.name = "WaterLadleAudio"
+		water_ladle_player.volume_db = -6.5
+		add_child(water_ladle_player)
+	var sample_hz = 22050
+	var duration = 0.42
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Deep hollow clay pot cavity resonance + brass ladle water dip and splash
+		var hollow = exp(-t * 12.0) * sin(t * 190.0 * TAU) * 0.45
+		var dip = 0.0
+		if t > 0.05:
+			dip = exp(-(t - 0.05) * 16.0) * (sin((t - 0.05) * 950.0 * TAU) * 0.4 + sin((t - 0.05) * 1480.0 * TAU) * 0.25)
+		var trickle = 0.0
+		if t > 0.14:
+			trickle = exp(-(t - 0.14) * 22.0) * sin((t - 0.14) * 2200.0 * TAU + sin(t * 60.0) * 3.0) * 0.25
+		var val = hollow + dip + trickle
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	water_ladle_player.stream = stream
+	water_ladle_player.play()

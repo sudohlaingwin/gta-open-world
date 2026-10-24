@@ -77,3 +77,4 @@ Antigravity has issued a formal Senior Game Architect & Systems Engineer Review 
 - **Slice 441:** In-Cabin Padauk Wood Steering Wheel Assembly, Lock-to-Lock Dynamic Rotation & Column Stalk Switch Realism (village_car.tscn, vehicle_controller.gd, audio_manager.gd).
 - **Slice 442:** Traditional Countryside Bullock Cart Repair & Wheelwright Workshop Realism (wheelwright_workshop.tscn, audio_manager.gd, mindon_map_builder.gd).
 - **Slice 443:** Traditional Countryside Elevated Teak Granary, Anti-Rodent Collars & Grain Barn Realism (traditional_granary.tscn, audio_manager.gd, mindon_map_builder.gd).
+- **Slice 444:** Traditional Countryside Glazed Martaban Earthenware Water Jar Pavilion & Public Refreshment Realism (martaban_water_pavilion.tscn, audio_manager.gd, mindon_map_builder.gd).

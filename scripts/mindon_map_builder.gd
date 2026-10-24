@@ -57,6 +57,7 @@ const THRESHING_FLOOR_SCENE = preload("res://scenes/village_threshing_floor.tscn
 const FERRY_LANDING_SCENE = preload("res://scenes/river_ferry_landing.tscn")
 const WHEELWRIGHT_WORKSHOP_SCENE = preload("res://scenes/wheelwright_workshop.tscn")
 const GRANARY_SCENE = preload("res://scenes/traditional_granary.tscn")
+const WATER_PAVILION_SCENE = preload("res://scenes/martaban_water_pavilion.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -107,6 +108,7 @@ func _ready() -> void:
 	_generate_river_ferry_landings()
 	_generate_wheelwright_workshops()
 	_generate_traditional_granaries()
+	_generate_martaban_water_pavilions()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -2083,5 +2085,33 @@ func _generate_traditional_granaries() -> void:
 		granaries_holder.add_child(granary)
 
 		var sign_node = granary.get_node_or_null("GranarySign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+func _generate_martaban_water_pavilions() -> void:
+	# Traditional Myanmar roadside grand public drinking water pavilions with glazed Martaban earthenware storage jars (မာတဘန်း စဉ့်အိုး သောက်ရေချမ်းစင်ကြီးများ)
+	var pavilions_holder = Node3D.new()
+	pavilions_holder.name = "MartabanWaterPavilions"
+	add_child(pavilions_holder)
+
+	var pavilion_data = [
+		{
+			"pos": Vector3(-180.0, 0.0, 150.0),
+			"rot_y": deg_to_rad(45.0),
+			"sign": "မင်းတုန်း မဟာဗျူဟာ လမ်းမကြီး သောက်ရေချမ်းစင် 🏺💧"
+		},
+		{
+			"pos": Vector3(280.0, 0.0, -140.0),
+			"rot_y": deg_to_rad(-65.0),
+			"sign": "မြစ်ကမ်းနဖူး မာတဘန်းစဉ့်အိုး သောက်ရေချမ်းစင် 🏺✨"
+		}
+	]
+
+	for data in pavilion_data:
+		var pavilion = WATER_PAVILION_SCENE.instantiate()
+		pavilion.position = data["pos"]
+		pavilion.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		pavilions_holder.add_child(pavilion)
+
+		var sign_node = pavilion.get_node_or_null("PavilionSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

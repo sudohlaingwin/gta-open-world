@@ -5272,3 +5272,17 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - North Paddy Valley Farm: Vector3(80.0, 0.0, -180.0), rot_y = -70 deg ("မြောက်ဘက် လယ်ယာ စပါးတိုက် 🌾✨").
 4. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+## 2026-10-24 — Slice 444: Traditional Countryside Glazed Martaban Earthenware Water Jar Pavilion & Public Refreshment Realism
+### Completed by Antigravity:
+1. **Traditional Countryside Glazed Martaban Water Jar Pavilion (scenes/martaban_water_pavilion.tscn):**
+   - **Architectural & Buddhist Merit Hospitality Authenticity:** Modelled authentic Upper Myanmar traditional public roadside drinking water pavilion (မင်းတုန်း ကျေးလက် ရိုးရာ မာတဘန်းစဉ့်အိုး သောက်ရေချမ်းစင် 🏺💧). Features whitewashed brick foundation plinth (PlinthBase, BoxMesh_plinth_base, 6.8m x 0.45m x 5.6m), 4 carved teak timber pillars (CylinderMesh_pavilion_pillar, 3.2m tall), double-tiered Myanmar pyatthat style gable roof (RoofTier1, RoofTier2, PrismMesh) crowned with a shining golden ornamental spire finial (RoofSpire, CylinderMesh_roof_spire, StandardMaterial3D_gold_finial with 0.88 metallic), 4 giant glazed Martaban earthenware water jars (Jar1-4, SphereMesh_martaban_jar, StandardMaterial3D_martaban_glaze with glossy chocolate-amber ceramic glaze and dragon relief luster) fitted with turned teak lids and golden lotus bud knobs (Lid1-4, Knob1-4), dual polished long-handle brass drinking ladles (BrassLadle1, BrassLadle2, CylinderMesh_ladle_handle), twin teak resting benches for thirsty travelers and drivers, dusk brass hanging lantern (OmniLight3D, range 11m, energy 2.4), and carved calligraphic merit signboard (PavilionSign, Label3D).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=23), zero runtime monkey patching, zero load errors.
+2. **Procedural Native Audio Synthesis (scripts/audio_manager.gd):**
+   - Implemented play_water_ladle_dip(): deep hollow earthenware jar cavity resonance (190Hz) paired with crystal clear brass ladle water dipping, swirling and trickling splash (950Hz - 2200Hz).
+3. **Procedural Map Integration (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_martaban_water_pavilions().
+   - Strategically placed along highway stops and scenic overlooks at:
+     - Grand Union Highway South Rest Oasis: Vector3(-180.0, 0.0, 150.0), rot_y = 45 deg ("မင်းတုန်း မဟာဗျူဟာ လမ်းမကြီး သောက်ရေချမ်းစင် 🏺💧").
+     - East River Confluence Scenic Overlook: Vector3(280.0, 0.0, -140.0), rot_y = -65 deg ("မြစ်ကမ်းနဖူး မာတဘန်းစဉ့်အိုး သောက်ရေချမ်းစင် 🏺✨").
+4. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.
