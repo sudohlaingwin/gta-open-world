@@ -297,3 +297,11 @@ func take_damage(amount: float) -> void:
 		# Player knockdown & respawn at central village ground
 		recover_from_stuck()
 		health = max_health
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_H:
+			if current_state != State.ON_FOOT:
+				var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
+				if audio_mgr and audio_mgr.has_method("play_horn"):
+					audio_mgr.play_horn()

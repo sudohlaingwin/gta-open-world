@@ -9,6 +9,7 @@ extends CanvasLayer
 @onready var sprint_btn: Button = $ActionContainer/SprintBtn
 @onready var view_btn: Button = $ActionContainer.get_node_or_null("ViewBtn")
 @onready var radio_btn: Button = $ActionContainer.get_node_or_null("RadioBtn")
+@onready var horn_btn: Button = $ActionContainer.get_node_or_null("HornBtn")
 @onready var quest_banner: Label = $TopCenterHUD/QuestBanner
 @onready var player_icon: ColorRect = $TopLeftHUD/MiniMap/PlayerIcon
 @onready var pagoda_icon: ColorRect = $TopLeftHUD/MiniMap/PagodaIcon
@@ -70,6 +71,8 @@ func _ready() -> void:
 		view_btn.pressed.connect(_on_view_pressed)
 	if radio_btn:
 		radio_btn.pressed.connect(_on_radio_pressed)
+	if horn_btn:
+		horn_btn.pressed.connect(_on_horn_pressed)
 		
 	if yaw_left_btn:
 		yaw_left_btn.button_down.connect(func(): if player: player.touch_yaw = -1.0)
@@ -238,7 +241,10 @@ func _process(delta: float) -> void:
 		else:
 			speedometer_panel.visible = false
 
-	# 7. Action Button Context
+	# 7. Action Button Context & Vehicle Horn Visibility
+	if horn_btn:
+		horn_btn.visible = (player.current_state != player.State.ON_FOOT)
+
 	if interact_btn:
 		match player.current_state:
 			player.State.RIDING_MOUNT:
@@ -368,6 +374,14 @@ func _on_radio_pressed() -> void:
 	if audio_mgr and audio_mgr.has_method("cycle_radio_station"):
 		var st_name = audio_mgr.cycle_radio_station()
 		_show_prompt(st_name)
+
+func _on_horn_pressed() -> void:
+	var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
+	if not audio_mgr:
+		audio_mgr = get_parent().get_node_or_null("MyanmarAudioManager")
+	if audio_mgr and audio_mgr.has_method("play_horn"):
+		audio_mgr.play_horn()
+	_show_prompt("📢 ဟွန်းတီးခြင်း (HONK!)")
 
 func _on_pause_pressed() -> void:
 	if pause_menu:
