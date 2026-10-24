@@ -55,6 +55,7 @@ const Realism116Script = preload("res://realism116.gd")
 const Realism117Script = preload("res://realism117.gd")
 const Realism118Script = preload("res://realism118.gd")
 const Realism119Script = preload("res://realism119.gd")
+const Perf120Script = preload("res://perf120.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -829,6 +830,12 @@ func _ready() -> void:
 	# existing tail materials by measured deceleration + 1.0 s hold
 	# (frame >= 580 pass + 1.0 s re-scan, after realism118's 560).
 	Realism119Script.dress(get_parent())
+	# Slice 120: performance manager — timer-driven light culling
+	# (night only, 120 m) + small-dressing hiding (100 m). It only
+	# flips visibility, never positions/materials/colliders, and
+	# never touches the player forward light, bus system, minibus,
+	# or big bus. Wired last so its cache builds after dressing.
+	Perf120Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing

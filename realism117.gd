@@ -86,6 +86,16 @@ extends Node3D
 var _frames: int = 0
 var _done: bool = false
 var _scan_t: float = 0.0
+# Slice 120: cached figure list. _mirror_follow used to walk the
+# WHOLE world tree every frame (13,799 nodes at S120 measure) just
+# to find ~18-30 figures — the worst unconditional per-frame scan
+# in the project. Figures are now cached when dressed (fresh
+# dresses only, by the dressed117-meta guard, so no duplicates)
+# and the mirror iterates the cache; _scan_and_dress still runs
+# every 1.0 s for fresh figures, so discovery timing is unchanged.
+# Static because _dress_figure is static; stale entries (scene
+# reload frees the old figures) are pruned by validity check.
+static var _figs: Array = []
 static var _longyi_mats: Array = []
 
 static func dress(world: Node3D) -> void:
@@ -202,6 +212,7 @@ static func _dress_figure(fig: Node3D) -> void:
 	_cyl(fig, 0.295, 0.295, 0.12, dark_mat, Vector3(0.0, 0.95, 0.0), "Band117")
 	fig.set_meta("dressed117", true)
 	fig.set_meta("seated117_shown", true)
+	_figs.append(fig)
 
 static func _scan_and_dress(world: Node) -> void:
 	var stack: Array = [world]
@@ -213,28 +224,25 @@ static func _scan_and_dress(world: Node) -> void:
 		if (nm.begins_with("Waiting74_") or nm.begins_with("Alighted75_")) and n is Node3D and not n.has_meta("dressed117"):
 			_dress_figure(n as Node3D)
 
-# Seated mirror + pose follow, every frame. Waiting riders that
+# Seated mirror + pose follow, every frame — over the CACHED
+# figure list (Slice 120), NOT a tree walk. Waiting riders that
 # boarded (seated91 meta) hide the added parts; everyone else
 # shows them FOLLOWING the live Body74/Head74 positions, so
 # bench-seated (body 0.98 / head 1.62), standing (0.55/1.35)
 # and any other sim pose all read correctly. Visibility flips
 # only on state change (meta seated117_shown); positions are
 # set every frame (18-30 figures x 5 sets is negligible).
+# Behaviour is identical to the old tree-walk version: every
+# cached figure was dressed by _scan_and_dress (same 1.0 s
+# discovery), and the seated/position logic below is untouched.
 func _mirror_follow() -> void:
-	var world := get_parent() as Node3D
-	if world == null:
-		return
-	var stack: Array = [world]
-	while not stack.is_empty():
-		var n = stack.pop_back()
-		for c in n.get_children():
-			stack.append(c)
-		var nm := String(n.name)
-		if not (nm.begins_with("Waiting74_") or nm.begins_with("Alighted75_")):
+	var dead: Array = []
+	for f in _figs:
+		if f == null or not is_instance_valid(f):
+			dead.append(f)
 			continue
-		if not (n is Node3D) or not n.has_meta("dressed117"):
-			continue
-		var fig := n as Node3D
+		var fig := f as Node3D
+		var nm := String(fig.name)
 		var body := fig.get_node_or_null("Body74") as MeshInstance3D
 		var head := fig.get_node_or_null("Head74") as MeshInstance3D
 		if body == null or head == null:
@@ -270,6 +278,8 @@ func _mirror_follow() -> void:
 			band.position = Vector3(0.0, by + 0.40, 0.0)
 		if hair != null:
 			hair.position = Vector3(0.0, hy + 0.13, 0.0)
+	for d in dead:
+		_figs.erase(d)
 
 static func _apply(world: Node3D) -> void:
 	if world == null:

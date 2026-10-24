@@ -59,11 +59,13 @@ var joystick_deadzone: float = 0.15
 ## pre-68 look). graphics_quality is kept as a mirror (0 when
 ## tier >= 2, else 1) so old files and old readers keep working:
 ## a pre-68 file (quality 0) loads as tier High, (quality 1) as
-## tier Low. fps_visible toggles the measured-FPS overlay (default OFF, so the
-## already-dense HUD is not cluttered further).
+## tier Low. fps_visible toggles the measured-FPS overlay (default
+## ON since Slice 120, so the owner can report real phone FPS
+## numbers without hunting for the toggle; Settings still turns
+## it off, and an existing save file keeps its stored value).
 var graphics_quality: int = 0
 var graphics_tier: int = 2
-var fps_visible: bool = false
+var fps_visible: bool = true
 ## Slice 55 driving-assistance modes (audit item 9): 0 = Arcade
 ## (more forgiving), 1 = Balanced (the default, and exactly the
 ## Slice 26/31/33 polished physics — no tuning change at all),
@@ -160,7 +162,7 @@ func load_settings() -> void:
 	joystick_deadzone = 0.15
 	graphics_quality = 0
 	graphics_tier = 2
-	fps_visible = false
+	fps_visible = true
 	driving_mode = 1
 	season62 = 0
 	season62_play_s = 0.0
@@ -261,7 +263,7 @@ func reset_settings() -> void:
 	joystick_deadzone = 0.15
 	graphics_quality = 0
 	graphics_tier = 2
-	fps_visible = false
+	fps_visible = true
 	driving_mode = 1
 	season62 = 0
 	season62_play_s = 0.0

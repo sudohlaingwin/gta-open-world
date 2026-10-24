@@ -10,6 +10,12 @@ extends Node3D
 
 var _time: float = 0.0
 var _water_offset: Vector2 = Vector2.ZERO
+## S120: omni loop below is gated on night-state CHANGE, not every
+## frame — the old per-frame write undid Perf120's distance
+## culling within one frame. Water/cloud/fireworks animation
+## below stays per-frame (not light state, no conflict).
+var _last_night := false
+var _gate_once := false
 
 func _process(delta: float) -> void:
 	_time += delta
@@ -21,9 +27,12 @@ func _process(delta: float) -> void:
 	if dn != null and dn.has_method("daylight"):
 		day = float(dn.call("daylight"))
 	var night: bool = day < 0.15
-	for child in get_children():
-		if child is OmniLight3D:
-			(child as OmniLight3D).visible = night
+	if not _gate_once or night != _last_night:
+		_gate_once = true
+		_last_night = night
+		for child in get_children():
+			if child is OmniLight3D:
+				(child as OmniLight3D).visible = night
 	var pond := world.get_node_or_null("Pond") as MeshInstance3D
 	if pond != null:
 		var wmat := pond.get_surface_override_material(0) as StandardMaterial3D

@@ -8,6 +8,13 @@ extends Node3D
 ## a new class_name needs a regenerated .godot global-class cache).
 
 var win_mat: StandardMaterial3D = null
+## S120: omni/glow loops below are gated on night-state CHANGE,
+## not every frame — the old per-frame write undid Perf120's
+## distance culling within one frame. First frame always runs;
+## after that only on change. Window-material emission stays
+## per-frame (material state, no manager conflict).
+var _last_night := false
+var _gate_once := false
 
 func _process(_delta: float) -> void:
 	var world := get_parent()
@@ -18,11 +25,14 @@ func _process(_delta: float) -> void:
 	if dn != null and dn.has_method("daylight"):
 		day = float(dn.call("daylight"))
 	var night: bool = day < 0.15
-	for child in get_children():
-		if child is OmniLight3D:
-			(child as OmniLight3D).visible = night
-		if child is MeshInstance3D and str(child.name).contains("Glow59"):
-			(child as MeshInstance3D).visible = night
+	if not _gate_once or night != _last_night:
+		_gate_once = true
+		_last_night = night
+		for child in get_children():
+			if child is OmniLight3D:
+				(child as OmniLight3D).visible = night
+			if child is MeshInstance3D and str(child.name).contains("Glow59"):
+				(child as MeshInstance3D).visible = night
 	if win_mat != null:
 		win_mat.emission_enabled = true
 		win_mat.emission_energy_multiplier = 0.9 if night else 0.0

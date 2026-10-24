@@ -6,6 +6,13 @@ extends Node3D
 ## river_bridge57.dress(); it is a plain Node3D (no class_name),
 ## so no .godot global-class cache regeneration is needed.
 
+## S120: omni loop below is gated on night-state CHANGE, not every
+## frame — the old per-frame write undid Perf120's distance
+## culling within one frame. First frame always runs; after that
+## only on change.
+var _last_night := false
+var _gate_once := false
+
 func _process(_delta: float) -> void:
 	var world := get_parent()
 	if world == null:
@@ -15,6 +22,9 @@ func _process(_delta: float) -> void:
 	if dn != null and dn.has_method("daylight"):
 		day = float(dn.call("daylight"))
 	var night: bool = day < 0.15
-	for child in get_children():
-		if child is OmniLight3D:
-			(child as OmniLight3D).visible = night
+	if not _gate_once or night != _last_night:
+		_gate_once = true
+		_last_night = night
+		for child in get_children():
+			if child is OmniLight3D:
+				(child as OmniLight3D).visible = night

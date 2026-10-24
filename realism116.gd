@@ -264,6 +264,29 @@ static func _scan_all(world: Node3D, prefix: String) -> Array[Node]:
 			found.append(nn)
 	return found
 
+## Slice 120 LEAK FIX (owner performance order): vehicle-root
+## match only (digits suffix), the SAME rule realism118 already
+## uses. Before this fix, _driver_scan matched by bare prefix,
+## so driver parts THEMSELVES matched: a part named
+## "TrafficCar6_Torso116" begins with "TrafficCar", has no
+## driver116 meta, and got a full 6-part driver figure of its
+## own — whose parts matched again next scan. 1 vehicle -> 6
+## parts -> 36 -> 216 -> ... : measured live, the tree grew
+## 14,125 -> 25,936 -> 97,392 nodes in ~25 s of play while
+## headless frame rate collapsed 86 -> 41 -> 9 fps. The
+## driver116 meta alone cannot stop this (it guards a node,
+## not the prefix namespace); only the root rule can. Fresh
+## spawns are still covered: traffic_manager names are
+## TrafficCar%d / TrafficVan%d and long-route cars are
+## LongTraffic76_%d, all digits-suffixed roots.
+static func _is_traffic_vehicle(nm: String) -> bool:
+	if nm.begins_with("TrafficCar") or nm.begins_with("TrafficVan"):
+		return nm.substr(10).is_valid_int()
+	if nm.begins_with("LongTraffic76_"):
+		return nm.substr(14).is_valid_int()
+	return false
+
+
 static func _driver_scan(world: Node3D) -> void:
 	# Dynamic, like S112's reshape scan: ANY traffic vehicle
 	# gets a driver, not just the nine known fleet names, so
@@ -280,14 +303,18 @@ static func _driver_scan(world: Node3D) -> void:
 	# NOTE: _scan() filters out dressed116 cars, but _apply()
 	# reshapes BEFORE driving — so _scan() here would find
 	# zero LongTraffic cars (they were just dressed). Drivers
-	# need the unfiltered scan; the driver116 meta in the loop
-	# below is what prevents duplicates.
+	# need the unfiltered scan; duplicates are prevented by
+	# TWO guards together: the driver116 meta (same node
+	# twice) AND the _is_traffic_vehicle root rule (a driver
+	# part must never be treated as a vehicle — S120 leak).
 	all.append_array(_scan_all(world, "TrafficCar"))
 	all.append_array(_scan_all(world, "TrafficVan"))
 	all.append_array(_scan_all(world, "LongTraffic"))
 	for v in all:
 		var veh := v as Node3D
 		if veh == null or veh.has_meta("driver116"):
+			continue
+		if not _is_traffic_vehicle(String(veh.name)):
 			continue
 		var h := 0
 		for ch in String(veh.name):

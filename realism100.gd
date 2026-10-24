@@ -79,6 +79,13 @@ var _frames: int = 0
 var _done: bool = false
 var _glows: Array = []
 var _dusk_glows: Array = []
+## S120: gate on night/dusk-state CHANGE, not every frame — the
+## old per-frame write undid Perf120's distance culling within
+## one frame. First frame always runs; after that only on change.
+## Player-light update below stays per-frame (carrier reposition).
+var _last_night := false
+var _last_dusk := false
+var _gate_once := false
 var _spot: SpotLight3D = null
 var _omni: OmniLight3D = null
 
@@ -101,14 +108,20 @@ func _process(_delta: float) -> void:
 	if world == null:
 		return
 	var day := _daylight(world)
-	for g in _glows:
-		var m := g as Node3D
-		if m != null:
-			m.visible = day < 0.15
-	for g in _dusk_glows:
-		var m := g as Node3D
-		if m != null:
-			m.visible = day < 0.45
+	var night := day < 0.15
+	var dusk := day < 0.45
+	if not _gate_once or night != _last_night or dusk != _last_dusk:
+		_gate_once = true
+		_last_night = night
+		_last_dusk = dusk
+		for g in _glows:
+			var m := g as Node3D
+			if m != null:
+				m.visible = night
+		for g in _dusk_glows:
+			var m := g as Node3D
+			if m != null:
+				m.visible = dusk
 	_update_player_light(world, day)
 
 static func _daylight(world: Node3D) -> float:

@@ -39,6 +39,11 @@ var _moon: DirectionalLight3D = null
 var _omnis: Array = []
 var _glows: Array = []
 var _built: bool = false
+## S120: night-gate state for the omni/glow loops below — the old
+## per-frame write undid Perf120's distance culling within one
+## frame. First frame always runs; after that only on change.
+var _last_night := false
+var _gate_once := false
 
 func _process(_delta: float) -> void:
 	var world := get_parent() as Node3D
@@ -56,10 +61,13 @@ func _process(_delta: float) -> void:
 	if _moon != null:
 		_moon.light_energy = 0.55 * clampf((0.15 - day) / 0.15, 0.0, 1.0)
 		_moon.visible = night
-	for o in _omnis:
-		(o as OmniLight3D).visible = night
-	for g in _glows:
-		(g as MeshInstance3D).visible = night
+	if not _gate_once or night != _last_night:
+		_gate_once = true
+		_last_night = night
+		for o in _omnis:
+			(o as OmniLight3D).visible = night
+		for g in _glows:
+			(g as MeshInstance3D).visible = night
 
 func _mat_glow() -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()

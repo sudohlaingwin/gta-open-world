@@ -84,6 +84,11 @@ static var _pole_mat: StandardMaterial3D = null
 var _frames: int = 0
 var _done: bool = false
 var _glows: Array = []
+## S120: gate on night-state CHANGE, not every frame — the old
+## per-frame write undid Perf120's distance culling within one
+## frame. First frame always runs; after that only on change.
+var _last_night := false
+var _gate_once := false
 
 static func dress(world: Node3D) -> void:
 	if world == null:
@@ -104,10 +109,14 @@ func _process(_delta: float) -> void:
 	if world == null:
 		return
 	var day := _daylight(world)
-	for g in _glows:
-		var m := g as Node3D
-		if m != null:
-			m.visible = day < 0.15
+	var night := day < 0.15
+	if not _gate_once or night != _last_night:
+		_gate_once = true
+		_last_night = night
+		for g in _glows:
+			var m := g as Node3D
+			if m != null:
+				m.visible = night
 
 static func _daylight(world: Node3D) -> float:
 	var dn := world.get_node_or_null("DayNight")

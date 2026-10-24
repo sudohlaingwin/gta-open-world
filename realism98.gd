@@ -125,6 +125,11 @@ var _frames: int = 0
 var _done: bool = false
 var _lantern_omnis: Array = []
 var _lantern_heads: Array = []
+## S120: gate on night-state CHANGE, not every frame — the old
+## per-frame write undid Perf120's distance culling within one
+## frame. First frame always runs; after that only on change.
+var _last_night := false
+var _gate_once := false
 
 func _process(_delta: float) -> void:
 	_frames += 1
@@ -158,10 +163,13 @@ func _gate_lanterns() -> void:
 	if world == null:
 		return
 	var night := _daylight(world) < 0.15
-	for o in _lantern_omnis:
-		(o as OmniLight3D).visible = night
-	for h in _lantern_heads:
-		(h as MeshInstance3D).visible = night
+	if not _gate_once or night != _last_night:
+		_gate_once = true
+		_last_night = night
+		for o in _lantern_omnis:
+			(o as OmniLight3D).visible = night
+		for h in _lantern_heads:
+			(h as MeshInstance3D).visible = night
 
 func _lantern(parent: Node3D, pos: Vector3, nm: String, energy: float, rng: float) -> void:
 	# Pole + warm emissive head + gated omni. The omni and
