@@ -44,6 +44,26 @@ var _bg_rect: ColorRect = null
 var _title_base_pos: Vector2 = Vector2.ZERO
 var _sun110: Panel = null
 var _clouds110: Array = []
+# Slice 119 (owner 2026-10-24 18:21: menu buttons DEAD + UI "shabby,
+# no high-level animation"): P0 root cause — _build_scene110
+# appended Cloud110_* + fullscreen Silhouette110 AFTER the buttons
+# with Control's default MOUSE_FILTER_STOP, so the silhouette
+# swallowed every touch. P0 fix: every decorative node (and all
+# its descendants) gets MOUSE_FILTER_IGNORE, AND decor is moved
+# behind the buttons/panels. P1: premium rebuild — parallax cloud
+# layers, rotating sun rays, twinkling silhouette windows, title
+# entrance + stronger float, button stagger-in with spring
+# overshoot, press punch that actually fires (it never did while
+# presses were blocked), gradient-look pill buttons with borders.
+# All code-only; no scene change; Burmese labels unchanged.
+var _subtitle_label: Label = null
+var _subtitle_base_pos: Vector2 = Vector2.ZERO
+var _rays110: Control = null
+var _window_lights110: Array = []
+var _button_base_pos: Dictionary = {}
+var _layout_ready: bool = false
+var _last_vp_size: Vector2 = Vector2.ZERO
+var _vp_stable: int = 0
 
 
 func _ready() -> void:
@@ -84,6 +104,7 @@ func _ready() -> void:
 	add_child(loading_label)
 	_refresh_continue()
 	_title_label = get_node_or_null("TitleLabel") as Label
+	_subtitle_label = get_node_or_null("SubtitleLabel") as Label
 	_bg_rect = get_node_or_null("Background") as ColorRect
 	for b in [continue_button, new_game_button, settings_button, character_button, vehicle_button]:
 		if b != null:
@@ -120,25 +141,55 @@ func _build_scene110() -> void:
 	_sun110.add_theme_stylebox_override("panel", sun_style)
 	_sun110.position = Vector2(vs.x * 0.68, vs.y * 0.10)
 	_sun110.size = Vector2(180.0, 180.0)
+	_sun110.pivot_offset = Vector2(90.0, 90.0)
 	add_child(_sun110)
 	move_child(_sun110, 1)
+	# Slice 119: rotating sun rays (behind the sun disc). 8 spokes,
+	# each a thin rect centred on the sun centre and rotated by
+	# i*45 degrees; the container rotates slowly in _process.
+	_rays110 = Control.new()
+	_rays110.name = "SunRays110"
+	_rays110.position = Vector2(vs.x * 0.68 - 108.0, vs.y * 0.10 - 108.0)
+	_rays110.size = Vector2(396.0, 396.0)
+	_rays110.pivot_offset = Vector2(198.0, 198.0)
+	add_child(_rays110)
+	for ri in range(8):
+		var ray := ColorRect.new()
+		ray.name = "Ray110_%d" % ri
+		ray.color = Color(1.0, 0.82, 0.40, 0.55)
+		ray.position = Vector2(198.0 - 7.0, 198.0 - 150.0)
+		ray.size = Vector2(14.0, 300.0)
+		ray.pivot_offset = Vector2(7.0, 150.0)
+		ray.rotation = float(ri) * PI / 4.0
+		_rays110.add_child(ray)
+	# Slice 119: parallax cloud layers — far slow/small/faint, mid,
+	# near fast/large/opaque. Speeds are px/s at 1280 wide: even the
+	# far layer moves ~45 px in the first second, so motion reads
+	# immediately (S109's 10-24 px/s was effectively static).
 	var cloud_defs: Array = [
-		[180.0, 44.0, 0.05, 0.08, 14.0],
-		[140.0, 36.0, 0.45, 0.16, 20.0],
-		[200.0, 48.0, 0.75, 0.05, 10.0],
-		[120.0, 32.0, 0.25, 0.22, 24.0],
-		[160.0, 40.0, 0.60, 0.13, 17.0],
+		[100.0, 30.0, 0.10, 0.06, 45.0, 0.18],
+		[120.0, 34.0, 0.55, 0.10, 50.0, 0.18],
+		[150.0, 40.0, 0.30, 0.16, 90.0, 0.28],
+		[170.0, 44.0, 0.70, 0.05, 95.0, 0.28],
+		[210.0, 52.0, 0.15, 0.20, 150.0, 0.42],
+		[240.0, 56.0, 0.60, 0.12, 160.0, 0.42],
 	]
-	var cstyle := StyleBoxFlat.new()
-	cstyle.bg_color = Color(1.0, 1.0, 1.0, 0.30)
-	cstyle.set_corner_radius_all(18)
 	for ci in range(cloud_defs.size()):
 		var cd: Array = cloud_defs[ci]
+		var cstyle := StyleBoxFlat.new()
+		cstyle.bg_color = Color(1.0, 1.0, 1.0, float(cd[5]))
+		cstyle.set_corner_radius_all(18)
 		var cl := Panel.new()
 		cl.name = "Cloud110_%d" % ci
 		cl.add_theme_stylebox_override("panel", cstyle)
 		cl.position = Vector2(vs.x * float(cd[2]), vs.y * float(cd[3]))
 		cl.size = Vector2(float(cd[0]), float(cd[1]))
+		var bump := Panel.new()
+		bump.name = "CloudBump110_%d" % ci
+		bump.add_theme_stylebox_override("panel", cstyle)
+		bump.position = Vector2(float(cd[0]) * 0.25, -float(cd[1]) * 0.35)
+		bump.size = Vector2(float(cd[0]) * 0.45, float(cd[1]) * 0.7)
+		cl.add_child(bump)
 		add_child(cl)
 		_clouds110.append([cl, float(cd[4])])
 	var sil := Control.new()
@@ -180,8 +231,108 @@ func _build_scene110() -> void:
 	pag_spire.position = Vector2(pag_x + 26.0, vs.y - 170.0)
 	pag_spire.size = Vector2(18.0, 55.0)
 	sil.add_child(pag_spire)
+	# Slice 119: twinkling silhouette window lights — small warm
+	# rects on the house fronts + pagoda base, alpha-animated in
+	# _process. Children of the silhouette, so they move with it
+	# and are covered by the recursive IGNORE below.
+	for hi in range(house_defs.size()):
+		var hd: Array = house_defs[hi]
+		var wl := ColorRect.new()
+		wl.name = "WindowLight110_%d" % hi
+		wl.color = Color(1.0, 0.85, 0.45, 0.9)
+		wl.position = Vector2(vs.x * float(hd[2]) + float(hd[0]) * 0.5 - 3.5, vs.y - float(hd[1]) + 15.0)
+		wl.size = Vector2(7.0, 9.0)
+		sil.add_child(wl)
+		_window_lights110.append([wl, float(hi) * 1.7, 1.5 + float(hi % 4) * 0.5])
+	for wi in range(2):
+		var wl2 := ColorRect.new()
+		wl2.name = "WindowLight110_Pag%d" % wi
+		wl2.color = Color(1.0, 0.85, 0.45, 0.9)
+		wl2.position = Vector2(pag_x + 12.0 + float(wi) * 36.0, vs.y - 55.0)
+		wl2.size = Vector2(7.0, 9.0)
+		sil.add_child(wl2)
+		_window_lights110.append([wl2, 2.3 + float(wi) * 1.9, 2.2 + float(wi) * 0.6])
+	# Slice 119 P0 (belt and suspenders): decor must neither STOP
+	# input nor sit above the buttons. IGNORE the whole decor
+	# trees, then move them behind buttons/panels in ascending
+	# order (sky, rays, sun, clouds, silhouette).
+	_ignore_tree(sky)
+	_ignore_tree(_rays110)
+	_ignore_tree(_sun110)
+	for ce in _clouds110:
+		_ignore_tree(ce[0])
+	_ignore_tree(sil)
+	move_child(sky, 0)
+	move_child(_rays110, 1)
+	move_child(_sun110, 2)
+	for ci in range(_clouds110.size()):
+		move_child(_clouds110[ci][0], 3 + ci)
+	move_child(sil, 3 + _clouds110.size())
+	# Slice 119 P1: gradient-look pill buttons with borders.
+	# StyleBoxFlat has no gradient, so the premium look comes from
+	# a rich violet fill + gold border + soft shadow + pill radius.
+	var btn_normal := StyleBoxFlat.new()
+	btn_normal.bg_color = Color(0.25, 0.22, 0.55, 0.95)
+	btn_normal.set_corner_radius_all(25)
+	btn_normal.border_width_left = 2
+	btn_normal.border_width_right = 2
+	btn_normal.border_width_top = 2
+	btn_normal.border_width_bottom = 2
+	btn_normal.border_color = Color(1.0, 0.82, 0.40, 1.0)
+	btn_normal.shadow_size = 6
+	btn_normal.shadow_color = Color(0.0, 0.0, 0.0, 0.35)
+	btn_normal.shadow_offset = Vector2(0.0, 3.0)
+	var btn_hover := StyleBoxFlat.new()
+	btn_hover.bg_color = Color(0.35, 0.31, 0.68, 0.95)
+	btn_hover.set_corner_radius_all(25)
+	btn_hover.border_width_left = 2
+	btn_hover.border_width_right = 2
+	btn_hover.border_width_top = 2
+	btn_hover.border_width_bottom = 2
+	btn_hover.border_color = Color(1.0, 0.88, 0.55, 1.0)
+	btn_hover.shadow_size = 6
+	btn_hover.shadow_color = Color(0.0, 0.0, 0.0, 0.35)
+	btn_hover.shadow_offset = Vector2(0.0, 3.0)
+	var btn_pressed := StyleBoxFlat.new()
+	btn_pressed.bg_color = Color(0.18, 0.16, 0.42, 0.95)
+	btn_pressed.set_corner_radius_all(25)
+	btn_pressed.border_width_left = 2
+	btn_pressed.border_width_right = 2
+	btn_pressed.border_width_top = 2
+	btn_pressed.border_width_bottom = 2
+	btn_pressed.border_color = Color(1.0, 0.82, 0.40, 1.0)
+	var btn_disabled := StyleBoxFlat.new()
+	btn_disabled.bg_color = Color(0.25, 0.22, 0.55, 0.45)
+	btn_disabled.set_corner_radius_all(25)
+	btn_disabled.border_width_left = 2
+	btn_disabled.border_width_right = 2
+	btn_disabled.border_width_top = 2
+	btn_disabled.border_width_bottom = 2
+	btn_disabled.border_color = Color(1.0, 0.82, 0.40, 0.4)
+	for b in [continue_button, new_game_button, settings_button, character_button, vehicle_button]:
+		if b != null:
+			b.add_theme_stylebox_override("normal", btn_normal)
+			b.add_theme_stylebox_override("hover", btn_hover)
+			b.add_theme_stylebox_override("pressed", btn_pressed)
+			b.add_theme_stylebox_override("disabled", btn_disabled)
 	if _title_label != null:
 		_title_base_pos = _title_label.position
+	if _subtitle_label != null:
+		_subtitle_base_pos = _subtitle_label.position
+
+
+func _ignore_tree(c: Control) -> void:
+	c.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for ch in c.get_children():
+		if ch is Control:
+			_ignore_tree(ch as Control)
+
+
+func _ease_out_back(t: float) -> float:
+	var c1 := 1.70158
+	var c3 := c1 + 1.0
+	var u := t - 1.0
+	return 1.0 + c3 * u * u * u + c1 * u * u
 
 
 func _on_menu_button_down(b: Button) -> void:
@@ -190,13 +341,53 @@ func _on_menu_button_down(b: Button) -> void:
 
 func _process(delta: float) -> void:
 	_menu_time += delta
+	# Layout stabilization gate: cache resting transforms only
+	# once the viewport size has been stable for 2 frames
+	# (headless starts at 64x64 then jumps to the project size;
+	# a phone is stable from frame 1). Caching before any
+	# entrance write keeps the cached base equal to the natural
+	# anchored position, so later resizes lay out naturally.
+	var vps := get_viewport_rect().size
+	if vps != _last_vp_size:
+		_last_vp_size = vps
+		_vp_stable = 0
+	else:
+		_vp_stable += 1
+	if not _layout_ready and _vp_stable >= 2:
+		_layout_ready = true
+		if _title_label != null and _title_label.size.x > 0.0:
+			_title_base_pos = _title_label.position
+			_title_label.pivot_offset = _title_label.size * 0.5
+		if _subtitle_label != null and _subtitle_label.size.x > 0.0:
+			_subtitle_base_pos = _subtitle_label.position
+		for b in [continue_button, new_game_button, settings_button, character_button, vehicle_button]:
+			if b != null and b.size.x > 0.0:
+				_button_base_pos[b] = b.position
+				b.pivot_offset = b.size * 0.5
+	# Title: entrance (0.7 s ease-out-back from -46 px + 0.85
+	# scale), then a stronger gentle float (was +-4% / +-6 px).
+	# Float phase starts at the entrance end so there is no pop.
 	if _title_label != null:
-		var sc := 1.0 + 0.04 * sin(_menu_time * 2.0)
+		var te := clampf(_menu_time / 0.7, 0.0, 1.0)
+		var esc := _ease_out_back(te)
+		var sc := 0.85 + 0.15 * esc
+		var yoff := -46.0 * (1.0 - esc)
+		if te >= 1.0:
+			sc = 1.0 + 0.05 * sin((_menu_time - 0.7) * 1.6)
+			yoff = 10.0 * sin((_menu_time - 0.7) * 1.2)
 		_title_label.scale = Vector2(sc, sc)
-		_title_label.position = _title_base_pos + Vector2(0.0, 6.0 * sin(_menu_time * 1.2))
+		_title_label.position = _title_base_pos + Vector2(0.0, yoff)
+	# Subtitle: delayed entrance (0.15 s delay, 0.6 s slide+fade).
+	if _subtitle_label != null:
+		var st := clampf((_menu_time - 0.15) / 0.6, 0.0, 1.0)
+		_subtitle_label.position = _subtitle_base_pos + Vector2(0.0, 20.0 * (1.0 - st))
+		_subtitle_label.modulate.a = st
+	# Sun: stronger pulse (was +-3%) + rotating rays.
 	if _sun110 != null:
-		var ss := 1.0 + 0.03 * sin(_menu_time * 1.0)
+		var ss := 1.0 + 0.08 * sin(_menu_time * 1.2)
 		_sun110.scale = Vector2(ss, ss)
+	if _rays110 != null:
+		_rays110.rotation += delta * 0.15
 	if _clouds110.size() > 0:
 		var vw := get_viewport_rect().size.x
 		if vw <= 0.0:
@@ -207,15 +398,44 @@ func _process(delta: float) -> void:
 			cl.position.x += spd * delta
 			if cl.position.x > vw:
 				cl.position.x = -cl.size.x
+	# Silhouette windows: twinkle.
+	for we in _window_lights110:
+		var wl: ColorRect = we[0]
+		var ph: float = we[1]
+		var sp: float = we[2]
+		wl.color = Color(1.0, 0.85, 0.45, 0.55 + 0.45 * sin(_menu_time * sp + ph))
 	if _bg_rect != null:
 		var t := 0.5 + 0.5 * sin(_menu_time * 0.25)
 		_bg_rect.color = Color(0.05, 0.07, 0.14, 1.0).lerp(Color(0.12, 0.08, 0.10, 1.0), t)
+	# Button stagger-in: visible buttons only, 0.15 s + i*0.08 s
+	# start, 0.45 s ease-out-back scale 0.9 -> 1 (+overshoot) and
+	# +30 px slide. Skips pulsing/disabled buttons; once a
+	# button's entrance completes its transform is restored
+	# exactly and left alone, so later resizes lay out naturally.
+	if _layout_ready:
+		var bi := 0
+		for b in [continue_button, new_game_button, settings_button, character_button, vehicle_button]:
+			if b != null and b.visible and not b.disabled and b != _pulse_button:
+				if _button_base_pos.has(b):
+					var bt := clampf((_menu_time - 0.15 - float(bi) * 0.08) / 0.45, 0.0, 1.0)
+					if bt < 1.0:
+						var e := _ease_out_back(bt)
+						b.scale = Vector2(0.9 + 0.1 * e, 0.9 + 0.1 * e)
+						b.position = (_button_base_pos[b] as Vector2) + Vector2(0.0, 30.0 * (1.0 - e))
+					elif b.scale != Vector2.ONE:
+						b.scale = Vector2.ONE
+						b.position = _button_base_pos[b] as Vector2
+			bi += 1
+	# Press punch: stronger (was 1.08) + white flash. This never
+	# fired before because presses were blocked; it fires now.
 	if _pulse_button != null and _pulse > 0.0:
 		_pulse = maxf(_pulse - delta * 4.0, 0.0)
-		var ps := 1.0 + 0.08 * _pulse
+		var ps := 1.0 + 0.12 * _pulse
 		_pulse_button.scale = Vector2(ps, ps)
+		_pulse_button.modulate = Color(1.0 + 0.35 * _pulse, 1.0 + 0.35 * _pulse, 1.0 + 0.35 * _pulse, 1.0)
 		if _pulse <= 0.0:
 			_pulse_button.scale = Vector2.ONE
+			_pulse_button.modulate = Color.WHITE
 			_pulse_button = null
 	for pnl in [settings_panel, character_panel, vehicle_panel]:
 		if pnl != null and pnl.visible and pnl.scale.x < 1.0:
