@@ -32,6 +32,7 @@ const NIGHT_MARKET_SCENE = preload("res://scenes/myanmar_night_market.tscn")
 const GUESTHOUSE_SCENE = preload("res://scenes/myanmar_guesthouse.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
 const AIRDROP_SCENE = preload("res://scenes/airdrop_crate.tscn")
+const BUS_SHELTER_SCENE = preload("res://scenes/highway_bus_shelter.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -57,6 +58,7 @@ func _ready() -> void:
 	_generate_vast_paddy_terraces_and_farms()
 	_generate_airdrop_supply_drops()
 	_generate_highway_milestone_posts()
+	_generate_highway_bus_shelters()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1289,9 +1291,36 @@ func _generate_highway_milestone_posts() -> void:
 		lbl.outline_modulate = Color(1.0, 1.0, 1.0, 0.9)
 		p.add_child(lbl)
 
+func _generate_highway_bus_shelters() -> void:
+	# Traditional roadside passenger waiting shelters along Grand Union Highway
+	var shelters_holder = Node3D.new()
+	shelters_holder.name = "HighwayBusShelters"
+	add_child(shelters_holder)
 
+	var shelter_data = [
+		{
+			"pos": Vector3(-750.0, 0.0, -124.0),
+			"rot_y": 0.0,
+			"sign": "မင်းတုန်း - ပြည် - ရန်ကုန် (အနောက်ဘက်ဂိတ်) 🚌"
+		},
+		{
+			"pos": Vector3(-120.0, 0.0, -124.0),
+			"rot_y": 0.0,
+			"sign": "မင်းတုန်း မြို့အဝင် ခရီးသည်စောင့်ဆိုင်းရာဇရပ် 🚌"
+		},
+		{
+			"pos": Vector3(750.0, 0.0, -124.0),
+			"rot_y": 0.0,
+			"sign": "မင်းတုန်း - ပုသိမ် - ဧရာဝတီ အမြန်ယာဉ်လိုင်း 🚌"
+		}
+	]
 
+	for data in shelter_data:
+		var shelter = BUS_SHELTER_SCENE.instantiate()
+		shelter.position = data["pos"]
+		shelter.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		shelters_holder.add_child(shelter)
 
-
-
-
+		var sign_node = shelter.get_node_or_null("BusSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]

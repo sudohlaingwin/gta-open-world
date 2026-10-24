@@ -1,0 +1,128 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_shelter"]
+size = Vector3(5.6, 3.6, 3.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_plinth"]
+size = Vector3(5.5, 0.35, 3.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gravel_plinth"]
+albedo_color = Color(0.55, 0.50, 0.42, 1)
+roughness = 0.90
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_teak_post"]
+top_radius = 0.16
+bottom_radius = 0.16
+height = 3.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_weathered_teak"]
+albedo_color = Color(0.38, 0.25, 0.14, 1)
+roughness = 0.78
+specular = 0.2
+
+[sub_resource type="PrismMesh" id="PrismMesh_shelter_roof"]
+left_to_right = 0.5
+size = Vector3(6.0, 1.4, 4.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tin_roof"]
+albedo_color = Color(0.52, 0.56, 0.58, 1)
+metallic = 0.85
+roughness = 0.32
+
+[sub_resource type="BoxMesh" id="BoxMesh_waiting_bench"]
+size = Vector3(4.2, 0.48, 0.55)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bench_wood"]
+albedo_color = Color(0.48, 0.32, 0.18, 1)
+roughness = 0.65
+specular = 0.25
+
+[sub_resource type="SphereMesh" id="SphereMesh_clay_urn"]
+radius = 0.28
+height = 0.56
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clay_urn"]
+albedo_color = Color(0.68, 0.36, 0.20, 1)
+roughness = 0.60
+specular = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lantern_globe"]
+top_radius = 0.08
+bottom_radius = 0.08
+height = 0.18
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lantern_amber"]
+transparency = 1
+albedo_color = Color(1.0, 0.88, 0.45, 0.70)
+emission_enabled = true
+emission = Color(1.0, 0.72, 0.22, 1)
+emission_energy_multiplier = 2.5
+
+[node name="HighwayBusShelter" type="StaticBody3D"]
+script = ExtResource("1_lantern")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+shape = SubResource("BoxShape3D_shelter")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+[node name="Plinth" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.175, 0)
+mesh = SubResource("BoxMesh_plinth")
+surface_material_override/0 = SubResource("StandardMaterial3D_gravel_plinth")
+
+[node name="PostFL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.75, 1.55)
+mesh = SubResource("CylinderMesh_teak_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_weathered_teak")
+
+[node name="PostFR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.75, 1.55)
+mesh = SubResource("CylinderMesh_teak_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_weathered_teak")
+
+[node name="PostBL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.75, -1.55)
+mesh = SubResource("CylinderMesh_teak_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_weathered_teak")
+
+[node name="PostBR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.75, -1.55)
+mesh = SubResource("CylinderMesh_teak_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_weathered_teak")
+
+[node name="RoofCanopy" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9, 0)
+mesh = SubResource("PrismMesh_shelter_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_tin_roof")
+
+[node name="WaitingBench" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58, -0.9)
+mesh = SubResource("BoxMesh_waiting_bench")
+surface_material_override/0 = SubResource("StandardMaterial3D_bench_wood")
+
+[node name="ClayWaterUrn" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1, 0.62, -0.85)
+mesh = SubResource("SphereMesh_clay_urn")
+surface_material_override/0 = SubResource("StandardMaterial3D_clay_urn")
+
+[node name="HangingLantern" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.95, 0)
+mesh = SubResource("CylinderMesh_lantern_globe")
+surface_material_override/0 = SubResource("StandardMaterial3D_lantern_amber")
+
+[node name="LanternLight" type="OmniLight3D" parent="VisualMesh/HangingLantern"]
+light_color = Color(1.0, 0.78, 0.35, 1)
+light_energy = 2.2
+omni_range = 14.0
+omni_attenuation = 1.2
+
+[node name="BusSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 1.7)
+text = "မင်းတုန်း - ပြည် - ရန်ကုန် အမြန်ယာဉ် စောင့်ဆိုင်းရန် 🚌"
+font_size = 28
+outline_size = 8
+modulate = Color(1.0, 0.90, 0.35, 1)
