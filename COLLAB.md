@@ -4866,3 +4866,16 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
    - Detects sharp throttle lift-off (prev_throttle > 0.65 dropping to < 0.15) or turbo boost termination above 6 m/s, triggering dynamic backfire flame bursts and visceral exhaust popping audio.
 5. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 417: Traditional Rural Pottery Kiln, Smoldering Chimney Smoke & Martaban Jar Works Realism
+### Completed by Antigravity:
+1. **Rural Terracotta Pottery Kiln & Brickworks Scene (scenes/rural_pottery_kiln.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Upper Myanmar alluvial clay pottery kiln featuring a compacted clay plinth apron (BoxMesh_plinth, 10.2m x 8.2m), cylindrical fired-brick kiln base (CylinderMesh_kiln_base, radius 2.2m), hemispherical brick dome (SphereMesh_kiln_dome, radius 2.2m), central chimney vent flue (CylinderMesh_chimney), cast iron firebox hatch (BoxMesh_firebox), interior glowing firebox embers light (OmniLight3D, orange glow Color(1.0, 0.42, 0.12), energy 2.8, range 6m), continuous smoldering grey chimney smoke plume (CPUParticles3D, 18 particles, SphereMesh_smoke), bamboo sun-drying rack (BoxMesh_drying_rack) stacked with 5 unglazed wet red clay water pots (SphereMesh_clay_pot), 2 large glossy brown glazed Martaban storage jars (SphereMesh_martaban, StandardMaterial3D_glazed_brown, specular 0.85), corded firewood logs stack (BoxMesh_firewood), stone potter's kick-wheel (CylinderMesh_potter_wheel), and dusk amber lantern (OmniLight3D, energy 2.4, range 16m).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=25), zero runtime monkey patching, zero load errors.
+2. **Procedural Distribution Along Mindon River Basin (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_rural_pottery_kilns().
+   - Strategically positioned active pottery works at:
+     - Riverbank Alluvial Clay Basin (West of Bamboo Bridge): Vector3(-180, 0, 140) ("မင်းတုန်းချောင်း အနောက်ရိုး ရိုးရာမြေအိုးဖို 🏺🔥").
+     - East River Confluence Clay Bluff: Vector3(560, 0, -45) ("အရှေ့မြစ်ဆုံ စဉ့်အိုးနှင့် မြေထည်လုပ်ငန်း 🏺✨").
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

@@ -39,6 +39,7 @@ const WIND_TURBINE_SCENE = preload("res://scenes/mountain_wind_turbine.tscn")
 const BAMBOO_GAZEBO_SCENE = preload("res://scenes/riverside_bamboo_gazebo.tscn")
 const FUEL_DEPOT_SCENE = preload("res://scenes/highway_fuel_depot.tscn")
 const CATTLE_STATION_SCENE = preload("res://scenes/cattle_rest_station.tscn")
+const POTTERY_KILN_SCENE = preload("res://scenes/rural_pottery_kiln.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -71,6 +72,7 @@ func _ready() -> void:
 	_generate_riverside_bamboo_gazebos()
 	_generate_highway_fuel_depots()
 	_generate_cattle_rest_stations()
+	_generate_rural_pottery_kilns()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1531,5 +1533,34 @@ func _generate_cattle_rest_stations() -> void:
 		stations_holder.add_child(station)
 
 		var sign_node = station.get_node_or_null("StationSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_rural_pottery_kilns() -> void:
+	# Traditional Myanmar rural alluvial clay pottery kilns with smoldering chimney smoke & drying racks
+	var kilns_holder = Node3D.new()
+	kilns_holder.name = "RuralPotteryKilns"
+	add_child(kilns_holder)
+
+	var kiln_data = [
+		{
+			"pos": Vector3(-180.0, 0.0, 140.0),
+			"rot_y": deg_to_rad(35.0),
+			"sign": "မင်းတုန်းချောင်း အနောက်ရိုး ရိုးရာမြေအိုးဖို 🏺🔥"
+		},
+		{
+			"pos": Vector3(560.0, 0.0, -45.0),
+			"rot_y": deg_to_rad(-60.0),
+			"sign": "အရှေ့မြစ်ဆုံ စဉ့်အိုးနှင့် မြေထည်လုပ်ငန်း 🏺✨"
+		}
+	]
+
+	for data in kiln_data:
+		var kiln = POTTERY_KILN_SCENE.instantiate()
+		kiln.position = data["pos"]
+		kiln.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		kilns_holder.add_child(kiln)
+
+		var sign_node = kiln.get_node_or_null("KilnSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

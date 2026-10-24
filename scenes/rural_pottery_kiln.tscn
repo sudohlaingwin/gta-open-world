@@ -1,0 +1,224 @@
+[gd_scene load_steps=25 format=3]
+
+[ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kiln_station"]
+size = Vector3(10.5, 4.8, 8.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_plinth"]
+size = Vector3(10.2, 0.25, 8.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clay_ground"]
+albedo_color = Color(0.52, 0.38, 0.28, 1)
+roughness = 0.94
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_kiln_base"]
+top_radius = 2.2
+bottom_radius = 2.3
+height = 1.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_terracotta_brick"]
+albedo_color = Color(0.68, 0.32, 0.20, 1)
+roughness = 0.88
+
+[sub_resource type="SphereMesh" id="SphereMesh_kiln_dome"]
+radius = 2.2
+height = 2.2
+is_hemisphere = true
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_chimney"]
+top_radius = 0.32
+bottom_radius = 0.38
+height = 1.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_firebox"]
+size = Vector3(1.1, 1.2, 0.25)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cast_iron"]
+albedo_color = Color(0.18, 0.18, 0.20, 1)
+metallic = 0.75
+roughness = 0.45
+
+[sub_resource type="SphereMesh" id="SphereMesh_smoke"]
+radius = 0.25
+height = 0.5
+radial_segments = 8
+rings = 4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kiln_smoke"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.72, 0.70, 0.68, 0.35)
+
+[sub_resource type="BoxMesh" id="BoxMesh_drying_rack"]
+size = Vector3(3.6, 0.7, 1.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo"]
+albedo_color = Color(0.62, 0.48, 0.28, 1)
+roughness = 0.85
+
+[sub_resource type="SphereMesh" id="SphereMesh_clay_pot"]
+radius = 0.26
+height = 0.52
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wet_clay"]
+albedo_color = Color(0.65, 0.30, 0.16, 1)
+roughness = 0.65
+
+[sub_resource type="SphereMesh" id="SphereMesh_martaban"]
+radius = 0.48
+height = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glazed_brown"]
+albedo_color = Color(0.24, 0.16, 0.08, 1)
+metallic = 0.15
+roughness = 0.28
+specular = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_firewood"]
+size = Vector3(2.4, 1.2, 1.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood_logs"]
+albedo_color = Color(0.42, 0.28, 0.16, 1)
+roughness = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_potter_wheel"]
+top_radius = 0.45
+bottom_radius = 0.45
+height = 0.12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_potter_stone"]
+albedo_color = Color(0.38, 0.36, 0.34, 1)
+roughness = 0.82
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lantern"]
+top_radius = 0.08
+bottom_radius = 0.08
+height = 0.18
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_amber_lantern"]
+transparency = 1
+albedo_color = Color(1.0, 0.85, 0.45, 0.75)
+emission_enabled = true
+emission = Color(1.0, 0.75, 0.25, 1)
+emission_energy_multiplier = 2.4
+
+[node name="RuralPotteryKiln" type="StaticBody3D"]
+script = ExtResource("1_lantern")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+shape = SubResource("BoxShape3D_kiln_station")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+[node name="ClayApron" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+mesh = SubResource("BoxMesh_plinth")
+surface_material_override/0 = SubResource("StandardMaterial3D_clay_ground")
+
+[node name="KilnBase" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.8, -0.8)
+mesh = SubResource("CylinderMesh_kiln_base")
+surface_material_override/0 = SubResource("StandardMaterial3D_terracotta_brick")
+
+[node name="KilnDome" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 1.6, -0.8)
+mesh = SubResource("SphereMesh_kiln_dome")
+surface_material_override/0 = SubResource("StandardMaterial3D_terracotta_brick")
+
+[node name="Chimney" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 3.7, -0.8)
+mesh = SubResource("CylinderMesh_chimney")
+surface_material_override/0 = SubResource("StandardMaterial3D_terracotta_brick")
+
+[node name="SmokeParticles" type="CPUParticles3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 4.6, -0.8)
+amount = 18
+lifetime = 2.4
+gravity = Vector3(0, 1.2, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 2.2
+spread = 24.0
+scale_amount_min = 0.6
+scale_amount_max = 2.2
+mesh = SubResource("SphereMesh_smoke")
+material_override = SubResource("StandardMaterial3D_kiln_smoke")
+
+[node name="FireboxDoor" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.6, 1.45)
+mesh = SubResource("BoxMesh_firebox")
+surface_material_override/0 = SubResource("StandardMaterial3D_cast_iron")
+
+[node name="FireGlow" type="OmniLight3D" parent="VisualMesh/FireboxDoor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.4)
+light_color = Color(1.0, 0.42, 0.12, 1)
+light_energy = 2.8
+omni_range = 6.0
+
+[node name="DryingRack" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0.35, -1.8)
+mesh = SubResource("BoxMesh_drying_rack")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+
+[node name="ClayPot1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 0.95, -2.1)
+mesh = SubResource("SphereMesh_clay_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_wet_clay")
+
+[node name="ClayPot2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0.95, -2.1)
+mesh = SubResource("SphereMesh_clay_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_wet_clay")
+
+[node name="ClayPot3" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4, 0.95, -2.1)
+mesh = SubResource("SphereMesh_clay_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_wet_clay")
+
+[node name="ClayPot4" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 0.95, -1.5)
+mesh = SubResource("SphereMesh_clay_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_wet_clay")
+
+[node name="ClayPot5" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9, 0.95, -1.5)
+mesh = SubResource("SphereMesh_clay_pot")
+surface_material_override/0 = SubResource("StandardMaterial3D_wet_clay")
+
+[node name="MartabanJar1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0.52, 1.2)
+mesh = SubResource("SphereMesh_martaban")
+surface_material_override/0 = SubResource("StandardMaterial3D_glazed_brown")
+
+[node name="MartabanJar2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0.52, 1.2)
+mesh = SubResource("SphereMesh_martaban")
+surface_material_override/0 = SubResource("StandardMaterial3D_glazed_brown")
+
+[node name="FirewoodStack" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0.6, 2.6)
+mesh = SubResource("BoxMesh_firewood")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood_logs")
+
+[node name="PotterWheel" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.35, 2.5)
+mesh = SubResource("CylinderMesh_potter_wheel")
+surface_material_override/0 = SubResource("StandardMaterial3D_potter_stone")
+
+[node name="HangingLantern" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
+mesh = SubResource("CylinderMesh_lantern")
+surface_material_override/0 = SubResource("StandardMaterial3D_amber_lantern")
+
+[node name="LanternLight" type="OmniLight3D" parent="VisualMesh/HangingLantern"]
+light_color = Color(1.0, 0.8, 0.4, 1)
+light_energy = 2.4
+omni_range = 16.0
+
+[node name="KilnSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4, 3.2)
+text = "မင်းတုန်း မြစ်ရိုး ရိုးရာမြေအိုးဖိုနှင့် စဉ့်အိုးလုပ်ငန်း 🏺🔥"
+font_size = 28
+outline_size = 8
+modulate = Color(1.0, 0.90, 0.35, 1)
