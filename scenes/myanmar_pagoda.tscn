@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3]
+[gd_scene load_steps=26 format=3]
 
 [ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
 
@@ -87,6 +87,29 @@ size = Vector3(1.8, 0.08, 0.6)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lotus_blossoms"]
 albedo_color = Color(0.96, 0.38, 0.58, 1)
 roughness = 0.45
+
+[sub_resource type="TorusMesh" id="TorusMesh_hti_ring"]
+inner_radius = 1.15
+outer_radius = 1.45
+
+[sub_resource type="BoxMesh" id="BoxMesh_vane_bird"]
+size = Vector3(0.12, 0.45, 0.85)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tagundaing"]
+top_radius = 0.16
+bottom_radius = 0.28
+height = 10.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tagundaing_teak"]
+albedo_color = Color(0.42, 0.28, 0.15, 1)
+roughness = 0.75
+
+[sub_resource type="BoxMesh" id="BoxMesh_tagun_streamer"]
+size = Vector3(0.04, 5.2, 0.65)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_streamer_festive"]
+albedo_color = Color(0.92, 0.22, 0.18, 1)
+roughness = 0.65
 
 [node name="MyanmarPagoda" type="StaticBody3D"]
 script = ExtResource("1_lantern")
@@ -180,3 +203,24 @@ text = "ရွှေမင်းတုန်း စေတီတော်မြ�
 font_size = 54
 outline_size = 16
 modulate = Color(1.0, 0.90, 0.35, 1)
+
+[node name="HtiUmbrellaRing" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 27.2, 0)
+mesh = SubResource("TorusMesh_hti_ring")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="HtiWeatherVane" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.8, 0)
+mesh = SubResource("BoxMesh_vane_bird")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="TagundaingPillar" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 5.25, 14.5)
+mesh = SubResource("CylinderMesh_tagundaing")
+surface_material_override/0 = SubResource("StandardMaterial3D_tagundaing_teak")
+
+[node name="TagunStreamer" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 7.2, 14.85)
+mesh = SubResource("BoxMesh_tagun_streamer")
+surface_material_override/0 = SubResource("StandardMaterial3D_streamer_festive")
+

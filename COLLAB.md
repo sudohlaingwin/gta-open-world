@@ -4636,6 +4636,19 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 4. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 401: Shwe Mindon Golden Pagoda Hti Umbrella Weather Vane & Tagundaing Sacred Prayer Banner Realism
+### Completed by Antigravity:
+1. **Sacred Stupa Spire Pinnacle Details (`scenes/myanmar_pagoda.tscn`):**
+   - **Multi-Tiered Gold Hti Umbrella Ring (`HtiUmbrellaRing`):** Modelled traditional golden parasol tier (`TorusMesh_hti_ring`, `StandardMaterial3D_gold`, `inner_radius = 1.15m`, `outer_radius = 1.45m`) mounted at the stupa apex `y = 27.2m`.
+   - **Sacred Bird Weather Vane (`HtiWeatherVane` / ငှက်မြတ်နားတော်):** Modelled iconic pinnacle weather vane figurine perched atop the diamond orb spire at `y = 29.8m` oriented toward the prevailing mountain winds.
+2. **Traditional Tagundaing Prayer Pillar & Festive Streamer (`scenes/myanmar_pagoda.tscn`):**
+   - **Teakwood Prayer Pillar (`TagundaingPillar`):** Modelled 10.5m tall ceremonial wooden column (`CylinderMesh_tagundaing`, `StandardMaterial3D_tagundaing_teak`) erected at the southeast terrace perimeter at `(-14.5, 5.25, 14.5)`.
+   - **Festive Fluttering Streamer (`TagunStreamer` / တံခွန်ကုက္ကား):** Modelled iconic 5.2m vermilion and gold ceremonial streamer banner suspended from the top cross-spar.
+   - Strictly preserved canonical TSCN format (`load_steps=26` matching 1 ext_resource + 24 sub_resources + 1) with 0 errors.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
+
 
 
 
