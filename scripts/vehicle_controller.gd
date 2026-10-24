@@ -37,26 +37,84 @@ func _ready() -> void:
 		interaction_area.body_entered.connect(_on_interaction_area_entered)
 		interaction_area.body_exited.connect(_on_interaction_area_exited)
 
+enum HeadlightMode { AUTO, HIGH_BEAM, LOW_BEAM, OFF }
+var headlight_mode: HeadlightMode = HeadlightMode.AUTO
+
 func _update_headlights() -> void:
 	var dnc = get_tree().get_first_node_in_group("day_night")
 	var is_night = false
 	if dnc and dnc.has_method("get_daylight"):
 		is_night = (dnc.get_daylight() < 0.35)
-	var lights_on = is_night or is_driven
-	if headlight_beam_l: headlight_beam_l.visible = lights_on
-	if headlight_beam_r: headlight_beam_r.visible = lights_on
+
+	var lights_on = false
+	var range_val = 42.0
+	var energy_val = 3.2
+	var angle_val = 42.0
+	var light_col = Color(1.0, 0.96, 0.88, 1.0)
+
+	match headlight_mode:
+		HeadlightMode.AUTO:
+			lights_on = is_night or is_driven
+			range_val = 42.0
+			energy_val = 3.2
+			angle_val = 42.0
+			light_col = Color(1.0, 0.96, 0.88, 1.0)
+		HeadlightMode.HIGH_BEAM:
+			lights_on = true
+			range_val = 90.0
+			energy_val = 4.8
+			angle_val = 50.0
+			light_col = Color(0.92, 0.96, 1.0, 1.0)
+		HeadlightMode.LOW_BEAM:
+			lights_on = true
+			range_val = 28.0
+			energy_val = 2.0
+			angle_val = 32.0
+			light_col = Color(1.0, 0.94, 0.82, 1.0)
+		HeadlightMode.OFF:
+			lights_on = false
+
+	if headlight_beam_l:
+		headlight_beam_l.visible = lights_on
+		headlight_beam_l.spot_range = range_val
+		headlight_beam_l.light_energy = energy_val
+		headlight_beam_l.spot_angle = angle_val
+		headlight_beam_l.light_color = light_col
+	if headlight_beam_r:
+		headlight_beam_r.visible = lights_on
+		headlight_beam_r.spot_range = range_val
+		headlight_beam_r.light_energy = energy_val
+		headlight_beam_r.spot_angle = angle_val
+		headlight_beam_r.light_color = light_col
 	if headlight_mesh_l:
 		var mat = headlight_mesh_l.get_surface_override_material(0)
-		if mat is StandardMaterial3D: mat.emission_enabled = lights_on
+		if mat is StandardMaterial3D:
+			mat.emission_enabled = lights_on
+			mat.emission_energy_multiplier = 4.2 if headlight_mode == HeadlightMode.HIGH_BEAM else 2.5
 	if headlight_mesh_r:
 		var mat = headlight_mesh_r.get_surface_override_material(0)
-		if mat is StandardMaterial3D: mat.emission_enabled = lights_on
+		if mat is StandardMaterial3D:
+			mat.emission_enabled = lights_on
+			mat.emission_energy_multiplier = 4.2 if headlight_mode == HeadlightMode.HIGH_BEAM else 2.5
 	if taillight_mesh_l:
 		var mat = taillight_mesh_l.get_surface_override_material(0)
 		if mat is StandardMaterial3D: mat.emission_enabled = lights_on
 	if taillight_mesh_r:
 		var mat = taillight_mesh_r.get_surface_override_material(0)
 		if mat is StandardMaterial3D: mat.emission_enabled = lights_on
+
+func cycle_headlight_mode() -> String:
+	headlight_mode = ((headlight_mode + 1) % 4) as HeadlightMode
+	_update_headlights()
+	var am = get_tree().get_first_node_in_group("audio_manager")
+	if am and am.has_method("play_headlight_switch"):
+		am.play_headlight_switch()
+	match headlight_mode:
+		HeadlightMode.AUTO: return "💡 ရှေ့မီး: အလိုအလျောက် (Auto)"
+		HeadlightMode.HIGH_BEAM: return "💡 ရှေ့မီး: မီးကြီး (High Beam 90m)"
+		HeadlightMode.LOW_BEAM: return "💡 ရှေ့မီး: မီးနိမ့် (Low Beam 28m)"
+		HeadlightMode.OFF: return "💡 ရှေ့မီး: ပိတ်ထားသည် (Off)"
+	return ""
 
 func _physics_process(delta: float) -> void:
 	_update_headlights()

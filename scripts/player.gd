@@ -313,3 +313,10 @@ func _input(event: InputEvent) -> void:
 					var hud = get_tree().get_first_node_in_group("hud")
 					if hud and hud.has_method("show_temporary_prompt"):
 						hud.show_temporary_prompt(st_name, 3.5)
+		elif event.keycode == KEY_L:
+			if current_state == State.DRIVING_VEHICLE and active_vehicle:
+				if active_vehicle.has_method("cycle_headlight_mode"):
+					var mode_name = active_vehicle.cycle_headlight_mode()
+					var hud = get_tree().get_first_node_in_group("hud")
+					if hud and hud.has_method("show_temporary_prompt"):
+						hud.show_temporary_prompt(mode_name, 3.0)

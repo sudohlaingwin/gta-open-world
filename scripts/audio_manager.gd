@@ -1023,4 +1023,38 @@ func set_wind_rush(speed_ratio: float) -> void:
 		if wind_rush_player.playing:
 			wind_rush_player.stop()
 
+var headlight_switch_player: AudioStreamPlayer = null
+
+func play_headlight_switch() -> void:
+	if is_muted:
+		return
+	if not headlight_switch_player:
+		headlight_switch_player = AudioStreamPlayer.new()
+		headlight_switch_player.name = "HeadlightSwitchAudio"
+		add_child(headlight_switch_player)
+
+	var sample_hz = 22050
+	var duration = 0.08
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var snap1 = exp(-t * 90.0) * sin(t * 3200.0 * TAU) * 0.7
+		var snap2 = 0.0
+		if t > 0.025:
+			snap2 = exp(-(t - 0.025) * 80.0) * sin((t - 0.025) * 1150.0 * TAU) * 0.5
+		var val = snap1 + snap2
+		var int_sample = int(clamp(val, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+
+	stream.data = data
+	headlight_switch_player.stream = stream
+	headlight_switch_player.volume_db = -4.0
+	headlight_switch_player.play()
+
 
