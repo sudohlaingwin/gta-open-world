@@ -46,6 +46,9 @@ var vanity_shutter_open: bool = false
 @onready var gear_shift_pivot: Node3D = get_node_or_null("GearShiftAssembly/GearShiftLeverPivot")
 @onready var shift_indicator: Label3D = get_node_or_null("GearShiftAssembly/ShiftIndicatorDisplay")
 var current_gear: String = "P"
+@onready var handbrake_pivot: Node3D = get_node_or_null("HandbrakeLeverAssembly/HandbrakePivot")
+@onready var brake_warning_display: Label3D = get_node_or_null("HandbrakeLeverAssembly/BrakeWarningDisplay")
+var handbrake_engaged: bool = false
 var aroma_diffuser_active: bool = false
 @onready var aroma_particles: CPUParticles3D = get_node_or_null("AirFreshenerDiffuser/DiffuserBottle/AromaVaporParticles")
 var sun_visors_down: bool = false
@@ -126,6 +129,21 @@ func _set_gear_state(p_gear: String) -> void:
 				"D":
 					shift_indicator.text = " P   R   N  [D]"
 					shift_indicator.modulate = Color(0.25, 1.0, 0.55, 1.0)
+func toggle_handbrake() -> String:
+	handbrake_engaged = !handbrake_engaged
+	var am = get_tree().get_first_node_in_group("audio_manager")
+	if handbrake_engaged:
+		if am and am.has_method("play_handbrake_ratchet"):
+			am.play_handbrake_ratchet()
+		if brake_warning_display:
+			brake_warning_display.visible = true
+		return "🅿️ လက်ဘရိတ်: ဆွဲထားသည် (Handbrake ENGAGED - Wheels Locked)"
+	else:
+		if am and am.has_method("play_handbrake_release"):
+			am.play_handbrake_release()
+		if brake_warning_display:
+			brake_warning_display.visible = false
+		return "🅿️ လက်ဘရိတ်: ဖြုတ်လိုက်သည် (Handbrake RELEASED)"
 func sip_iced_tea() -> String:
 	var am = get_tree().get_first_node_in_group("audio_manager")
 	if am and am.has_method("play_straw_sip"):

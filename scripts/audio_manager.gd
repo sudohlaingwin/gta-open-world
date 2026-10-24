@@ -1952,3 +1952,66 @@ func play_kyeezee_chime() -> void:
 	stream.data = data
 	kyeezee_player.stream = stream
 	kyeezee_player.play()
+
+var handbrake_ratchet_player: AudioStreamPlayer = null
+var handbrake_release_player: AudioStreamPlayer = null
+
+func play_handbrake_ratchet() -> void:
+	if is_muted: return
+	if not handbrake_ratchet_player:
+		handbrake_ratchet_player = AudioStreamPlayer.new()
+		handbrake_ratchet_player.name = "HandbrakeRatchetAudio"
+		handbrake_ratchet_player.volume_db = -6.0
+		add_child(handbrake_ratchet_player)
+	var sample_hz = 22050
+	var duration = 0.22
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	# 4 crisp mechanical pawl ratchet teeth clicks in sequence
+	var click_times = [0.01, 0.06, 0.11, 0.16]
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var val = 0.0
+		for c_t in click_times:
+			if t >= c_t and t < c_t + 0.035:
+				var dt = t - c_t
+				var click = exp(-dt * 140.0) * (sin(dt * 2900.0 * TAU) * 0.5 + sin(dt * 1850.0 * TAU) * 0.35)
+				val += click
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	handbrake_ratchet_player.stream = stream
+	handbrake_ratchet_player.play()
+
+func play_handbrake_release() -> void:
+	if is_muted: return
+	if not handbrake_release_player:
+		handbrake_release_player = AudioStreamPlayer.new()
+		handbrake_release_player.name = "HandbrakeReleaseAudio"
+		handbrake_release_player.volume_db = -6.5
+		add_child(handbrake_release_player)
+	var sample_hz = 22050
+	var duration = 0.12
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Button detent snap + resting rubber stop thud
+		var button_snap = exp(-t * 90.0) * sin(t * 2650.0 * TAU) * 0.45
+		var thud = 0.0
+		if t > 0.03:
+			thud = exp(-(t - 0.03) * 45.0) * sin((t - 0.03) * 140.0 * TAU) * 0.5
+		var val = button_snap + thud
+		var int_sample = int(clamp(val, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	handbrake_release_player.stream = stream
+	handbrake_release_player.play()
