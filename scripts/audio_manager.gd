@@ -1342,3 +1342,35 @@ func play_dome_light_click() -> void:
 	stream.data = data
 	dome_light_player.stream = stream
 	dome_light_player.play()
+
+var cave_bell_player: AudioStreamPlayer = null
+
+func play_cave_bell_strike() -> void:
+	if is_muted: return
+	if not cave_bell_player:
+		cave_bell_player = AudioStreamPlayer.new()
+		cave_bell_player.name = "CaveBellAudio"
+		cave_bell_player.volume_db = -5.0
+		add_child(cave_bell_player)
+	var sample_hz = 22050
+	var duration = 2.4
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var decay = exp(-t * 2.2)
+		var base = sin(t * 330.0 * TAU) * 0.55 + sin(t * 660.0 * TAU) * 0.25 + sin(t * 990.0 * TAU) * 0.12
+		var shimmer = sin(t * 4.8 * TAU) * 0.08
+		var echo = 0.0
+		if t > 0.28:
+			echo = exp(-(t - 0.28) * 2.4) * sin((t - 0.28) * 330.0 * TAU) * 0.35
+		var val = (base * (1.0 + shimmer)) * decay + echo
+		var int_sample = int(clamp(val, -1.0, 1.0) * 26000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	cave_bell_player.stream = stream
+	cave_bell_player.play()

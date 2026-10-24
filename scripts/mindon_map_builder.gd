@@ -48,6 +48,7 @@ const FISHERMAN_HUT_SCENE = preload("res://scenes/fisherman_stilt_hut.tscn")
 const LOG_RAFT_SCENE = preload("res://scenes/river_log_raft.tscn")
 const WATERMILL_SCENE = preload("res://scenes/bamboo_watermill.tscn")
 const SILK_SHED_SCENE = preload("res://scenes/silk_weaving_shed.tscn")
+const CAVE_SHRINE_SCENE = preload("res://scenes/buddhist_cave_shrine.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -89,6 +90,7 @@ func _ready() -> void:
 	_generate_river_log_rafts()
 	_generate_bamboo_watermills()
 	_generate_silk_weaving_sheds()
+	_generate_buddhist_cave_shrines()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1810,5 +1812,34 @@ func _generate_silk_weaving_sheds() -> void:
 		sheds_holder.add_child(shed)
 
 		var sign_node = shed.get_node_or_null("ShedSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_buddhist_cave_shrines() -> void:
+	# Historical Myanmar sacred limestone cave shrines with golden Buddhas, Pali stone stelae, and bronze bell
+	var shrines_holder = Node3D.new()
+	shrines_holder.name = "BuddhistCaveShrines"
+	add_child(shrines_holder)
+
+	var shrine_data = [
+		{
+			"pos": Vector3(-580.0, 42.0, -320.0),
+			"rot_y": deg_to_rad(120.0),
+			"sign": "မင်းတုန်းတောင် အနောက်မြောက် ကျောက်ဂူဘုရားနှင့် ကျောက်စာရုံ 🏛️✨"
+		},
+		{
+			"pos": Vector3(680.0, 32.0, 290.0),
+			"rot_y": deg_to_rad(-60.0),
+			"sign": "အရှေ့တောင် တောင်ကြား ကျောက်ဂူဘုရား သမိုင်းဝင်ကျောက်စာ 🏛️🙏"
+		}
+	]
+
+	for data in shrine_data:
+		var shrine = CAVE_SHRINE_SCENE.instantiate()
+		shrine.position = data["pos"]
+		shrine.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		shrines_holder.add_child(shrine)
+
+		var sign_node = shrine.get_node_or_null("ShrineSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

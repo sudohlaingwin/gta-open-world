@@ -5047,3 +5047,17 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - North Riverbank Weaving Guild: Vector3(120, 0.0, -145) ("မြောက်ဘက်ကမ်း ရိုးရာ အချိတ်လုံချည် ရက်ကန်းစင် 🧵✨").
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 430 (Major Milestone): Historical Buddhist Limestone Cave Shrine, Pali Stone Inscription Stelae & Resonant Bronze Cavern Bell Realism
+### Completed by Antigravity:
+1. **Sacred Mountain Cliff Cave Temple Shrine Scene (scenes/buddhist_cave_shrine.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Upper Myanmar sacred cliffside limestone cave shrine (မင်းတုန်းတောင် ရှေးဟောင်း ကျောက်ဂူဘုရားနှင့် ကျောက်စာရုံတော်ကြီး). Features weathered natural limestone cave portal arch (BoxMesh_cliff_arch, 9.2m x 5.8m x 4.4m), 3 hanging limestone stalactites (CylinderMesh_stalactite, 1.8m length, ကျောက်စက်မိုးမျှော်), stepped white marble shrine altar (BoxMesh_shrine_altar, 4.2m x 0.85m x 2.2m), radiant seated Golden Buddha image with glowing halo aura (BoxMesh_buddha_torso, SphereMesh_buddha_head, PrismMesh_buddha_halo, StandardMaterial3D_gold_leaf, metallic 0.88, emission 0.6), twin ancient arched sandstone Pali stone inscription stelae (BoxMesh_stele_slab, ကျောက်စာချပ်ကြီးများ), heavy cast-bronze temple bell on teak suspension gantry (CylinderMesh_temple_bell, CylinderMesh_bell_beam), twin polished brass lotus offering bowls with flickering candle flames (CylinderMesh_lotus_bowl, SphereMesh_candle_glow, OmniLight3D, range 14m), dusk brass entrance lantern (OmniLight3D, range 15m), and authentic calligraphic stone sign (ShrineSign, Label3D).
+   - **Acoustic Cavern Resonance Synthesis (scripts/audio_manager.gd):** Implemented play_cave_bell_strike(), synthesizing deep 330Hz fundamental bronze bell resonance with rich 660Hz/990Hz overtone shimmer and a 2.4-second cavern echo reverb tail.
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=23), zero runtime monkey patching, zero load errors.
+2. **Procedural Distribution on High Mountain Passes & Ridges (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_buddhist_cave_shrines().
+   - Strategically carved into the majestic mountain ridges:
+     - Northwest Limestone Mountain Ridge Cavern: Vector3(-580, 42.0, -320) ("မင်းတုန်းတောင် အနောက်မြောက် ကျောက်ဂူဘုရားနှင့် ကျောက်စာရုံ 🏛️✨").
+     - Southeast Rocky Pass Cavern Shrine: Vector3(680, 32.0, 290) ("အရှေ့တောင် တောင်ကြား ကျောက်ဂူဘုရား သမိုင်းဝင်ကျောက်စာ 🏛️🙏").
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.
