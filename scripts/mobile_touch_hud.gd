@@ -20,6 +20,7 @@
 @onready var visor_btn: Button = $ActionContainer.get_node_or_null("VisorBtn")
 @onready var aroma_btn: Button = $ActionContainer.get_node_or_null("AromaBtn")
 @onready var tea_btn: Button = $ActionContainer.get_node_or_null("TeaBtn")
+@onready var vanity_btn: Button = $ActionContainer.get_node_or_null("VanityBtn")
 @onready var quest_banner: Label = $TopCenterHUD/QuestBanner
 @onready var player_icon: ColorRect = $TopLeftHUD/MiniMap/PlayerIcon
 @onready var pagoda_icon: ColorRect = $TopLeftHUD/MiniMap/PagodaIcon
@@ -104,6 +105,8 @@ func _ready() -> void:
 		aroma_btn.pressed.connect(_on_aroma_pressed)
 	if tea_btn:
 		tea_btn.pressed.connect(_on_tea_pressed)
+	if vanity_btn:
+		vanity_btn.pressed.connect(_on_vanity_pressed)
 		
 	if yaw_left_btn:
 		yaw_left_btn.button_down.connect(func(): if player: player.touch_yaw = -1.0)
@@ -295,6 +298,8 @@ func _process(delta: float) -> void:
 		aroma_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
 	if tea_btn:
 		tea_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
+	if vanity_btn:
+		vanity_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
 
 	if sprint_btn:
 		if player.current_state != player.State.ON_FOOT:
@@ -491,6 +496,12 @@ func _on_visor_pressed() -> void:
 		if player.active_vehicle.has_method("toggle_sun_visors"):
 			var mode_name = player.active_vehicle.toggle_sun_visors()
 			show_temporary_prompt(mode_name, 3.0)
+
+func _on_vanity_pressed() -> void:
+	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
+		if player.active_vehicle.has_method("toggle_vanity_mirror"):
+			var msg = player.active_vehicle.toggle_vanity_mirror()
+			show_temporary_prompt(msg, 3.0)
 
 func _on_tea_pressed() -> void:
 	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:

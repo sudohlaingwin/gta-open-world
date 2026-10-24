@@ -586,6 +586,13 @@ theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "🥤 ရေနွေး/အေး"
 
+[node name="VanityBtn" type="Button" parent="ActionContainer"]
+custom_minimum_size = Vector2(120, 75)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "🪞 မှန်ဖုံး"
+
 [node name="ViewBtn" type="Button" parent="ActionContainer"]
 custom_minimum_size = Vector2(120, 75)
 layout_mode = 2

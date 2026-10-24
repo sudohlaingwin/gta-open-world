@@ -390,3 +390,10 @@ func _input(event: InputEvent) -> void:
 					var hud = get_tree().get_first_node_in_group("hud")
 					if hud and hud.has_method("show_temporary_prompt"):
 						hud.show_temporary_prompt(tea_msg, 2.5)
+		elif event.keycode == KEY_Y:
+			if current_state == State.DRIVING_VEHICLE and active_vehicle:
+				if active_vehicle.has_method("toggle_vanity_mirror"):
+					var vanity_msg = active_vehicle.toggle_vanity_mirror()
+					var hud = get_tree().get_first_node_in_group("hud")
+					if hud and hud.has_method("show_temporary_prompt"):
+						hud.show_temporary_prompt(vanity_msg, 2.5)

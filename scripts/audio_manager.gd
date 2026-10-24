@@ -1768,3 +1768,34 @@ func play_water_ladle_dip() -> void:
 	stream.data = data
 	water_ladle_player.stream = stream
 	water_ladle_player.play()
+var vanity_slide_player: AudioStreamPlayer = null
+
+func play_vanity_slide(is_open: bool) -> void:
+	if is_muted: return
+	if not vanity_slide_player:
+		vanity_slide_player = AudioStreamPlayer.new()
+		vanity_slide_player.name = "VanitySlideAudio"
+		vanity_slide_player.volume_db = -7.0
+		add_child(vanity_slide_player)
+	var sample_hz = 22050
+	var duration = 0.12
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	var snap_freq = 2700.0 if is_open else 1850.0
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Smooth plastic slide friction + recess snap click
+		var slide = sin(t * 1250.0 * TAU) * exp(-t * 35.0) * 0.35
+		var snap = 0.0
+		if t > 0.05:
+			snap = exp(-(t - 0.05) * 85.0) * sin((t - 0.05) * snap_freq * TAU) * 0.65
+		var val = slide + snap
+		var int_sample = int(clamp(val, -1.0, 1.0) * 21000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	vanity_slide_player.stream = stream
+	vanity_slide_player.play()

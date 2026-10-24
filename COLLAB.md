@@ -5286,3 +5286,14 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - East River Confluence Scenic Overlook: Vector3(280.0, 0.0, -140.0), rot_y = -65 deg ("မြစ်ကမ်းနဖူး မာတဘန်းစဉ့်အိုး သောက်ရေချမ်းစင် 🏺✨").
 4. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+## 2026-10-24 — Slice 445: In-Cabin Dashboard Passenger Vanity Mirror, Sliding Shutter Cover & Multi-Action HUD Realism
+### Completed by Antigravity:
+1. **Interactive In-Cabin Passenger Vanity Mirror Assembly (scenes/village_car.tscn):**
+   - **Articulated Sun Visor Vanity Mirror:** Mounted an authentic automotive vanity mirror directly onto the passenger sun visor (SunVisorPivotR). Features recessed plastic vanity frame (VanityFrame, BoxMesh_vanity_frame, StandardMaterial3D_vanity_frame, size 0.22m x 0.11m), high-reflectivity mirror glass (VanityMirror, BoxMesh_vanity_mirror, StandardMaterial3D_mirror_chrome with 0.98 metallic and 0.05 roughness), and an interactive sliding privacy shutter cover (VanityShutterCover, BoxMesh_vanity_shutter).
+   - **Smooth Sliding Shutter Physics & Audio Synthesis:** Added toggle_vanity_mirror() in scripts/vehicle_controller.gd smoothly sliding the shutter cover open (position.x = 0.24) and closed (position.x = 0.08). Synthesized realistic plastic sliding friction and detent snap audio in scripts/audio_manager.gd (play_vanity_slide(), 1250Hz slide friction + 2700Hz/1850Hz snap click).
+   - **Canonical Declarative Architecture:** Updated scenes/village_car.tscn to load_steps=108 with 100% verified sub-resources and zero engine warnings.
+2. **Mobile Context-Aware & Desktop Controls:**
+   - **Mobile Touch HUD (scenes/mobile_touch_hud.tscn, scripts/mobile_touch_hud.gd):** Added VanityBtn (🪞 မှန်ဖုံး) in ActionContainer, dynamically revealed during driving state (DRIVING_VEHICLE).
+   - **Desktop Hotkey (scripts/player.gd):** Bound 'Y' hotkey to smoothly slide the passenger vanity mirror cover open/closed and display Burmese status prompt.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

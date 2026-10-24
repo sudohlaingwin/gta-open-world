@@ -41,6 +41,8 @@ var glovebox_open: bool = false
 @onready var glove_door: MeshInstance3D = get_node_or_null("GloveCompartmentPivot/GloveDoor")
 @onready var steering_wheel_pivot: Node3D = get_node_or_null("SteeringWheelPivot")
 @onready var stalk_pivot: Node3D = get_node_or_null("TurnSignalStalkPivot")
+var vanity_shutter_open: bool = false
+@onready var vanity_shutter: MeshInstance3D = get_node_or_null("SunVisorPivotR/VanityShutterCover")
 var aroma_diffuser_active: bool = false
 @onready var aroma_particles: CPUParticles3D = get_node_or_null("AirFreshenerDiffuser/DiffuserBottle/AromaVaporParticles")
 var sun_visors_down: bool = false
@@ -102,6 +104,15 @@ func toggle_aroma_diffuser() -> String:
 	if am and am.has_method("play_diffuser_spray"):
 		am.play_diffuser_spray()
 	return "🌸 သဘာဝ သံပရာရနံ့ ကားလေမွှေး: ဖွင့်ထားသည် (Natural Citrus Scent ON)" if aroma_diffuser_active else "🌸 ကားလေမွှေး: ပိတ်ထားသည် (Diffuser OFF)"
+
+func toggle_vanity_mirror() -> String:
+	vanity_shutter_open = !vanity_shutter_open
+	if vanity_shutter:
+		vanity_shutter.position.x = 0.24 if vanity_shutter_open else 0.08
+	var am = get_tree().get_first_node_in_group("audio_manager")
+	if am and am.has_method("play_vanity_slide"):
+		am.play_vanity_slide(vanity_shutter_open)
+	return "🪞 ဘေးခုံ နေကာပြားမှန်: အဖုံးဖွင့်ထားသည် (Vanity Mirror Open)" if vanity_shutter_open else "🪞 ဘေးခုံ နေကာပြားမှန်: အဖုံးပိတ်ထားသည် (Vanity Mirror Closed)"
 
 func toggle_sun_visors() -> String:
 	sun_visors_down = !sun_visors_down
