@@ -2203,3 +2203,32 @@ func play_jaggery_syrup_bubble() -> void:
 	stream.data = data
 	jaggery_syrup_player.stream = stream
 	jaggery_syrup_player.play()
+
+var rev_limiter_player: AudioStreamPlayer = null
+
+func play_rev_limiter() -> void:
+	if is_muted: return
+	if not rev_limiter_player:
+		rev_limiter_player = AudioStreamPlayer.new()
+		rev_limiter_player.name = "RevLimiterAudio"
+		rev_limiter_player.volume_db = -5.0
+		add_child(rev_limiter_player)
+	var sample_hz = 22050
+	var duration = 0.15
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Fuel-cut rev limiter bounce stutter + exhaust manifold pulse
+		var fuel_cut = sin(t * 85.0 * TAU) * exp(-t * 15.0) * 0.55
+		var ping = exp(-t * 60.0) * (sin(t * 2800.0 * TAU) * 0.4 + sin(t * 1850.0 * TAU) * 0.25)
+		var val = fuel_cut + ping
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	rev_limiter_player.stream = stream
+	rev_limiter_player.play()

@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=129 format=3]
+﻿[gd_scene load_steps=136 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -594,6 +594,44 @@ top_radius = 0.004
 bottom_radius = 0.006
 height = 0.025
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gauge_dial"]
+albedo_color = Color(0.1, 0.12, 0.15, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gauge_rim"]
+albedo_color = Color(0.85, 0.88, 0.92, 1)
+metallic = 0.9
+roughness = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_needle_red"]
+albedo_color = Color(1, 0.15, 0.05, 1)
+emission_enabled = true
+emission = Color(1, 0.15, 0.05, 1)
+emission_energy_multiplier = 2.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_gauge_face"]
+material = SubResource("StandardMaterial3D_gauge_dial")
+top_radius = 0.052
+bottom_radius = 0.052
+height = 0.004
+
+[sub_resource type="TorusMesh" id="TorusMesh_gauge_rim"]
+material = SubResource("StandardMaterial3D_gauge_rim")
+inner_radius = 0.05
+outer_radius = 0.056
+rings = 16
+ring_segments = 8
+
+[sub_resource type="BoxMesh" id="BoxMesh_gauge_needle"]
+material = SubResource("StandardMaterial3D_needle_red")
+size = Vector3(0.003, 0.002, 0.038)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_needle_cap"]
+material = SubResource("StandardMaterial3D_gauge_rim")
+top_radius = 0.007
+bottom_radius = 0.008
+height = 0.005
+
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
 
@@ -817,6 +855,66 @@ surface_material_override/0 = SubResource("StandardMaterial3D_gold_amulet")
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.5, 1.26, -0.86)
 mesh = SubResource("BoxMesh_cluster_housing")
 surface_material_override/0 = SubResource("StandardMaterial3D_cluster_amber")
+
+[node name="SpeedometerDial" type="MeshInstance3D" parent="InstrumentCluster"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.07, 0.015, 0)
+mesh = SubResource("CylinderMesh_gauge_face")
+
+[node name="SpeedoRim" type="MeshInstance3D" parent="InstrumentCluster/SpeedometerDial"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.003, 0)
+mesh = SubResource("TorusMesh_gauge_rim")
+
+[node name="SpeedoNeedlePivot" type="Node3D" parent="InstrumentCluster/SpeedometerDial"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+
+[node name="NeedleMesh" type="MeshInstance3D" parent="InstrumentCluster/SpeedometerDial/SpeedoNeedlePivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.018)
+mesh = SubResource("BoxMesh_gauge_needle")
+
+[node name="NeedleCap" type="MeshInstance3D" parent="InstrumentCluster/SpeedometerDial/SpeedoNeedlePivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.003, 0)
+mesh = SubResource("CylinderMesh_needle_cap")
+
+[node name="SpeedoLabel" type="Label3D" parent="InstrumentCluster/SpeedometerDial"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.004, 0.024)
+pixel_size = 0.0009
+text = "KM/H"
+font_size = 20
+outline_size = 4
+modulate = Color(0.9, 0.95, 1, 1)
+
+[node name="TachometerDial" type="MeshInstance3D" parent="InstrumentCluster"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.07, 0.015, 0)
+mesh = SubResource("CylinderMesh_gauge_face")
+
+[node name="TachoRim" type="MeshInstance3D" parent="InstrumentCluster/TachometerDial"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.003, 0)
+mesh = SubResource("TorusMesh_gauge_rim")
+
+[node name="TachoNeedlePivot" type="Node3D" parent="InstrumentCluster/TachometerDial"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+
+[node name="NeedleMesh" type="MeshInstance3D" parent="InstrumentCluster/TachometerDial/TachoNeedlePivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.018)
+mesh = SubResource("BoxMesh_gauge_needle")
+
+[node name="NeedleCap" type="MeshInstance3D" parent="InstrumentCluster/TachometerDial/TachoNeedlePivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.003, 0)
+mesh = SubResource("CylinderMesh_needle_cap")
+
+[node name="TachoLabel" type="Label3D" parent="InstrumentCluster/TachometerDial"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.004, 0.024)
+pixel_size = 0.0009
+text = "RPM x1000"
+font_size = 18
+outline_size = 4
+modulate = Color(0.9, 0.95, 1, 1)
+
+[node name="ClusterBacklight" type="OmniLight3D" parent="InstrumentCluster"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0.02)
+light_color = Color(0.35, 0.85, 1, 1)
+light_energy = 0.8
+omni_range = 0.6
 
 [node name="DomeLightFixture" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.82, 0.05)

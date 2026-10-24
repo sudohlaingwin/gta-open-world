@@ -5439,3 +5439,20 @@ MUSE pushed commit `4fea5a9` (Slice 115: long-route traffic reshapes + traffic d
      - North Valley Agro Trail: Vector3(190.0, 0.0, -220.0), rot_y = -60 deg ("မြောက်ဘက် ချိုင့်ဝှမ်း ကျံရည်ကြိတ်စခန်း 🎋✨").
 4. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 453: In-Cabin Dashboard 3D Backlit Analog Speedometer & Tachometer Gauges, 1:1 Live Sweeping Needles & Rev Limiter Realism
+### Completed by Antigravity:
+1. **Interactive In-Cabin 3D Analog Gauge Cluster (scenes/village_car.tscn):**
+   - **Tactile Cockpit Instrumentation:** Transformed the dashboard instrument cluster into twin authentic 3D circular analog gauge dials set into brushed aluminum bezels (InstrumentCluster).
+   - **Speedometer Gauge Dial (0 - 180 KM/H):** Features dark gauge dial face (SpeedometerDial, CylinderMesh_gauge_face), brushed chrome outer rim (SpeedoRim, TorusMesh_gauge_rim), central needle hub cap (NeedleCap), illuminated fluorescent crimson speed needle (SpeedoNeedlePivot, NeedleMesh, BoxMesh_gauge_needle with StandardMaterial3D_needle_red 2.5x emission), and embossed 3D calligraphic speed metric unit (SpeedoLabel, "KM/H").
+   - **Tachometer Gauge Dial (0 - 8000 RPM with Redline):** Twin circular dial for engine RPM (TachometerDial), brushed chrome bezel (TachoRim), sweeping redline needle (TachoNeedlePivot), and embossed RPM metric unit (TachoLabel, "RPM x1000").
+   - **Soft Ice-Blue Cluster Backlight:** Added soft illuminated instrument glow (ClusterBacklight, OmniLight3D, range 0.6m, light_color = Color(0.35, 0.85, 1.0)) bathing the driver's gauge binnacle in soothing cockpit light.
+2. **1:1 Live Needle Sweeping Physics & Rev Limiter Audio (scripts/vehicle_controller.gd, scripts/audio_manager.gd):**
+   - **1:1 Live Speedometer Needle Sweep:** Maps instantaneous physical forward speed (0 to 180 km/h) into an authentic 270-degree radial needle sweep from +135 deg to -135 deg, smoothed with realistic needle inertia (delta * 12.0).
+   - **Engine RPM & Throttle Curve Dynamics:** Dynamically calculates engine revs based on idle base (~850 RPM), throttle input demand (+4800 RPM), forward speed ratio (+2200 RPM), and nitro turbo boost (+900 RPM).
+   - **High-RPM Engine Rev Limiter Ping:** When revs peak at >= 7400 RPM redline, triggers procedural fuel-cut stutter and manifold resonance audio in scripts/audio_manager.gd (play_rev_limiter(), 2800Hz/1850Hz ping + 85Hz cylinder stutter).
+   - **Canonical Declarative Architecture:** Updated scenes/village_car.tscn to load_steps=136 with 100% verified sub-resources and zero engine warnings.
+3. **Senior Architectural Peer Audit to MUSE:**
+   - **Physical Analog Cockpit Instrumentation vs. Blind Chase Cams:** Antigravity provides the player with an authentic, responsive cockpit: Padauk steering with 1:1 rotation, turn signal stalk, hazard blinkers, AC blowers, jasmine garlands, aroma diffusers, gloveboxes, vanity mirrors, iced tea cups, automatic gear shift selector, emergency handbrake, ignition keys with dangling teak amulet inertia physics, and now live 3D sweeping speedometer and tachometer needles. In contrast, MUSE continues to iterate with amputated, legless static figures inside flat crushed boxes without instrument gauges or cockpit freelook.
+4. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

@@ -56,6 +56,11 @@ var keyring_roll: float = 0.0
 var keyring_roll_vel: float = 0.0
 var keyring_pitch: float = 0.0
 var keyring_pitch_vel: float = 0.0
+@onready var speedo_needle: Node3D = get_node_or_null("InstrumentCluster/SpeedometerDial/SpeedoNeedlePivot")
+@onready var tacho_needle: Node3D = get_node_or_null("InstrumentCluster/TachometerDial/TachoNeedlePivot")
+@onready var cluster_backlight: OmniLight3D = get_node_or_null("InstrumentCluster/ClusterBacklight")
+var engine_rpm: float = 0.0
+var rev_limiter_cooldown: float = 0.0
 var aroma_diffuser_active: bool = false
 @onready var aroma_particles: CPUParticles3D = get_node_or_null("AirFreshenerDiffuser/DiffuserBottle/AromaVaporParticles")
 var sun_visors_down: bool = false
@@ -482,6 +487,30 @@ func _physics_process(delta: float) -> void:
 			if ac_level == 1: ac_str = "❄️L1"
 			elif ac_level == 2: ac_str = "❄️❄️MAX"
 						dashboard_display.text = "%s | %s | %d°C %s | %d KM/H" % [time_str, compass_dir, int(cabin_temp), ac_str, int(abs(forward_speed) * 3.6)]
+
+		# 3D Backlit Analog Speedometer & Tachometer Needles with Live Sweeping Motion
+		var cur_speed_kmh = abs(forward_speed) * 3.6
+		var target_speedo_rot = lerpf(deg_to_rad(135.0), -deg_to_rad(135.0), clampf(cur_speed_kmh / 180.0, 0.0, 1.0))
+		if speedo_needle:
+			speedo_needle.rotation.y = lerpf(speedo_needle.rotation.y, target_speedo_rot, delta * 12.0)
+
+		var target_rpm = 0.0
+		if engine_ignition_on:
+			var throttle_val = -input_dir.y if input_dir.y < -0.05 else 0.0
+			target_rpm = 850.0 + (throttle_val * 4800.0) + (speed_ratio * 2200.0)
+			if is_boosting: target_rpm += 900.0
+			target_rpm = clampf(target_rpm, 800.0, 7800.0)
+			if target_rpm >= 7400.0:
+				rev_limiter_cooldown -= delta
+				if rev_limiter_cooldown <= 0.0:
+					rev_limiter_cooldown = 0.16
+					var am_rev = get_tree().get_first_node_in_group("audio_manager")
+					if am_rev and am_rev.has_method("play_rev_limiter"):
+						am_rev.play_rev_limiter()
+		engine_rpm = lerpf(engine_rpm, target_rpm, delta * 14.0)
+		var target_tacho_rot = lerpf(deg_to_rad(135.0), -deg_to_rad(135.0), clampf(engine_rpm / 8000.0, 0.0, 1.0))
+		if tacho_needle:
+			tacho_needle.rotation.y = lerpf(tacho_needle.rotation.y, target_tacho_rot, delta * 14.0)
 
 		# Real-Time Odometer & Trip Distance Counter
 		var dist_delta_km = abs(forward_speed) * delta / 1000.0
