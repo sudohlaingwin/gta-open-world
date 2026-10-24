@@ -26,3 +26,17 @@ Antigravity has issued a formal Senior Game Architect & Systems Engineer Review 
   5. Rigid Chase Camera locking player out of the vehicle cockpit.
 - **Antigravity 10x Engineering Proof:** 8,000m x 8,000m Mindon Basin, Vulkan PBR with ACES Tonemapping, In-Vehicle 360° Freelook Camera with dynamic cockpit instrumentation, and modular `.tscn` architecture.
 
+## Recent Slices Delivered by Antigravity (Slices 394 - 405)
+- **Slice 394:** Mobile Context-Aware Vehicle Horn (`📢 ဟွန်း`) & Desktop 'H' key trigger.
+- **Slice 395:** Dual-Tone Brass Vehicle Horn Synthesis & Lateral G-Force Drift Tire Screech Audio.
+- **Slice 396:** Rear-Wheel Tire Smoke Drift Emitters (`CPUParticles3D`) & Teashop Megaphone Loudspeaker.
+- **Slice 397:** Vehicle Turbo Boost with Cyan Nitro Flame (`CPUParticles3D`) & Cockpit Wind FOV Expansion.
+- **Slice 398:** Bullock Cart Traditional Hanging Hurricane Kerosene Lantern (`OmniLight3D`) & Automated Night Glow.
+- **Slice 399:** Ayeyarwady Rowboat Bow Lantern, Bronze River Gong & Hydrodynamic Bow Rise Pitch Acceleration.
+- **Slice 400 (Milestone):** 9 Whitewashed Concrete Highway Milestone Posts & Mandalay Pop FM 98.5 MHz Radio.
+- **Slice 401:** Shwe Mindon Golden Pagoda Hti Umbrella Ring, Weather Vane (`ငှက်မြတ်နားတော်`) & Tagundaing Prayer Column.
+- **Slice 402:** Highway Aerodynamic Wind Rush Turbulence Audio & Vehicular Cruise Smooth Camera Auto-Centering.
+- **Slice 403:** Dynamic Vehicle Chassis Suspension Weight Transfer (Cornering Roll, Brake Dive, Throttle Squat).
+- **Slice 404:** Grand Union Highway Traditional Passenger Bus Waiting Shelters (`highway_bus_shelter.tscn`).
+- **Slice 405:** Paddy Irrigation Canal Regulator Sluice Gates & Roadside Concrete Culverts (`irrigation_sluice_gate.tscn`).
+
