@@ -17,6 +17,7 @@ var current_speed: float = 0.0
 @onready var front_wheel: Node3D = $VisualMesh/FrontWheel
 @onready var rear_wheel: Node3D = $VisualMesh/RearWheel
 @onready var headlight_beam: SpotLight3D = $VisualMesh.get_node_or_null("HeadlightBeam")
+@onready var speedo_needle: Node3D = $VisualMesh.get_node_or_null("SpeedometerHousing/SpeedometerNeedle")
 
 signal driver_entered(driver)
 signal driver_exited()
@@ -88,7 +89,14 @@ func _physics_process(delta: float) -> void:
 		var spin_rate = (current_speed / 0.32) * delta
 		if front_wheel: front_wheel.rotate_x(spin_rate)
 		if rear_wheel: rear_wheel.rotate_x(spin_rate)
+
+		# Dynamic Cockpit Speedometer Dial Needle Animation
+		if speedo_needle:
+			var target_needle_rot = lerpf(0.0, deg_to_rad(-215.0), speed_ratio)
+			speedo_needle.rotation.y = lerp_angle(speedo_needle.rotation.y, target_needle_rot, delta * 12.0)
 	else:
+		if speedo_needle:
+			speedo_needle.rotation.y = lerp_angle(speedo_needle.rotation.y, 0.0, delta * 8.0)
 		current_speed = move_toward(current_speed, 0.0, 4.0 * delta)
 		velocity.x = move_toward(velocity.x, 0.0, 4.0 * delta)
 		velocity.z = move_toward(velocity.z, 0.0, 4.0 * delta)

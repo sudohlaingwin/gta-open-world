@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3]
+[gd_scene load_steps=30 format=3]
 
 [ext_resource type="Script" path="res://scripts/motorcycle_controller.gd" id="1_bike"]
 
@@ -106,6 +106,29 @@ height = 0.18
 albedo_color = Color(0.10, 0.10, 0.10, 1)
 roughness = 0.55
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_speedo_housing"]
+top_radius = 0.075
+bottom_radius = 0.075
+height = 0.06
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_speedo_face"]
+top_radius = 0.068
+bottom_radius = 0.068
+height = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_speedo_face"]
+albedo_color = Color(0.92, 0.94, 0.95, 1)
+roughness = 0.25
+
+[sub_resource type="BoxMesh" id="BoxMesh_speedo_needle"]
+size = Vector3(0.008, 0.012, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_needle_red"]
+albedo_color = Color(0.95, 0.15, 0.10, 1)
+emission_enabled = true
+emission = Color(0.95, 0.15, 0.10, 1)
+emission_energy_multiplier = 1.5
+
 [node name="MyanmarMotorcycle" type="CharacterBody3D"]
 script = ExtResource("1_bike")
 
@@ -174,6 +197,21 @@ surface_material_override/0 = SubResource("StandardMaterial3D_chrome")
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.11, 0)
 mesh = SubResource("CylinderMesh_mirror_disc")
 surface_material_override/0 = SubResource("StandardMaterial3D_chrome")
+
+[node name="SpeedometerHousing" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.819152, 0.573576, 0, -0.573576, 0.819152, 0, 1.28, -0.52)
+mesh = SubResource("CylinderMesh_speedo_housing")
+surface_material_override/0 = SubResource("StandardMaterial3D_chrome")
+
+[node name="SpeedometerFace" type="MeshInstance3D" parent="VisualMesh/SpeedometerHousing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.032, 0)
+mesh = SubResource("CylinderMesh_speedo_face")
+surface_material_override/0 = SubResource("StandardMaterial3D_speedo_face")
+
+[node name="SpeedometerNeedle" type="MeshInstance3D" parent="VisualMesh/SpeedometerHousing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.038, 0.015)
+mesh = SubResource("BoxMesh_speedo_needle")
+surface_material_override/0 = SubResource("StandardMaterial3D_needle_red")
 
 [node name="Headlight" type="MeshInstance3D" parent="VisualMesh"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.12, -0.85)
