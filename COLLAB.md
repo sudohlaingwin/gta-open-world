@@ -5019,3 +5019,18 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - East River Rapid Irrigation Diversion: Vector3(390, 0.2, -85) ("အရှေ့မြစ်ဆုံ ရိုးရာ ရေမောင်း ရေလှည့်ဘီး 🌾🌊").
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 428: In-Cabin Interactive Dome Courtesy Ceiling Light & Real-Time Digital Odometer Realism
+### Completed by Antigravity:
+1. **Interactive In-Cabin Dome Courtesy Light Fixture (scenes/village_car.tscn):**
+   - **Ceiling Lamp Assembly:** Added molded ceiling dome light bezel (DomeLightFixture, BoxMesh_dome_housing) and frosted ivory incandescent lens (DomeLightGlass, BoxMesh_dome_lens, StandardMaterial3D_dome_lens) at y = 1.82m on vehicle roof ceiling.
+   - **Soft Cabin Illumination (DomeLight, OmniLight3D):** Emits warm golden ambient light (Color(1.0, 0.88, 0.65), energy 1.9, range 2.8m), illuminating the cockpit dashboard, steering wheel, seats, and jasmine garland during night cruising.
+   - **Tactile Push-Button Click Audio Synthesis (scripts/audio_manager.gd):** Implemented play_dome_light_click(), synthesizing dual crisp microswitch detent snaps (3200Hz + 1200Hz) on toggle.
+2. **Real-Time Odometer & Trip Distance Counter (scenes/village_car.tscn, scripts/vehicle_controller.gd):**
+   - Added TripCounterDisplay (Label3D) on instrument cluster with soft green LCD phosphor glow (Color(0.4, 0.95, 0.55)).
+   - Accurately tracks accumulated distance driven across the 8000m basin ("ODO 0042.8 KM | TRIP 12.4"), updating each physics frame based on forward velocity integration.
+3. **Mobile Context-Aware & Desktop Controls:**
+   - **Mobile Touch HUD (scenes/mobile_touch_hud.tscn, scripts/mobile_touch_hud.gd):** Added DomeBtn (💡 ခန်းမီး) in ActionContainer, dynamically revealed when player enters driving state (DRIVING_VEHICLE).
+   - **Desktop Hotkey (scripts/player.gd):** Bound 'I' hotkey to smoothly toggle dome light on/off and display HUD prompt.
+4. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

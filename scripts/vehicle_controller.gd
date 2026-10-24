@@ -31,6 +31,12 @@ var smoothed_steering: float = 0.0
 @onready var ac_led: MeshInstance3D = get_node_or_null("ACIndicatorLED")
 var ac_level: int = 0
 var cabin_temp: float = 32.0
+var dome_light_on: bool = false
+var total_odometer_km: float = 0.0
+var trip_km: float = 0.0
+@onready var dome_light: OmniLight3D = get_node_or_null("DomeLightFixture/DomeLight")
+@onready var dome_lens: MeshInstance3D = get_node_or_null("DomeLightFixture/DomeLightGlass")
+@onready var trip_display: Label3D = get_node_or_null("TripCounterDisplay")
 @onready var exhaust_backfire: CPUParticles3D = get_node_or_null("ExhaustBackfire")
 @onready var radio_eq_display: Label3D = get_node_or_null("RadioEqualizerDisplay")
 @onready var turn_signal_fl: MeshInstance3D = get_node_or_null("TurnSignalFL")
@@ -70,6 +76,23 @@ var blinker_state: bool = false
 var mirror_antiglare_active: bool = false
 const MIRROR_ROT_NORMAL: float = 0.173648
 const MIRROR_ROT_ANTIGLARE: float = 0.244346
+
+func toggle_dome_light() -> String:
+	dome_light_on = !dome_light_on
+	if dome_light:
+		dome_light.visible = dome_light_on
+		dome_light.light_energy = 1.9 if dome_light_on else 0.0
+	if dome_lens:
+		var mat = StandardMaterial3D.new()
+		mat.albedo_color = Color(1.0, 0.95, 0.8, 1.0)
+		mat.emission_enabled = dome_light_on
+		mat.emission = Color(1.0, 0.88, 0.65, 1.0)
+		mat.emission_energy_multiplier = 2.5 if dome_light_on else 0.0
+		dome_lens.set_surface_override_material(0, mat)
+	var am = get_tree().get_first_node_in_group("audio_manager")
+	if am and am.has_method("play_dome_light_click"):
+		am.play_dome_light_click()
+	return "💡 အတွင်းခန်းမီး: ဖွင့်ထားသည် (Cabin Light ON)" if dome_light_on else "💡 အတွင်းခန်းမီး: ပိတ်ထားသည် (Cabin Light OFF)"
 
 func toggle_ac() -> String:
 	ac_level = (ac_level + 1) % 3
@@ -319,7 +342,14 @@ func _physics_process(delta: float) -> void:
 			var ac_str = "☀️"
 			if ac_level == 1: ac_str = "❄️L1"
 			elif ac_level == 2: ac_str = "❄️❄️MAX"
-			dashboard_display.text = "%s | %s | %d°C %s | %d KM/H" % [time_str, compass_dir, int(cabin_temp), ac_str, int(abs(forward_speed) * 3.6)]
+						dashboard_display.text = "%s | %s | %d°C %s | %d KM/H" % [time_str, compass_dir, int(cabin_temp), ac_str, int(abs(forward_speed) * 3.6)]
+
+		# Real-Time Odometer & Trip Distance Counter
+		var dist_delta_km = abs(forward_speed) * delta / 1000.0
+		total_odometer_km += dist_delta_km
+		trip_km += dist_delta_km
+		if trip_display:
+			trip_display.text = "ODO %06.1f KM | TRIP %.1f" % [total_odometer_km, trip_km]
 
 		# Dashboard Radio Audio Visualizer VU Meter Animation
 		if radio_eq_display:

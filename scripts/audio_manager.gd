@@ -1311,3 +1311,34 @@ func play_watermill_churn() -> void:
 	stream.data = data
 	watermill_churn_player.stream = stream
 	watermill_churn_player.play()
+
+var dome_light_player: AudioStreamPlayer = null
+
+func play_dome_light_click() -> void:
+	if is_muted: return
+	if not dome_light_player:
+		dome_light_player = AudioStreamPlayer.new()
+		dome_light_player.name = "DomeLightClickAudio"
+		dome_light_player.volume_db = -6.0
+		add_child(dome_light_player)
+	var sample_hz = 22050
+	var duration = 0.05
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Crisp micro-switch snap (3200Hz + 1200Hz)
+		var snap1 = exp(-t * 120.0) * sin(t * 3200.0 * TAU) * 0.7
+		var snap2 = 0.0
+		if t > 0.015:
+			snap2 = exp(-(t - 0.015) * 90.0) * sin((t - 0.015) * 1200.0 * TAU) * 0.45
+		var val = snap1 + snap2
+		var int_sample = int(clamp(val, -1.0, 1.0) * 20000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	dome_light_player.stream = stream
+	dome_light_player.play()
