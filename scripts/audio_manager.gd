@@ -16,6 +16,10 @@ var river_ambient_timer: float = 1.0
 var radio_station_index: int = 1
 var cart_bell_player: AudioStreamPlayer = null
 var cart_bell_timer: float = 0.0
+var is_muted: bool = false
+var horn_player: AudioStreamPlayer = null
+var skid_player: AudioStreamPlayer = null
+
 
 const RADIO_STATIONS: Array[String] = [
 	"📻 ရေဒီယို: ပိတ်ထားသည် (Off)",
@@ -828,4 +832,61 @@ func play_cart_bell() -> void:
 		data.encode_s16(i * 2, int_sample)
 	stream.data = data
 	cart_bell_player.stream = stream
-	cart_bell_player.play()
+	cart_bell_player.play()
+
+func play_horn() -> void:
+	if is_muted: return
+	if not horn_player:
+		horn_player = AudioStreamPlayer.new()
+		horn_player.name = "VehicleHornAudio"
+		horn_player.volume_db = -4.0
+		add_child(horn_player)
+	var sample_hz = 22050
+	var duration = 0.55
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env = 1.0
+		if t < 0.04:
+			env = t / 0.04
+		elif t > 0.45:
+			env = 1.0 - (t - 0.45) / 0.10
+		var tone = (sin(t * 349.2 * TAU) * 0.45 + sin(t * 440.0 * TAU) * 0.40 + sin(t * 880.0 * TAU) * 0.15)
+		var int_sample = int(clamp(tone * env, -1.0, 1.0) * 26000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	horn_player.stream = stream
+	horn_player.play()
+
+func play_tire_skid(intensity: float = 1.0) -> void:
+	if is_muted: return
+	if not skid_player:
+		skid_player = AudioStreamPlayer.new()
+		skid_player.name = "TireSkidAudio"
+		skid_player.volume_db = -8.0
+		add_child(skid_player)
+	if skid_player.playing: return
+	var sample_hz = 22050
+	var duration = 0.40
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env = exp(-t * 4.0) * clampf(intensity, 0.2, 1.0)
+		var screech = (sin(t * 1920.0 * TAU) * 0.5 + sin(t * 2380.0 * TAU) * 0.35 + sin(t * 1150.0 * TAU) * 0.25)
+		var flutter = (1.0 + 0.3 * sin(t * 65.0 * TAU))
+		var int_sample = int(clamp(screech * flutter * env, -1.0, 1.0) * 22000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	skid_player.stream = stream
+	skid_player.play()
+

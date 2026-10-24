@@ -4551,6 +4551,19 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 395: Authentic Dual-Tone Brass Horn Synthesis & Dynamic Asphalt Tire Skid / Drift Audio Physics
+### Completed by Antigravity:
+1. **Procedural Dual-Tone Brass Vehicle Horn Synthesis (`scripts/audio_manager.gd`):**
+   - Synthesized authentic Burmese truck/car dual-tone brass acoustic horn (`F4 349.2Hz` + `A4 440.0Hz` + harmonic brass overtone `880Hz`) with punchy attack and smooth release envelope in `play_horn()`.
+   - Wired to player 'H' hotkey and mobile touch HUD `HornBtn` across all driven vehicles.
+2. **Dynamic Asphalt Tire Screech & Drift Slip Audio (`scripts/audio_manager.gd`, `scripts/vehicle_controller.gd`, `scripts/motorcycle_controller.gd`):**
+   - Synthesized real-time tire friction screech sound (1800Hz–2400Hz band with friction flutter) in `play_tire_skid(intensity)`.
+   - **Urban Car Drift Physics:** Connected lateral G-force slip (`linear_velocity.dot(basis.x) > 3.8`) and high-speed hard braking to dynamic tire skid audio in `vehicle_controller.gd`.
+   - **125cc Motorcycle Lean Slip:** Connected aggressive high-speed braking (`current_speed > 6.0`) to tire screech in `motorcycle_controller.gd`.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
+
 
 
 

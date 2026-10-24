@@ -85,10 +85,17 @@ func _physics_process(delta: float) -> void:
 			engine_force = 0.0
 			brake = 1.2
 
-		# Continuous procedural engine audio
+		# Continuous procedural engine audio & dynamic tire skid/drift audio
 		var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
-		if audio_mgr and audio_mgr.has_method("play_car_engine"):
-			audio_mgr.play_car_engine(speed_ratio)
+		if audio_mgr:
+			if audio_mgr.has_method("play_car_engine"):
+				audio_mgr.play_car_engine(speed_ratio)
+			var lateral_speed = abs(linear_velocity.dot(global_transform.basis.x))
+			var is_skidding = (lateral_speed > 3.8 and forward_speed > 5.0) or (brake > 12.0 and forward_speed > 6.0)
+			if is_skidding and audio_mgr.has_method("play_tire_skid"):
+				var skid_intensity = clampf((lateral_speed - 3.0) / 4.0, 0.4, 1.0)
+				audio_mgr.play_tire_skid(skid_intensity)
+
 	else:
 		engine_force = 0.0
 		brake = 10.0

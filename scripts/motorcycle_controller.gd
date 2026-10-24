@@ -75,11 +75,16 @@ func _physics_process(delta: float) -> void:
 		elif input_dir.y > 0.1: # Brake / Reverse
 			if current_speed > 0.5:
 				current_speed = move_toward(current_speed, 0.0, brake_decel * delta)
+				if current_speed > 6.0:
+					var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
+					if audio_mgr and audio_mgr.has_method("play_tire_skid"):
+						audio_mgr.play_tire_skid(0.65)
 			else:
 				current_speed = move_toward(current_speed, -4.0, acceleration * 0.5 * delta)
 		else:
 			# Coasting momentum
 			current_speed = move_toward(current_speed, 0.0, 2.0 * delta)
+
 
 		var forward = -global_transform.basis.z
 		velocity.x = forward.x * current_speed
