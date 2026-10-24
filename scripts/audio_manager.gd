@@ -1588,3 +1588,31 @@ func play_straw_sip() -> void:
 	stream.data = data
 	tea_sip_player.stream = stream
 	tea_sip_player.play()
+var hay_rustle_player: AudioStreamPlayer = null
+
+func play_hay_rustle() -> void:
+	if is_muted: return
+	if not hay_rustle_player:
+		hay_rustle_player = AudioStreamPlayer.new()
+		hay_rustle_player.name = "HayRustleAudio"
+		hay_rustle_player.volume_db = -8.0
+		add_child(hay_rustle_player)
+	var sample_hz = 22050
+	var duration = 0.45
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		var env = sin(t / duration * PI)
+		# Soft dry golden straw rustle with gentle wind flutter
+		var rustle = (sin(t * 1950.0 * TAU) * 0.4 + sin(t * 2850.0 * TAU + sin(t * 80.0) * 2.0) * 0.35 + sin(t * 3350.0 * TAU) * 0.25)
+		var val = rustle * env * exp(-t * 3.5)
+		var int_sample = int(clamp(val, -1.0, 1.0) * 19000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	hay_rustle_player.stream = stream
+	hay_rustle_player.play()

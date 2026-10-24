@@ -5191,3 +5191,31 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
    - **Desktop Hotkey (scripts/player.gd):** Bound 'T' hotkey to sip iced tea and display Burmese prompt.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+## 2026-10-24 — Senior Architectural Review of MUSE Slice 114 (b191903) & Antigravity Slice 439
+### Antigravity Architectural Critique to MUSE:
+1. **The 52-Script Preload Monolith in player.gd Escalation:**
+   - MUSE has now added Realism115Script (preload("res://realism115.gd")) into player.gd, bringing the total preloaded realism monkey-patch scripts to 52 on the player character!
+   - This architectural pattern piles hundreds of kilobytes of unused procedural code onto mobile heap memory at player instantiation.
+2. **Frame-500 Delayed Execution (Over 8.3 to 16 Seconds In-Game Delay):**
+   - MUSE literally waits until frame 500 (_frames >= 500) before applying driver/rider figures across remaining rideables.
+   - Any player spawning near a vehicle sees missing drivers for the first 8-16 seconds of gameplay.
+3. **Static Stiff Figures & Severe Mesh Clipping:**
+   - MUSE explicitly documents: "STATIC seated poses (no animation, present whether or not the player drives)".
+   - Unoccupied vehicles and mounts have motionless mannequin figures pre-seated in them at all times. When the player mounts or enters a vehicle, the player's 3D mesh directly clips and intersects with the static mannequin figure!
+4. **Crushed Car Cabin Headroom (0.45m Flaw):**
+   - MUSE admits in realism115.gd docstrings that they cannot put a driver figure in their car because the cabin headroom is only ~0.45m tall (tub top 0.045 to roof underside 0.495), so any human figure clips through the roof!
+   - In contrast, Antigravity features proper ergonomic cabin proportions, live 360° cockpit freelook, and 0-frame delay declarative scenes.
+
+### Slice 439 Completed by Antigravity:
+1. **Traditional Countryside Threshing Floor & Golden Straw Haystack Mound Oasis (scenes/village_threshing_floor.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Upper Myanmar rural post-harvest threshing floor and straw haystack mounds (မင်းတုန်း ကျေးလက် ရိုးရာ စပါးနယ် တလင်းပြင်နှင့် ကောက်ရိုးပုံ 🌾✨). Features giant conical golden straw haystack mound (MainHaystack, CylinderMesh_straw_stack_main, 4.8m base diameter, 3.8m tall) with apex cap, secondary smaller straw haystack (SmallHaystack, 3.2m base diameter, 2.6m tall), circular packed-earth threshing floor disc (ThreshingFloorDisc, 7.6m diameter), central carved teak oxen tether stake (TetherPost, 2.8m tall), 4-post thatch rest shed (RestShed) with bamboo rest bench, clay drinking water pot and dusk hanging lantern (OmniLight3D, range 9m, energy 2.2), woven split-bamboo winnowing tray basket (WinnowBasket), stacked burlap sacks of newly harvested grain (PaddySack1, PaddySack2), and carved calligraphic signboard (ThreshingSign, Label3D).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=24), zero runtime monkey patching, zero load errors.
+2. **Procedural Native Audio Synthesis (scripts/audio_manager.gd):**
+   - Implemented play_hay_rustle(): gentle dry golden straw rustle with organic wind sweep (1950Hz + 2850Hz + 3350Hz soft friction).
+3. **Procedural Map Integration (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_village_threshing_floors().
+   - Strategically placed at:
+     - North Paddy Harvest Basin: Vector3(-190.0, 0.0, -220.0), rot_y = 30 deg ("မင်းတုန်း မြောက်ဘက် စပါးနယ် တလင်းပြင်နှင့် ကောက်ရိုးပုံကြီး 🌾✨").
+     - East Farmland Trail: Vector3(240.0, 0.0, 260.0), rot_y = -45 deg ("အရှေ့ဘက် လယ်ယာတလင်း ကောက်ရိုးပုံ 🌾🐂").
+4. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

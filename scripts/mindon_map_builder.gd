@@ -53,6 +53,7 @@ const SUGARCANE_PRESS_SCENE = preload("res://scenes/roadside_sugarcane_press.tsc
 const BLACKSMITH_FORGE_SCENE = preload("res://scenes/village_blacksmith_forge.tscn")
 const CHARCOAL_KILN_SCENE = preload("res://scenes/charcoal_burning_kiln.tscn")
 const OIL_PRESS_SCENE = preload("res://scenes/traditional_oil_press.tscn")
+const THRESHING_FLOOR_SCENE = preload("res://scenes/village_threshing_floor.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -99,6 +100,7 @@ func _ready() -> void:
 	_generate_village_blacksmith_forges()
 	_generate_charcoal_burning_kilns()
 	_generate_traditional_oil_presses()
+	_generate_village_threshing_floors()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1963,5 +1965,33 @@ func _generate_traditional_oil_presses() -> void:
 		presses_holder.add_child(press)
 
 		var sign_node = press.get_node_or_null("OilSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+func _generate_village_threshing_floors() -> void:
+	# Traditional Myanmar countryside harvest threshing floors with giant golden conical straw haystacks (တလင်းပြင်နှင့် ကောက်ရိုးပုံများ)
+	var floors_holder = Node3D.new()
+	floors_holder.name = "VillageThreshingFloors"
+	add_child(floors_holder)
+
+	var floor_data = [
+		{
+			"pos": Vector3(-190.0, 0.0, -220.0),
+			"rot_y": deg_to_rad(30.0),
+			"sign": "မင်းတုန်း မြောက်ဘက် စပါးနယ် တလင်းပြင်နှင့် ကောက်ရိုးပုံကြီး 🌾✨"
+		},
+		{
+			"pos": Vector3(240.0, 0.0, 260.0),
+			"rot_y": deg_to_rad(-45.0),
+			"sign": "အရှေ့ဘက် လယ်ယာတလင်း ကောက်ရိုးပုံ 🌾🐂"
+		}
+	]
+
+	for data in floor_data:
+		var floor = THRESHING_FLOOR_SCENE.instantiate()
+		floor.position = data["pos"]
+		floor.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		floors_holder.add_child(floor)
+
+		var sign_node = floor.get_node_or_null("ThreshingSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]
