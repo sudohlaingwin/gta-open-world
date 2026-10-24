@@ -30,6 +30,8 @@ var door_latch_player: AudioStreamPlayer = null
 var banyan_wind_player: AudioStreamPlayer = null
 var nat_chime_player: AudioStreamPlayer = null
 var armrest_player: AudioStreamPlayer = null
+var palm_leaf_player: AudioStreamPlayer = null
+var temple_chime_player: AudioStreamPlayer = null
 
 const RADIO_STATIONS: Array[String] = [
 	"📻 ရေဒီယို: ပိတ်ထားသည် (Off)",
@@ -2575,3 +2577,62 @@ func play_armrest_latch(is_opening: bool) -> void:
 	stream.data = data
 	armrest_player.stream = stream
 	armrest_player.play()
+
+func play_palm_leaf_manuscript_flip() -> void:
+	if is_muted: return
+	if not palm_leaf_player:
+		palm_leaf_player = AudioStreamPlayer.new()
+		palm_leaf_player.name = "PalmLeafAudio"
+		palm_leaf_player.volume_db = -6.5
+		add_child(palm_leaf_player)
+	var sample_hz = 22050
+	var duration = 0.28
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Crisp dry rustling of inscribed sacred palm-leaf folios (Pe-Sar) and silk ribbon tie
+		var leaf_rustle = sin(t * 850.0 * TAU + sin(t * 22.0) * 1.5) * exp(-t * 14.0) * 0.4
+		var dry_flex = sin(t * 420.0 * TAU) * exp(-t * 18.0) * 0.3
+		var cord_slide = 0.0
+		if t > 0.08:
+			cord_slide = sin((t - 0.08) * 1850.0 * TAU) * exp(-(t - 0.08) * 32.0) * 0.22
+		var val = leaf_rustle + dry_flex + cord_slide
+		var int_sample = int(clamp(val, -1.0, 1.0) * 22500.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	palm_leaf_player.stream = stream
+	palm_leaf_player.play()
+
+func play_sacred_temple_chime() -> void:
+	if is_muted: return
+	if not temple_chime_player:
+		temple_chime_player = AudioStreamPlayer.new()
+		temple_chime_player.name = "TempleChimeAudio"
+		temple_chime_player.volume_db = -4.5
+		add_child(temple_chime_player)
+	var sample_hz = 22050
+	var duration = 1.9
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Deep monastery bronze bell strike (95Hz) with high rotary Kyeezee shimmer (1850Hz)
+		var bell_drone = sin(t * 95.0 * TAU) * exp(-t * 1.1) * 0.55
+		var bell_harmonic = sin(t * 190.0 * TAU) * exp(-t * 1.6) * 0.3
+		var kyeezee_spin = sin(t * 10.0 * TAU) * 0.5 + 0.5
+		var rotary_shimmer = sin(t * 1850.0 * TAU) * kyeezee_spin * exp(-t * 2.8) * 0.22
+		var val = bell_drone + bell_harmonic + rotary_shimmer
+		var int_sample = int(clamp(val, -1.0, 1.0) * 24500.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	temple_chime_player.stream = stream
+	temple_chime_player.play()

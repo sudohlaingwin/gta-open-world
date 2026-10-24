@@ -1,0 +1,297 @@
+﻿[gd_scene load_steps=32 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_plinth"]
+size = Vector3(12.4, 1.8, 9.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hall"]
+size = Vector3(11.4, 5.6, 8.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_plinth_white"]
+albedo_color = Color(0.92, 0.90, 0.86, 1)
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_terracotta_roof"]
+albedo_color = Color(0.72, 0.34, 0.22, 1)
+roughness = 0.76
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_teak"]
+albedo_color = Color(0.28, 0.16, 0.11, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold_leaf"]
+albedo_color = Color(0.96, 0.84, 0.26, 1)
+metallic = 0.95
+roughness = 0.18
+specular = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red_lacquer_gilt"]
+albedo_color = Color(0.68, 0.14, 0.12, 1)
+roughness = 0.42
+specular = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_palm_leaf_parchment"]
+albedo_color = Color(0.82, 0.72, 0.52, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_silk_yellow"]
+albedo_color = Color(0.92, 0.78, 0.22, 1)
+roughness = 0.55
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_terracotta_tile"]
+albedo_color = Color(0.66, 0.32, 0.20, 1)
+roughness = 0.62
+
+[sub_resource type="BoxMesh" id="BoxMesh_plinth_base"]
+material = SubResource("StandardMaterial3D_plinth_white")
+size = Vector3(12.0, 1.6, 8.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_plinth_coping"]
+material = SubResource("StandardMaterial3D_plinth_white")
+size = Vector3(12.4, 0.18, 9.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_stair_step1"]
+material = SubResource("StandardMaterial3D_plinth_white")
+size = Vector3(3.2, 0.35, 1.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_stair_step2"]
+material = SubResource("StandardMaterial3D_plinth_white")
+size = Vector3(3.2, 0.35, 0.7)
+
+[sub_resource type="BoxMesh" id="BoxMesh_stair_step3"]
+material = SubResource("StandardMaterial3D_plinth_white")
+size = Vector3(3.2, 0.35, 0.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_library_wall"]
+material = SubResource("StandardMaterial3D_plinth_white")
+size = Vector3(11.2, 4.2, 8.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hall_floor"]
+material = SubResource("StandardMaterial3D_terracotta_tile")
+size = Vector3(10.8, 0.08, 7.6)
+
+[sub_resource type="PrismMesh" id="PrismMesh_flame_pediment"]
+material = SubResource("StandardMaterial3D_plinth_white")
+size = Vector3(3.8, 1.4, 0.4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_arch_pillar"]
+material = SubResource("StandardMaterial3D_plinth_white")
+top_radius = 0.18
+bottom_radius = 0.22
+height = 3.8
+
+[sub_resource type="PrismMesh" id="PrismMesh_roof_tier1"]
+material = SubResource("StandardMaterial3D_terracotta_roof")
+size = Vector3(12.4, 2.2, 9.2)
+
+[sub_resource type="PrismMesh" id="PrismMesh_roof_tier2"]
+material = SubResource("StandardMaterial3D_terracotta_roof")
+size = Vector3(8.6, 1.8, 6.4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hti_spire"]
+material = SubResource("StandardMaterial3D_gold_leaf")
+top_radius = 0.04
+bottom_radius = 0.26
+height = 2.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_corner_stupa"]
+material = SubResource("StandardMaterial3D_gold_leaf")
+top_radius = 0.08
+bottom_radius = 0.28
+height = 1.4
+
+[sub_resource type="SphereMesh" id="SphereMesh_stupa_finial"]
+material = SubResource("StandardMaterial3D_gold_leaf")
+radius = 0.12
+height = 0.24
+
+[sub_resource type="BoxMesh" id="BoxMesh_cabinet_body"]
+material = SubResource("StandardMaterial3D_red_lacquer_gilt")
+size = Vector3(2.6, 1.8, 0.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cabinet_pedestal"]
+material = SubResource("StandardMaterial3D_dark_teak")
+size = Vector3(2.8, 0.25, 0.95)
+
+[sub_resource type="PrismMesh" id="PrismMesh_cabinet_roof"]
+material = SubResource("StandardMaterial3D_red_lacquer_gilt")
+size = Vector3(2.8, 0.6, 0.9)
+
+[sub_resource type="BoxMesh" id="BoxMesh_palm_bundle"]
+material = SubResource("StandardMaterial3D_palm_leaf_parchment")
+size = Vector3(0.55, 0.12, 0.16)
+
+[sub_resource type="BoxMesh" id="BoxMesh_silk_ribbon"]
+material = SubResource("StandardMaterial3D_silk_yellow")
+size = Vector3(0.06, 0.125, 0.165)
+
+[sub_resource type="BoxMesh" id="BoxMesh_scribe_desk"]
+material = SubResource("StandardMaterial3D_dark_teak")
+size = Vector3(1.6, 0.55, 0.8)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ink_stone"]
+material = SubResource("StandardMaterial3D_dark_teak")
+top_radius = 0.12
+bottom_radius = 0.14
+height = 0.06
+
+[node name="TipitakaScriptureLibrary" type="StaticBody3D"]
+
+[node name="CollisionPlinth" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_plinth")
+
+[node name="CollisionHall" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 0)
+shape = SubResource("BoxShape3D_hall")
+
+[node name="PlinthBase" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+mesh = SubResource("BoxMesh_plinth_base")
+
+[node name="PlinthCoping" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+mesh = SubResource("BoxMesh_plinth_coping")
+
+[node name="HallFloor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.76, 0)
+mesh = SubResource("BoxMesh_hall_floor")
+
+[node name="LibraryWalls" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 0)
+mesh = SubResource("BoxMesh_library_wall")
+
+[node name="FrontStairs" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.8)
+
+[node name="Step1" type="MeshInstance3D" parent="FrontStairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0.6)
+mesh = SubResource("BoxMesh_stair_step1")
+
+[node name="Step2" type="MeshInstance3D" parent="FrontStairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0.25)
+mesh = SubResource("BoxMesh_stair_step2")
+
+[node name="Step3" type="MeshInstance3D" parent="FrontStairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -0.1)
+mesh = SubResource("BoxMesh_stair_step3")
+
+[node name="FlameArchedMok" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 4.0)
+
+[node name="PillarL" type="MeshInstance3D" parent="FlameArchedMok"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.9, 0.2)
+mesh = SubResource("CylinderMesh_arch_pillar")
+
+[node name="PillarR" type="MeshInstance3D" parent="FlameArchedMok"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.9, 0.2)
+mesh = SubResource("CylinderMesh_arch_pillar")
+
+[node name="Pediment" type="MeshInstance3D" parent="FlameArchedMok"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.3, 0.2)
+mesh = SubResource("PrismMesh_flame_pediment")
+
+[node name="PyatthatRoof" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.9, 0)
+
+[node name="RoofTier1" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+mesh = SubResource("PrismMesh_roof_tier1")
+
+[node name="RoofTier2" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+mesh = SubResource("PrismMesh_roof_tier2")
+
+[node name="HtiSpire" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.9, 0)
+mesh = SubResource("CylinderMesh_hti_spire")
+
+[node name="CornerStupa_FL" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.7, 3.6)
+mesh = SubResource("CylinderMesh_corner_stupa")
+
+[node name="Finial_FL" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 1.5, 3.6)
+mesh = SubResource("SphereMesh_stupa_finial")
+
+[node name="CornerStupa_FR" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.7, 3.6)
+mesh = SubResource("CylinderMesh_corner_stupa")
+
+[node name="Finial_FR" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 1.5, 3.6)
+mesh = SubResource("SphereMesh_stupa_finial")
+
+[node name="CornerStupa_BL" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.7, -3.6)
+mesh = SubResource("CylinderMesh_corner_stupa")
+
+[node name="Finial_BL" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 1.5, -3.6)
+mesh = SubResource("SphereMesh_stupa_finial")
+
+[node name="CornerStupa_BR" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.7, -3.6)
+mesh = SubResource("CylinderMesh_corner_stupa")
+
+[node name="Finial_BR" type="MeshInstance3D" parent="PyatthatRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 1.5, -3.6)
+mesh = SubResource("SphereMesh_stupa_finial")
+
+[node name="SanctuaryInterior" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.76, -1.8)
+
+[node name="CabinetPedestal" type="MeshInstance3D" parent="SanctuaryInterior"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("BoxMesh_cabinet_pedestal")
+
+[node name="CabinetBody" type="MeshInstance3D" parent="SanctuaryInterior"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
+mesh = SubResource("BoxMesh_cabinet_body")
+
+[node name="CabinetRoof" type="MeshInstance3D" parent="SanctuaryInterior"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15, 0)
+mesh = SubResource("PrismMesh_cabinet_roof")
+
+[node name="PalmBundle1" type="MeshInstance3D" parent="SanctuaryInterior"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.9, 0.45)
+mesh = SubResource("BoxMesh_palm_bundle")
+
+[node name="Ribbon1" type="MeshInstance3D" parent="SanctuaryInterior"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.9, 0.45)
+mesh = SubResource("BoxMesh_silk_ribbon")
+
+[node name="PalmBundle2" type="MeshInstance3D" parent="SanctuaryInterior"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.9, 0.45)
+mesh = SubResource("BoxMesh_palm_bundle")
+
+[node name="Ribbon2" type="MeshInstance3D" parent="SanctuaryInterior"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.9, 0.45)
+mesh = SubResource("BoxMesh_silk_ribbon")
+
+[node name="ScribeDesk" type="MeshInstance3D" parent="SanctuaryInterior"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, 1.8)
+mesh = SubResource("BoxMesh_scribe_desk")
+
+[node name="InkStone" type="MeshInstance3D" parent="SanctuaryInterior"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.58, 1.8)
+mesh = SubResource("CylinderMesh_ink_stone")
+
+[node name="SanctuaryLight" type="OmniLight3D" parent="SanctuaryInterior"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0.8)
+light_color = Color(1.0, 0.88, 0.65, 1)
+light_energy = 2.6
+omni_range = 12.0
+
+[node name="EntranceLantern" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, 4.6)
+light_color = Color(1.0, 0.94, 0.75, 1)
+light_energy = 1.8
+omni_range = 10.0
+
+[node name="Signboard" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8, 4.4)
+pixel_size = 0.0032
+text = "မင်းတုန်း မဟာဝိဟာရ သမိုင်းဝင် ပိဋကတ်တိုက်တော်ကြီး 📜🛕"
+font_size = 36
+outline_size = 10
+modulate = Color(1.0, 0.92, 0.45, 1)

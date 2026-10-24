@@ -65,6 +65,7 @@ const SUGARCANE_WORKS_SCENE = preload("res://scenes/oxen_sugarcane_works.tscn")
 const BAMBOO_TIMBER_BOOM_SCENE = preload("res://scenes/bamboo_timber_boom.tscn")
 const MONASTIC_SIMA_HALL_SCENE = preload("res://scenes/monastic_sima_hall.tscn")
 const ANCIENT_BANYAN_SHRINE_SCENE = preload("res://scenes/ancient_banyan_nat_shrine.tscn")
+const TIPITAKA_LIBRARY_SCENE = preload("res://scenes/tipitaka_scripture_library.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -123,6 +124,7 @@ func _ready() -> void:
 	_generate_bamboo_timber_booms()
 	_generate_monastic_sima_halls()
 	_generate_ancient_banyan_shrines()
+	_generate_tipitaka_libraries()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -2330,5 +2332,34 @@ func _generate_ancient_banyan_shrines() -> void:
 		banyan_holder.add_child(shrine)
 
 		var sign_node = shrine.get_node_or_null("NatSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_tipitaka_libraries() -> void:
+	# Historical Tipitaka Scripture Libraries (မင်းတုန်း မဟာဝိဟာရ သမိုင်းဝင် ပိဋကတ်တိုက်တော်ကြီးများ)
+	var lib_holder = Node3D.new()
+	lib_holder.name = "TipitakaLibraries"
+	add_child(lib_holder)
+
+	var lib_locations = [
+		{
+			"pos": Vector3(-60.0, 0.0, -145.0),
+			"rot_y": deg_to_rad(0.0),
+			"sign": "မင်းတုန်း မဟာဝိဟာရ သမိုင်းဝင် ပိဋကတ်တိုက်တော်ကြီး 📜🛕"
+		},
+		{
+			"pos": Vector3(210.0, 10.0, -310.0),
+			"rot_y": deg_to_rad(-25.0),
+			"sign": "ရွှေမင်းတုန်း တောင်ကုန်း ပိဋကတ်တိုက်တော် 📜✨"
+		}
+	]
+
+	for data in lib_locations:
+		var lib = TIPITAKA_LIBRARY_SCENE.instantiate()
+		lib.position = data["pos"]
+		lib.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		lib_holder.add_child(lib)
+
+		var sign_node = lib.get_node_or_null("Signboard")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]
