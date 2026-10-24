@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=136 format=3]
+﻿[gd_scene load_steps=144 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -631,6 +631,41 @@ material = SubResource("StandardMaterial3D_gauge_rim")
 top_radius = 0.007
 bottom_radius = 0.008
 height = 0.005
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pedal_rubber"]
+albedo_color = Color(0.12, 0.13, 0.14, 1)
+roughness = 0.92
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pedal_metal"]
+albedo_color = Color(0.78, 0.82, 0.86, 1)
+metallic = 0.88
+roughness = 0.22
+
+[sub_resource type="BoxMesh" id="BoxMesh_pedal_bracket"]
+material = SubResource("StandardMaterial3D_pedal_metal")
+size = Vector3(0.04, 0.02, 0.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_throttle_plate"]
+material = SubResource("StandardMaterial3D_pedal_metal")
+size = Vector3(0.052, 0.15, 0.012)
+
+[sub_resource type="BoxMesh" id="BoxMesh_throttle_rubber"]
+material = SubResource("StandardMaterial3D_pedal_rubber")
+size = Vector3(0.042, 0.135, 0.008)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_brake_arm"]
+material = SubResource("StandardMaterial3D_pedal_metal")
+top_radius = 0.008
+bottom_radius = 0.009
+height = 0.24
+
+[sub_resource type="BoxMesh" id="BoxMesh_brake_pad"]
+material = SubResource("StandardMaterial3D_pedal_rubber")
+size = Vector3(0.076, 0.062, 0.016)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dead_pedal"]
+material = SubResource("StandardMaterial3D_pedal_metal")
+size = Vector3(0.072, 0.17, 0.016)
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
@@ -1330,3 +1365,42 @@ mesh = SubResource("BoxMesh_teak_amulet")
 [node name="GoldTassel" type="MeshInstance3D" parent="IgnitionKeyAssembly/IgnitionKeyPivot/DanglingKeyringPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0)
 mesh = SubResource("CylinderMesh_gold_tassel")
+
+[node name="PedalsAssembly" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.48, 0.65, -0.82)
+
+[node name="FootwellLight" type="OmniLight3D" parent="PedalsAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0.05)
+light_color = Color(1.0, 0.92, 0.75, 1)
+light_energy = 0.65
+omni_range = 1.1
+
+[node name="DeadPedalFootrest" type="MeshInstance3D" parent="PedalsAssembly"]
+transform = Transform3D(0.984808, 0, 0.173648, -0.068404, 0.919135, 0.387905, -0.159606, -0.393943, 0.905171, -0.18, 0.05, -0.04)
+mesh = SubResource("BoxMesh_dead_pedal")
+
+[node name="BrakePivot" type="Node3D" parent="PedalsAssembly"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, -0.04, 0.22, -0.06)
+
+[node name="BrakeArm" type="MeshInstance3D" parent="PedalsAssembly/BrakePivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.11, 0)
+mesh = SubResource("CylinderMesh_brake_arm")
+
+[node name="BrakePad" type="MeshInstance3D" parent="PedalsAssembly/BrakePivot"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, -0.22, 0.02)
+mesh = SubResource("BoxMesh_brake_pad")
+
+[node name="ThrottlePivot" type="Node3D" parent="PedalsAssembly"]
+transform = Transform3D(1, 0, 0, 0, 0.819152, -0.573576, 0, 0.573576, 0.819152, 0.09, 0.01, 0.02)
+
+[node name="ThrottleHingeBracket" type="MeshInstance3D" parent="PedalsAssembly/ThrottlePivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_pedal_bracket")
+
+[node name="ThrottlePlate" type="MeshInstance3D" parent="PedalsAssembly/ThrottlePivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0)
+mesh = SubResource("BoxMesh_throttle_plate")
+
+[node name="ThrottleRubber" type="MeshInstance3D" parent="PedalsAssembly/ThrottlePivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0.007)
+mesh = SubResource("BoxMesh_throttle_rubber")

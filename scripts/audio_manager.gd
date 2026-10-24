@@ -21,6 +21,8 @@ var horn_player: AudioStreamPlayer = null
 var skid_player: AudioStreamPlayer = null
 var wind_rush_player: AudioStreamPlayer = null
 var radio_tuning_player: AudioStreamPlayer = null
+var throttle_pedal_player: AudioStreamPlayer = null
+var brake_pedal_player: AudioStreamPlayer = null
 
 const RADIO_STATIONS: Array[String] = [
 	"📻 ရေဒီယို: ပိတ်ထားသည် (Off)",
@@ -2295,3 +2297,61 @@ func play_bamboo_wave_slap() -> void:
 	stream.data = data
 	bamboo_wave_player.stream = stream
 	bamboo_wave_player.play()
+
+func play_throttle_press() -> void:
+	if is_muted: return
+	if not throttle_pedal_player:
+		throttle_pedal_player = AudioStreamPlayer.new()
+		throttle_pedal_player.name = "ThrottlePedalAudio"
+		throttle_pedal_player.volume_db = -8.0
+		add_child(throttle_pedal_player)
+	var sample_hz = 22050
+	var duration = 0.16
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Mechanical throttle return spring tension squeak + floor bracket pivot click
+		var spring_squeak = sin(t * (1450.0 + t * 600.0) * TAU) * exp(-t * 28.0) * 0.35
+		var cable_slide = sin(t * 850.0 * TAU) * exp(-t * 18.0) * 0.22
+		var floor_stop = 0.0
+		if t > 0.06:
+			floor_stop = sin((t - 0.06) * 320.0 * TAU) * exp(-(t - 0.06) * 35.0) * 0.35
+		var val = spring_squeak + cable_slide + floor_stop
+		var int_sample = int(clamp(val, -1.0, 1.0) * 20000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	throttle_pedal_player.stream = stream
+	throttle_pedal_player.play()
+
+func play_brake_pedal_press() -> void:
+	if is_muted: return
+	if not brake_pedal_player:
+		brake_pedal_player = AudioStreamPlayer.new()
+		brake_pedal_player.name = "BrakePedalAudio"
+		brake_pedal_player.volume_db = -7.5
+		add_child(brake_pedal_player)
+	var sample_hz = 22050
+	var duration = 0.22
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Hydraulic vacuum brake booster air hiss + master cylinder plunger thump
+		var booster_hiss = (sin(t * 1150.0 * TAU) * 0.3 + sin(t * 2250.0 * TAU) * 0.2) * exp(-t * 14.0)
+		var plunger_thump = sin(t * 165.0 * TAU) * exp(-t * 22.0) * 0.45
+		var rubber_pad_squish = sin(t * 420.0 * TAU) * exp(-t * 30.0) * 0.25
+		var val = booster_hiss + plunger_thump + rubber_pad_squish
+		var int_sample = int(clamp(val, -1.0, 1.0) * 21500.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	brake_pedal_player.stream = stream
+	brake_pedal_player.play()

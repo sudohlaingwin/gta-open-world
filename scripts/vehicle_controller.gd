@@ -59,6 +59,11 @@ var keyring_pitch_vel: float = 0.0
 @onready var speedo_needle: Node3D = get_node_or_null("InstrumentCluster/SpeedometerDial/SpeedoNeedlePivot")
 @onready var tacho_needle: Node3D = get_node_or_null("InstrumentCluster/TachometerDial/TachoNeedlePivot")
 @onready var cluster_backlight: OmniLight3D = get_node_or_null("InstrumentCluster/ClusterBacklight")
+@onready var throttle_pivot: Node3D = get_node_or_null("PedalsAssembly/ThrottlePivot")
+@onready var brake_pivot: Node3D = get_node_or_null("PedalsAssembly/BrakePivot")
+@onready var footwell_light: OmniLight3D = get_node_or_null("PedalsAssembly/FootwellLight")
+var prev_throttle_depressed: bool = false
+var prev_brake_depressed: bool = false
 var engine_rpm: float = 0.0
 var rev_limiter_cooldown: float = 0.0
 var aroma_diffuser_active: bool = false
@@ -231,6 +236,8 @@ func toggle_dome_light() -> String:
 	var am = get_tree().get_first_node_in_group("audio_manager")
 	if am and am.has_method("play_dome_light_click"):
 		am.play_dome_light_click()
+		if footwell_light:
+		footwell_light.visible = (dome_light_on or not is_driven)
 	return "💡 အတွင်းခန်းမီး: ဖွင့်ထားသည် (Cabin Light ON)" if dome_light_on else "💡 အတွင်းခန်းမီး: ပိတ်ထားသည် (Cabin Light OFF)"
 
 func toggle_ac() -> String:
@@ -511,6 +518,30 @@ func _physics_process(delta: float) -> void:
 		var target_tacho_rot = lerpf(deg_to_rad(135.0), -deg_to_rad(135.0), clampf(engine_rpm / 8000.0, 0.0, 1.0))
 		if tacho_needle:
 			tacho_needle.rotation.y = lerpf(tacho_needle.rotation.y, target_tacho_rot, delta * 14.0)
+
+		# 3D In-Cabin Foot Pedals Live Articulation & Mechanical Spring Physics
+		var throttle_input_raw = -input_dir.y if input_dir.y < -0.05 else 0.0
+		var brake_input_raw = input_dir.y if input_dir.y > 0.05 else (1.0 if handbrake_engaged else 0.0)
+		var target_throttle_angle = deg_to_rad(-18.0) * clampf(throttle_input_raw, 0.0, 1.0)
+		if throttle_pivot:
+			throttle_pivot.rotation.x = lerpf(throttle_pivot.rotation.x, target_throttle_angle, delta * 16.0)
+		var target_brake_angle = deg_to_rad(15.0) * clampf(brake_input_raw, 0.0, 1.0)
+		if brake_pivot:
+			brake_pivot.rotation.x = lerpf(brake_pivot.rotation.x, target_brake_angle, delta * 18.0)
+		var is_throttle_down = (throttle_input_raw > 0.15)
+		if is_throttle_down and not prev_throttle_depressed:
+			var am_pedal = get_tree().get_first_node_in_group("audio_manager")
+			if am_pedal and am_pedal.has_method("play_throttle_press"):
+				am_pedal.play_throttle_press()
+		prev_throttle_depressed = is_throttle_down
+		var is_brake_down = (brake_input_raw > 0.15)
+		if is_brake_down and not prev_brake_depressed:
+			var am_pedal = get_tree().get_first_node_in_group("audio_manager")
+			if am_pedal and am_pedal.has_method("play_brake_pedal_press"):
+				am_pedal.play_brake_pedal_press()
+		prev_brake_depressed = is_brake_down
+		if footwell_light:
+			footwell_light.visible = (dome_light_on or not is_driven)
 
 		# Real-Time Odometer & Trip Distance Counter
 		var dist_delta_km = abs(forward_speed) * delta / 1000.0
