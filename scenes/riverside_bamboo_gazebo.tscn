@@ -1,0 +1,178 @@
+[gd_scene load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gazebo"]
+size = Vector3(6.5, 4.5, 6.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_platform"]
+size = Vector3(5.8, 0.22, 5.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_split_bamboo"]
+albedo_color = Color(0.68, 0.56, 0.35, 1)
+roughness = 0.75
+specular = 0.25
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_bamboo_pole"]
+top_radius = 0.09
+bottom_radius = 0.09
+height = 3.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yellow_bamboo"]
+albedo_color = Color(0.74, 0.62, 0.34, 1)
+roughness = 0.65
+
+[sub_resource type="PrismMesh" id="PrismMesh_thatched_roof"]
+left_to_right = 0.5
+size = Vector3(6.8, 1.8, 6.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dry_thatch"]
+albedo_color = Color(0.56, 0.46, 0.28, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_daybed"]
+size = Vector3(3.2, 0.45, 1.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_woven_mat"]
+albedo_color = Color(0.78, 0.68, 0.42, 1)
+roughness = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_brazier"]
+top_radius = 0.22
+bottom_radius = 0.18
+height = 0.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_terracotta"]
+albedo_color = Color(0.58, 0.32, 0.18, 1)
+roughness = 0.7
+
+[sub_resource type="SphereMesh" id="SphereMesh_kettle"]
+radius = 0.14
+height = 0.26
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brass_kettle"]
+albedo_color = Color(0.85, 0.70, 0.22, 1)
+metallic = 0.92
+roughness = 0.25
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_chime_tube"]
+top_radius = 0.02
+bottom_radius = 0.02
+height = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_chime"]
+albedo_color = Color(0.65, 0.52, 0.30, 1)
+roughness = 0.7
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lantern_globe"]
+top_radius = 0.08
+bottom_radius = 0.08
+height = 0.18
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lantern_amber"]
+transparency = 1
+albedo_color = Color(1.0, 0.85, 0.45, 0.75)
+emission_enabled = true
+emission = Color(1.0, 0.75, 0.25, 1)
+emission_energy_multiplier = 2.4
+
+[node name="RiversideBambooGazebo" type="StaticBody3D"]
+script = ExtResource("1_lantern")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+shape = SubResource("BoxShape3D_gazebo")
+
+[node name="VisualMesh" type="Node3D" parent="."]
+
+[node name="Platform" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("BoxMesh_platform")
+surface_material_override/0 = SubResource("StandardMaterial3D_split_bamboo")
+
+[node name="StiltFL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0.45, 2.4)
+mesh = SubResource("CylinderMesh_bamboo_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_bamboo")
+
+[node name="StiltFR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0.45, 2.4)
+mesh = SubResource("CylinderMesh_bamboo_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_bamboo")
+
+[node name="StiltBL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0.45, -2.4)
+mesh = SubResource("CylinderMesh_bamboo_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_bamboo")
+
+[node name="StiltBR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0.45, -2.4)
+mesh = SubResource("CylinderMesh_bamboo_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_bamboo")
+
+[node name="PillarFL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 2.4, 2.4)
+mesh = SubResource("CylinderMesh_bamboo_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_bamboo")
+
+[node name="PillarFR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 2.4, 2.4)
+mesh = SubResource("CylinderMesh_bamboo_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_bamboo")
+
+[node name="PillarBL" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 2.4, -2.4)
+mesh = SubResource("CylinderMesh_bamboo_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_bamboo")
+
+[node name="PillarBR" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 2.4, -2.4)
+mesh = SubResource("CylinderMesh_bamboo_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_bamboo")
+
+[node name="ThatchRoof" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, 0)
+mesh = SubResource("PrismMesh_thatched_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_dry_thatch")
+
+[node name="Daybed" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, -1.2)
+mesh = SubResource("BoxMesh_daybed")
+surface_material_override/0 = SubResource("StandardMaterial3D_woven_mat")
+
+[node name="Brazier" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.05, 1.2)
+mesh = SubResource("CylinderMesh_brazier")
+surface_material_override/0 = SubResource("StandardMaterial3D_terracotta")
+
+[node name="Kettle" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.3, 1.2)
+mesh = SubResource("SphereMesh_kettle")
+surface_material_override/0 = SubResource("StandardMaterial3D_brass_kettle")
+
+[node name="WindChime1" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 3.2, 2.1)
+mesh = SubResource("CylinderMesh_chime_tube")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_chime")
+
+[node name="WindChime2" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 3.1, 2.3)
+mesh = SubResource("CylinderMesh_chime_tube")
+surface_material_override/0 = SubResource("StandardMaterial3D_bamboo_chime")
+
+[node name="HangingLantern" type="MeshInstance3D" parent="VisualMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4, 0)
+mesh = SubResource("CylinderMesh_lantern_globe")
+surface_material_override/0 = SubResource("StandardMaterial3D_lantern_amber")
+
+[node name="LanternLight" type="OmniLight3D" parent="VisualMesh/HangingLantern"]
+light_color = Color(1.0, 0.8, 0.4, 1)
+light_energy = 2.2
+omni_range = 15.0
+
+[node name="GazeboSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.65, 2.8)
+text = "မင်းတုန်းချောင်းနဖူး ဝါးကွပ်ပျစ် အပန်းဖြေနားနေဇရပ် 🍵🎋"
+font_size = 28
+outline_size = 8
+modulate = Color(1.0, 0.94, 0.42, 1)

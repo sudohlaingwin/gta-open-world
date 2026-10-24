@@ -36,6 +36,7 @@ const BUS_SHELTER_SCENE = preload("res://scenes/highway_bus_shelter.tscn")
 const SLUICE_GATE_SCENE = preload("res://scenes/irrigation_sluice_gate.tscn")
 const COCONUT_STAND_SCENE = preload("res://scenes/roadside_coconut_stand.tscn")
 const WIND_TURBINE_SCENE = preload("res://scenes/mountain_wind_turbine.tscn")
+const BAMBOO_GAZEBO_SCENE = preload("res://scenes/riverside_bamboo_gazebo.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -65,6 +66,7 @@ func _ready() -> void:
 	_generate_irrigation_sluice_gates()
 	_generate_roadside_coconut_stands()
 	_generate_mountain_wind_turbines()
+	_generate_riverside_bamboo_gazebos()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1429,3 +1431,37 @@ func _generate_mountain_wind_turbines() -> void:
 		turbine.position = data["pos"]
 		turbine.rotation = Vector3(0.0, data["rot_y"], 0.0)
 		turbines_holder.add_child(turbine)
+
+func _generate_riverside_bamboo_gazebos() -> void:
+	# Serene riverside bamboo gazebos with daybeds, kettle warmers & wind chimes
+	var gazebos_holder = Node3D.new()
+	gazebos_holder.name = "RiversideBambooGazebos"
+	add_child(gazebos_holder)
+
+	var gazebo_data = [
+		{
+			"pos": Vector3(-240.0, 0.0, 75.0),
+			"rot_y": deg_to_rad(-15.0),
+			"sign": "မင်းတုန်းဆိပ်ကမ်း သမ္ဗာန်ဆိုက်ကပ်ရာ အပန်းဖြေဇရပ် 🍵🚣"
+		},
+		{
+			"pos": Vector3(280.0, 0.0, 15.0),
+			"rot_y": deg_to_rad(30.0),
+			"sign": "ချောင်းကွေ့ရှုခင်းသာ ဝါးကွပ်ပျစ် နားနေဆောင် 🎋✨"
+		},
+		{
+			"pos": Vector3(760.0, 0.0, -80.0),
+			"rot_y": deg_to_rad(-45.0),
+			"sign": "အရှေ့မြစ်ဆုံကျွန်း ရေပြင်ကြည့် ဇရပ်တော် 🌊🍵"
+		}
+	]
+
+	for data in gazebo_data:
+		var gazebo = BAMBOO_GAZEBO_SCENE.instantiate()
+		gazebo.position = data["pos"]
+		gazebo.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		gazebos_holder.add_child(gazebo)
+
+		var sign_node = gazebo.get_node_or_null("GazeboSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]

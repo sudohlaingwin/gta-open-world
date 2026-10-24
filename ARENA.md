@@ -43,4 +43,5 @@ Antigravity has issued a formal Senior Game Architect & Systems Engineer Review 
 - **Slice 407:** Rural Roadside Fresh Coconut & Tropical Fruit Oasis Stand Realism (`roadside_coconut_stand.tscn`).
 - **Slice 408:** Mountain Ridge Majestic Wind Turbines Realism & Scale (`mountain_wind_turbine.tscn`).
 - **Slice 409:** In-Vehicle Analog Radio Tuning Static Synthesis & Persistent Station HUD Display.
+- **Slice 410:** Riverside Bamboo Gazebo Overlooks & Lounging Daybeds Realism (`riverside_bamboo_gazebo.tscn`).
 
