@@ -43,6 +43,7 @@ const POTTERY_KILN_SCENE = preload("res://scenes/rural_pottery_kiln.tscn")
 const TODDY_CAMP_SCENE = preload("res://scenes/toddy_jaggery_camp.tscn")
 const TEA_PLANTATION_SCENE = preload("res://scenes/hillside_tea_plantation.tscn")
 const CABLE_BRIDGE_SCENE = preload("res://scenes/cable_footbridge.tscn")
+const WELL_SWEEP_SCENE = preload("res://scenes/bamboo_well_sweep.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -79,6 +80,7 @@ func _ready() -> void:
 	_generate_toddy_jaggery_camps()
 	_generate_hillside_tea_plantations()
 	_generate_cable_footbridges()
+	_generate_bamboo_well_sweeps()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1655,5 +1657,34 @@ func _generate_cable_footbridges() -> void:
 		bridges_holder.add_child(bridge)
 
 		var sign_node = bridge.get_node_or_null("BridgeSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_bamboo_well_sweeps() -> void:
+	# Traditional Myanmar counterweighted bamboo lever well sweeps with stone rings & washing troughs
+	var sweeps_holder = Node3D.new()
+	sweeps_holder.name = "BambooWellSweeps"
+	add_child(sweeps_holder)
+
+	var sweep_data = [
+		{
+			"pos": Vector3(-45.0, 0.0, 110.0),
+			"rot_y": deg_to_rad(-20.0),
+			"sign": "ရပ်ကွက် ၃ မြောက်ဘက် ရိုးရာမောင်းထောင်ရေတွင်း 🪣💧"
+		},
+		{
+			"pos": Vector3(85.0, 0.0, -95.0),
+			"rot_y": deg_to_rad(75.0),
+			"sign": "ဘုန်းတော်ကြီးကျောင်း ဥယျာဉ် ရေမောင်းစင် 🪣✨"
+		}
+	]
+
+	for data in sweep_data:
+		var sweep = WELL_SWEEP_SCENE.instantiate()
+		sweep.position = data["pos"]
+		sweep.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		sweeps_holder.add_child(sweep)
+
+		var sign_node = sweep.get_node_or_null("WellSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

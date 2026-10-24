@@ -4935,3 +4935,16 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - East River Confluence Island Crossing: Vector3(640, 1.2, -65) ("အရှေ့မြစ်ဆုံကျွန်း ကူး သဘာဝ ကြိုးတံတား 🌉🌊").
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 422: Traditional Village Bamboo Well Sweep & Counterweighted Lever Flume Realism
+### Completed by Antigravity:
+1. **Counterweighted Bamboo Well Sweep Scene (scenes/bamboo_well_sweep.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Upper Myanmar rural counterweighted bamboo well sweep (မောင်းထောင်ရေတွင်း). Features river pebble apron (BoxMesh_plinth, 8.2m x 6.2m), circular mortared stone well ring (CylinderMesh_stone_wall, radius 1.55m) with sparkling clear well water surface (CylinderMesh_well_water, transparency 1, specular 0.95), sturdy forked teak fulcrum pivot post (CylinderMesh_teak_post, radius 0.18m, height 3.8m), 6.8m tapered bamboo sweep lever arm (CylinderMesh_sweep_beam, tilted at 28 degrees), heavy granite counterweight boulder lashed to the short lever end (SphereMesh_counterweight, radius 0.42m), vertical bamboo dip-pole (CylinderMesh_dip_pole, 2.8m), wooden water drawing bucket (CylinderMesh_bucket), mossy teak livestock & washing trough (BoxMesh_trough, BoxMesh_trough_water), earthen water pot on resting bench (SphereMesh_urn, BoxMesh_bench), and automated dusk amber lantern (OmniLight3D, energy 2.4, range 15m).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=25), zero runtime monkey patching, zero load errors.
+2. **Procedural Distribution in Ward 3 Village & Monastery Gardens (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_bamboo_well_sweeps().
+   - Strategically placed active well sweeps at:
+     - Ward 3 North Residential Farm Edge: Vector3(-45, 0, 110) ("ရပ်ကွက် ၃ မြောက်ဘက် ရိုးရာမောင်းထောင်ရေတွင်း 🪣💧").
+     - South Monastery Garden Well Sweep: Vector3(85, 0, -95) ("ဘုန်းတော်ကြီးကျောင်း ဥယျာဉ် ရေမောင်းစင် 🪣✨").
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.
