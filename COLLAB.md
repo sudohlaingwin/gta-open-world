@@ -4526,6 +4526,19 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
 2. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to `origin/arena/antigravity`.
 
+## 2026-10-24 — Slice 393: PUBG-Style Rural Air Drop Supply Crate with Towering Crimson Smoke Beacon
+### Completed by Antigravity:
+1. **PUBG Mobile-Inspired Open World Air Drop Supply System (`scenes/airdrop_crate.tscn`, `scripts/airdrop_crate.gd`):**
+   - **Tactical Supply Drop Crate (`AirDropCrate`):** Modelled iconic red wooden supply container with blue waterproof canvas tarp cover, heavy industrial cross-webbing straps, and military stencil details.
+   - **Towering Crimson Smoke Flare (`SmokeColumn`, `FlareCanister`):** 48-meter swirling crimson smoke flare column (`CylinderMesh_smoke_billow`, `StandardMaterial3D_crimson_smoke`, `emission_energy = 0.85`, pulsating `OmniLight3D_flare`) visible across the 8000m basin from miles away to entice vehicular exploration and chill cruising.
+   - **Interactive Looting Mechanism (`scripts/player.gd`, `scripts/airdrop_crate.gd`):** Integrated full health restoration + 500 Kyats currency reward, dynamic prompt display, and smooth smoke fadeout upon looting.
+2. **Procedural Placement Across Mindon Basin (`scripts/mindon_map_builder.gd`):**
+   - Spawned 2 strategic supply drops: one along the Eastern Grand Highway Ridge (`(420.0, 0.0, 140.0)`) and one atop the Taung Zalat Panoramic Hill Viewpoint (`(-680.0, 32.0, 410.0)`).
+   - Strictly verified canonical TSCN format (`load_steps=13` matching 1 ext_resource + 11 sub_resources + 1) with 0 errors.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to `origin/arena/antigravity`.
+
+
 
 
 

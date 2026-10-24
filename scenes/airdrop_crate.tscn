@@ -1,0 +1,106 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/airdrop_crate.gd" id="1_airdrop"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
+size = Vector3(3.8, 3.2, 3.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_crate_base"]
+size = Vector3(1.8, 1.25, 1.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crate_red"]
+albedo_color = Color(0.85, 0.15, 0.12, 1)
+roughness = 0.65
+specular = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_tarp_cover"]
+size = Vector3(1.9, 0.35, 1.9)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tarp_blue"]
+albedo_color = Color(0.12, 0.32, 0.72, 1)
+roughness = 0.45
+specular = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_webbing_straps"]
+size = Vector3(0.08, 1.32, 1.88)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_straps_black"]
+albedo_color = Color(0.1, 0.1, 0.1, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_flare_canister"]
+top_radius = 0.045
+bottom_radius = 0.045
+height = 0.28
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flare_crimson"]
+albedo_color = Color(0.95, 0.1, 0.1, 1)
+emission_enabled = true
+emission = Color(1.0, 0.15, 0.1, 1)
+emission_energy_multiplier = 3.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_smoke_billow"]
+top_radius = 2.4
+bottom_radius = 0.25
+height = 48.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crimson_smoke"]
+transparency = 1
+cull_mode = 2
+albedo_color = Color(0.95, 0.18, 0.12, 0.42)
+emission_enabled = true
+emission = Color(0.95, 0.15, 0.1, 1)
+emission_energy_multiplier = 0.85
+
+[node name="AirDropCrate" type="Area3D" groups=["interactables"]]
+script = ExtResource("1_airdrop")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+shape = SubResource("BoxShape3D_interact")
+
+[node name="CrateBase" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
+mesh = SubResource("BoxMesh_crate_base")
+surface_material_override/0 = SubResource("StandardMaterial3D_crate_red")
+
+[node name="TarpCover" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("BoxMesh_tarp_cover")
+surface_material_override/0 = SubResource("StandardMaterial3D_tarp_blue")
+
+[node name="WebbingStrapX" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+mesh = SubResource("BoxMesh_webbing_straps")
+surface_material_override/0 = SubResource("StandardMaterial3D_straps_black")
+
+[node name="WebbingStrapZ" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.65, 0)
+mesh = SubResource("BoxMesh_webbing_straps")
+surface_material_override/0 = SubResource("StandardMaterial3D_straps_black")
+
+[node name="FlareCanister" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, 0)
+mesh = SubResource("CylinderMesh_flare_canister")
+surface_material_override/0 = SubResource("StandardMaterial3D_flare_crimson")
+
+[node name="FlareLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+light_color = Color(1.0, 0.22, 0.15, 1)
+light_energy = 2.4
+omni_range = 14.0
+
+[node name="SmokeColumn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+
+[node name="SmokeMesh" type="MeshInstance3D" parent="SmokeColumn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24.0, 0)
+mesh = SubResource("CylinderMesh_smoke_billow")
+surface_material_override/0 = SubResource("StandardMaterial3D_crimson_smoke")
+
+[node name="PromptLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+text = "📦 မင်းတုန်း ထောက်ပံ့ရေး သေတ္တာ (AIR DROP)"
+font_size = 36
+outline_size = 10
+modulate = Color(1.0, 0.88, 0.25, 1)

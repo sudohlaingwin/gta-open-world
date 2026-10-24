@@ -156,14 +156,30 @@ func interact() -> void:
 			elif nearby_aircraft and nearby_aircraft.has_method("enter_aircraft"):
 				nearby_aircraft.enter_aircraft(self)
 			else:
-				var villager = _get_nearest_villager(4.0)
-				if villager and villager.has_method("talk_to"):
-					villager.talk_to(global_position)
-					var hud = get_tree().get_first_node_in_group("hud")
-					if not hud:
-						hud = get_parent().get_node_or_null("MobileTouchHUD")
-					if hud and hud.has_method("record_villager_talk"):
-						hud.record_villager_talk()
+				var airdrop = _get_nearest_airdrop(5.0)
+				if airdrop and airdrop.has_method("loot_crate"):
+					airdrop.loot_crate(self)
+				else:
+					var villager = _get_nearest_villager(4.0)
+					if villager and villager.has_method("talk_to"):
+						villager.talk_to(global_position)
+						var hud = get_tree().get_first_node_in_group("hud")
+						if not hud:
+							hud = get_parent().get_node_or_null("MobileTouchHUD")
+						if hud and hud.has_method("record_villager_talk"):
+							hud.record_villager_talk()
+
+func _get_nearest_airdrop(max_dist: float) -> Node3D:
+	var drops = get_tree().get_nodes_in_group("interactables")
+	var nearest: Node3D = null
+	var min_dist = max_dist
+	for d_node in drops:
+		if d_node.has_method("loot_crate") and not d_node.get("is_looted"):
+			var dist = global_position.distance_to(d_node.global_position)
+			if dist < min_dist:
+				min_dist = dist
+				nearest = d_node
+	return nearest
 
 func _get_nearest_villager(max_dist: float) -> Node3D:
 	var villagers = get_tree().get_nodes_in_group("villagers")

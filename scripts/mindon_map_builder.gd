@@ -31,6 +31,7 @@ const CART_SCENE = preload("res://scenes/bullock_cart.tscn")
 const NIGHT_MARKET_SCENE = preload("res://scenes/myanmar_night_market.tscn")
 const GUESTHOUSE_SCENE = preload("res://scenes/myanmar_guesthouse.tscn")
 const RIVER_SHADER = preload("res://scripts/water_river.gdshader")
+const AIRDROP_SCENE = preload("res://scenes/airdrop_crate.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -54,6 +55,7 @@ func _ready() -> void:
 	_generate_mountain_pass_viewpoints()
 	_generate_distant_mountain_horizons()
 	_generate_vast_paddy_terraces_and_farms()
+	_generate_airdrop_supply_drops()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1207,6 +1209,26 @@ func _generate_vast_paddy_terraces_and_farms() -> void:
 			farms_holder.add_child(palm)
 			palm.global_position = sc + Vector3(-135.0 + float(p_idx) * 70.0, 0, 95.0)
 			palm.scale = Vector3(1.3, 1.3, 1.3)
+
+func _generate_airdrop_supply_drops() -> void:
+	var airdrop_holder = Node3D.new()
+	airdrop_holder.name = "AirDropSupplies"
+	add_child(airdrop_holder)
+
+	# 1. Eastern Highway Ridge (Visible from vehicles cruising along Grand Highway)
+	var drop1 = AIRDROP_SCENE.instantiate()
+	drop1.name = "HighwayAirDrop"
+	drop1.crate_id = "drop_highway"
+	airdrop_holder.add_child(drop1)
+	drop1.global_position = Vector3(420.0, 0.0, 140.0)
+
+	# 2. Taung Zalat Panoramic Hill Overlook (+32m elevation)
+	var drop2 = AIRDROP_SCENE.instantiate()
+	drop2.name = "HilltopAirDrop"
+	drop2.crate_id = "drop_hilltop"
+	airdrop_holder.add_child(drop2)
+	drop2.global_position = Vector3(-680.0, 32.0, 410.0)
+
 
 
 
