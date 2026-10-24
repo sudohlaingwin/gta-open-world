@@ -62,6 +62,7 @@ const COUNTRYSIDE_WATER_WELL_SCENE = preload("res://scenes/countryside_water_wel
 const MONASTERY_BELL_TOWER_SCENE = preload("res://scenes/monastery_bell_tower.tscn")
 const COVERED_BRIDGE_SCENE = preload("res://scenes/covered_wooden_bridge.tscn")
 const SUGARCANE_WORKS_SCENE = preload("res://scenes/oxen_sugarcane_works.tscn")
+const BAMBOO_TIMBER_BOOM_SCENE = preload("res://scenes/bamboo_timber_boom.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -117,6 +118,7 @@ func _ready() -> void:
 	_generate_monastery_bell_towers()
 	_generate_covered_wooden_bridges()
 	_generate_oxen_sugarcane_works()
+	_generate_bamboo_timber_booms()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -2237,5 +2239,34 @@ func _generate_oxen_sugarcane_works() -> void:
 		mills_holder.add_child(mill)
 
 		var sign_node = mill.get_node_or_null("MillSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_bamboo_timber_booms() -> void:
+	# Traditional Myanmar river bamboo timber raft booms, raftsmen cabins and sweep oars (ချောင်းတွင်း ဝါးဖောင်ဆိပ်များနှင့် သစ်ဖောင်စခန်းများ)
+	var booms_holder = Node3D.new()
+	booms_holder.name = "BambooTimberBooms"
+	add_child(booms_holder)
+
+	var boom_data = [
+		{
+			"pos": Vector3(340.0, 0.0, 120.0),
+			"rot_y": deg_to_rad(-40.0),
+			"sign": "မင်းတုန်း အရှေ့ဘက် ချောင်းကွေ့ ဝါးဖောင်ဆိပ် 🎋🌊"
+		},
+		{
+			"pos": Vector3(-260.0, 0.0, 240.0),
+			"rot_y": deg_to_rad(65.0),
+			"sign": "အနောက်ဘက် မြစ်လက်တက် သစ်ဖောင်စခန်း 🎋✨"
+		}
+	]
+
+	for data in boom_data:
+		var boom = BAMBOO_TIMBER_BOOM_SCENE.instantiate()
+		boom.position = data["pos"]
+		boom.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		booms_holder.add_child(boom)
+
+		var sign_node = boom.get_node_or_null("RaftSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

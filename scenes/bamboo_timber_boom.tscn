@@ -1,0 +1,247 @@
+﻿[gd_scene load_steps=26 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_raft_col"]
+size = Vector3(16.2, 0.6, 7.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cabin_col"]
+size = Vector3(4.4, 3.0, 3.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_golden_bamboo"]
+albedo_color = Color(0.74, 0.6, 0.32, 1)
+roughness = 0.55
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_bamboo_log"]
+material = SubResource("StandardMaterial3D_golden_bamboo")
+top_radius = 0.12
+bottom_radius = 0.14
+height = 16.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aged_teak"]
+albedo_color = Color(0.32, 0.22, 0.14, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="BoxMesh_raft_deck_cross"]
+material = SubResource("StandardMaterial3D_aged_teak")
+size = Vector3(0.18, 0.14, 7.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rattan_rope"]
+albedo_color = Color(0.55, 0.42, 0.25, 1)
+roughness = 0.95
+
+[sub_resource type="TorusMesh" id="TorusMesh_rattan_lashing"]
+material = SubResource("StandardMaterial3D_rattan_rope")
+inner_radius = 0.22
+outer_radius = 0.28
+rings = 16
+ring_segments = 8
+
+[sub_resource type="BoxMesh" id="BoxMesh_cabin_floor"]
+material = SubResource("StandardMaterial3D_golden_bamboo")
+size = Vector3(4.2, 0.18, 3.2)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cabin_stilt"]
+material = SubResource("StandardMaterial3D_aged_teak")
+top_radius = 0.08
+bottom_radius = 0.09
+height = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_cabin_wall"]
+material = SubResource("StandardMaterial3D_golden_bamboo")
+size = Vector3(4.0, 1.8, 3.0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thatch_roof"]
+albedo_color = Color(0.62, 0.5, 0.3, 1)
+roughness = 0.92
+
+[sub_resource type="PrismMesh" id="PrismMesh_cabin_roof"]
+material = SubResource("StandardMaterial3D_thatch_roof")
+left_to_right = 0.5
+size = Vector3(4.8, 1.4, 3.8)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sweep_oar_shaft"]
+material = SubResource("StandardMaterial3D_aged_teak")
+top_radius = 0.05
+bottom_radius = 0.07
+height = 6.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_oar_blade"]
+material = SubResource("StandardMaterial3D_aged_teak")
+size = Vector3(0.04, 0.35, 1.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gangway_ramp"]
+material = SubResource("StandardMaterial3D_aged_teak")
+size = Vector3(4.8, 0.15, 1.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sand_hearth"]
+albedo_color = Color(0.65, 0.58, 0.46, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_hearth_box"]
+material = SubResource("StandardMaterial3D_sand_hearth")
+size = Vector3(1.1, 0.18, 1.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clay_pot"]
+albedo_color = Color(0.46, 0.28, 0.18, 1)
+roughness = 0.8
+
+[sub_resource type="SphereMesh" id="SphereMesh_cooking_pot"]
+material = SubResource("StandardMaterial3D_clay_pot")
+radius = 0.25
+height = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brass_lantern"]
+albedo_color = Color(0.85, 0.72, 0.25, 1)
+metallic = 0.9
+roughness = 0.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_lantern_housing"]
+material = SubResource("StandardMaterial3D_brass_lantern")
+size = Vector3(0.22, 0.36, 0.22)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sign_post"]
+material = SubResource("StandardMaterial3D_aged_teak")
+size = Vector3(0.12, 1.8, 0.12)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold_sign"]
+albedo_color = Color(0.95, 0.82, 0.25, 1)
+roughness = 0.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_sign_board"]
+material = SubResource("StandardMaterial3D_gold_sign")
+size = Vector3(2.4, 0.52, 0.06)
+
+[node name="BambooTimberBoom" type="StaticBody3D"]
+
+[node name="RaftCol" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("BoxShape3D_raft_col")
+
+[node name="CabinCol" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.9, 0)
+shape = SubResource("BoxShape3D_cabin_col")
+
+[node name="BambooLayer1" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 0.12, -2.8)
+mesh = SubResource("CylinderMesh_bamboo_log")
+
+[node name="BambooLayer2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 0.12, -1.4)
+mesh = SubResource("CylinderMesh_bamboo_log")
+
+[node name="BambooLayer3" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 0.12, 0)
+mesh = SubResource("CylinderMesh_bamboo_log")
+
+[node name="BambooLayer4" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 0.12, 1.4)
+mesh = SubResource("CylinderMesh_bamboo_log")
+
+[node name="BambooLayer5" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 0.12, 2.8)
+mesh = SubResource("CylinderMesh_bamboo_log")
+
+[node name="DeckCrossBeam1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0.3, 0)
+mesh = SubResource("BoxMesh_raft_deck_cross")
+
+[node name="DeckCrossBeam2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.3, 0)
+mesh = SubResource("BoxMesh_raft_deck_cross")
+
+[node name="DeckCrossBeam3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.3, 0)
+mesh = SubResource("BoxMesh_raft_deck_cross")
+
+[node name="DeckCrossBeam4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0.3, 0)
+mesh = SubResource("BoxMesh_raft_deck_cross")
+
+[node name="RattanLash1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0.2, 2.0)
+mesh = SubResource("TorusMesh_rattan_lashing")
+
+[node name="RattanLash2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0.2, -2.0)
+mesh = SubResource("TorusMesh_rattan_lashing")
+
+[node name="CabinFloor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.55, 0)
+mesh = SubResource("BoxMesh_cabin_floor")
+
+[node name="CabinStilt1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.3, 0.5, 1.4)
+mesh = SubResource("CylinderMesh_cabin_stilt")
+
+[node name="CabinStilt2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0.5, 1.4)
+mesh = SubResource("CylinderMesh_cabin_stilt")
+
+[node name="CabinStilt3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.3, 0.5, -1.4)
+mesh = SubResource("CylinderMesh_cabin_stilt")
+
+[node name="CabinStilt4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0.5, -1.4)
+mesh = SubResource("CylinderMesh_cabin_stilt")
+
+[node name="CabinWall" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.5, 0)
+mesh = SubResource("BoxMesh_cabin_wall")
+
+[node name="CabinRoof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.9, 0)
+mesh = SubResource("PrismMesh_cabin_roof")
+
+[node name="SweepOarBow" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, 7.8, 1.2, 0)
+mesh = SubResource("CylinderMesh_sweep_oar_shaft")
+
+[node name="SweepBladeBow" type="MeshInstance3D" parent="SweepOarBow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.8, 0)
+mesh = SubResource("BoxMesh_oar_blade")
+
+[node name="SweepOarStern" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, -7.8, 1.2, 0)
+mesh = SubResource("CylinderMesh_sweep_oar_shaft")
+
+[node name="SweepBladeStern" type="MeshInstance3D" parent="SweepOarStern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.8, 0)
+mesh = SubResource("BoxMesh_oar_blade")
+
+[node name="HearthSandBox" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.45, 1.2)
+mesh = SubResource("BoxMesh_hearth_box")
+
+[node name="CookingClayPot" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.65, 1.2)
+mesh = SubResource("SphereMesh_cooking_pot")
+
+[node name="GangwayRamp" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 0, 0, 1, 3.5, 0.5, 4.4)
+mesh = SubResource("BoxMesh_gangway_ramp")
+
+[node name="RaftLantern" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 1.8, 1.6)
+mesh = SubResource("BoxMesh_lantern_housing")
+
+[node name="RaftDuskLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 1.7, 1.6)
+light_color = Color(1, 0.85, 0.52, 1)
+light_energy = 2.4
+omni_range = 12.0
+omni_attenuation = 1.3
+
+[node name="SignPost" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.9, 4.8)
+mesh = SubResource("BoxMesh_sign_post")
+
+[node name="SignBoard" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 1.7, 4.8)
+mesh = SubResource("BoxMesh_sign_board")
+
+[node name="RaftSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 1.7, 4.85)
+pixel_size = 0.005
+text = "မင်းတုန်း ချောင်းတွင်း ရိုးရာဝါးဖောင်ဆိပ်နှင့် သစ်ဖောင်စခန်း 🎋🌊"
+font_size = 30
+outline_size = 8

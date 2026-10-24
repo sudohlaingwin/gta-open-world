@@ -2232,3 +2232,66 @@ func play_rev_limiter() -> void:
 	stream.data = data
 	rev_limiter_player.stream = stream
 	rev_limiter_player.play()
+
+var bamboo_raft_player: AudioStreamPlayer = null
+var bamboo_wave_player: AudioStreamPlayer = null
+
+func play_bamboo_raft_creak() -> void:
+	if is_muted: return
+	if not bamboo_raft_player:
+		bamboo_raft_player = AudioStreamPlayer.new()
+		bamboo_raft_player.name = "BambooRaftCreakAudio"
+		bamboo_raft_player.volume_db = -5.5
+		add_child(bamboo_raft_player)
+	var sample_hz = 22050
+	var duration = 0.52
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Interlocking bamboo culm friction groan + rattan lashing stress harmonic
+		var groan = sin(t * 140.0 * TAU + sin(t * 14.0) * 1.5) * exp(-t * 4.5) * 0.55
+		var harmonic = sin(t * 280.0 * TAU) * exp(-t * 6.5) * 0.3
+		var rattan_squeak = sin(t * 820.0 * TAU) * exp(-t * 12.0) * 0.15
+		var val = groan + harmonic + rattan_squeak
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	bamboo_raft_player.stream = stream
+	bamboo_raft_player.play()
+
+func play_bamboo_wave_slap() -> void:
+	if is_muted: return
+	if not bamboo_wave_player:
+		bamboo_wave_player = AudioStreamPlayer.new()
+		bamboo_wave_player.name = "BambooWaveSlapAudio"
+		bamboo_wave_player.volume_db = -6.0
+		add_child(bamboo_wave_player)
+	var sample_hz = 22050
+	var duration = 0.44
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# River wave slap against hollow tubular bamboo cavity + water spray
+		var hollow = exp(-t * 9.0) * sin(t * 360.0 * TAU) * 0.45
+		var wave_slap = 0.0
+		if t > 0.04:
+			wave_slap = exp(-(t - 0.04) * 16.0) * (sin((t - 0.04) * 640.0 * TAU) * 0.4 + sin((t - 0.04) * 1250.0 * TAU) * 0.25)
+		var droplets = 0.0
+		if t > 0.15:
+			droplets = exp(-(t - 0.15) * 22.0) * sin((t - 0.15) * 1850.0 * TAU) * 0.2
+		var val = hollow + wave_slap + droplets
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23500.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	bamboo_wave_player.stream = stream
+	bamboo_wave_player.play()
