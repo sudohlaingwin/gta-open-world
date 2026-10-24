@@ -47,6 +47,7 @@ const WELL_SWEEP_SCENE = preload("res://scenes/bamboo_well_sweep.tscn")
 const FISHERMAN_HUT_SCENE = preload("res://scenes/fisherman_stilt_hut.tscn")
 const LOG_RAFT_SCENE = preload("res://scenes/river_log_raft.tscn")
 const WATERMILL_SCENE = preload("res://scenes/bamboo_watermill.tscn")
+const SILK_SHED_SCENE = preload("res://scenes/silk_weaving_shed.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -87,6 +88,7 @@ func _ready() -> void:
 	_generate_fisherman_stilt_huts()
 	_generate_river_log_rafts()
 	_generate_bamboo_watermills()
+	_generate_silk_weaving_sheds()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1779,5 +1781,34 @@ func _generate_bamboo_watermills() -> void:
 		mills_holder.add_child(mill)
 
 		var sign_node = mill.get_node_or_null("WatermillSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_silk_weaving_sheds() -> void:
+	# Traditional Myanmar cottage silk weaving sheds with flying-shuttle looms and dyed yarn skein racks
+	var sheds_holder = Node3D.new()
+	sheds_holder.name = "SilkWeavingSheds"
+	add_child(sheds_holder)
+
+	var shed_data = [
+		{
+			"pos": Vector3(-65.0, 0.0, 75.0),
+			"rot_y": deg_to_rad(15.0),
+			"sign": "မင်းတုန်း ရိုးရာ ပိုးချည် ရက်ကန်းရုံ 🧶✨"
+		},
+		{
+			"pos": Vector3(120.0, 0.0, -145.0),
+			"rot_y": deg_to_rad(-70.0),
+			"sign": "မြောက်ဘက်ကမ်း ရိုးရာ အချိတ်လုံချည် ရက်ကန်းစင် 🧵✨"
+		}
+	]
+
+	for data in shed_data:
+		var shed = SILK_SHED_SCENE.instantiate()
+		shed.position = data["pos"]
+		shed.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		sheds_holder.add_child(shed)
+
+		var sign_node = shed.get_node_or_null("ShedSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

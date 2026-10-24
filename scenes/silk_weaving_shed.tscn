@@ -1,0 +1,230 @@
+[gd_scene load_steps=26 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_shed_col"]
+size = Vector3(7.4, 4.6, 6.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_weathered_teak"]
+albedo_color = Color(0.32, 0.22, 0.15, 1)
+roughness = 0.88
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pillar"]
+material = SubResource("StandardMaterial3D_weathered_teak")
+top_radius = 0.14
+bottom_radius = 0.16
+height = 3.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_deck"]
+albedo_color = Color(0.68, 0.58, 0.38, 1)
+roughness = 0.72
+
+[sub_resource type="BoxMesh" id="BoxMesh_deck"]
+material = SubResource("StandardMaterial3D_bamboo_deck")
+size = Vector3(7.2, 0.2, 5.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tin_roof"]
+albedo_color = Color(0.48, 0.5, 0.48, 1)
+metallic = 0.65
+roughness = 0.45
+
+[sub_resource type="PrismMesh" id="PrismMesh_roof"]
+material = SubResource("StandardMaterial3D_tin_roof")
+left_to_right = 0.5
+size = Vector3(7.8, 1.8, 6.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_loom_timber"]
+albedo_color = Color(0.42, 0.28, 0.18, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="BoxMesh_loom_upright"]
+material = SubResource("StandardMaterial3D_loom_timber")
+size = Vector3(0.12, 1.8, 0.12)
+
+[sub_resource type="BoxMesh" id="BoxMesh_loom_beam"]
+material = SubResource("StandardMaterial3D_loom_timber")
+size = Vector3(1.6, 0.1, 2.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_acheik_silk"]
+albedo_color = Color(0.82, 0.22, 0.42, 1)
+metallic = 0.35
+roughness = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_woven_cloth"]
+material = SubResource("StandardMaterial3D_acheik_silk")
+size = Vector3(1.2, 0.04, 1.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yarn_crimson"]
+albedo_color = Color(0.88, 0.18, 0.22, 1)
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_yarn_hank"]
+material = SubResource("StandardMaterial3D_yarn_crimson")
+top_radius = 0.08
+bottom_radius = 0.1
+height = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yarn_gold"]
+albedo_color = Color(0.92, 0.72, 0.15, 1)
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yarn_peacock"]
+albedo_color = Color(0.12, 0.58, 0.65, 1)
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_rack"]
+albedo_color = Color(0.72, 0.62, 0.42, 1)
+roughness = 0.65
+
+[sub_resource type="BoxMesh" id="BoxMesh_rack_rail"]
+material = SubResource("StandardMaterial3D_bamboo_rack")
+size = Vector3(2.4, 0.08, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_display_table"]
+albedo_color = Color(0.46, 0.32, 0.2, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_table"]
+material = SubResource("StandardMaterial3D_display_table")
+size = Vector3(2.2, 0.75, 1.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_folded_bolt"]
+material = SubResource("StandardMaterial3D_acheik_silk")
+size = Vector3(0.45, 0.12, 0.65)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lantern_brass"]
+albedo_color = Color(0.72, 0.56, 0.24, 1)
+metallic = 0.75
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lantern"]
+material = SubResource("StandardMaterial3D_lantern_brass")
+top_radius = 0.1
+bottom_radius = 0.12
+height = 0.32
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_amber_glow"]
+albedo_color = Color(1, 0.85, 0.4, 0.9)
+emission_enabled = true
+emission = Color(1, 0.75, 0.3, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_amber_glow"]
+material = SubResource("StandardMaterial3D_amber_glow")
+radius = 0.09
+height = 0.18
+
+[node name="SilkWeavingShed" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
+shape = SubResource("BoxShape3D_shed_col")
+
+[node name="DeckPlatform" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("BoxMesh_deck")
+
+[node name="PillarFL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 2.0, 2.5)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="PillarFR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 2.0, 2.5)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="PillarBL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 2.0, -2.5)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="PillarBR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 2.0, -2.5)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="Roof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, 0)
+mesh = SubResource("PrismMesh_roof")
+
+[node name="LoomFrame" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.3, -0.4)
+
+[node name="Upright1" type="MeshInstance3D" parent="LoomFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0.9, 0.9)
+mesh = SubResource("BoxMesh_loom_upright")
+
+[node name="Upright2" type="MeshInstance3D" parent="LoomFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0.9, 0.9)
+mesh = SubResource("BoxMesh_loom_upright")
+
+[node name="Upright3" type="MeshInstance3D" parent="LoomFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0.9, -0.9)
+mesh = SubResource("BoxMesh_loom_upright")
+
+[node name="Upright4" type="MeshInstance3D" parent="LoomFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0.9, -0.9)
+mesh = SubResource("BoxMesh_loom_upright")
+
+[node name="LoomBed" type="MeshInstance3D" parent="LoomFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("BoxMesh_loom_beam")
+
+[node name="WovenAcheikSilk" type="MeshInstance3D" parent="LoomFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.92, 0.1)
+mesh = SubResource("BoxMesh_woven_cloth")
+
+[node name="YarnDryingRack" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0.3, -1.4)
+
+[node name="RackBar" type="MeshInstance3D" parent="YarnDryingRack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+mesh = SubResource("BoxMesh_rack_rail")
+
+[node name="CrimsonHank" type="MeshInstance3D" parent="YarnDryingRack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 1.35, 0)
+mesh = SubResource("CylinderMesh_yarn_hank")
+
+[node name="GoldHank" type="MeshInstance3D" parent="YarnDryingRack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("CylinderMesh_yarn_hank")
+surface_material_override/0 = SubResource("StandardMaterial3D_yarn_gold")
+
+[node name="PeacockHank" type="MeshInstance3D" parent="YarnDryingRack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 1.35, 0)
+mesh = SubResource("CylinderMesh_yarn_hank")
+surface_material_override/0 = SubResource("StandardMaterial3D_yarn_peacock")
+
+[node name="DisplayTable" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0.68, 1.2)
+mesh = SubResource("BoxMesh_table")
+
+[node name="SilkRoll1" type="MeshInstance3D" parent="DisplayTable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.44, 0)
+mesh = SubResource("BoxMesh_folded_bolt")
+
+[node name="SilkRoll2" type="MeshInstance3D" parent="DisplayTable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.44, 0)
+mesh = SubResource("BoxMesh_folded_bolt")
+surface_material_override/0 = SubResource("StandardMaterial3D_yarn_gold")
+
+[node name="SilkRoll3" type="MeshInstance3D" parent="DisplayTable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.65, 0.44, 0)
+mesh = SubResource("BoxMesh_folded_bolt")
+surface_material_override/0 = SubResource("StandardMaterial3D_yarn_peacock")
+
+[node name="DuskLantern" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("CylinderMesh_lantern")
+
+[node name="LanternGlow" type="MeshInstance3D" parent="DuskLantern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("SphereMesh_amber_glow")
+
+[node name="LanternLight" type="OmniLight3D" parent="DuskLantern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+light_color = Color(1, 0.85, 0.45, 1)
+light_energy = 2.8
+omni_range = 16.0
+
+[node name="ShedSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 2.8)
+text = "မင်းတုန်း ရိုးရာ ပိုးချည် ရက်ကန်းရုံ 🧶✨"
+font_size = 28
+outline_size = 8
+modulate = Color(1, 0.9, 0.4, 1)
