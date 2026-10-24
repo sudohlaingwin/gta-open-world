@@ -1,4 +1,4 @@
-extends Node3D
+﻿extends Node3D
 
 # --- Mindon Township Ward 3 Real-World GIS Procedural Generator ---
 # Exact Center: 19.351497 N, 94.731889 E (Mindon, Magway Region, Myanmar)
@@ -38,6 +38,7 @@ const COCONUT_STAND_SCENE = preload("res://scenes/roadside_coconut_stand.tscn")
 const WIND_TURBINE_SCENE = preload("res://scenes/mountain_wind_turbine.tscn")
 const BAMBOO_GAZEBO_SCENE = preload("res://scenes/riverside_bamboo_gazebo.tscn")
 const FUEL_DEPOT_SCENE = preload("res://scenes/highway_fuel_depot.tscn")
+const CATTLE_STATION_SCENE = preload("res://scenes/cattle_rest_station.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -69,6 +70,7 @@ func _ready() -> void:
 	_generate_mountain_wind_turbines()
 	_generate_riverside_bamboo_gazebos()
 	_generate_highway_fuel_depots()
+	_generate_cattle_rest_stations()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1495,5 +1497,39 @@ func _generate_highway_fuel_depots() -> void:
 		depots_holder.add_child(depot)
 
 		var sign_node = depot.get_node_or_null("DepotSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_cattle_rest_stations() -> void:
+	# Traditional Myanmar rural bullock cart & cattle resting stations with hollowed log water troughs & straw ricks
+	var stations_holder = Node3D.new()
+	stations_holder.name = "CattleRestStations"
+	add_child(stations_holder)
+
+	var station_data = [
+		{
+			"pos": Vector3(-60.0, 0.0, 380.0),
+			"rot_y": deg_to_rad(-25.0),
+			"sign": "တောင်ခြေလယ်ပြင် နွားနားစခန်းနှင့် ရေသောက်ကျင်း 🐂🌾"
+		},
+		{
+			"pos": Vector3(420.0, 0.0, 180.0),
+			"rot_y": deg_to_rad(65.0),
+			"sign": "အရှေ့လွင်ပြင် နှမ်းခင်း လှည်းနားစခန်းနှင့် ရေချမ်းစင် 🐂🍃"
+		},
+		{
+			"pos": Vector3(-320.0, 0.0, -280.0),
+			"rot_y": deg_to_rad(-110.0),
+			"sign": "မြောက်ဘက် ချောင်းကူး လှည်းတန်း နားနေဆောင်တော် 🐂🪵"
+		}
+	]
+
+	for data in station_data:
+		var station = CATTLE_STATION_SCENE.instantiate()
+		station.position = data["pos"]
+		station.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		stations_holder.add_child(station)
+
+		var sign_node = station.get_node_or_null("StationSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

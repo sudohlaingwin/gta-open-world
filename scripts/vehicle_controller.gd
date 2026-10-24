@@ -27,6 +27,7 @@ var smoothed_steering: float = 0.0
 @onready var wiper_pivot_r: Node3D = get_node_or_null("WiperPivotR")
 @onready var side_window_l: MeshInstance3D = get_node_or_null("SideWindowL")
 @onready var side_window_r: MeshInstance3D = get_node_or_null("SideWindowR")
+@onready var dashboard_display: Label3D = get_node_or_null("DashboardDisplay")
 
 var charm_roll: float = 0.0
 var charm_roll_vel: float = 0.0
@@ -174,6 +175,24 @@ func _physics_process(delta: float) -> void:
 		var sw = get_node_or_null("SteeringWheel")
 		if sw:
 			sw.rotation.z = -smoothed_steering * 3.8
+
+		if dashboard_display:
+			var dnc = get_tree().get_first_node_in_group("day_night")
+			var time_str = dnc.get_time_string() if (dnc and dnc.has_method("get_time_string")) else "02:30 PM"
+			var temp_c = dnc.get_ambient_temp_celsius() if (dnc and dnc.has_method("get_ambient_temp_celsius")) else 30
+			var fwd = -global_transform.basis.z
+			var ang = atan2(fwd.x, -fwd.z)
+			var deg = wrapf(rad_to_deg(ang), 0.0, 360.0)
+			var compass_dir = "N"
+			if deg >= 337.5 or deg < 22.5: compass_dir = "N"
+			elif deg < 67.5: compass_dir = "NE"
+			elif deg < 112.5: compass_dir = "E"
+			elif deg < 157.5: compass_dir = "SE"
+			elif deg < 202.5: compass_dir = "S"
+			elif deg < 247.5: compass_dir = "SW"
+			elif deg < 292.5: compass_dir = "W"
+			else: compass_dir = "NW"
+			dashboard_display.text = "%s | %s | %d°C | %d KM/H" % [time_str, compass_dir, temp_c, int(abs(forward_speed) * 3.6)]
 
 		# Dynamic Chassis Weight Transfer (Roll & Pitch Suspension Reaction)
 		if body_mesh:

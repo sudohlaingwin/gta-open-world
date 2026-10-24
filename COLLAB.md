@@ -4833,3 +4833,20 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
    - Bound desktop 'J' key for instant window roll-down/roll-up.
 5. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 415: Rural Cattle Rest Station, Log Water Trough & Cockpit Digital Clock/Compass HUD Realism
+### Completed by Antigravity:
+1. **Rural Bullock Cart & Cattle Resting Station Scene (scenes/cattle_rest_station.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Myanmar dry-zone cattle resting shelter featuring an earth/gravel plinth (BoxMesh_plinth), 4 sturdy teak posts (CylinderMesh_timber_post), thatched straw awning (PrismMesh_thatch_awning), traditional hollowed-out tree trunk cattle water trough (BoxMesh_trough_log, BoxMesh_trough_water), harvested rice straw conical haystack rick (CylinderMesh_haystack_base, CylinderMesh_haystack_cone), carved teak ox-yoke peg rack (CylinderMesh_yoke), clay water pot for farmers (SphereMesh_urn), and automated amber night lantern (OmniLight3D, energy 2.2, range 15m).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=21), zero runtime monkey patching, zero load errors.
+2. **Procedural Distribution Across Countryside Trails (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_cattle_rest_stations().
+   - Strategically positioned rest stations at:
+     - Southern Foothills Farm Trail: Vector3(-60, 0, 380) ("တောင်ခြေလယ်ပြင် နွားနားစခန်းနှင့် ရေသောက်ကျင်း 🐂🌾").
+     - East Ayeyarwady Basin Country Trail: Vector3(420, 0, 180) ("အရှေ့လွင်ပြင် နှမ်းခင်း လှည်းနားစခန်းနှင့် ရေချမ်းစင် 🐂🍃").
+     - Northwest Valley Crossing Trail: Vector3(-320, 0, -280) ("မြောက်ဘက် ချောင်းကူး လှည်းတန်း နားနေဆောင်တော် 🐂🪵").
+3. **Live In-Cabin Digital Instrument Readout (scenes/village_car.tscn, scripts/vehicle_controller.gd, scripts/day_night_cycle.gd):**
+   - Added DashboardDisplay (Label3D) directly onto instrument cluster.
+   - Synchronized live in-game time (get_time_string(), 12-hour AM/PM), dynamic ambient temperature (get_ambient_temp_celsius(), 22°C to 34°C based on solar daylight), 8-point magnetic compass heading (N/NE/E/SE/S/SW/W/NW), and digital KM/H speedometer.
+4. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

@@ -1,4 +1,4 @@
-extends Node3D
+﻿extends Node3D
 
 @export var day_length_seconds: float = 300.0
 @onready var sun: DirectionalLight3D = $SunLight
@@ -63,3 +63,19 @@ func get_daylight() -> float:
 		var angle = wrapf(sun.rotation.x, 0.0, TAU)
 		return clamp(-sin(angle), 0.0, 1.0)
 	return 1.0
+
+func get_time_string() -> String:
+	# 24-hour cycle mapped to day_length_seconds (0 = 06:00 sunrise)
+	var day_frac = wrapf((time_passed / day_length_seconds) + 0.25, 0.0, 1.0)
+	var total_minutes = int(day_frac * 24.0 * 60.0)
+	var hours = (total_minutes / 60) % 24
+	var minutes = total_minutes % 60
+	var ampm = "AM" if hours < 12 else "PM"
+	var disp_hour = hours % 12
+	if disp_hour == 0: disp_hour = 12
+	return "%02d:%02d %s" % [disp_hour, minutes, ampm]
+
+func get_ambient_temp_celsius() -> int:
+	var daylight = get_daylight()
+	# Tropical Myanmar temperature: 22°C (cool night) to 34°C (high noon)
+	return int(lerpf(22.0, 34.0, daylight))
