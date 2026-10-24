@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=77 format=3]
+﻿[gd_scene load_steps=85 format=3]
 
 [ext_resource type="Script" path="res://scripts/vehicle_controller.gd" id="1_vehicle"]
 
@@ -330,6 +330,51 @@ roughness = 0.45
 [sub_resource type="BoxMesh" id="BoxMesh_toll_card"]
 material = SubResource("StandardMaterial3D_toll_card")
 size = Vector3(0.1, 0.06, 0.005)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_diffuser_glass"]
+transparency = 1
+albedo_color = Color(0.2, 0.85, 0.5, 0.45)
+roughness = 0.06
+metallic = 0.15
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_diffuser_bottle"]
+material = SubResource("StandardMaterial3D_diffuser_glass")
+top_radius = 0.022
+bottom_radius = 0.025
+height = 0.055
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_diffuser_wood"]
+albedo_color = Color(0.48, 0.32, 0.2, 1)
+roughness = 0.75
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_diffuser_cap"]
+material = SubResource("StandardMaterial3D_diffuser_wood")
+top_radius = 0.026
+bottom_radius = 0.026
+height = 0.022
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_citrus_oil"]
+transparency = 1
+albedo_color = Color(0.95, 0.82, 0.2, 0.8)
+roughness = 0.1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_oil_liquid"]
+material = SubResource("StandardMaterial3D_citrus_oil")
+top_radius = 0.018
+bottom_radius = 0.02
+height = 0.035
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aroma_mist"]
+transparency = 1
+albedo_color = Color(0.85, 1, 0.75, 0.6)
+emission_enabled = true
+emission = Color(0.7, 1, 0.6, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="SphereMesh" id="SphereMesh_aroma_mist"]
+material = SubResource("StandardMaterial3D_aroma_mist")
+radius = 0.015
+height = 0.03
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
 script = ExtResource("1_vehicle")
@@ -758,3 +803,56 @@ modulate = Color(1.0, 0.65, 0.1, 1)
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -1.09, 1.35, -1.21)
 mesh = SubResource("CylinderMesh_convex_mirror")
 surface_material_override/0 = SubResource("StandardMaterial3D_mirror_chrome")
+
+[node name="SunVisorPivotL" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.48, 1.76, -1.02)
+
+[node name="SunVisorMeshL" type="MeshInstance3D" parent="SunVisorPivotL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0)
+mesh = SubResource("BoxMesh_sun_visor")
+
+[node name="AmuletCard" type="MeshInstance3D" parent="SunVisorPivotL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0.012)
+mesh = SubResource("BoxMesh_amulet_card")
+
+[node name="SunVisorPivotR" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.48, 1.76, -1.02)
+
+[node name="SunVisorMeshR" type="MeshInstance3D" parent="SunVisorPivotR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0)
+mesh = SubResource("BoxMesh_sun_visor")
+
+[node name="TollCard" type="MeshInstance3D" parent="SunVisorPivotR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0.012)
+mesh = SubResource("BoxMesh_toll_card")
+
+[node name="AirFreshenerDiffuser" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.34, -0.85)
+
+[node name="DiffuserBottle" type="MeshInstance3D" parent="AirFreshenerDiffuser"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_diffuser_bottle")
+
+[node name="DiffuserLiquid" type="MeshInstance3D" parent="AirFreshenerDiffuser/DiffuserBottle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.008, 0)
+mesh = SubResource("CylinderMesh_oil_liquid")
+
+[node name="DiffuserCap" type="MeshInstance3D" parent="AirFreshenerDiffuser/DiffuserBottle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.035, 0)
+mesh = SubResource("CylinderMesh_diffuser_cap")
+
+[node name="AromaVaporParticles" type="CPUParticles3D" parent="AirFreshenerDiffuser/DiffuserBottle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+emitting = false
+amount = 12
+lifetime = 0.8
+explosiveness = 0.1
+randomness = 0.4
+mesh = SubResource("SphereMesh_aroma_mist")
+direction = Vector3(0, 1, 0.3)
+spread = 25.0
+gravity = Vector3(0, 0.2, 0)
+initial_velocity_min = 0.15
+initial_velocity_max = 0.45
+scale_amount_min = 0.5
+scale_amount_max = 1.4

@@ -5153,3 +5153,15 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
      - Northwest Forest Edge: Vector3(-410.0, 0.0, -180.0), rot_y = -60 deg ("တောင်ခြေ သစ်တောစပ် မီးသွေးဖို 🪵✨").
 4. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+## 2026-10-24 — Slice 436: In-Cabin Dashboard Aromatic Vent Fragrance Diffuser, Citrus Mist & Multi-Action HUD Realism
+### Completed by Antigravity:
+1. **Interactive In-Cabin Dashboard Aroma Diffuser & Vent Assembly (scenes/village_car.tscn):**
+   - **Dashboard Aroma Dispenser Model:** Modelled authentic automotive clip-on aromatherapy fragrance bottle (AirFreshenerDiffuser, DiffuserBottle, CylinderMesh_diffuser_bottle, StandardMaterial3D_diffuser_glass with translucent emerald-citrus sheen) mounted directly onto the central A/C dashboard console. Features carved teak wooden cap (DiffuserCap, CylinderMesh_diffuser_cap, StandardMaterial3D_diffuser_wood), internal golden lime-lemongrass essential oil volume (DiffuserLiquid, CylinderMesh_oil_liquid, StandardMaterial3D_citrus_oil), and dynamic upward aromatic fragrance mist particle emitter (AromaVaporParticles, CPUParticles3D, SphereMesh_aroma_mist).
+   - **Articulated Sun Visor Hierarchy Attached:** Fully integrated SunVisorPivotL and SunVisorPivotR node trees with AmuletCard (golden paper protection talisman) and TollCard (expressway toll-pass card).
+   - **Interactive Scent Emission & Native Audio Synthesis:** Added toggle_aroma_diffuser() in scripts/vehicle_controller.gd toggling gentle upward fragrant micro-vapor plumes. Synthesized realistic aerosol pressurized hiss and capillary liquid swirl audio in scripts/audio_manager.gd (play_diffuser_spray(), 2800Hz hiss + 850Hz liquid bubble swirl).
+   - **Canonical Declarative Architecture:** Updated scenes/village_car.tscn to load_steps=85 with 100% verified sub-resources and zero engine warnings.
+2. **Mobile Context-Aware & Desktop Controls:**
+   - **Mobile Touch HUD (scenes/mobile_touch_hud.tscn, scripts/mobile_touch_hud.gd):** Added AromaBtn (🌸 လေမွှေး) in ActionContainer, dynamically revealed during driving state (DRIVING_VEHICLE). Repaired and cleaned all @onready var button declarations with $ActionContainer.get_node_or_null(...).
+   - **Desktop Hotkey (scripts/player.gd):** Bound 'P' hotkey to smoothly toggle fragrance diffuser on/off and display Burmese status prompt.
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

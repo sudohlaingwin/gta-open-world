@@ -10,11 +10,15 @@
 @onready var view_btn: Button = $ActionContainer.get_node_or_null("ViewBtn")
 @onready var radio_btn: Button = $ActionContainer.get_node_or_null("RadioBtn")
 @onready var horn_btn: Button = $ActionContainer.get_node_or_null("HornBtn")
-@onready var headlight_btn: Button = .get_node_or_null("HeadlightBtn")
-@onready var window_btn: Button = .get_node_or_null("WindowBtn")
-@onready var hazard_btn: Button = .get_node_or_null("HazardBtn")
-@onready var mirror_btn: Button = .get_node_or_null("MirrorBtn")
-@onready var ac_btn: Button = .get_node_or_null("ACBtn")
+@onready var headlight_btn: Button = $ActionContainer.get_node_or_null("HeadlightBtn")
+@onready var window_btn: Button = $ActionContainer.get_node_or_null("WindowBtn")
+@onready var hazard_btn: Button = $ActionContainer.get_node_or_null("HazardBtn")
+@onready var mirror_btn: Button = $ActionContainer.get_node_or_null("MirrorBtn")
+@onready var ac_btn: Button = $ActionContainer.get_node_or_null("ACBtn")
+@onready var dome_btn: Button = $ActionContainer.get_node_or_null("DomeBtn")
+@onready var glove_btn: Button = $ActionContainer.get_node_or_null("GloveBtn")
+@onready var visor_btn: Button = $ActionContainer.get_node_or_null("VisorBtn")
+@onready var aroma_btn: Button = $ActionContainer.get_node_or_null("AromaBtn")
 @onready var quest_banner: Label = $TopCenterHUD/QuestBanner
 @onready var player_icon: ColorRect = $TopLeftHUD/MiniMap/PlayerIcon
 @onready var pagoda_icon: ColorRect = $TopLeftHUD/MiniMap/PagodaIcon
@@ -95,6 +99,8 @@ func _ready() -> void:
 		glove_btn.pressed.connect(_on_glove_pressed)
 	if visor_btn:
 		visor_btn.pressed.connect(_on_visor_pressed)
+	if aroma_btn:
+		aroma_btn.pressed.connect(_on_aroma_pressed)
 		
 	if yaw_left_btn:
 		yaw_left_btn.button_down.connect(func(): if player: player.touch_yaw = -1.0)
@@ -282,6 +288,8 @@ func _process(delta: float) -> void:
 		glove_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
 	if visor_btn:
 		visor_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
+	if aroma_btn:
+		aroma_btn.visible = (player.current_state == player.State.DRIVING_VEHICLE)
 
 	if sprint_btn:
 		if player.current_state != player.State.ON_FOOT:
@@ -477,6 +485,12 @@ func _on_visor_pressed() -> void:
 	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
 		if player.active_vehicle.has_method("toggle_sun_visors"):
 			var mode_name = player.active_vehicle.toggle_sun_visors()
+			show_temporary_prompt(mode_name, 3.0)
+
+func _on_aroma_pressed() -> void:
+	if player and player.current_state == player.State.DRIVING_VEHICLE and player.active_vehicle:
+		if player.active_vehicle.has_method("toggle_aroma_diffuser"):
+			var mode_name = player.active_vehicle.toggle_aroma_diffuser()
 			show_temporary_prompt(mode_name, 3.0)
 
 func _on_hazard_pressed() -> void:

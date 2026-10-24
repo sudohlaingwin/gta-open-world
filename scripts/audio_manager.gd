@@ -1499,3 +1499,33 @@ func play_charcoal_crackle() -> void:
 	stream.data = data
 	kiln_player.stream = stream
 	kiln_player.play()
+var diffuser_player: AudioStreamPlayer = null
+
+func play_diffuser_spray() -> void:
+	if is_muted: return
+	if not diffuser_player:
+		diffuser_player = AudioStreamPlayer.new()
+		diffuser_player.name = "DiffuserSprayAudio"
+		diffuser_player.volume_db = -8.5
+		add_child(diffuser_player)
+	var sample_hz = 22050
+	var duration = 0.22
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Soft pressurized spray hiss + gentle capillary liquid resonance
+		var hiss = exp(-t * 18.0) * (sin(t * 2800.0 * TAU) * 0.4 + sin(t * 3600.0 * TAU) * 0.3)
+		var bubble = 0.0
+		if t > 0.04:
+			bubble = exp(-(t - 0.04) * 25.0) * sin((t - 0.04) * 850.0 * TAU) * 0.25
+		var val = hiss + bubble
+		var int_sample = int(clamp(val, -1.0, 1.0) * 19000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	diffuser_player.stream = stream
+	diffuser_player.play()

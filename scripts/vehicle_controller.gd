@@ -39,6 +39,8 @@ var trip_km: float = 0.0
 @onready var trip_display: Label3D = get_node_or_null("TripCounterDisplay")
 var glovebox_open: bool = false
 @onready var glove_door: MeshInstance3D = get_node_or_null("GloveCompartmentPivot/GloveDoor")
+var aroma_diffuser_active: bool = false
+@onready var aroma_particles: CPUParticles3D = get_node_or_null("AirFreshenerDiffuser/DiffuserBottle/AromaVaporParticles")
 var sun_visors_down: bool = false
 @onready var visor_pivot_l: Node3D = get_node_or_null("SunVisorPivotL")
 @onready var visor_pivot_r: Node3D = get_node_or_null("SunVisorPivotR")
@@ -81,6 +83,15 @@ var blinker_state: bool = false
 var mirror_antiglare_active: bool = false
 const MIRROR_ROT_NORMAL: float = 0.173648
 const MIRROR_ROT_ANTIGLARE: float = 0.244346
+
+func toggle_aroma_diffuser() -> String:
+	aroma_diffuser_active = !aroma_diffuser_active
+	if aroma_particles:
+		aroma_particles.emitting = aroma_diffuser_active
+	var am = get_tree().get_first_node_in_group("audio_manager")
+	if am and am.has_method("play_diffuser_spray"):
+		am.play_diffuser_spray()
+	return "🌸 သဘာဝ သံပရာရနံ့ ကားလေမွှေး: ဖွင့်ထားသည် (Natural Citrus Scent ON)" if aroma_diffuser_active else "🌸 ကားလေမွှေး: ပိတ်ထားသည် (Diffuser OFF)"
 
 func toggle_sun_visors() -> String:
 	sun_visors_down = !sun_visors_down
