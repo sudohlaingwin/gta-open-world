@@ -4909,3 +4909,16 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
    - Bound desktop 'U' hotkey for instant hazard activation with HUD prompt feedback.
 5. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 420 (Major Milestone): Hillside Terraced Tea Plantation, Bamboo Drying Trays & Tea Pavilion Realism
+### Completed by Antigravity:
+1. **Hillside Tea Plantation Terraces & Tasting Pavilion Scene (scenes/hillside_tea_plantation.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Myanmar highland hillside tea plantation featuring stepped red loam terrace earth base (BoxMesh_terrace_base, 12.2m x 9.2m), 3 cascading emerald green tea shrub hedge tiers (BoxMesh_tea_hedge_1, BoxMesh_tea_hedge_2, StandardMaterial3D_tea_leaf), elevated bamboo sun-drying rack platform (BoxMesh_bamboo_rack, 4.8m x 1.8m), 3 circular woven bamboo drying trays (စကောကြီးများ - CylinderMesh_drying_tray, StandardMaterial3D_woven_tray) filled with sun-drying green tea leaves (StandardMaterial3D_drying_tea), traditional conical bamboo tea-picker hats (ခမောက် - CylinderMesh_khamauk), woven collection back-basket (CylinderMesh_picker_basket), thatched tea tasting pavilion (PrismMesh_tea_roof, 4 teak timber posts), bamboo tea serving table with brass teapot (SphereMesh_teapot, StandardMaterial3D_brass, metallic 0.85), and automated dusk amber lantern (OmniLight3D, energy 2.2, range 15m).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=26), zero runtime monkey patching, zero load errors.
+2. **Procedural Distribution Across Scenic Mountain Passes (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_hillside_tea_plantations().
+   - Strategically positioned terraced tea estates on elevated mountain pass viewpoints:
+     - Northwest Mountain Pass Overlook: Vector3(-650, 36, -420) ("အနောက်မြောက် တောင်ကြား ရိုးရာလက်ဖက်ခင်း စခန်း 🍵🍃").
+     - Eastern Mountain Ridge Vista: Vector3(720, 28, 380) ("အရှေ့တောင်စောင်း ရှုခင်းသာ လက်ဖက်ရည်နားနေဆောင် 🍵✨").
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

@@ -41,6 +41,7 @@ const FUEL_DEPOT_SCENE = preload("res://scenes/highway_fuel_depot.tscn")
 const CATTLE_STATION_SCENE = preload("res://scenes/cattle_rest_station.tscn")
 const POTTERY_KILN_SCENE = preload("res://scenes/rural_pottery_kiln.tscn")
 const TODDY_CAMP_SCENE = preload("res://scenes/toddy_jaggery_camp.tscn")
+const TEA_PLANTATION_SCENE = preload("res://scenes/hillside_tea_plantation.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -75,6 +76,7 @@ func _ready() -> void:
 	_generate_cattle_rest_stations()
 	_generate_rural_pottery_kilns()
 	_generate_toddy_jaggery_camps()
+	_generate_hillside_tea_plantations()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1593,5 +1595,34 @@ func _generate_toddy_jaggery_camps() -> void:
 		camps_holder.add_child(camp)
 
 		var sign_node = camp.get_node_or_null("CampSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_hillside_tea_plantations() -> void:
+	# Scenic highland hillside terraced tea plantations with drying racks, picker baskets & tasting pavilions
+	var plantations_holder = Node3D.new()
+	plantations_holder.name = "HillsideTeaPlantations"
+	add_child(plantations_holder)
+
+	var plantation_data = [
+		{
+			"pos": Vector3(-650.0, 36.0, -420.0),
+			"rot_y": deg_to_rad(35.0),
+			"sign": "အနောက်မြောက် တောင်ကြား ရိုးရာလက်ဖက်ခင်း စခန်း 🍵🍃"
+		},
+		{
+			"pos": Vector3(720.0, 28.0, 380.0),
+			"rot_y": deg_to_rad(-45.0),
+			"sign": "အရှေ့တောင်စောင်း ရှုခင်းသာ လက်ဖက်ရည်နားနေဆောင် 🍵✨"
+		}
+	]
+
+	for data in plantation_data:
+		var plantation = TEA_PLANTATION_SCENE.instantiate()
+		plantation.position = data["pos"]
+		plantation.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		plantations_holder.add_child(plantation)
+
+		var sign_node = plantation.get_node_or_null("PlantationSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]
