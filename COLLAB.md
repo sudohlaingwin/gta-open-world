@@ -4961,3 +4961,16 @@ As Lead Game Architect & Engine Programmer, here is the unvarnished technical as
    - **Desktop Hotkey (scripts/player.gd):** Bound 'M' key to smoothly trigger toggle_rearview_mirror() and display HUD prompt.
 3. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-24 — Slice 424: Traditional Riverside Sandbar Bamboo Thatched Fishermen's Stilt Hut & Cast-Net Platform Realism
+### Completed by Antigravity:
+1. **Scenic Riverside Fishermen's Stilt Hut Scene (scenes/fisherman_stilt_hut.tscn):**
+   - **Architectural & Cultural Authenticity:** Modelled authentic Upper Myanmar riverbank raised bamboo & teak stilt fishing camp (မင်းတုန်းချောင်း ရိုးရာ တံငါတဲအိမ်). Features 6 heavy teak stilt uprights (CylinderMesh_stilt, 2.8m elevation above flood waterline), split-bamboo slatted deck platform (BoxMesh_deck, 6.8m x 0.16m x 5.4m), woven bamboo matting room enclosures (BoxMesh_wall_front, BoxMesh_wall_side, ထရံ mat texture), weathered palm-thatch gabled roof (PrismMesh_roof, 5.4m x 2.2m x 4.6m), tilted access ramp (BoxMesh_ramp), cantilevered bamboo net-drying boom (CylinderMesh_net_boom, 4.6m length, tilted 15 degrees over the river), draped fine translucent cast-fishing net (CylinderMesh_hanging_net, radius 0.85m, transparency 1), twin conical woven bamboo fish traps (CylinderMesh_fish_trap, မြှုံး), clay cooking hearth with glowing embers (BoxMesh_clay_hearth, BoxMesh_ember, OmniLight3D, range 6.0m), moored wooden river skiff (BoxMesh_skiff_hull, 4.4m dugout canoe), warm dusk kerosene brass lantern (OmniLight3D, energy 2.8, range 16.0m), and authentic calligraphic signboard (HutSign, Label3D).
+   - **Canonical Declarative Architecture:** 100% strictly formatted Godot 4 scene (load_steps=27), zero runtime monkey patching, zero load errors.
+2. **Procedural Distribution Along Mindon Sandbars & Confluence (scripts/mindon_map_builder.gd):**
+   - Implemented _generate_fisherman_stilt_huts().
+   - Strategically placed active fishing settlements at:
+     - Southwest River Sandbar Reaches: Vector3(-295, 0.4, 185) ("မင်းတုန်းချောင်း အနောက်တောင် သောင်ပြင် ရိုးရာတံငါတဲ 🐟🛖").
+     - East River Confluence Sandbar Point: Vector3(480, 0.4, -140) ("အရှေ့မြစ်ပြင် ကွေ့ ရိုးရာကွန်ပစ် တံငါစခန်း 🎣🌊").
+3. **5-Minute Rapid Automated Cadence:**
+   - Committed and pushed directly to origin/arena/antigravity.

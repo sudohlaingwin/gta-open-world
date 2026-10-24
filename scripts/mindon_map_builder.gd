@@ -44,6 +44,7 @@ const TODDY_CAMP_SCENE = preload("res://scenes/toddy_jaggery_camp.tscn")
 const TEA_PLANTATION_SCENE = preload("res://scenes/hillside_tea_plantation.tscn")
 const CABLE_BRIDGE_SCENE = preload("res://scenes/cable_footbridge.tscn")
 const WELL_SWEEP_SCENE = preload("res://scenes/bamboo_well_sweep.tscn")
+const FISHERMAN_HUT_SCENE = preload("res://scenes/fisherman_stilt_hut.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -81,6 +82,7 @@ func _ready() -> void:
 	_generate_hillside_tea_plantations()
 	_generate_cable_footbridges()
 	_generate_bamboo_well_sweeps()
+	_generate_fisherman_stilt_huts()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -1686,5 +1688,34 @@ func _generate_bamboo_well_sweeps() -> void:
 		sweeps_holder.add_child(sweep)
 
 		var sign_node = sweep.get_node_or_null("WellSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_fisherman_stilt_huts() -> void:
+	# Traditional Myanmar riverside bamboo & teak stilt huts with cast nets and fish traps
+	var huts_holder = Node3D.new()
+	huts_holder.name = "FishermanStiltHuts"
+	add_child(huts_holder)
+
+	var hut_data = [
+		{
+			"pos": Vector3(-295.0, 0.4, 185.0),
+			"rot_y": deg_to_rad(45.0),
+			"sign": "မင်းတုန်းချောင်း အနောက်တောင် သောင်ပြင် ရိုးရာတံငါတဲ 🐟🛖"
+		},
+		{
+			"pos": Vector3(480.0, 0.4, -140.0),
+			"rot_y": deg_to_rad(-65.0),
+			"sign": "အရှေ့မြစ်ပြင် ကွေ့ ရိုးရာကွန်ပစ် တံငါစခန်း 🎣🌊"
+		}
+	]
+
+	for data in hut_data:
+		var hut = FISHERMAN_HUT_SCENE.instantiate()
+		hut.position = data["pos"]
+		hut.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		huts_holder.add_child(hut)
+
+		var sign_node = hut.get_node_or_null("HutSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

@@ -1,0 +1,231 @@
+[gd_scene load_steps=27 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hut_col"]
+size = Vector3(7.2, 4.6, 6.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stilt_wood"]
+albedo_color = Color(0.32, 0.23, 0.16, 1)
+roughness = 0.88
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_stilt"]
+material = SubResource("StandardMaterial3D_stilt_wood")
+top_radius = 0.14
+bottom_radius = 0.16
+height = 2.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_deck"]
+albedo_color = Color(0.68, 0.58, 0.38, 1)
+roughness = 0.72
+
+[sub_resource type="BoxMesh" id="BoxMesh_deck"]
+material = SubResource("StandardMaterial3D_bamboo_deck")
+size = Vector3(6.8, 0.16, 5.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thatch_roof"]
+albedo_color = Color(0.55, 0.44, 0.28, 1)
+roughness = 0.95
+
+[sub_resource type="PrismMesh" id="PrismMesh_roof"]
+material = SubResource("StandardMaterial3D_thatch_roof")
+left_to_right = 0.5
+size = Vector3(5.4, 2.2, 4.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_woven_mat"]
+albedo_color = Color(0.62, 0.52, 0.35, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_front"]
+material = SubResource("StandardMaterial3D_woven_mat")
+size = Vector3(4.8, 2.2, 0.08)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_side"]
+material = SubResource("StandardMaterial3D_woven_mat")
+size = Vector3(0.08, 2.2, 3.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fishing_net"]
+transparency = 1
+albedo_color = Color(0.35, 0.48, 0.36, 0.72)
+roughness = 0.65
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_net_boom"]
+material = SubResource("StandardMaterial3D_stilt_wood")
+top_radius = 0.05
+bottom_radius = 0.07
+height = 4.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hanging_net"]
+material = SubResource("StandardMaterial3D_fishing_net")
+top_radius = 0.08
+bottom_radius = 0.85
+height = 2.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo_trap"]
+albedo_color = Color(0.58, 0.46, 0.28, 1)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fish_trap"]
+material = SubResource("StandardMaterial3D_bamboo_trap")
+top_radius = 0.18
+bottom_radius = 0.34
+height = 1.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clay_hearth"]
+albedo_color = Color(0.52, 0.32, 0.22, 1)
+roughness = 0.92
+
+[sub_resource type="BoxMesh" id="BoxMesh_clay_hearth"]
+material = SubResource("StandardMaterial3D_clay_hearth")
+size = Vector3(0.9, 0.32, 0.9)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_smoke_ember"]
+albedo_color = Color(0.95, 0.45, 0.15, 1)
+emission_enabled = true
+emission = Color(1, 0.45, 0.1, 1)
+emission_energy_multiplier = 2.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_ember"]
+material = SubResource("StandardMaterial3D_smoke_ember")
+size = Vector3(0.35, 0.12, 0.35)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skiff_wood"]
+albedo_color = Color(0.38, 0.26, 0.18, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="BoxMesh_skiff_hull"]
+material = SubResource("StandardMaterial3D_skiff_wood")
+size = Vector3(1.1, 0.55, 4.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ramp"]
+material = SubResource("StandardMaterial3D_bamboo_deck")
+size = Vector3(1.4, 0.12, 4.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lantern_brass"]
+albedo_color = Color(0.72, 0.56, 0.24, 1)
+metallic = 0.75
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lantern_body"]
+material = SubResource("StandardMaterial3D_lantern_brass")
+top_radius = 0.12
+bottom_radius = 0.14
+height = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lantern_glass"]
+albedo_color = Color(1, 0.85, 0.45, 0.9)
+emission_enabled = true
+emission = Color(1, 0.75, 0.3, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_lantern_glow"]
+material = SubResource("StandardMaterial3D_lantern_glass")
+radius = 0.1
+height = 0.2
+
+[node name="FishermanStiltHut" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
+shape = SubResource("BoxShape3D_hut_col")
+
+[node name="StiltFL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1, 1.4, 2.4)
+mesh = SubResource("CylinderMesh_stilt")
+
+[node name="StiltFR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 1.4, 2.4)
+mesh = SubResource("CylinderMesh_stilt")
+
+[node name="StiltBL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1, 1.4, -2.4)
+mesh = SubResource("CylinderMesh_stilt")
+
+[node name="StiltBR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 1.4, -2.4)
+mesh = SubResource("CylinderMesh_stilt")
+
+[node name="StiltML" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1, 1.4, 0)
+mesh = SubResource("CylinderMesh_stilt")
+
+[node name="StiltMR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 1.4, 0)
+mesh = SubResource("CylinderMesh_stilt")
+
+[node name="DeckPlatform" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
+mesh = SubResource("BoxMesh_deck")
+
+[node name="WallBack" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 3.95, -1.9)
+mesh = SubResource("BoxMesh_wall_front")
+
+[node name="WallLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, 3.95, 0)
+mesh = SubResource("BoxMesh_wall_side")
+
+[node name="WallRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 3.95, 0)
+mesh = SubResource("BoxMesh_wall_side")
+
+[node name="ThatchRoof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 6.15, 0)
+mesh = SubResource("PrismMesh_roof")
+
+[node name="BambooBoomHorizontal" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, 3.6, 3.8, 0.8)
+mesh = SubResource("CylinderMesh_net_boom")
+
+[node name="HangingCastNet" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4, 2.5, 0.8)
+mesh = SubResource("CylinderMesh_hanging_net")
+
+[node name="FishTrap1" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 0, 1, 2.2, 3.3, -1.4)
+mesh = SubResource("CylinderMesh_fish_trap")
+
+[node name="FishTrap2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 3.3, -0.5)
+mesh = SubResource("CylinderMesh_fish_trap")
+
+[node name="ClayHearth" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 2.95, 1.4)
+mesh = SubResource("BoxMesh_clay_hearth")
+
+[node name="Embers" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 3.12, 1.4)
+mesh = SubResource("BoxMesh_ember")
+
+[node name="HearthLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 3.3, 1.4)
+light_color = Color(1, 0.55, 0.2, 1)
+light_energy = 2.4
+omni_range = 6.0
+
+[node name="AccessRamp" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -1.2, 1.35, 3.6)
+mesh = SubResource("BoxMesh_ramp")
+
+[node name="MooredSkiff" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 4.2, 0.35, -2.8)
+mesh = SubResource("BoxMesh_skiff_hull")
+
+[node name="DuskLantern" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 4.4, 1.8)
+mesh = SubResource("CylinderMesh_lantern_body")
+
+[node name="LanternGlow" type="MeshInstance3D" parent="DuskLantern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("SphereMesh_lantern_glow")
+
+[node name="LanternLight" type="OmniLight3D" parent="DuskLantern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+light_color = Color(1, 0.82, 0.45, 1)
+light_energy = 2.8
+omni_range = 16.0
+
+[node name="HutSign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.2, 2.4)
+text = "မင်းတုန်းချောင်း ရိုးရာ တံငါတဲအိမ် 🐟🛖"
+font_size = 28
+outline_size = 8
+modulate = Color(1, 0.92, 0.45, 1)
