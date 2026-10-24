@@ -1799,3 +1799,66 @@ func play_vanity_slide(is_open: bool) -> void:
 	stream.data = data
 	vanity_slide_player.stream = stream
 	vanity_slide_player.play()
+
+var well_sweep_player: AudioStreamPlayer = null
+var well_bucket_player: AudioStreamPlayer = null
+
+func play_well_sweep_creak() -> void:
+	if is_muted: return
+	if not well_sweep_player:
+		well_sweep_player = AudioStreamPlayer.new()
+		well_sweep_player.name = "WellSweepAudio"
+		well_sweep_player.volume_db = -6.0
+		add_child(well_sweep_player)
+	var sample_hz = 22050
+	var duration = 0.55
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Deep hardwood fulcrum groaning creak + bamboo lever stress harmonic
+		var groan = sin(t * 135.0 * TAU + sin(t * 18.0) * 1.5) * exp(-t * 4.5) * 0.55
+		var stress = sin(t * 270.0 * TAU) * exp(-t * 6.5) * 0.3
+		var friction = sin(t * 780.0 * TAU) * exp(-t * 12.0) * 0.15
+		var val = groan + stress + friction
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	well_sweep_player.stream = stream
+	well_sweep_player.play()
+
+func play_well_bucket_dip() -> void:
+	if is_muted: return
+	if not well_bucket_player:
+		well_bucket_player = AudioStreamPlayer.new()
+		well_bucket_player.name = "WellBucketAudio"
+		well_bucket_player.volume_db = -5.5
+		add_child(well_bucket_player)
+	var sample_hz = 22050
+	var duration = 0.48
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Deep well acoustic chamber hollow + metal bucket water immersion slosh
+		var chamber = exp(-t * 8.0) * sin(t * 165.0 * TAU) * 0.45
+		var slosh = 0.0
+		if t > 0.06:
+			slosh = exp(-(t - 0.06) * 14.0) * (sin((t - 0.06) * 720.0 * TAU) * 0.4 + sin((t - 0.06) * 1150.0 * TAU) * 0.3)
+		var droplets = 0.0
+		if t > 0.18:
+			droplets = exp(-(t - 0.18) * 18.0) * sin((t - 0.18) * 1920.0 * TAU + sin(t * 45.0) * 2.0) * 0.25
+		var val = chamber + slosh + droplets
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23500.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	well_bucket_player.stream = stream
+	well_bucket_player.play()

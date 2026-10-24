@@ -58,6 +58,7 @@ const FERRY_LANDING_SCENE = preload("res://scenes/river_ferry_landing.tscn")
 const WHEELWRIGHT_WORKSHOP_SCENE = preload("res://scenes/wheelwright_workshop.tscn")
 const GRANARY_SCENE = preload("res://scenes/traditional_granary.tscn")
 const WATER_PAVILION_SCENE = preload("res://scenes/martaban_water_pavilion.tscn")
+const COUNTRYSIDE_WATER_WELL_SCENE = preload("res://scenes/countryside_water_well.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -109,6 +110,7 @@ func _ready() -> void:
 	_generate_wheelwright_workshops()
 	_generate_traditional_granaries()
 	_generate_martaban_water_pavilions()
+	_generate_countryside_water_wells()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -2113,5 +2115,34 @@ func _generate_martaban_water_pavilions() -> void:
 		pavilions_holder.add_child(pavilion)
 
 		var sign_node = pavilion.get_node_or_null("PavilionSign")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_countryside_water_wells() -> void:
+	# Traditional Myanmar countryside village counterpoise water wells with long bamboo sweep cranes and cattle troughs (မောင်းထောင်ရေတွင်းကြီးများနှင့် နွားသောက်ရေစည်များ)
+	var wells_holder = Node3D.new()
+	wells_holder.name = "CountrysideWaterWells"
+	add_child(wells_holder)
+
+	var well_data = [
+		{
+			"pos": Vector3(-62.0, 0.0, 48.0),
+			"rot_y": deg_to_rad(30.0),
+			"sign": "မင်းတုန်း ရွာလယ် မောင်းထောင်ရေတွင်းကြီး 💧🎋"
+		},
+		{
+			"pos": Vector3(-315.0, 0.0, -188.0),
+			"rot_y": deg_to_rad(-55.0),
+			"sign": "အနောက်ဘက် စားကျက်ကွင်း နွားသောက် မောင်းထောင်ရေတွင်း 🐂💧"
+		}
+	]
+
+	for data in well_data:
+		var well = COUNTRYSIDE_WATER_WELL_SCENE.instantiate()
+		well.position = data["pos"]
+		well.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		wells_holder.add_child(well)
+
+		var sign_node = well.get_node_or_null("WellSign")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]
