@@ -750,6 +750,9 @@ rings = 12
 ring_segments = 8
 
 [node name="MyanmarVillageCar" type="VehicleBody3D"]
+mass = 1250.0
+center_of_mass_mode = 1
+center_of_mass = Vector3(0, -0.42, 0)
 script = ExtResource("1_vehicle")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -850,7 +853,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 0.46, -1.6)
 use_as_steering = true
 wheel_radius = 0.46
 wheel_rest_length = 0.18
-suspension_stiffness = 32.0
+suspension_stiffness = 38.0
+wheel_friction_slip = 2.8
+suspension_max_force = 12000.0
+damping_compression = 2.0
+damping_relaxation = 2.8
+suspension_travel = 0.22
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WheelFrontLeft"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
@@ -862,7 +870,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15, 0.46, -1.6)
 use_as_steering = true
 wheel_radius = 0.46
 wheel_rest_length = 0.18
-suspension_stiffness = 32.0
+suspension_stiffness = 38.0
+wheel_friction_slip = 2.8
+suspension_max_force = 12000.0
+damping_compression = 2.0
+damping_relaxation = 2.8
+suspension_travel = 0.22
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WheelFrontRight"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
@@ -874,7 +887,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 0.46, 1.6)
 use_as_traction = true
 wheel_radius = 0.46
 wheel_rest_length = 0.18
-suspension_stiffness = 32.0
+suspension_stiffness = 38.0
+wheel_friction_slip = 2.8
+suspension_max_force = 12000.0
+damping_compression = 2.0
+damping_relaxation = 2.8
+suspension_travel = 0.22
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WheelBackLeft"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
@@ -886,7 +904,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15, 0.46, 1.6)
 use_as_traction = true
 wheel_radius = 0.46
 wheel_rest_length = 0.18
-suspension_stiffness = 32.0
+suspension_stiffness = 38.0
+wheel_friction_slip = 2.8
+suspension_max_force = 12000.0
+damping_compression = 2.0
+damping_relaxation = 2.8
+suspension_travel = 0.22
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WheelBackRight"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)

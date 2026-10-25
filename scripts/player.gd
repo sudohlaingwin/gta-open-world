@@ -1,10 +1,14 @@
 ﻿extends CharacterBody3D
 
 # --- Character Stats & State ---
-@export var speed: float = 7.5
-@export var sprint_speed: float = 12.0
-@export var jump_velocity: float = 5.2
-@export var rotation_speed: float = 12.0
+@export var speed: float = 4.8
+@export var sprint_speed: float = 8.5
+@export var accel: float = 26.0
+@export var decel: float = 34.0
+@export var jump_velocity: float = 5.4
+@export var rotation_speed: float = 14.0
+
+var locomotion_phase: float = 0.0
 
 var stamina: float = 100.0
 var health: float = 100.0
@@ -39,6 +43,11 @@ func _ready() -> void:
 	add_to_group("player")
 	_apply_saved_outfit()
 	_apply_game_mode()
+	# Stair step snapping & slope walking smoothness (အိမ်လှေကားနှင့် ကုန်းဆင်းကုန်းတက် ချောမွေ့မှု)
+	floor_snap_length = 0.35
+	floor_stop_on_slope = true
+	floor_max_angle = deg_to_rad(48.0)
+	wall_min_slide_angle = deg_to_rad(15.0)
 	# PUBG Full-size Character Scale (အရွယ်အစား ပီပြင်စေရန် 1.25x scale မြှင့်တင်ခြင်း)
 	if visual_mesh:
 		visual_mesh.scale = Vector3(1.25, 1.25, 1.25)
@@ -115,24 +124,44 @@ func _physics_process(delta: float) -> void:
 	var move_direction = (forward * -input_dir.y + right * input_dir.x).normalized()
 	var current_speed = sprint_speed if (is_sprinting and stamina > 0.0) else speed
 
-	if move_direction != Vector3.ZERO and not is_parachuting:
-		velocity.x = move_direction.x * current_speed
-		velocity.z = move_direction.z * current_speed
-		var target_angle = atan2(move_direction.x, move_direction.z)
+	var target_vel_x = move_direction.x * current_speed
+	var target_vel_z = move_direction.z * current_speed
+	var current_accel = accel if move_direction != Vector3.ZERO else decel
+
+	if not is_parachuting:
+		velocity.x = move_toward(velocity.x, target_vel_x, current_accel * delta)
+		velocity.z = move_toward(velocity.z, target_vel_z, current_accel * delta)
+
+	var horiz_speed = Vector2(velocity.x, velocity.z).length()
+	var speed_ratio = clampf(horiz_speed / sprint_speed, 0.0, 1.0)
+
+	if horiz_speed > 0.12 and not is_parachuting:
+		var target_angle = atan2(velocity.x, velocity.z)
 		visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, target_angle, rotation_speed * delta)
-		
-		# Footstep audio trigger on ground
+
+		# Procedural organic walking bobbing & torso sway (GTA/PUBG standard physical motion)
 		if is_on_floor():
+			var stride_freq = 11.5 if is_sprinting else 8.5
+			locomotion_phase += delta * stride_freq
+			var bob_y = abs(sin(locomotion_phase)) * 0.045 * speed_ratio
+			var sway_z = sin(locomotion_phase) * 0.035 * speed_ratio
+			var pitch_x = (horiz_speed / sprint_speed) * 0.06
+			visual_mesh.position.y = bob_y
+			visual_mesh.rotation.z = sway_z
+			visual_mesh.rotation.x = pitch_x
+
+			# Synchronized footstep audio
 			footstep_timer -= delta
-			var step_interval = 0.28 if is_sprinting else 0.45
+			var step_interval = 0.28 if is_sprinting else 0.44
 			if footstep_timer <= 0.0:
 				footstep_timer = step_interval
 				var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
 				if audio_mgr and audio_mgr.has_method("play_footstep"):
 					audio_mgr.play_footstep()
 	elif not is_parachuting:
-		velocity.x = move_toward(velocity.x, 0, current_speed)
-		velocity.z = move_toward(velocity.z, 0, current_speed)
+		visual_mesh.position.y = lerpf(visual_mesh.position.y, 0.0, delta * 8.0)
+		visual_mesh.rotation.z = lerpf(visual_mesh.rotation.z, 0.0, delta * 8.0)
+		visual_mesh.rotation.x = lerpf(visual_mesh.rotation.x, 0.0, delta * 8.0)
 		footstep_timer = 0.1
 
 	move_and_slide()
@@ -205,6 +234,9 @@ func set_riding_state(riding: bool, mount_node: Node3D) -> void:
 		collision_shape.disabled = false
 		set_collision_layer_value(1, true)
 		set_collision_mask_value(1, true)
+
+func set_mounted_state(riding: bool, mount_node: Node3D) -> void:
+	set_riding_state(riding, mount_node)
 
 func set_driving_state(driving: bool, vehicle_node: Node3D) -> void:
 	if driving:
@@ -300,7 +332,11 @@ func take_damage(amount: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_H:
+		if event.keycode == KEY_F or (event.keycode == KEY_E and current_state == State.ON_FOOT):
+			interact()
+		elif event.keycode == KEY_SPACE and current_state == State.ON_FOOT and is_on_floor():
+			jump()
+		elif event.keycode == KEY_H:
 			if current_state != State.ON_FOOT:
 				var audio_mgr = get_tree().get_first_node_in_group("audio_manager")
 				if audio_mgr and audio_mgr.has_method("play_horn"):

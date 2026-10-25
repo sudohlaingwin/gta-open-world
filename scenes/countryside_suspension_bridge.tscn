@@ -1,0 +1,450 @@
+﻿[gd_scene load_steps=32 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_deck_col"]
+size = Vector3(28.0, 0.35, 2.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tower_col_w"]
+size = Vector3(2.2, 8.0, 3.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tower_col_e"]
+size = Vector3(2.2, 8.0, 3.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_masonry_stone"]
+albedo_color = Color(0.42, 0.4, 0.38, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_abutment"]
+material = SubResource("StandardMaterial3D_masonry_stone")
+size = Vector3(3.8, 2.4, 3.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ground_anchor"]
+material = SubResource("StandardMaterial3D_masonry_stone")
+size = Vector3(1.6, 1.4, 3.0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_weathered_teak"]
+albedo_color = Color(0.3, 0.2, 0.12, 1)
+roughness = 0.82
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pylon_leg"]
+material = SubResource("StandardMaterial3D_weathered_teak")
+top_radius = 0.16
+bottom_radius = 0.22
+height = 7.6
+
+[sub_resource type="BoxMesh" id="BoxMesh_collar_beam"]
+material = SubResource("StandardMaterial3D_weathered_teak")
+size = Vector3(0.28, 0.32, 3.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_saddle_cap"]
+material = SubResource("StandardMaterial3D_weathered_teak")
+size = Vector3(0.42, 0.28, 3.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_deck_plank"]
+material = SubResource("StandardMaterial3D_weathered_teak")
+size = Vector3(24.0, 0.14, 1.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_deck_transom"]
+material = SubResource("StandardMaterial3D_weathered_teak")
+size = Vector3(0.18, 0.22, 2.4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_handrail_post"]
+material = SubResource("StandardMaterial3D_weathered_teak")
+top_radius = 0.04
+bottom_radius = 0.045
+height = 1.15
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_golden_bamboo"]
+albedo_color = Color(0.72, 0.58, 0.3, 1)
+roughness = 0.55
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_bamboo_handrail"]
+material = SubResource("StandardMaterial3D_golden_bamboo")
+top_radius = 0.06
+bottom_radius = 0.06
+height = 24.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_lattice_mesh"]
+material = SubResource("StandardMaterial3D_golden_bamboo")
+size = Vector3(24.0, 0.8, 0.03)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_steel_cable"]
+albedo_color = Color(0.24, 0.26, 0.28, 1)
+metallic = 0.85
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cable_sag"]
+material = SubResource("StandardMaterial3D_steel_cable")
+top_radius = 0.035
+bottom_radius = 0.035
+height = 12.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_backstay_cable"]
+material = SubResource("StandardMaterial3D_steel_cable")
+top_radius = 0.04
+bottom_radius = 0.04
+height = 8.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_dropper_hanger"]
+material = SubResource("StandardMaterial3D_steel_cable")
+top_radius = 0.012
+bottom_radius = 0.012
+height = 3.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brass_lantern"]
+albedo_color = Color(0.78, 0.62, 0.28, 1)
+metallic = 0.75
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_lantern_housing"]
+material = SubResource("StandardMaterial3D_brass_lantern")
+size = Vector3(0.24, 0.38, 0.24)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lantern_glow"]
+albedo_color = Color(1, 0.9, 0.65, 1)
+emission_enabled = true
+emission = Color(1, 0.85, 0.48, 1)
+emission_energy_multiplier = 2.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_lantern_glow"]
+material = SubResource("StandardMaterial3D_lantern_glow")
+radius = 0.09
+height = 0.18
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_prayer_red"]
+albedo_color = Color(0.85, 0.18, 0.15, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_streamer_red"]
+material = SubResource("StandardMaterial3D_prayer_red")
+size = Vector3(0.12, 1.6, 0.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_prayer_gold"]
+albedo_color = Color(0.95, 0.78, 0.18, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_streamer_gold"]
+material = SubResource("StandardMaterial3D_prayer_gold")
+size = Vector3(0.12, 1.4, 0.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sign_wood"]
+albedo_color = Color(0.24, 0.15, 0.08, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="BoxMesh_signboard"]
+material = SubResource("StandardMaterial3D_sign_wood")
+size = Vector3(2.6, 0.65, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_approach_ramp"]
+material = SubResource("StandardMaterial3D_weathered_teak")
+size = Vector3(2.4, 0.16, 2.0)
+
+[node name="CountrysideSuspensionBridge" type="StaticBody3D"]
+
+[node name="CollisionDeck" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+shape = SubResource("BoxShape3D_deck_col")
+
+[node name="CollisionTowerWest" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, 3.8, 0)
+shape = SubResource("BoxShape3D_tower_col_w")
+
+[node name="CollisionTowerEast" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0, 3.8, 0)
+shape = SubResource("BoxShape3D_tower_col_e")
+
+[node name="AbutmentWest" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.2, -1.0, 0)
+mesh = SubResource("BoxMesh_abutment")
+
+[node name="AbutmentEast" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.2, -1.0, 0)
+mesh = SubResource("BoxMesh_abutment")
+
+[node name="AnchorBlockWest" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.5, -0.5, 0)
+mesh = SubResource("BoxMesh_ground_anchor")
+
+[node name="AnchorBlockEast" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5, -0.5, 0)
+mesh = SubResource("BoxMesh_ground_anchor")
+
+[node name="TowerWestLegN" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, -12.0, 3.8, -1.35)
+mesh = SubResource("CylinderMesh_pylon_leg")
+
+[node name="TowerWestLegS" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.984808, -0.173648, 0, 0.173648, 0.984808, -12.0, 3.8, 1.35)
+mesh = SubResource("CylinderMesh_pylon_leg")
+
+[node name="TowerWestCollar" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, 3.2, 0)
+mesh = SubResource("BoxMesh_collar_beam")
+
+[node name="TowerWestSaddle" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, 7.4, 0)
+mesh = SubResource("BoxMesh_saddle_cap")
+
+[node name="TowerEastLegN" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 12.0, 3.8, -1.35)
+mesh = SubResource("CylinderMesh_pylon_leg")
+
+[node name="TowerEastLegS" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.984808, -0.173648, 0, 0.173648, 0.984808, 12.0, 3.8, 1.35)
+mesh = SubResource("CylinderMesh_pylon_leg")
+
+[node name="TowerEastCollar" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0, 3.2, 0)
+mesh = SubResource("BoxMesh_collar_beam")
+
+[node name="TowerEastSaddle" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0, 7.4, 0)
+mesh = SubResource("BoxMesh_saddle_cap")
+
+[node name="SuspendedDeck" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BoxMesh_deck_plank")
+
+[node name="RampWest" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.995004, 0.099833, 0, -0.099833, 0.995004, 0, 0, 0, 1, -13.1, -0.05, 0)
+mesh = SubResource("BoxMesh_approach_ramp")
+
+[node name="RampEast" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.995004, -0.099833, 0, 0.099833, 0.995004, 0, 0, 0, 1, 13.1, -0.05, 0)
+mesh = SubResource("BoxMesh_approach_ramp")
+
+[node name="Transom_m9" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.0, -0.1, 0)
+mesh = SubResource("BoxMesh_deck_transom")
+
+[node name="Transom_m6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0, -0.1, 0)
+mesh = SubResource("BoxMesh_deck_transom")
+
+[node name="Transom_m3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, -0.1, 0)
+mesh = SubResource("BoxMesh_deck_transom")
+
+[node name="Transom_0" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, -0.1, 0)
+mesh = SubResource("BoxMesh_deck_transom")
+
+[node name="Transom_p3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0, -0.1, 0)
+mesh = SubResource("BoxMesh_deck_transom")
+
+[node name="Transom_p6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, -0.1, 0)
+mesh = SubResource("BoxMesh_deck_transom")
+
+[node name="Transom_p9" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.0, -0.1, 0)
+mesh = SubResource("BoxMesh_deck_transom")
+
+[node name="BambooRailNorth" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0, 1.05, -0.92)
+mesh = SubResource("CylinderMesh_bamboo_handrail")
+
+[node name="BambooRailSouth" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0, 1.05, 0.92)
+mesh = SubResource("CylinderMesh_bamboo_handrail")
+
+[node name="LatticeMeshNorth" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -0.92)
+mesh = SubResource("BoxMesh_lattice_mesh")
+
+[node name="LatticeMeshSouth" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0.92)
+mesh = SubResource("BoxMesh_lattice_mesh")
+
+[node name="RailPost_m10_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0, 0.58, -0.92)
+mesh = SubResource("CylinderMesh_handrail_post")
+
+[node name="RailPost_m10_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0, 0.58, 0.92)
+mesh = SubResource("CylinderMesh_handrail_post")
+
+[node name="RailPost_m6_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0, 0.58, -0.92)
+mesh = SubResource("CylinderMesh_handrail_post")
+
+[node name="RailPost_m6_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0, 0.58, 0.92)
+mesh = SubResource("CylinderMesh_handrail_post")
+
+[node name="RailPost_m2_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 0.58, -0.92)
+mesh = SubResource("CylinderMesh_handrail_post")
+
+[node name="RailPost_m2_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 0.58, 0.92)
+mesh = SubResource("CylinderMesh_handrail_post")
+
+[node name="RailPost_p2_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 0.58, -0.92)
+mesh = SubResource("CylinderMesh_handrail_post")
+
+[node name="RailPost_p2_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 0.58, 0.92)
+mesh = SubResource("CylinderMesh_handrail_post")
+
+[node name="RailPost_p6_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 0.58, -0.92)
+mesh = SubResource("CylinderMesh_handrail_post")
+
+[node name="RailPost_p6_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 0.58, 0.92)
+mesh = SubResource("CylinderMesh_handrail_post")
+
+[node name="RailPost_p10_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0, 0.58, -0.92)
+mesh = SubResource("CylinderMesh_handrail_post")
+
+[node name="RailPost_p10_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0, 0.58, 0.92)
+mesh = SubResource("CylinderMesh_handrail_post")
+
+[node name="BackstayWest_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0, 1, -14.25, 3.7, -1.3)
+mesh = SubResource("CylinderMesh_backstay_cable")
+
+[node name="BackstayWest_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0, 1, -14.25, 3.7, 1.3)
+mesh = SubResource("CylinderMesh_backstay_cable")
+
+[node name="BackstayEast_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.866025, -0.5, 0, 0.5, 0.866025, 0, 0, 0, 1, 14.25, 3.7, -1.3)
+mesh = SubResource("CylinderMesh_backstay_cable")
+
+[node name="BackstayEast_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.866025, -0.5, 0, 0.5, 0.866025, 0, 0, 0, 1, 14.25, 3.7, 1.3)
+mesh = SubResource("CylinderMesh_backstay_cable")
+
+[node name="MainCableWest_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.894427, -0.447214, 0, 0.447214, 0.894427, 0, 0, 0, 1, -6.0, 4.4, -1.25)
+mesh = SubResource("CylinderMesh_cable_sag")
+
+[node name="MainCableWest_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.894427, -0.447214, 0, 0.447214, 0.894427, 0, 0, 0, 1, -6.0, 4.4, 1.25)
+mesh = SubResource("CylinderMesh_cable_sag")
+
+[node name="MainCableEast_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.894427, 0.447214, 0, -0.447214, 0.894427, 0, 0, 0, 1, 6.0, 4.4, -1.25)
+mesh = SubResource("CylinderMesh_cable_sag")
+
+[node name="MainCableEast_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.894427, 0.447214, 0, -0.447214, 0.894427, 0, 0, 0, 1, 6.0, 4.4, 1.25)
+mesh = SubResource("CylinderMesh_cable_sag")
+
+[node name="Dropper_m9_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.0, 2.8, -1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="Dropper_m9_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.0, 2.8, 1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="Dropper_m6_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.75, 0, 0, 0, 1, -6.0, 2.0, -1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="Dropper_m6_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.75, 0, 0, 0, 1, -6.0, 2.0, 1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="Dropper_m3_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, -3.0, 1.4, -1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="Dropper_m3_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, -3.0, 1.4, 1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="Dropper_0_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.4, 0, 0, 0, 1, 0.0, 1.2, -1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="Dropper_0_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.4, 0, 0, 0, 1, 0.0, 1.2, 1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="Dropper_p3_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 3.0, 1.4, -1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="Dropper_p3_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 3.0, 1.4, 1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="Dropper_p6_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.75, 0, 0, 0, 1, 6.0, 2.0, -1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="Dropper_p6_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.75, 0, 0, 0, 1, 6.0, 2.0, 1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="Dropper_p9_N" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.0, 2.8, -1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="Dropper_p9_S" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.0, 2.8, 1.25)
+mesh = SubResource("CylinderMesh_dropper_hanger")
+
+[node name="LanternWestHousing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, 3.65, 0)
+mesh = SubResource("BoxMesh_lantern_housing")
+
+[node name="LanternWestGlow" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, 3.65, 0)
+mesh = SubResource("SphereMesh_lantern_glow")
+
+[node name="LanternWestLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, 3.6, 0)
+light_color = Color(1, 0.82, 0.45, 1)
+light_energy = 2.2
+omni_range = 13.0
+omni_attenuation = 1.3
+
+[node name="LanternEastHousing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0, 3.65, 0)
+mesh = SubResource("BoxMesh_lantern_housing")
+
+[node name="LanternEastGlow" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0, 3.65, 0)
+mesh = SubResource("SphereMesh_lantern_glow")
+
+[node name="LanternEastLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0, 3.6, 0)
+light_color = Color(1, 0.82, 0.45, 1)
+light_energy = 2.2
+omni_range = 13.0
+omni_attenuation = 1.3
+
+[node name="PrayerStreamerWestRed" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.984808, 0, 0.173648, 0, 1, 0, -0.173648, 0, 0.984808, -12.0, 6.6, -0.4)
+mesh = SubResource("BoxMesh_streamer_red")
+
+[node name="PrayerStreamerWestGold" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, 0.984808, -12.0, 6.7, 0.4)
+mesh = SubResource("BoxMesh_streamer_gold")
+
+[node name="PrayerStreamerEastRed" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, 0.984808, 12.0, 6.6, -0.4)
+mesh = SubResource("BoxMesh_streamer_red")
+
+[node name="PrayerStreamerEastGold" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.984808, 0, 0.173648, 0, 1, 0, -0.173648, 0, 0.984808, 12.0, 6.7, 0.4)
+mesh = SubResource("BoxMesh_streamer_gold")
+
+[node name="SignboardMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, 2.5, 0)
+mesh = SubResource("BoxMesh_signboard")
+
+[node name="Signboard" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, 2.5, 0.06)
+pixel_size = 0.0055
+text = "မင်းတုန်းချောင်းကူး ကျေးလက် ရိုးရာသစ်သားကြိုးတံတား 🌉🌿"
+font_size = 28
+outline_size = 8

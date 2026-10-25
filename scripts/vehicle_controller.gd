@@ -1,10 +1,10 @@
 ﻿extends VehicleBody3D
 
-@export var max_engine_force: float = 850.0
-@export var max_brake_force: float = 80.0
-@export var low_speed_steer_angle: float = 0.52
-@export var high_speed_steer_angle: float = 0.22
-@export var top_speed_ms: float = 28.0
+@export var max_engine_force: float = 1250.0
+@export var max_brake_force: float = 110.0
+@export var low_speed_steer_angle: float = 0.54
+@export var high_speed_steer_angle: float = 0.18
+@export var top_speed_ms: float = 32.0
 
 var current_driver: Node3D = null
 var is_driven: bool = false

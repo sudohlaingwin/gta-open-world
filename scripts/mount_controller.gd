@@ -33,6 +33,8 @@ signal mount_entered(rider)
 signal mount_exited()
 
 func _ready() -> void:
+	floor_snap_length = 0.35
+	floor_stop_on_slope = true
 	if interaction_area:
 		interaction_area.body_entered.connect(_on_interaction_area_entered)
 		interaction_area.body_exited.connect(_on_interaction_area_exited)
@@ -147,7 +149,9 @@ func mount(rider: Node3D) -> void:
 	rider.reparent(saddle_point)
 	rider.position = Vector3.ZERO
 	rider.rotation = Vector3.ZERO
-	if rider.has_method("set_mounted_state"):
+	if rider.has_method("set_riding_state"):
+		rider.set_riding_state(true, self)
+	elif rider.has_method("set_mounted_state"):
 		rider.set_mounted_state(true, self)
 	if mount_type == MountType.COW:
 		var am = get_tree().get_first_node_in_group("audio_manager")
@@ -166,7 +170,9 @@ func dismount() -> void:
 	var dismount_pos = global_position + (global_transform.basis.x * 1.5)
 	rider.reparent(get_parent())
 	rider.global_position = dismount_pos
-	if rider.has_method("set_mounted_state"):
+	if rider.has_method("set_riding_state"):
+		rider.set_riding_state(false, null)
+	elif rider.has_method("set_mounted_state"):
 		rider.set_mounted_state(false, null)
 	mount_exited.emit()
 

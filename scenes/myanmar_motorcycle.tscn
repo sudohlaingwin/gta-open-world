@@ -9,10 +9,10 @@ size = Vector3(1.1, 1.45, 2.35)
 size = Vector3(0.35, 0.65, 1.45)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bike_red"]
-albedo_color = Color(0.88, 0.12, 0.08, 1)
-metallic = 0.82
-roughness = 0.18
-specular = 0.6
+albedo_color = Color(0.88, 0.14, 0.10, 1)
+metallic = 0.25
+roughness = 0.28
+specular = 0.75
 
 [sub_resource type="BoxMesh" id="BoxMesh_seat"]
 size = Vector3(0.38, 0.16, 0.85)

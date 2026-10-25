@@ -127,6 +127,12 @@ func _physics_process(delta: float) -> void:
 		# --- ON FOOT OVER-SHOULDER ---
 		target_arm_length = 1.95
 		target_pivot_offset = base_pivot_offset
+		if player and player.get("velocity") != null and player.is_on_floor():
+			var p_speed = Vector2(player.velocity.x, player.velocity.z).length()
+			if p_speed > 0.2:
+				var bob_amount = 0.018 if (player.get("is_sprinting") and player.is_sprinting) else 0.010
+				var walk_phase = player.get("locomotion_phase") if player.get("locomotion_phase") != null else 0.0
+				target_pivot_offset.y += sin(walk_phase) * bob_amount
 		target_fov = default_fov
 
 	# Smoothly interpolate position and arm length
@@ -180,6 +186,21 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_V:
 			cycle_view_mode()
+
+	# Desktop Mouse freelook drag (Right-click or Left-click drag)
+	if event is InputEventMouseMotion:
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			var sens = touch_sensitivity * 0.75
+			rotation.y -= event.relative.x * sens
+			rotation.y = wrapf(rotation.y, -PI, PI)
+			last_look_time = Time.get_ticks_msec()
+			rotation.x -= event.relative.y * sens
+			var pitch_min = -65.0
+			var pitch_max = 45.0
+			if current_view_mode == ViewMode.COCKPIT:
+				pitch_min = -50.0
+				pitch_max = 40.0
+			rotation.x = clamp(rotation.x, deg_to_rad(pitch_min), deg_to_rad(pitch_max))
 
 	# Touch drag orbit & cockpit freelook on the right side of the screen
 	if event is InputEventScreenDrag:

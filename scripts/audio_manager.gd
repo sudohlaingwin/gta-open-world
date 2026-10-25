@@ -2667,3 +2667,67 @@ func play_fog_light_switch() -> void:
 	stream.data = data
 	fog_switch_player.stream = stream
 	fog_switch_player.play()
+var bridge_creak_player: AudioStreamPlayer = null
+var river_gorge_player: AudioStreamPlayer = null
+
+func play_suspension_bridge_creak() -> void:
+	if is_muted: return
+	if not bridge_creak_player:
+		bridge_creak_player = AudioStreamPlayer.new()
+		bridge_creak_player.name = "SuspensionBridgeCreakAudio"
+		bridge_creak_player.volume_db = -5.5
+		add_child(bridge_creak_player)
+	var sample_hz = 22050
+	var duration = 0.55
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Deep teak timber flex groan (180-240Hz)
+		var wood_freq = 190.0 + sin(t * 14.0 * TAU) * 35.0
+		var wood_groan = sin(t * wood_freq * TAU) * exp(-t * 4.8) * 0.45
+		# Steel cable tension creak/friction squeak (1200-1450Hz)
+		var cable_friction = sin(t * (1320.0 + sin(t * 24.0 * TAU) * 110.0) * TAU) * exp(-t * 6.5) * 0.25
+		# Footstep plank settle thump
+		var thump = sin(t * 75.0 * TAU) * exp(-t * 9.0) * 0.35
+		var val = wood_groan + cable_friction + thump
+		var int_sample = int(clamp(val, -1.0, 1.0) * 23000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	bridge_creak_player.stream = stream
+	bridge_creak_player.play()
+
+func play_river_gorge_breeze() -> void:
+	if is_muted: return
+	if not river_gorge_player:
+		river_gorge_player = AudioStreamPlayer.new()
+		river_gorge_player.name = "RiverGorgeBreezeAudio"
+		river_gorge_player.volume_db = -8.0
+		add_child(river_gorge_player)
+	var sample_hz = 22050
+	var duration = 1.2
+	var total_frames = int(sample_hz * duration)
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = sample_hz
+	var data = PackedByteArray()
+	data.resize(total_frames * 2)
+	for i in range(total_frames):
+		var t = float(i) / float(sample_hz)
+		# Low valley gorge wind sweep
+		var wind_freq = 220.0 + sin(t * 1.8 * TAU) * 45.0
+		var wind = sin(t * wind_freq * TAU) * sin(t / duration * PI) * 0.38
+		# Cable Aeolian whistle harmonic
+		var cable_whistle = sin(t * 540.0 * TAU) * sin(t / duration * PI) * 0.18
+		# River rush water murmur (pink-ish mod)
+		var river_ripple = sin(t * 140.0 * TAU) * sin(t * 12.0 * TAU) * sin(t / duration * PI) * 0.28
+		var val = wind + cable_whistle + river_ripple
+		var int_sample = int(clamp(val, -1.0, 1.0) * 21000.0)
+		data.encode_s16(i * 2, int_sample)
+	stream.data = data
+	river_gorge_player.stream = stream
+	river_gorge_player.play()
