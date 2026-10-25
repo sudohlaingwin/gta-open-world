@@ -1,193 +1,309 @@
-[gd_scene load_steps=23 format=3]
+﻿[gd_scene load_steps=28 format=3]
 
-[ext_resource type="Script" path="res://scripts/village_lantern_controller.gd" id="1_lantern"]
+[ext_resource type= Script path=res://scripts/village_lantern_controller.gd id=1_lantern]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_house"]
-size = Vector3(12.5, 9.2, 12.8)
+[sub_resource type=BoxShape3D id=BoxShape3D_floor]
+size = Vector3(6.2, 0.25, 8.4)
 
-[sub_resource type="BoxMesh" id="BoxMesh_floor"]
-size = Vector3(12.5, 0.65, 12.8)
+[sub_resource type=BoxShape3D id=BoxShape3D_stairs_ramp]
+size = Vector3(1.4, 0.2, 2.5)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak"]
-albedo_color = Color(0.32, 0.18, 0.09, 1)
-roughness = 0.72
-specular = 0.22
+[sub_resource type=BoxShape3D id=BoxShape3D_wall_back]
+size = Vector3(6.2, 2.8, 0.2)
 
-[sub_resource type="BoxMesh" id="BoxMesh_walls"]
-size = Vector3(12.0, 5.2, 12.4)
+[sub_resource type=BoxShape3D id=BoxShape3D_wall_left]
+size = Vector3(0.2, 2.8, 6.0)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bamboo"]
-albedo_color = Color(0.70, 0.58, 0.38, 1)
-roughness = 0.86
-specular = 0.18
+[sub_resource type=BoxShape3D id=BoxShape3D_wall_right]
+size = Vector3(0.2, 2.8, 6.0)
 
-[sub_resource type="PrismMesh" id="PrismMesh_roof"]
+[sub_resource type=BoxShape3D id=BoxShape3D_wall_front_l]
+size = Vector3(2.4, 2.8, 0.2)
+
+[sub_resource type=BoxShape3D id=BoxShape3D_wall_front_r]
+size = Vector3(2.4, 2.8, 0.2)
+
+[sub_resource type=StandardMaterial3D id=StandardMaterial3D_teak_plank]
+albedo_color = Color(0.38, 0.22, 0.12, 1)
+roughness = 0.78
+specular = 0.2
+
+[sub_resource type=BoxMesh id=BoxMesh_floor]
+size = Vector3(6.2, 0.22, 8.4)
+
+[sub_resource type=StandardMaterial3D id=StandardMaterial3D_bamboo_weave]
+albedo_color = Color(0.68, 0.54, 0.35, 1)
+roughness = 0.88
+specular = 0.12
+
+[sub_resource type=BoxMesh id=BoxMesh_wall_back]
+size = Vector3(6.2, 2.8, 0.18)
+
+[sub_resource type=BoxMesh id=BoxMesh_wall_side]
+size = Vector3(0.18, 2.8, 6.0)
+
+[sub_resource type=BoxMesh id=BoxMesh_wall_front_wing]
+size = Vector3(2.4, 2.8, 0.18)
+
+[sub_resource type=BoxMesh id=BoxMesh_door_lintel]
+size = Vector3(1.5, 0.6, 0.2)
+
+[sub_resource type=StandardMaterial3D id=StandardMaterial3D_carved_teak]
+albedo_color = Color(0.32, 0.18, 0.08, 1)
+roughness = 0.7
+specular = 0.25
+
+[sub_resource type=CylinderMesh id=CylinderMesh_stilt_post]
+top_radius = 0.16
+bottom_radius = 0.18
+height = 1.45
+
+[sub_resource type=BoxMesh id=BoxMesh_stair_step]
+size = Vector3(1.3, 0.18, 0.36)
+
+[sub_resource type=BoxMesh id=BoxMesh_porch_railing]
+size = Vector3(0.1, 0.85, 2.3)
+
+[sub_resource type=BoxMesh id=BoxMesh_porch_railing_front]
+size = Vector3(2.4, 0.85, 0.1)
+
+[sub_resource type=BoxMesh id=BoxMesh_bench]
+size = Vector3(1.8, 0.42, 0.7)
+
+[sub_resource type=StandardMaterial3D id=StandardMaterial3D_roof_thatch]
+albedo_color = Color(0.42, 0.32, 0.18, 1)
+roughness = 0.95
+
+[sub_resource type=PrismMesh id=PrismMesh_main_roof]
 left_to_right = 0.5
-size = Vector3(13.8, 4.2, 14.2)
+size = Vector3(7.4, 2.6, 9.6)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thatch"]
-albedo_color = Color(0.46, 0.36, 0.22, 1)
-roughness = 0.94
+[sub_resource type=PrismMesh id=PrismMesh_tier_roof]
+left_to_right = 0.5
+size = Vector3(4.8, 1.6, 6.2)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_stilt"]
-top_radius = 0.26
-bottom_radius = 0.32
-height = 1.8
+[sub_resource type=CylinderMesh id=CylinderMesh_ridge_spire]
+top_radius = 0.03
+bottom_radius = 0.12
+height = 1.4
 
-[sub_resource type="BoxMesh" id="BoxMesh_verandah"]
-size = Vector3(3.8, 0.5, 7.2)
+[sub_resource type=CylinderMesh id=CylinderMesh_water_pot]
+top_radius = 0.28
+bottom_radius = 0.18
+height = 0.58
 
-[sub_resource type="BoxMesh" id="BoxMesh_ladder"]
-size = Vector3(1.8, 0.2, 2.6)
-
-[sub_resource type="SphereMesh" id="SphereMesh_lamp"]
-radius = 0.32
-height = 0.45
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lamp"]
-albedo_color = Color(1.0, 0.88, 0.5, 1)
-emission_enabled = true
-emission = Color(1.0, 0.82, 0.4, 1)
-emission_energy_multiplier = 2.6
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_water_pot"]
-top_radius = 0.35
-bottom_radius = 0.25
-height = 0.72
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_terracotta"]
-albedo_color = Color(0.72, 0.38, 0.22, 1)
+[sub_resource type=StandardMaterial3D id=StandardMaterial3D_terracotta]
+albedo_color = Color(0.72, 0.36, 0.2, 1)
 roughness = 0.82
 
-[sub_resource type="BoxMesh" id="BoxMesh_porch_bench"]
-size = Vector3(1.2, 0.48, 2.8)
+[node name=MyanmarHouse type=StaticBody3D]
+script = ExtResource(1_lantern)
 
-[sub_resource type="BoxMesh" id="BoxMesh_porch_railing"]
-size = Vector3(0.12, 0.9, 7.0)
+[node name=ColFloor type=CollisionShape3D parent=.]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+shape = SubResource(BoxShape3D_floor)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_weathered_wood"]
-albedo_color = Color(0.42, 0.26, 0.15, 1)
-roughness = 0.78
+[node name=ColStairsRamp type=CollisionShape3D parent=.]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0.75, 5.0)
+shape = SubResource(BoxShape3D_stairs_ramp)
 
-[sub_resource type="BoxMesh" id="BoxMesh_window_shutter"]
-size = Vector3(0.08, 1.45, 1.25)
+[node name=ColWallBack type=CollisionShape3D parent=.]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, -4.1)
+shape = SubResource(BoxShape3D_wall_back)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teak_shutter"]
-albedo_color = Color(0.38, 0.22, 0.12, 1)
-roughness = 0.68
+[node name=ColWallLeft type=CollisionShape3D parent=.]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, 2.9, -1.1)
+shape = SubResource(BoxShape3D_wall_left)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_ridge_spire"]
-top_radius = 0.04
-bottom_radius = 0.16
-height = 1.8
+[node name=ColWallRight type=CollisionShape3D parent=.]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0, 2.9, -1.1)
+shape = SubResource(BoxShape3D_wall_right)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carved_finial"]
-albedo_color = Color(0.48, 0.28, 0.14, 1)
-roughness = 0.65
+[node name=ColWallFrontL type=CollisionShape3D parent=.]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 2.9, 1.9)
+shape = SubResource(BoxShape3D_wall_front_l)
 
-[node name="MyanmarHouse" type="StaticBody3D"]
-script = ExtResource("1_lantern")
+[node name=ColWallFrontR type=CollisionShape3D parent=.]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 2.9, 1.9)
+shape = SubResource(BoxShape3D_wall_front_r)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 4.6, 0)
-shape = SubResource("BoxShape3D_house")
+[node name=VisualMesh type=Node3D parent=.]
 
-[node name="VisualMesh" type="Node3D" parent="."]
+[node name=FloorDeck type=MeshInstance3D parent=VisualMesh]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+mesh = SubResource(BoxMesh_floor)
+surface_material_override/0 = SubResource(StandardMaterial3D_teak_plank)
 
-[node name="Floor" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 1.8, 0)
-mesh = SubResource("BoxMesh_floor")
-surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+[node name=Stilts type=Node3D parent=VisualMesh]
 
-[node name="Walls" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 4.4, 0)
-mesh = SubResource("BoxMesh_walls")
-surface_material_override/0 = SubResource("StandardMaterial3D_bamboo")
+[node name=Stilt_1 type=MeshInstance3D parent=VisualMesh/Stilts]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0.72, -3.9)
+mesh = SubResource(CylinderMesh_stilt_post)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
 
-[node name="WindowShutterNorth" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.22, 4.6, 2.8)
-mesh = SubResource("BoxMesh_window_shutter")
-surface_material_override/0 = SubResource("StandardMaterial3D_teak_shutter")
+[node name=Stilt_2 type=MeshInstance3D parent=VisualMesh/Stilts]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.72, -3.9)
+mesh = SubResource(CylinderMesh_stilt_post)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
 
-[node name="WindowShutterSouth" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.22, 4.6, -2.8)
-mesh = SubResource("BoxMesh_window_shutter")
-surface_material_override/0 = SubResource("StandardMaterial3D_teak_shutter")
+[node name=Stilt_3 type=MeshInstance3D parent=VisualMesh/Stilts]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0.72, -3.9)
+mesh = SubResource(CylinderMesh_stilt_post)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
 
-[node name="RoofRidgeFinialF" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.2, 6.8)
-mesh = SubResource("CylinderMesh_ridge_spire")
-surface_material_override/0 = SubResource("StandardMaterial3D_carved_finial")
+[node name=Stilt_4 type=MeshInstance3D parent=VisualMesh/Stilts]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0.72, -1.3)
+mesh = SubResource(CylinderMesh_stilt_post)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
 
-[node name="RoofRidgeFinialB" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.2, -6.8)
-mesh = SubResource("CylinderMesh_ridge_spire")
-surface_material_override/0 = SubResource("StandardMaterial3D_carved_finial")
+[node name=Stilt_5 type=MeshInstance3D parent=VisualMesh/Stilts]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0.72, -1.3)
+mesh = SubResource(CylinderMesh_stilt_post)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
 
-[node name="VerandahPorch" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 1.85, 0)
-mesh = SubResource("BoxMesh_verandah")
-surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+[node name=Stilt_6 type=MeshInstance3D parent=VisualMesh/Stilts]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0.72, 1.8)
+mesh = SubResource(CylinderMesh_stilt_post)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
 
-[node name="LadderStairs" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(0.866, -0.5, 0, 0.5, 0.866, 0, 0, 0, 1, 7.8, 0.9, 0)
-mesh = SubResource("BoxMesh_ladder")
-surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+[node name=Stilt_7 type=MeshInstance3D parent=VisualMesh/Stilts]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0.72, 1.8)
+mesh = SubResource(CylinderMesh_stilt_post)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
 
-[node name="StiltFL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.6, 0.9, 5.8)
-mesh = SubResource("CylinderMesh_stilt")
-surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+[node name=Stilt_8 type=MeshInstance3D parent=VisualMesh/Stilts]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0.72, 4.0)
+mesh = SubResource(CylinderMesh_stilt_post)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
 
-[node name="StiltFR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.6, 0.9, 5.8)
-mesh = SubResource("CylinderMesh_stilt")
-surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+[node name=Stilt_9 type=MeshInstance3D parent=VisualMesh/Stilts]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0.72, 4.0)
+mesh = SubResource(CylinderMesh_stilt_post)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
 
-[node name="StiltBL" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.6, 0.9, -5.8)
-mesh = SubResource("CylinderMesh_stilt")
-surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+[node name=Walls type=Node3D parent=VisualMesh]
 
-[node name="StiltBR" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.6, 0.9, -5.8)
-mesh = SubResource("CylinderMesh_stilt")
-surface_material_override/0 = SubResource("StandardMaterial3D_teak")
+[node name=WallBack type=MeshInstance3D parent=VisualMesh/Walls]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, -4.1)
+mesh = SubResource(BoxMesh_wall_back)
+surface_material_override/0 = SubResource(StandardMaterial3D_bamboo_weave)
 
-[node name="Roof" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.8, 0)
-mesh = SubResource("PrismMesh_roof")
-surface_material_override/0 = SubResource("StandardMaterial3D_thatch")
+[node name=WallLeft type=MeshInstance3D parent=VisualMesh/Walls]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, 2.9, -1.1)
+mesh = SubResource(BoxMesh_wall_side)
+surface_material_override/0 = SubResource(StandardMaterial3D_bamboo_weave)
 
-[node name="PorchLamp" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 5.0, 2.4)
-mesh = SubResource("SphereMesh_lamp")
-surface_material_override/0 = SubResource("StandardMaterial3D_lamp")
+[node name=WallRight type=MeshInstance3D parent=VisualMesh/Walls]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0, 2.9, -1.1)
+mesh = SubResource(BoxMesh_wall_side)
+surface_material_override/0 = SubResource(StandardMaterial3D_bamboo_weave)
 
-[node name="PorchLight" type="OmniLight3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 4.8, 2.4)
+[node name=WallFrontL type=MeshInstance3D parent=VisualMesh/Walls]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 2.9, 1.9)
+mesh = SubResource(BoxMesh_wall_front_wing)
+surface_material_override/0 = SubResource(StandardMaterial3D_bamboo_weave)
+
+[node name=WallFrontR type=MeshInstance3D parent=VisualMesh/Walls]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 2.9, 1.9)
+mesh = SubResource(BoxMesh_wall_front_wing)
+surface_material_override/0 = SubResource(StandardMaterial3D_bamboo_weave)
+
+[node name=DoorLintel type=MeshInstance3D parent=VisualMesh/Walls]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.0, 1.9)
+mesh = SubResource(BoxMesh_door_lintel)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
+
+[node name=Stairs type=Node3D parent=VisualMesh]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.2)
+
+[node name=Step1 type=MeshInstance3D parent=VisualMesh/Stairs]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, 1.4)
+mesh = SubResource(BoxMesh_stair_step)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
+
+[node name=Step2 type=MeshInstance3D parent=VisualMesh/Stairs]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58, 1.05)
+mesh = SubResource(BoxMesh_stair_step)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
+
+[node name=Step3 type=MeshInstance3D parent=VisualMesh/Stairs]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0.7)
+mesh = SubResource(BoxMesh_stair_step)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
+
+[node name=Step4 type=MeshInstance3D parent=VisualMesh/Stairs]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, 0.35)
+mesh = SubResource(BoxMesh_stair_step)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
+
+[node name=Verandah type=Node3D parent=VisualMesh]
+
+[node name=RailLeft type=MeshInstance3D parent=VisualMesh/Verandah]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, 2.0, 3.0)
+mesh = SubResource(BoxMesh_porch_railing)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
+
+[node name=RailRight type=MeshInstance3D parent=VisualMesh/Verandah]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0, 2.0, 3.0)
+mesh = SubResource(BoxMesh_porch_railing)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
+
+[node name=RailFrontL type=MeshInstance3D parent=VisualMesh/Verandah]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 2.0, 4.15)
+mesh = SubResource(BoxMesh_porch_railing_front)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
+
+[node name=RailFrontR type=MeshInstance3D parent=VisualMesh/Verandah]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 2.0, 4.15)
+mesh = SubResource(BoxMesh_porch_railing_front)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
+
+[node name=Bench type=MeshInstance3D parent=VisualMesh/Verandah]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 1.78, 2.9)
+mesh = SubResource(BoxMesh_bench)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
+
+[node name=WaterPot type=MeshInstance3D parent=VisualMesh/Verandah]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 1.85, 3.2)
+mesh = SubResource(CylinderMesh_water_pot)
+surface_material_override/0 = SubResource(StandardMaterial3D_terracotta)
+
+[node name=WaterPotStand type=MeshInstance3D parent=VisualMesh/Verandah]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 1.58, 3.2)
+mesh = SubResource(BoxMesh_bench)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
+
+[node name=PorchLight type=OmniLight3D parent=VisualMesh/Verandah]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, 2.8)
 light_color = Color(1.0, 0.88, 0.55, 1)
-light_energy = 2.8
-omni_range = 15.0
+light_energy = 2.4
+omni_range = 10.0
 
-[node name="PorchRailing" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.35, 2.5, 0)
-mesh = SubResource("BoxMesh_porch_railing")
-surface_material_override/0 = SubResource("StandardMaterial3D_weathered_wood")
+[node name=RoofStructure type=Node3D parent=VisualMesh]
 
-[node name="PorchBench" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8, 2.3, -1.8)
-mesh = SubResource("BoxMesh_porch_bench")
-surface_material_override/0 = SubResource("StandardMaterial3D_weathered_wood")
+[node name=MainRoof type=MeshInstance3D parent=VisualMesh/RoofStructure]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.2, -0.2)
+mesh = SubResource(PrismMesh_main_roof)
+surface_material_override/0 = SubResource(StandardMaterial3D_roof_thatch)
 
-[node name="VerandahWaterPot" type="MeshInstance3D" parent="VisualMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2, 2.45, 2.4)
-mesh = SubResource("CylinderMesh_water_pot")
-surface_material_override/0 = SubResource("StandardMaterial3D_terracotta")
+[node name=TierRoof type=MeshInstance3D parent=VisualMesh/RoofStructure]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.2, -0.5)
+mesh = SubResource(PrismMesh_tier_roof)
+surface_material_override/0 = SubResource(StandardMaterial3D_roof_thatch)
 
-[node name="HouseSign" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.6, 6.4)
-text = "ရိုးရာ ကျွန်းသစ် အိမ်တော်"
-font_size = 40
-outline_size = 12
-modulate = Color(1.0, 0.88, 0.35, 1)
+[node name=RidgeSpireF type=MeshInstance3D parent=VisualMesh/RoofStructure]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.9, 3.6)
+mesh = SubResource(CylinderMesh_ridge_spire)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
+
+[node name=RidgeSpireB type=MeshInstance3D parent=VisualMesh/RoofStructure]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.9, -4.6)
+mesh = SubResource(CylinderMesh_ridge_spire)
+surface_material_override/0 = SubResource(StandardMaterial3D_carved_teak)
+
+[node name=HouseSign type=Label3D parent=.]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.3, 2.1)
+text = ရိုးရာ ပျဉ်ထောင် ဝါးထရံ အိမ်တော် 🏡
+font_size = 28
+outline_size = 8
+modulate = Color(1.0, 0.92, 0.5, 1)

@@ -66,6 +66,7 @@ const BAMBOO_TIMBER_BOOM_SCENE = preload("res://scenes/bamboo_timber_boom.tscn")
 const MONASTIC_SIMA_HALL_SCENE = preload("res://scenes/monastic_sima_hall.tscn")
 const ANCIENT_BANYAN_SHRINE_SCENE = preload("res://scenes/ancient_banyan_nat_shrine.tscn")
 const TIPITAKA_LIBRARY_SCENE = preload("res://scenes/tipitaka_scripture_library.tscn")
+const COUNTRYSIDE_SUSPENSION_BRIDGE_SCENE = preload("res://scenes/countryside_suspension_bridge.tscn")
 
 func _ready() -> void:
 	var file = FileAccess.open("res://mindon_geo_data.json", FileAccess.READ)
@@ -125,6 +126,7 @@ func _ready() -> void:
 	_generate_monastic_sima_halls()
 	_generate_ancient_banyan_shrines()
 	_generate_tipitaka_libraries()
+	_generate_countryside_suspension_bridges()
 
 func _generate_countryside_exploration_routes() -> void:
 	# Sprawling countryside gravel & dirt exploration trails connecting village to hills and streams
@@ -529,7 +531,7 @@ func _generate_mindon_buildings(buildings: Array) -> void:
 				visual.add_child(eave)
 
 			# Authentic 1:1 Real-Scale Myanmar Teak & Stilt House (ကလေးကစားစရာအရုပ်မဟုတ်စေရန် အချိုးအစားမှန် 2.2x စကေးအပြည့်ချဲ့ခြင်း)
-			house.scale = Vector3(2.2, 2.2, 2.2)
+			house.scale = Vector3(1.0, 1.0, 1.0)
 			building_holder.add_child(house)
 			house.global_position = Vector3(cx, 0.0, cz)
 
@@ -2361,5 +2363,34 @@ func _generate_tipitaka_libraries() -> void:
 		lib_holder.add_child(lib)
 
 		var sign_node = lib.get_node_or_null("Signboard")
+		if sign_node and sign_node is Label3D:
+			sign_node.text = data["sign"]
+
+func _generate_countryside_suspension_bridges() -> void:
+	# Traditional Countryside River Pylon Bamboo & Teak Suspension Rope Footbridges (မင်းတုန်း ကျေးလက် ချောင်းကူး ရိုးရာကြိုးတံတားများ)
+	var bridge_holder = Node3D.new()
+	bridge_holder.name = "CountrysideSuspensionBridges"
+	add_child(bridge_holder)
+
+	var bridge_locations = [
+		{
+			"pos": Vector3(-195.0, 1.2, -185.0),
+			"rot_y": deg_to_rad(38.0),
+			"sign": "မင်းတုန်း မြောက်ဘက် ချောက်ကမ်းပါးကူး ရိုးရာကြိုးတံတား 🌉🌿"
+		},
+		{
+			"pos": Vector3(245.0, 1.5, 175.0),
+			"rot_y": deg_to_rad(-52.0),
+			"sign": "အရှေ့တောင် ချောင်းမကြီးကူး ဝါးနှင့်ကျွန်း သစ်သားကြိုးတံတား 🌉🌊"
+		}
+	]
+
+	for data in bridge_locations:
+		var bridge = COUNTRYSIDE_SUSPENSION_BRIDGE_SCENE.instantiate()
+		bridge.position = data["pos"]
+		bridge.rotation = Vector3(0.0, data["rot_y"], 0.0)
+		bridge_holder.add_child(bridge)
+
+		var sign_node = bridge.get_node_or_null("Signboard")
 		if sign_node and sign_node is Label3D:
 			sign_node.text = data["sign"]

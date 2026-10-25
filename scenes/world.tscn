@@ -148,7 +148,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 280, 0, -220)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 220, 0, -180)
 
 [node name="VillageCar" parent="." instance=ExtResource("23_car_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.2, 85)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0, 0.2, 8.0)
 
 [node name="MyanmarMotorcycle" parent="." instance=ExtResource("24_bike_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.2, 75)
