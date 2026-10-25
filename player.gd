@@ -57,6 +57,7 @@ const Realism118Script = preload("res://realism118.gd")
 const Realism119Script = preload("res://realism119.gd")
 const Perf120Script = preload("res://perf120.gd")
 const Realism121Script = preload("res://realism121.gd")
+const Realism122Script = preload("res://realism122.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -74,6 +75,18 @@ const Realism121Script = preload("res://realism121.gd")
 @export var walk_speed: float = 5.0
 @export var sprint_multiplier: float = 1.6
 @export var jump_velocity: float = 5.0
+# Slice 122 walk smoothing (owner order 2026-10-25: walking must
+# feel comfortable/smooth; audit122 proved the old code set full
+# velocity in ONE step — 0 -> 5.0 instantly, 5.0 -> 0 on release,
+# and rotation snapped up to 4.71 rad in one step). Horizontal
+# velocity now ramps (accel 25/s, decel 35/s: full speed in 0.20 s,
+# full stop in 0.14 s — responsive, not instant) and facing turns
+# via lerp_angle at 10/s (~0.30 s to settle a 180 deg turn).
+# Vertical velocity (gravity/jump) is untouched. NO body bob is
+# added: the owner condemned doll-wobble, and a smoothed walk
+# without bob reads calmer than any bob would.
+var _walk_vx: float = 0.0
+var _walk_vz: float = 0.0
 
 var driving: bool = false
 var driving_vehicle: Node = null
@@ -846,6 +859,13 @@ func _ready() -> void:
 	# after realism119's 580; added after Perf120 so its _process
 	# runs after realism117's mirror and the re-hide wins same-frame).
 	Realism121Script.dress(get_parent())
+	# Slice 122 (System v2, target-first): graphics that read at
+	# 6 m (ground patches, corridor tree canopies, house trim)
+	# + camera/walk smoothing lives in camera.gd + the walk
+	# branch above. Single pass at frame >= 620, after
+	# Realism121's 600 pass. MDHouse1/2/3/6/10 never dressed
+	# (S103 permanent bare); MDHouse8 skipped (post overlap).
+	Realism122Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
@@ -975,6 +995,8 @@ func _physics_process(delta: float) -> void:
 	_update_football(delta)
 	if driving:
 		velocity = Vector3.ZERO
+		_walk_vx = 0.0
+		_walk_vz = 0.0
 		move_and_slide()
 		# Slice 38: vehicles are clamped to the playable area too.
 		# The driven vehicle moves in its own script; this corrects
@@ -1040,12 +1062,18 @@ func _physics_process(delta: float) -> void:
 	if sprinting:
 		speed *= sprint_multiplier
 	if dir != Vector3.ZERO:
-		rotation.y = atan2(dir.x, dir.z)
-		velocity.x = dir.x * speed
-		velocity.z = dir.z * speed
+		# Slice 122: turn smoothly instead of snapping. lerp_angle
+		# takes the short way around (a 180 deg turn settles in
+		# ~0.30 s at 10/s); the FPP view direction follows the same
+		# smoothed facing, which is a feature, not a bug.
+		rotation.y = lerp_angle(rotation.y, atan2(dir.x, dir.z), 1.0 - exp(-10.0 * delta))
+		_walk_vx = move_toward(_walk_vx, dir.x * speed, 25.0 * delta)
+		_walk_vz = move_toward(_walk_vz, dir.z * speed, 25.0 * delta)
 	else:
-		velocity.x = 0.0
-		velocity.z = 0.0
+		_walk_vx = move_toward(_walk_vx, 0.0, 35.0 * delta)
+		_walk_vz = move_toward(_walk_vz, 0.0, 35.0 * delta)
+	velocity.x = _walk_vx
+	velocity.z = _walk_vz
 	move_and_slide()
 	# Slice 38: on foot, the player stops at the world edge, and
 	# every freely-stood ground position becomes the recovery point.

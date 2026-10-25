@@ -106,6 +106,10 @@ const RECOVER_RATE: float = 2.5
 # Smoothed camera distance. -1 means "not started yet" and snaps
 # to the desired distance on the first frame only.
 var cur_dist: float = -1.0
+# Slice 122 smoothed follow point + orbit (TPP only, see _process).
+var _smooth_pos: Vector3 = Vector3.ZERO
+var _smooth_orbit: float = 0.0
+var _smooth_init: bool = false
 
 # Slice 61 addendum (owner order 2026-10-23 00:02): NO zoom controls.
 # One standard PUBG-style third-person view only: zoom_in/zoom_out
@@ -242,19 +246,43 @@ func _process(delta: float) -> void:
 	var desired := TPP_DIST  # Slice 93 PUBG view: 6.0 m, zoom locked at 1.0.
 	if cur_dist < 0.0:
 		cur_dist = desired
-	var dir_h := Vector3(sin(orbit_angle), 0.0, cos(orbit_angle))
-	var eye: Vector3 = t.global_position + Vector3(0.0, EYE_HEIGHT, 0.0)
+	# Slice 122 camera smoothing (owner order 2026-10-25: driving +
+	# walking must feel comfortable/smooth; audit122 proved the
+	# camera reproduced target jitter EXACTLY — alternating +0.3 /
+	# +0.2 target steps came out as +0.3 / +0.2 camera deltas with
+	# zero lag, so every physics/collision shudder reached the
+	# screen 1:1). The follow point and the orbit angle are now
+	# smoothed (12/s position, 15/s orbit — ~80 ms / ~65 ms time
+	# constants: PUBG-like slight lag, not rubber-banding).
+	# Steering reads the RAW orbit_angle (car.gd / player.gd), so
+	# control stays instant while only the VIEW lags — the two
+	# must not be confused. FPP paths above return early and are
+	# untouched (FPP must be exact). Teleports snap: a jump over
+	# 8 m (vehicle enter/exit, respawn) resets the smooth point
+	# instead of gliding across the map; FPP->TPP returns glide
+	# gently over ~0.25 s, which is a feature, not a bug.
+	if not _smooth_init:
+		_smooth_pos = t.global_position
+		_smooth_orbit = orbit_angle
+		_smooth_init = true
+	if _smooth_pos.distance_to(t.global_position) > 8.0:
+		_smooth_pos = t.global_position
+		_smooth_orbit = orbit_angle
+	_smooth_pos = _smooth_pos.lerp(t.global_position, 1.0 - exp(-12.0 * delta))
+	_smooth_orbit = lerp_angle(_smooth_orbit, orbit_angle, 1.0 - exp(-15.0 * delta))
+	var dir_h := Vector3(sin(_smooth_orbit), 0.0, cos(_smooth_orbit))
+	var eye: Vector3 = _smooth_pos + Vector3(0.0, EYE_HEIGHT, 0.0)
 	var hdist := desired * cos(orbit_pitch)
 	var vdist := desired * sin(orbit_pitch)
-	var desired_pos: Vector3 = t.global_position + Vector3(dir_h.x * hdist, vdist, dir_h.z * hdist)
+	var desired_pos: Vector3 = _smooth_pos + Vector3(dir_h.x * hdist, vdist, dir_h.z * hdist)
 	var allowed := _blocked_distance(eye, desired_pos, desired)
 	if allowed < cur_dist:
 		cur_dist = max(allowed, cur_dist - SHORTEN_RATE * delta)
 	else:
 		cur_dist = min(allowed, cur_dist + RECOVER_RATE * delta)
 	var f := cur_dist / desired if desired > 0.0 else 1.0
-	var pos: Vector3 = t.global_position + Vector3(dir_h.x * hdist * f, vdist * f, dir_h.z * hdist * f)
-	if pos.y < t.global_position.y + 0.5:
-		pos.y = t.global_position.y + 0.5
+	var pos: Vector3 = _smooth_pos + Vector3(dir_h.x * hdist * f, vdist * f, dir_h.z * hdist * f)
+	if pos.y < _smooth_pos.y + 0.5:
+		pos.y = _smooth_pos.y + 0.5
 	global_position = pos
-	look_at(t.global_position + Vector3(0.0, 0.4, 0.0), Vector3.UP)
+	look_at(_smooth_pos + Vector3(0.0, 0.4, 0.0), Vector3.UP)
