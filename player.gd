@@ -64,6 +64,7 @@ const Realism125Script = preload("res://realism125.gd")
 const Realism126Script = preload("res://realism126.gd")
 const Realism127Script = preload("res://realism127.gd")
 const Realism128Script = preload("res://realism128.gd")
+const Realism129Script = preload("res://realism129.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -937,6 +938,23 @@ func _ready() -> void:
 	# beacons/ox/smooth-look, S126 plane re-face
 	# untouched; no .tscn edits.
 	Realism128Script.dress(get_parent())
+	# Slice 129 daylight graphics round, audit-first (goal:
+	# OpenTaxi Thadingyut Night level graphic, look only,
+	# never copy): 12 district clouds (sky was 3 clouds
+	# near spawn only) + 5 festival bunting strings
+	# (plaza x2, market x2, Mindon shops front x1 —
+	# banners/bunting were 0 against 44 stalls), all
+	# DAY-GATED so night stays exactly S127. Sun shadows
+	# already exist (main.tscn) and building colours
+	# already vary (5-23/holder) — no trim, no ground,
+	# no shadow work shipped (would be padding).
+	# Single pass at frame >= 740, after Realism128's
+	# 730, with a holders-ready retry gate. Bus/minibus/
+	# big bus, S119 menu, S121 models, S124/S127 night,
+	# S125 beacons/ox/smooth-look, S126 plane re-face,
+	# S128 hut grounding + ground untouched; no .tscn
+	# edits.
+	Realism129Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
