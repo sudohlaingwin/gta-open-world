@@ -68,6 +68,7 @@ const Realism129Script = preload("res://realism129.gd")
 const Realism130Script = preload("res://realism130.gd")
 const Realism131Script = preload("res://realism131.gd")
 const Realism132Script = preload("res://realism132.gd")
+const Realism133Script = preload("res://realism133.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -1013,6 +1014,22 @@ func _ready() -> void:
 	# + ground, S129 clouds + bunting, S130 water + banks,
 	# S131 pagoda glow + festival untouched; no .tscn edits.
 	Realism132Script.dress(get_parent())
+	# Slice 133 road + roadside read audit (owner goal
+	# OpenTaxi Thadingyut Night level, look only). Audit
+	# first: main road complete (166 dashes), loop complete
+	# (46 dashes), East road complete once @-renamed dashes
+	# counted (24, not the prefix count 1), Mindon dirt
+	# streets correct unmarked, village pedestrian by design,
+	# roadside + night coverage adequate. Only two real gaps
+	# shipped, 5 meshes, ungated paint: spur centre dashes
+	# (bare asphalt 12x54, zero markings) + loop-rejoin stop
+	# line at x 1900 (JUNCTION_X lists only 1500 + 2100).
+	# Bus/minibus/big bus, S119 menu, S121 models, S124/S127
+	# night, S125 beacons/ox/smooth-look, S126 plane re-face,
+	# S128 hut grounding + ground, S129 clouds + bunting,
+	# S130 water + banks, S131 pagoda glow + festival, S132
+	# villager motion untouched; no .tscn edits.
+	Realism133Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
