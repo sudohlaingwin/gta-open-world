@@ -66,6 +66,7 @@ const Realism127Script = preload("res://realism127.gd")
 const Realism128Script = preload("res://realism128.gd")
 const Realism129Script = preload("res://realism129.gd")
 const Realism130Script = preload("res://realism130.gd")
+const Realism131Script = preload("res://realism131.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -973,6 +974,21 @@ func _ready() -> void:
 	# + ground, S129 clouds + bunting untouched; no
 	# .tscn edits.
 	Realism130Script.dress(get_parent())
+	# Slice 131 pagoda + landmark grandeur audit round (owner
+	# goal OpenTaxi Thadingyut Night level, look only): gold
+	# glow bands on all gold pagodas (night-gated, emissive,
+	# 0 new omnis), warm niche glows on Brick94 (no gold),
+	# MindonPagoda festival (8 lantern posts + 8 night heads
+	# + 4 flags — it was the darkest pagoda at night, 0
+	# emissive + 0 festival). Landmarks NOT touched (they
+	# already read 23-29 window glows at night). Single pass
+	# at frame >= 760, after Realism130's 750, holders-ready
+	# retry gate. Bus/minibus/big bus, S119 menu, S121
+	# models, S124/S127 night, S125 beacons/ox/smooth-look,
+	# S126 plane re-face, S128 hut grounding + ground, S129
+	# clouds + bunting, S130 water + banks untouched; no
+	# .tscn edits.
+	Realism131Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
