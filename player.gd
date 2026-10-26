@@ -67,6 +67,7 @@ const Realism128Script = preload("res://realism128.gd")
 const Realism129Script = preload("res://realism129.gd")
 const Realism130Script = preload("res://realism130.gd")
 const Realism131Script = preload("res://realism131.gd")
+const Realism132Script = preload("res://realism132.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -989,6 +990,29 @@ func _ready() -> void:
 	# clouds + bunting, S130 water + banks untouched; no
 	# .tscn edits.
 	Realism131Script.dress(get_parent())
+	# Slice 132 people life audit round (owner goal OpenTaxi
+	# Thadingyut Night level, look only): facing PROVEN forward
+	# (face features at +z in all 4 GLB files + live median dot
+	# 1.0 — no PI yaw fix needed); villager unstick fix lives
+	# in npc.gd (widening _pick_target ring — grid-sampled
+	# audit proves 7 villagers strictly stuck + 4 mostly
+	# stuck in at least one band, homes/anchors inside
+	# obstacle circles);
+	# idle sway for still figures lives in realism132.gd
+	# (stops frozen 18/18 + walkers frozen in pauses/talks;
+	# 0.02 rad, 0.5 Hz, per-figure phase, rotation.z only so
+	# it never fights realism121's bob/lean). Variety proven
+	# (youth 12 / elder 7 / fighter 10 / child 7 live) — no
+	# fix shipped. Seated reads as standing (code fact) —
+	# owner decision, needs seated models. Fighter side
+	# objects (brown column + red item) stay owner phone
+	# check — NOT claimed weapon-free. Single pass at frame
+	# >= 770, after Realism131's 760. Bus/minibus/big bus,
+	# S119 menu, S121 models, S124/S127 night, S125 beacons/
+	# ox/smooth-look, S126 plane re-face, S128 hut grounding
+	# + ground, S129 clouds + bunting, S130 water + banks,
+	# S131 pagoda glow + festival untouched; no .tscn edits.
+	Realism132Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing

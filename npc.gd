@@ -123,20 +123,46 @@ func talk_to(player_pos: Vector3) -> void:
 	if player != null and player.has_method("record_talk"):
 		player.call("record_talk", self)
 
+func _point_clear(x: float, z: float) -> bool:
+	for ob in OBSTACLES:
+		if Vector2(x, z).distance_to(Vector2(ob[0], ob[1])) <= float(ob[2]) + 1.0:
+			return false
+	return true
+
 func _pick_target() -> void:
 	for _i in range(8):
 		var t := Vector3(
 			wander_center.x + randf_range(-wander_radius, wander_radius),
 			0.0,
 			wander_center.z + randf_range(-wander_radius, wander_radius))
-		var clear := true
-		for ob in OBSTACLES:
-			if Vector2(t.x, t.z).distance_to(Vector2(ob[0], ob[1])) <= float(ob[2]) + 1.0:
-				clear = false
-				break
-		if clear:
+		if _point_clear(t.x, t.z):
 			target = t
 			return
+	# Slice 132: the old fallback was target = wander_center, which
+	# permanently stuck any villager whose home/anchor sits deep
+	# inside an obstacle circle (grid-sampled audit, 25x25 per
+	# centre: STRICT-STUCK clear fraction 0.000 — Villager4
+	# home, Villager7/8/14/17 day anchors, Villager9/10 home
+	# AND anchor; MOSTLY-STUCK — Villager4/5/16 day anchors
+	# and Villager18 home, P(all 8 picks rejected) 0.57-0.99):
+	# every pick in the normal ring is rejected, so the
+	# target equals the centre, the arrival check fires at
+	# once, and the villager re-picks forever without ever
+	# moving in that band. Widen the ring instead: a
+	# villager that wanders a little farther from home is
+	# alive; a frozen one is a statue. Normal villagers
+	# never reach this code (their first-ring picks
+	# succeed), so their behaviour is unchanged.
+	for mult in [2.0, 3.0, 5.0]:
+		var r: float = wander_radius * mult
+		for _j in range(16):
+			var t2 := Vector3(
+				wander_center.x + randf_range(-r, r),
+				0.0,
+				wander_center.z + randf_range(-r, r))
+			if _point_clear(t2.x, t2.z):
+				target = t2
+				return
 	target = wander_center
 
 ## Slice 9 prompt: a "!" floats above this villager while the
