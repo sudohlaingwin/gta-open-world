@@ -60,6 +60,7 @@ const Realism121Script = preload("res://realism121.gd")
 const Realism122Script = preload("res://realism122.gd")
 const Realism123Script = preload("res://realism123.gd")
 const Realism124Script = preload("res://realism124.gd")
+const Realism125Script = preload("res://realism125.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -891,6 +892,14 @@ func _ready() -> void:
 	# Bus/minibus/big bus, S119 menu, S121 models untouched;
 	# no .tscn edits; no club/city/flying-car copies.
 	Realism124Script.dress(get_parent())
+	# Slice 125 owner-verdict fix (2026-10-26: vehicles undrivable
+	# on the phone because they cannot be FOUND, not because the
+	# loop is broken — probe125 proved enter/drive/turn work):
+	# beacons over Car/Cart/Motorcycle + ox hitched to the Cart
+	# (the Cart had no ox mesh at all). Single pass at frame
+	# >= 680, after Realism124's 660. Bus/minibus/big bus,
+	# S119 menu, S121 models, S124 night untouched; no .tscn edits.
+	Realism125Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
@@ -1091,7 +1100,11 @@ func _physics_process(delta: float) -> void:
 		# takes the short way around (a 180 deg turn settles in
 		# ~0.30 s at 10/s); the FPP view direction follows the same
 		# smoothed facing, which is a feature, not a bug.
-		rotation.y = lerp_angle(rotation.y, atan2(dir.x, dir.z), 1.0 - exp(-10.0 * delta))
+		# Slice 125: facing 10/s -> 12/s to match the camera
+		# follow rate (12/s), so joystick-turn + camera follow +
+		# orbit (15/s) stop fighting as three different lags and
+		# read as one motion. Walk accel/decel untouched.
+		rotation.y = lerp_angle(rotation.y, atan2(dir.x, dir.z), 1.0 - exp(-12.0 * delta))
 		_walk_vx = move_toward(_walk_vx, dir.x * speed, 25.0 * delta)
 		_walk_vz = move_toward(_walk_vz, dir.z * speed, 25.0 * delta)
 	else:

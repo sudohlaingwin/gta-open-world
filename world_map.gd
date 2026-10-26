@@ -95,6 +95,14 @@ const LANDMARKS: Array = [
 	["BusStop74_2", "ဘတ်စ်ကား ၄", Color(0.2, 0.6, 1.0, 1.0)],
 	["BusStop74_3", "ဘတ်စ်ကား ၅", Color(0.2, 0.6, 1.0, 1.0)],
 	["BusStop74_5", "ဘတ်စ်ကား ၆", Color(0.2, 0.6, 1.0, 1.0)],
+	# Slice 125 owner-verdict fix: the world map had ZERO vehicle
+	# landmarks, so a player who opens the map still cannot find
+	# a car, cart, or motorcycle. These three track live like
+	# every landmark (open_map refreshes markers; the game is
+	# paused while the map is open, so they cannot go stale).
+	["Car", "ကား", Color(1.0, 0.8, 0.1, 1.0)],
+	["Cart", "လှည်း", Color(0.2, 0.8, 0.3, 1.0)],
+	["Motorcycle", "ဆိုင်ကယ်", Color(0.2, 0.7, 1.0, 1.0)],
 ]
 
 ## Slice 67 — district region titles. Unlike LANDMARKS, a region has

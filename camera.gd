@@ -109,6 +109,7 @@ var cur_dist: float = -1.0
 # Slice 122 smoothed follow point + orbit (TPP only, see _process).
 var _smooth_pos: Vector3 = Vector3.ZERO
 var _smooth_orbit: float = 0.0
+var _smooth_pitch: float = PITCH_DEFAULT
 var _smooth_init: bool = false
 
 # Slice 61 addendum (owner order 2026-10-23 00:02): NO zoom controls.
@@ -139,8 +140,23 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventScreenDrag:
 		var vp := get_viewport().get_visible_rect().size
 		if event.position.x > vp.x * 0.5:
-			orbit_angle += event.relative.x * 0.005 * _sensitivity()
-			orbit_pitch = clampf(orbit_pitch + event.relative.y * 0.005 * _sensitivity(), PITCH_MIN, PITCH_MAX)
+			# Slice 125 drag deadband: finger noise is 1-2 px
+			# between frames; probe125 proved raw drag passes
+			# 1:1 into orbit/pitch (0.005 x rel, exactly), so
+			# every micro-jitter reached the screen. Drops
+			# under 3 px die; intentional drags pass whole,
+			# so total travel is preserved (no flick loss).
+			# Explicit float types: := inference on
+			# event.relative.x fails to parse in this project
+			# (warning treated as error — S123 lesson repeated).
+			var rx: float = event.relative.x
+			var ry: float = event.relative.y
+			if absf(rx) < 3.0:
+				rx = 0.0
+			if absf(ry) < 3.0:
+				ry = 0.0
+			orbit_angle += rx * 0.005 * _sensitivity()
+			orbit_pitch = clampf(orbit_pitch + ry * 0.005 * _sensitivity(), PITCH_MIN, PITCH_MAX)
 
 # Physics bodies the camera ray must ignore. Everything on the
 # default layer that is NOT a StaticBody3D is a character, a
@@ -264,16 +280,24 @@ func _process(delta: float) -> void:
 	if not _smooth_init:
 		_smooth_pos = t.global_position
 		_smooth_orbit = orbit_angle
+		_smooth_pitch = orbit_pitch
 		_smooth_init = true
 	if _smooth_pos.distance_to(t.global_position) > 8.0:
 		_smooth_pos = t.global_position
 		_smooth_orbit = orbit_angle
+		_smooth_pitch = orbit_pitch
 	_smooth_pos = _smooth_pos.lerp(t.global_position, 1.0 - exp(-12.0 * delta))
 	_smooth_orbit = lerp_angle(_smooth_orbit, orbit_angle, 1.0 - exp(-15.0 * delta))
+	# Slice 125: pitch was used RAW in the position math while yaw
+	# was smoothed at 15/s — vertical look jumped instantly while
+	# horizontal look lagged, which reads as "not smooth". Pitch
+	# now smooths at the same 15/s as yaw; steering still reads
+	# the RAW orbit_angle, so control stays instant.
+	_smooth_pitch = lerp_angle(_smooth_pitch, orbit_pitch, 1.0 - exp(-15.0 * delta))
 	var dir_h := Vector3(sin(_smooth_orbit), 0.0, cos(_smooth_orbit))
 	var eye: Vector3 = _smooth_pos + Vector3(0.0, EYE_HEIGHT, 0.0)
-	var hdist := desired * cos(orbit_pitch)
-	var vdist := desired * sin(orbit_pitch)
+	var hdist := desired * cos(_smooth_pitch)
+	var vdist := desired * sin(_smooth_pitch)
 	var desired_pos: Vector3 = _smooth_pos + Vector3(dir_h.x * hdist, vdist, dir_h.z * hdist)
 	var allowed := _blocked_distance(eye, desired_pos, desired)
 	if allowed < cur_dist:
