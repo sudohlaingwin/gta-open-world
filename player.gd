@@ -58,6 +58,7 @@ const Realism119Script = preload("res://realism119.gd")
 const Perf120Script = preload("res://perf120.gd")
 const Realism121Script = preload("res://realism121.gd")
 const Realism122Script = preload("res://realism122.gd")
+const Realism123Script = preload("res://realism123.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -866,6 +867,18 @@ func _ready() -> void:
 	# Realism121's 600 pass. MDHouse1/2/3/6/10 never dressed
 	# (S103 permanent bare); MDHouse8 skipped (post overlap).
 	Realism122Script.dress(get_parent())
+	# Slice 123 (System v2, target-first, owner re-point: no wait
+	# for the S122 verdict): route/loop/spur ground shoulders
+	# (audit proved 0 coverage between stops), trim round 2 on
+	# MDHouse11-14 + HamletHouse75_0..3, motorcycle brake light
+	# on the EXISTING Tail99_Moto (S118's "no tail mesh" claim
+	# overturned by the live audit), tuning deliberately
+	# UNCHANGED (softening measured, no yaw gain). Single pass
+	# at frame >= 640, after Realism122's 620 pass. MDHouse
+	# 1/2/3/6/10 never dressed (S103 permanent bare); MDHouse8
+	# skipped (post overlap). Brake tracking is one vehicle,
+	# O(1) per frame — no tree walk.
+	Realism123Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
