@@ -266,10 +266,26 @@ func _spawn_traffic() -> void:
 			park_car83(ci)
 
 
-func _respawn_car(car: Node3D, bus_pos: Vector3) -> void:
+func _respawn_car(car: Node3D, bus_pos: Vector3, slot_idx: int = -1) -> void:
 	# Farthest route waypoint from the bus (manager
 	# pattern, widened: the long road has no 25-45 m
 	# band rule, distance alone is the criterion).
+	# Slice 135: NEVER land on the waypoint itself. The old code put
+	# every respawned/unparked car on the single farthest waypoint,
+	# so cars unparked together (night->peak unparks 4) stacked at
+	# identical coordinates and blocked each other forever: each
+	# sees the other inside its stop radius, and the 30 s respawn
+	# then re-stacked them on the same point (probe135c: 2 cars at
+	# (2400,-3) for 39 s straight incl. a stuck-reset that changed
+	# nothing, 4 after a peak transition). The manager's own
+	# _pick_spawn_index comment states this exact failure mode for
+	# shared spawn waypoints; the long-road respawn lacked the
+	# equivalent guard. The car now lands 10*(slot_idx+1) m BACK
+	# along the route path from the farthest waypoint (walking
+	# backward around corners, so it always stays ON the road) and
+	# targets that waypoint, so simultaneously respawned cars form
+	# a spaced queue on the lane instead of a stack. Unknown slot
+	# lands 10 m back, never 0.
 	var best := 0
 	var best_d := -1.0
 	for wi in range(LONG_ROUTE.size()):
@@ -278,12 +294,32 @@ func _respawn_car(car: Node3D, bus_pos: Vector3) -> void:
 		if d > best_d:
 			best_d = d
 			best = wi
+	var back: float = 10.0 * float(slot_idx + 1) if slot_idx >= 0 else 10.0
 	var wp0: Vector2 = LONG_ROUTE[best]
-	var wp1: Vector2 = LONG_ROUTE[(best + 1) % LONG_ROUTE.size()]
-	car.global_position = Vector3(wp0.x, 0.0, wp0.y)
-	var dir := wp1 - wp0
-	car.rotation.y = atan2(dir.x, dir.y)
-	car.set("waypoint_index", (best + 1) % LONG_ROUTE.size())
+	var pos: Vector2 = wp0
+	var remaining: float = back
+	var i: int = best
+	var guard: int = 0
+	while remaining > 0.0 and guard < 8:
+		guard += 1
+		var prev: int = (i - 1 + LONG_ROUTE.size()) % LONG_ROUTE.size()
+		var seg: float = LONG_ROUTE[i].distance_to(LONG_ROUTE[prev])
+		if seg <= 0.0:
+			break
+		if remaining <= seg:
+			pos = LONG_ROUTE[i].lerp(LONG_ROUTE[prev], remaining / seg)
+			break
+		remaining -= seg
+		i = prev
+	car.global_position = Vector3(pos.x, 0.0, pos.y)
+	var dir: Vector2 = wp0 - pos
+	if dir.length() > 0.001:
+		car.rotation.y = atan2(dir.x, dir.y)
+	else:
+		var wp1: Vector2 = LONG_ROUTE[(best + 1) % LONG_ROUTE.size()]
+		var d1: Vector2 = wp1 - wp0
+		car.rotation.y = atan2(d1.x, d1.y)
+	car.set("waypoint_index", best)
 	car.set("speed", 0.0)
 	car.set("stuck_time", 0.0)
 
@@ -329,7 +365,7 @@ func unpark_car83(idx: int, bus_pos: Vector3) -> void:
 	if car == null:
 		return
 	car.set_meta("parked83", false)
-	_respawn_car(car, bus_pos)
+	_respawn_car(car, bus_pos, idx)
 
 
 func road_count83() -> int:
@@ -507,7 +543,7 @@ func _physics_process(delta: float) -> void:
 		car.call("set_headlights", dark)
 		var stuck: float = float(car.get("stuck_time"))
 		if stuck > STUCK_RESPAWN_S and bus_pos != Vector3.INF:
-			_respawn_car(car, bus_pos)
+			_respawn_car(car, bus_pos, traffic_cars.find(car))
 			continue
 		car.call("drive", delta, obs)
 	# --- Night / rain gating, applied only on change

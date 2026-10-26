@@ -171,7 +171,14 @@ func _update_brakes(delta: float) -> void:
 		var hold: float = tr["hold"]
 		if decel > 1.0:
 			hold = 1.0
-		elif hold > 0.0:
+		elif hold > 0.0 and speed >= 0.1:
+			# Slice 135: a car stopped in a jam keeps its brake lights
+			# on while it sits stopped. The old code decayed the 1.0 s
+			# hold even at speed 0, so a queue stopped > 1 s read dim
+			# (audit135 sample2: stopped 3.7 s, tail 0.25) despite the
+			# S117 header's stated intent. Hold resumes decaying once
+			# the car moves again, so the light still clears ~1 s after
+			# pull-away; a car that spawns stopped (hold 0) stays dim.
 			hold = maxf(0.0, hold - delta)
 		tr["hold"] = hold
 		_set_bright(tr["mat"], hold > 0.0)
