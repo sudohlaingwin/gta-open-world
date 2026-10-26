@@ -103,6 +103,24 @@ const LANDMARKS: Array = [
 	["Car", "ကား", Color(1.0, 0.8, 0.1, 1.0)],
 	["Cart", "လှည်း", Color(0.2, 0.8, 0.3, 1.0)],
 	["Motorcycle", "ဆိုင်ကယ်", Color(0.2, 0.7, 1.0, 1.0)],
+	# Slice 126: extend the same pattern to the WHOLE fleet —
+	# probe126 proved every rideable drives, but only the trio
+	# above was findable on the map. Labels (not colours alone)
+	# carry the meaning; a missing node (Bus/Minibus are
+	# runtime-created) hides gracefully, never a crash.
+	["Airplane", "လေယာဉ်", Color(0.3, 0.9, 0.9, 1.0)],
+	["Cow", "နွား", Color(0.8, 0.6, 0.4, 1.0)],
+	["Cow2", "နွား ၂", Color(0.6, 0.4, 0.6, 1.0)],
+	["Helicopter", "ရဟတ်ယာဉ်", Color(1.0, 0.4, 0.8, 1.0)],
+	["Boat", "လှေ", Color(0.2, 0.5, 1.0, 1.0)],
+	["Bicycle", "စက်ဘီး", Color(0.4, 1.0, 0.4, 1.0)],
+	["TukTuk", "သုံးဘီး", Color(1.0, 0.7, 0.2, 1.0)],
+	["Elephant", "ဆင်", Color(0.6, 0.6, 0.6, 1.0)],
+	["Horse", "မြင်း", Color(0.7, 0.5, 0.9, 1.0)],
+	["Boat2", "လှေ ၂", Color(0.2, 0.8, 0.8, 1.0)],
+	["Horse2", "မြင်း ၂", Color(0.9, 0.6, 0.9, 1.0)],
+	["Bus", "ဘတ်စ်ကား", Color(0.9, 0.2, 0.2, 1.0)],
+	["Minibus", "မီနီဘတ်စ်", Color(1.0, 0.5, 0.0, 1.0)],
 ]
 
 ## Slice 67 — district region titles. Unlike LANDMARKS, a region has

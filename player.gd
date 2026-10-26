@@ -61,6 +61,7 @@ const Realism122Script = preload("res://realism122.gd")
 const Realism123Script = preload("res://realism123.gd")
 const Realism124Script = preload("res://realism124.gd")
 const Realism125Script = preload("res://realism125.gd")
+const Realism126Script = preload("res://realism126.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -900,6 +901,15 @@ func _ready() -> void:
 	# >= 680, after Realism124's 660. Bus/minibus/big bus,
 	# S119 menu, S121 models, S124 night untouched; no .tscn edits.
 	Realism125Script.dress(get_parent())
+	# Slice 126 (2026-10-26: every rideable genuinely drivable):
+	# re-faces the Airplane to west at its parking spot — it was
+	# parked facing -z into Stilt13Solid's corner and could not
+	# move at all (probe126/planeslide126 proved the wedge;
+	# planeface126 proved west flies from the same spot). Single
+	# pass at frame >= 700, after Realism125's 680. Bus/minibus/
+	# big bus, S119 menu, S121 models, S124 night, S125 beacons/
+	# ox/smooth-look untouched; no .tscn edits.
+	Realism126Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
