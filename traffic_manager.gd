@@ -236,6 +236,57 @@ func _pick_spawn_index(route: Array) -> int:
 				best = i
 	return best
 
+## Slice 137: is this waypoint blocked for THIS car right now?
+## Mirrors traffic_car._blocked exactly (stop radius on any side,
+## plus the forward cone toward the next waypoint): a car spawned
+## on a blocked waypoint can never move — it sits until the 15 s
+## stuck timeout despawns it, and the refill re-picks the same
+## point. Audit137 proved it: TrafficVan3 spawned 10/10 times at
+## the south corner (14,36) with Villager6 within 4.8 m in 51/51
+## samples, speed 0 in every sample, 0 m driven in ~150 s.
+func _waypoint_blocked(car: Node3D, route: Array, idx: int, obstacles: Array) -> bool:
+	var wp: Vector2 = route[idx] as Vector2
+	var nxt: Vector2 = route[(idx + 1) % route.size()] as Vector2
+	var fwd: Vector2 = nxt - wp
+	var flen: float = fwd.length()
+	var half: float = 1.6
+	if car.get("half_length") != null:
+		half = float(car.get("half_length"))
+	var stop_dist: float = half + 2.6
+	var cone_dist: float = stop_dist + 3.5
+	for ob in obstacles:
+		var ob3: Vector3 = ob as Vector3
+		var o: Vector2 = Vector2(ob3.x, ob3.z)
+		var to_ob: Vector2 = o - wp
+		var dist: float = to_ob.length()
+		if dist < stop_dist:
+			return true
+		if dist < cone_dist and flen > 0.001 and dist > 0.001:
+			var dir: Vector2 = to_ob / dist
+			var fwdn: Vector2 = fwd / flen
+			if fwdn.x * dir.x + fwdn.y * dir.y > 0.7:
+				return true
+	return false
+
+## Slice 137: walk forward along the route from the picked spawn
+## waypoint to the first one no live obstacle blocks (villagers,
+## player vehicles, the player, other traffic cars — the same set
+## drive() stops for). Falls back to the picked waypoint when
+## every waypoint is blocked, so a spawn never fails that would
+## otherwise succeed. This fixes the spawn defect only: a car that
+## spawns clear still stops later if a villager wanders onto its
+## path — that is the manager's designed 15 s despawn cycle, and
+## the two wander areas overlapping the south loop (Villager6 at
+## the (14,36) corner, Villager5 at the bottom leg) are a
+## placement matter for the owner, not something this walk hides.
+func _first_clear_waypoint(car: Node3D, route: Array, start_idx: int) -> int:
+	var obstacles: Array = _collect_obstacles(car)
+	for k in range(route.size()):
+		var idx: int = (start_idx + k) % route.size()
+		if not _waypoint_blocked(car, route, idx, obstacles):
+			return idx
+	return start_idx
+
 func _spawn_car(car: Node3D, route: Array, offset: int, allow_farthest: bool) -> bool:
 	var best := _pick_spawn_index(route)
 	var idx := -1
@@ -255,6 +306,11 @@ func _spawn_car(car: Node3D, route: Array, offset: int, allow_farthest: bool) ->
 		idx = farthest
 	else:
 		return false
+	# Slice 137: never spawn on a blocked waypoint (see
+	# _first_clear_waypoint). Without this, a refill whose picked
+	# waypoint sits under a lingering villager spawns already
+	# stuck and re-jams the same point every 15 s forever.
+	idx = _first_clear_waypoint(car, route, idx)
 	var wp0 := route[idx] as Vector2
 	var wp1 := route[(idx + 1) % route.size()] as Vector2
 	car.global_position = Vector3(wp0.x, 0.0, wp0.y)
