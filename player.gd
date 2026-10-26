@@ -65,6 +65,7 @@ const Realism126Script = preload("res://realism126.gd")
 const Realism127Script = preload("res://realism127.gd")
 const Realism128Script = preload("res://realism128.gd")
 const Realism129Script = preload("res://realism129.gd")
+const Realism130Script = preload("res://realism130.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -955,6 +956,23 @@ func _ready() -> void:
 	# S128 hut grounding + ground untouched; no .tscn
 	# edits.
 	Realism129Script.dress(get_parent())
+	# Slice 130 water + atmosphere audit round (goal:
+	# OpenTaxi Thadingyut Night level graphic, look only,
+	# never copy): Pond97 flat water -> shared ripple
+	# material, bank rings at Pond97 (r 15.5) + Pond62A
+	# (r 9.5, S128 Pond62B pattern), reeds + bank dirt
+	# along the bare MindonWaterSW course. Fog DEFERRED
+	# (S120's probe used a nonexistent property + never
+	# set fog_mode, and this VM's dummy renderer returns
+	# empty viewport textures, so fog's look is
+	# unverifiable headless). Single pass at frame >=
+	# 750, after Realism129's 740, with a holders-ready
+	# retry gate. Bus/minibus/big bus, S119 menu, S121
+	# models, S124/S127 night, S125 beacons/ox/
+	# smooth-look, S126 plane re-face, S128 hut grounding
+	# + ground, S129 clouds + bunting untouched; no
+	# .tscn edits.
+	Realism130Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
