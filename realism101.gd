@@ -102,15 +102,22 @@ static func dress(world: Node3D) -> void:
 
 func _process(_delta: float) -> void:
 	_frames += 1
+	# S124 gate-order fix (see realism100.gd): the S120
+	# change-gate ran from frame 1, BEFORE _apply (frame 200)
+	# created the glows, so a fresh night load stayed dark
+	# until the first daylight transition. Forcing the gate
+	# on the _apply frame fixes it; afterwards change-only.
+	var applied := false
 	if not _done and _frames >= 200:
 		_done = true
 		_apply(get_parent() as Node3D)
+		applied = true
 	var world := get_parent() as Node3D
 	if world == null:
 		return
 	var day := _daylight(world)
 	var night := day < 0.15
-	if not _gate_once or night != _last_night:
+	if applied or not _gate_once or night != _last_night:
 		_gate_once = true
 		_last_night = night
 		for g in _glows:

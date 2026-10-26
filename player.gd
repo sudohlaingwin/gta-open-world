@@ -59,6 +59,7 @@ const Perf120Script = preload("res://perf120.gd")
 const Realism121Script = preload("res://realism121.gd")
 const Realism122Script = preload("res://realism122.gd")
 const Realism123Script = preload("res://realism123.gd")
+const Realism124Script = preload("res://realism124.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -879,6 +880,17 @@ func _ready() -> void:
 	# skipped (post overlap). Brake tracking is one vehicle,
 	# O(1) per frame — no tree walk.
 	Realism123Script.dress(get_parent())
+	# Slice 124 (goal: OpenTaxi Thadingyut Night level graphic,
+	# look only, never copy): night round — gate-order fixes
+	# in realism100/101/102/103/104 (their S120 change-gates
+	# ran before _apply, leaving fresh night loads dark),
+	# lit windows on the 9 audit-dark houses, 3 Mindon
+	# street pools, Thadingyut fireworks extension (3 new
+	# sites) + sky/water lanterns + oil lamps, +40 stars.
+	# Single pass at frame >= 660, after Realism123's 640.
+	# Bus/minibus/big bus, S119 menu, S121 models untouched;
+	# no .tscn edits; no club/city/flying-car copies.
+	Realism124Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
