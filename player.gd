@@ -7,6 +7,7 @@ const Dress59Script = preload("res://district_dress59.gd")
 const Style61Script = preload("res://style61.gd")
 const HudPolish60Script = preload("res://hud_polish60.gd")
 const HudFix61bScript = preload("res://hud_fix61b.gd")
+const Hud157Script = preload("res://hud157.gd")
 const Chill62Script = preload("res://chill_world62.gd")
 const EastFields64Script = preload("res://eastfields64.gd")
 const Signboards69Script = preload("res://signboards69.gd")
@@ -457,6 +458,15 @@ func _ready() -> void:
 	if _layer60 != null:
 		HudPolish60Script.polish(_layer60, self)
 		HudFix61bScript.dress(_layer60, self)
+		# Slice 157 user-control HUD overhaul (owner order 2026-10-27
+		# 20:31 +07, FIRST priority): late-priority runtime layout
+		# manager + touch-down wiring. Idempotent: re-running
+		# _ready (scene reload) finds the existing node and skips.
+		if _layer60.get_node_or_null("Hud157") == null:
+			var _hud157 := Node.new()
+			_hud157.name = "Hud157"
+			_hud157.set_script(Hud157Script)
+			_layer60.call_deferred("add_child", _hud157)
 	apply_graphics_quality()
 	_configure_map_bounds()
 	# Slice 53 graphics: village dressing (walls/windows/doors for
