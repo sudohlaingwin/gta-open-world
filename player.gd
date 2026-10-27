@@ -75,6 +75,7 @@ const Realism141Script = preload("res://realism141.gd")
 const Realism145Script = preload("res://realism145.gd")
 const Realism146Script = preload("res://realism146.gd")
 const Realism147Script = preload("res://realism147.gd")
+const Realism148Script = preload("res://realism148.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -1067,6 +1068,14 @@ func _ready() -> void:
 	# sinking (~0.41 m, player AND NPCs) measured but deliberately
 	# NOT fixed here — it needs a dedicated figures-grounding
 	# round, not a player-only lift (see realism147.gd header).
+	# Slice 148: figures-grounding round — correct the S121 walker
+	# base formula (Godot 4.3 capsule half-extent = height/2, not
+	# height/2 + radius: every GLB sank 0.40 m) and lift the
+	# player's visual figure by the live-measured amount (soles
+	# -0.43 -> 0.00). Runs BEFORE Realism147's hat seating and
+	# re-seats the hat itself, so the hat stays on the lifted
+	# head. Physics, colliders, and animations untouched.
+	Realism148Script.dress(get_parent())
 	Realism147Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,

@@ -46,11 +46,16 @@ extends Node3D
 ## (rider destination sign) and DialogueLabel/PromptLabel are NEVER
 ## hidden. Labels are repositioned to keep the old clearance above
 ## the new (shorter) head: dialogue +0.65 m, prompt +1.25 m.
-## VILLAGER ORIGIN: villager nodes sit ~1.0 m above ground
-## (CapsuleShape3D_player: radius 0.4, height 1.2 -> bottom at local
-## -1.0, matching Longyi bottom -0.55 - 0.9/2 = -1.00), so the model
-## base is computed from the LIVE capsule shape, NOT hardcoded:
-## base_y = -(height/2 + radius) + 0.04. Bus-stop figure origins sit
+## VILLAGER ORIGIN: villager nodes sit 0.60 m above ground
+## (CapsuleShape3D_player: radius 0.4, height 1.2 — in Godot 4.3
+## `height` is the TOTAL height, so the physics half-extent is
+## height/2 = 0.60, proven by live origins 0.600x on ground top
+## 0.0 and by captest: a fresh CapsuleShape3D(1.2, 0.4) body
+## rests at y = 0.60029. The old formula used height/2 + radius
+## = 1.00 (Godot 3 semantics) and sank every GLB 0.40 m — fixed
+## by S148), so the model base is computed from the LIVE capsule
+## shape, NOT hardcoded:
+## base_y = -(height/2) + 0.04. Bus-stop figure origins sit
 ## at ground (Body74 spans 0.0..1.10), so their base is +0.04.
 ## Model feet sit at local y = -0.04 in every file, hence +0.04.
 ## PERFORMANCE: each model instance is 1 draw call vs ~8+ parts for
@@ -186,11 +191,15 @@ func _dress_villager(fig: Node3D) -> void:
 	if inst == null:
 		return
 	inst.name = "Model121"
-	var base_y := -0.96
+	var base_y := -0.56
 	var col := fig.get_node_or_null("CollisionShape3D") as CollisionShape3D
 	if col != null and col.shape is CapsuleShape3D:
 		var cap := col.shape as CapsuleShape3D
-		base_y = -(cap.height / 2.0 + cap.radius) + 0.04
+		# S148: Godot 4.3 capsule half-extent = height/2 (total
+		# height), NOT height/2 + radius. Old value sank feet
+		# 0.40 m: 0.60 - 0.96 - 0.04 = -0.40. New value grounds
+		# them exactly: 0.60 - 0.56 - 0.04 = 0.00.
+		base_y = -(cap.height / 2.0) + 0.04
 	var h := _hash01(String(fig.name))
 	var midx := 0
 	if h < CHILD_CUT:
