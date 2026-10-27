@@ -28,6 +28,8 @@ var headlights_on: bool = true
 @onready var headlight_beam_l: SpotLight3D = get_node_or_null("VisualMesh/Headlights/BeamL")
 @onready var headlight_beam_r: SpotLight3D = get_node_or_null("VisualMesh/Headlights/BeamR")
 @onready var car_sign: Label3D = get_node_or_null("TrafficCarSign")
+@onready var taillight_l: MeshInstance3D = get_node_or_null("VisualMesh/Taillights/TailLampL")
+@onready var taillight_r: MeshInstance3D = get_node_or_null("VisualMesh/Taillights/TailLampR")
 
 func _ready() -> void:
 	add_to_group("traffic_cars")
@@ -113,6 +115,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		_process_ai_traffic(delta)
 
+	_update_taillights()
 	move_and_slide()
 
 func _process_player_driving(delta: float) -> void:
@@ -263,3 +266,13 @@ func honk_horn() -> void:
 	var am = get_tree().get_first_node_in_group("audio_manager")
 	if am and am.has_method("play_car_horn"):
 		am.play_car_horn()
+
+
+func _update_taillights() -> void:
+	var brake_active = is_stopped or (is_player_driven and Input.is_action_pressed("ui_down"))
+	for tl in [taillight_l, taillight_r]:
+		if tl:
+			var mat = tl.get_surface_override_material(0)
+			if mat is StandardMaterial3D:
+				mat.emission_enabled = brake_active or headlights_on
+				mat.emission_energy_multiplier = 3.6 if brake_active else 1.2

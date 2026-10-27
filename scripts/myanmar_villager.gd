@@ -18,6 +18,16 @@ var target_position: Vector3 = Vector3.ZERO
 var state_timer: float = 0.0
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+# Authentic Myanmar 3D GLB Character Models (Adopted from MUSE audit)
+const GLB_MODELS: Dictionary = {
+	"child": "res://models/1_child_cowherd_character.glb",
+	"youth": "res://models/2_youth_weaver_character.glb",
+	"fighter": "res://models/3_adult_fighter_character.glb",
+	"elder": "res://models/4_elder_villager_character.glb"
+}
+var character_model: Node3D = null
+var walk_anim_time: float = 0.0
+
 # Obstacle Avoidance Circles: [Vector3(pos), float(radius), ...]
 const OBSTACLE_POSITIONS = [
 	Vector3(0, 0, -25),
@@ -46,7 +56,8 @@ func _ready() -> void:
 		var mat = StandardMaterial3D.new()
 		mat.albedo_color = longyi_color
 		longyi_mesh.set_surface_override_material(0, mat)
-		
+
+	_setup_character_model()
 	_pick_new_state()
 
 func _physics_process(delta: float) -> void:
@@ -59,6 +70,9 @@ func _physics_process(delta: float) -> void:
 		NPCState.IDLE:
 			velocity.x = move_toward(velocity.x, 0, walk_speed)
 			velocity.z = move_toward(velocity.z, 0, walk_speed)
+			if character_model:
+				character_model.position.y = move_toward(character_model.position.y, 0.0, delta * 2.0)
+				character_model.rotation.x = move_toward(character_model.rotation.x, 0.0, delta * 2.0)
 			if state_timer <= 0:
 				_pick_new_state()
 
@@ -82,7 +96,13 @@ func _physics_process(delta: float) -> void:
 				velocity.x = move_dir.x * walk_speed
 				velocity.z = move_dir.z * walk_speed
 				var target_angle = atan2(move_dir.x, move_dir.z)
-				visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, target_angle, 6.0 * delta)
+				if visual_mesh and visual_mesh.visible:
+					visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, target_angle, 6.0 * delta)
+				if character_model:
+					walk_anim_time += delta * 8.5
+					character_model.position.y = abs(sin(walk_anim_time)) * 0.035
+					character_model.rotation.x = 0.04
+					character_model.rotation.y = lerp_angle(character_model.rotation.y, target_angle, 6.0 * delta)
 
 		NPCState.TALKING:
 			velocity.x = move_toward(velocity.x, 0, walk_speed)
@@ -102,7 +122,13 @@ func talk_to(player_pos: Vector3) -> void:
 		dialogue_label.visible = true
 	var dir = (player_pos - global_position).normalized()
 	dir.y = 0.0
-	visual_mesh.rotation.y = atan2(dir.x, dir.z)
+	var face_rot = atan2(dir.x, dir.z)
+	if visual_mesh and visual_mesh.visible:
+		visual_mesh.rotation.y = face_rot
+	if character_model:
+		character_model.rotation.y = face_rot
+		character_model.position.y = 0.0
+		character_model.rotation.x = 0.0
 
 func _pick_new_state() -> void:
 	if randf() < 0.4:
@@ -133,3 +159,34 @@ func _pick_new_state() -> void:
 			target_position = candidate
 		else:
 			target_position = spawn_position
+
+func _setup_character_model() -> void:
+	var model_key = "elder"
+	var n = villager_name.to_lower()
+	if "ဖိုးခွား" in n or "ကလေး" in n or "နွားကျောင်း" in n or "child" in n:
+		model_key = "child"
+	elif "မအေးကြည်" in n or "မေ" in n or "ရက်ကန်း" in n or "ပျို" in n:
+		model_key = "youth"
+	elif "ကိုမင်းဒင်" in n or "ကိုဖိုးတုတ်" in n or "မောင်" in n or "ကာလသား" in n:
+		model_key = "fighter"
+	else:
+		var hash_val = abs(villager_name.hash()) % 4
+		match hash_val:
+			0: model_key = "child"
+			1: model_key = "youth"
+			2: model_key = "fighter"
+			3: model_key = "elder"
+
+	var path = GLB_MODELS.get(model_key, "")
+	if ResourceLoader.exists(path):
+		var scn = load(path) as PackedScene
+		if scn:
+			character_model = scn.instantiate() as Node3D
+			if character_model:
+				character_model.name = "CharacterModel3D"
+				add_child(character_model)
+				character_model.position = Vector3(0, 0, 0)
+				if visual_mesh:
+					visual_mesh.visible = false
+				if dialogue_label:
+					dialogue_label.position.y = 2.15
