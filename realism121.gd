@@ -236,7 +236,17 @@ func _apply(world: Node3D) -> void:
 		var x: Node = stack.pop_back()
 		if x != world and x is Node3D:
 			var nm := String(x.name)
-			if nm.begins_with("Villager"):
+			# S143: VillagerHat1..7 are straw-hat MESHES parented to
+			# Villager1..7 (local y 1.55), NOT figures. The bare
+			# "Villager" prefix dressed each hat with a full GLB
+			# model (base local 0.59 = 1.55 m above the real model),
+			# so Villagers 1..7 walked as stacked double figures
+			# ~3.2 m tall, while _hide_meshes hid the hats
+			# themselves. Skip hats here; they stay hidden (their
+			# 1.55 local height floats ~0.85 m above GLB head tops
+			# at 0.66..0.74 local, so restoring them would add
+			# floating cylinders, not hats).
+			if nm.begins_with("Villager") and not nm.begins_with("VillagerHat"):
 				_dress_villager(x as Node3D)
 			elif nm.begins_with("Waiting74_") or nm.begins_with("Alighted75_"):
 				_dress_stop(x as Node3D)
