@@ -73,6 +73,7 @@ const Realism134Script = preload("res://realism134.gd")
 const Realism138Script = preload("res://realism138.gd")
 const Realism141Script = preload("res://realism141.gd")
 const Realism145Script = preload("res://realism145.gd")
+const Realism146Script = preload("res://realism146.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -1052,6 +1053,12 @@ func _ready() -> void:
 	# (floated 0.125 m); runtime dressing only, all other animals
 	# proven complete by audit145, untouched.
 	Realism145Script.dress(get_parent())
+	# Slice 146: seasons audit round — season-completion tint for the
+	# ground patches + canopies the S62 controller never reaches
+	# (frame-5 capture misses all S122+ dressing: Canopy122 0/140,
+	# Ground122/123/128/138 patches 0 change). Runtime dressing only;
+	# controller's own set untouched (cap guard), S145 animals untouched.
+	Realism146Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
