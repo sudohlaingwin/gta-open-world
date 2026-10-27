@@ -76,6 +76,50 @@ var _rect44: StyleBoxFlat = null
 var _rect44p: StyleBoxFlat = null
 var _mm_style: StyleBoxFlat = null
 
+# --- Slice 157 follow-up: HUD button feel (owner-approved 2026-10-27).
+# Press animation + click SFX + haptics, code-only, riding the S157
+# button_down wiring (nothing disconnected, nothing double-fires).
+# Press = scale to rest x 0.88 on button_down; release = spring
+# back to rest over 0.22 s (TRANS_BACK, S119 menu spring pattern).
+# Rest scale is re-captured every frame while a button is neither
+# pressed nor tweening, so HUD-scale changes (spawn / pause-resume
+# only, player _apply_hud_scale) never drift the rest value, and a
+# re-press mid-spring still springs back to the true rest scale.
+# Clicks: one AudioStreamPlayer owned by this node, three generated
+# short buffers (engine_audio65 / bus_sim80 one-shot pattern:
+# 16-bit, 22050 Hz, LOOP_DISABLED, whole-cycle frequencies, decay
+# envelope to zero so neither end clicks). Classes: primary 875 Hz,
+# back 625 Hz, toggle 1125 Hz, all 0.08 s (70 / 50 / 90 cycles).
+# Mute rule mirrors engine_audio65: SaveManager "muted" OR player
+# sound_on off silences clicks — except the mute button itself,
+# whose click always plays so the toggle action has feedback.
+# Haptics: Input.vibrate_handheld(25 ms), Android-guarded; on any
+# other OS the call is skipped and counted, never faked.
+const PRESS_SCALE: float = 0.88
+const SPRING_TIME: float = 0.22
+const CLICK_DB: float = -14.0
+const CLICK_HZ: int = 22050
+const CLICK_SEC: float = 0.08
+const CLICK_PRIMARY: float = 875.0
+const CLICK_BACK: float = 625.0
+const CLICK_TOGGLE: float = 1125.0
+const HAPTIC_MS: int = 25
+const FEEL_BACK: Array = ["PauseButton21", "MapButton28"]
+const FEEL_TOGGLE: Array = [
+	"MuteButton18", "MoreButton61b", "RainButton17",
+	"ViewButton96", "LightsButton",
+]
+var _feel: Dictionary = {}
+var _feel_base: Dictionary = {}
+var _feel_tween: Dictionary = {}
+var _feel_pressed: Dictionary = {}
+var _sfx_player: AudioStreamPlayer = null
+var _click_primary: AudioStreamWAV = null
+var _click_back: AudioStreamWAV = null
+var _click_toggle: AudioStreamWAV = null
+var _haptic_guarded: int = 0
+var _haptic_calls: int = 0
+
 func _ready() -> void:
 	set_process_priority(1000)
 	var p := get_parent()
@@ -125,6 +169,8 @@ func _ready() -> void:
 		_mapped[nm] = true
 	_apply_layout()
 	_rewire_all()
+	_init_sfx()
+	_wire_feel()
 
 func _mk_round(size: float, col: Color) -> StyleBoxFlat:
 	var sb := StyleBoxFlat.new()
@@ -150,6 +196,9 @@ func _process(_delta: float) -> void:
 		return
 	_apply_layout()
 	_rewire_all()
+	_wire_feel()
+	_refresh_feel_rest()
+	_recover_stuck_presses()
 	_report_unmapped()
 
 func _ctl(nm: String) -> Control:
@@ -485,6 +534,143 @@ func _rewire_all() -> void:
 			moved = true
 		if moved:
 			_rewired[b] = true
+
+func _init_sfx() -> void:
+	if _sfx_player != null:
+		return
+	_sfx_player = AudioStreamPlayer.new()
+	_sfx_player.name = "HudClick157"
+	_sfx_player.volume_db = CLICK_DB
+	add_child(_sfx_player)
+	_click_primary = _make_click(CLICK_PRIMARY)
+	_click_back = _make_click(CLICK_BACK)
+	_click_toggle = _make_click(CLICK_TOGGLE)
+
+func _make_click(freq: float) -> AudioStreamWAV:
+	var wav := AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_16_BITS
+	wav.mix_rate = CLICK_HZ
+	wav.loop_mode = AudioStreamWAV.LOOP_DISABLED
+	var frames := int(CLICK_HZ * CLICK_SEC)
+	var data := PackedByteArray()
+	data.resize(frames * 2)
+	for i in range(frames):
+		var t := float(i) / float(CLICK_HZ)
+		var env := 1.0 - t / CLICK_SEC
+		var v := sin(t * freq * TAU) * 0.6 * env
+		data.encode_s16(i * 2, int(clamp(v, -1.0, 1.0) * 24000.0))
+	wav.data = data
+	return wav
+
+func _feel_class(nm: String) -> String:
+	if FEEL_BACK.has(nm):
+		return "back"
+	if FEEL_TOGGLE.has(nm):
+		return "toggle"
+	return "primary"
+
+func _wire_feel() -> void:
+	if _layer == null:
+		return
+	var names: Array = [
+		"TalkButton", "VehicleButton", "JumpButton", "OrbitButton",
+		"MoreButton61b", "PauseButton21", "MapButton28",
+		"CameraResetButton", "GarageButton60", "MuteButton18",
+		"PhotoButton17", "RainButton17", "ViewButton96",
+		"RequestButton80", "LightsButton",
+	]
+	for nm in HORN_FAMILY:
+		names.append(nm)
+	for nm in CONTEXT:
+		names.append(nm)
+	for nm in HOLD_BUTTONS:
+		names.append(nm)
+	for nm in names:
+		var b := _btn(nm)
+		if b == null or _feel.has(b):
+			continue
+		var cls := _feel_class(nm)
+		_feel[b] = cls
+		_feel_base[b] = b.scale
+		b.button_down.connect(_on_feel_down.bind(b, cls))
+		b.button_up.connect(_on_feel_up.bind(b))
+
+func _kill_feel_tween(b: Button) -> void:
+	if not _feel_tween.has(b):
+		return
+	var tw: Tween = _feel_tween[b]
+	if tw != null and tw.is_valid():
+		tw.kill()
+	_feel_tween.erase(b)
+
+func _on_feel_down(b: Button, cls: String) -> void:
+	_kill_feel_tween(b)
+	var rest: Vector2 = _feel_base.get(b, b.scale)
+	b.scale = rest * PRESS_SCALE
+	_feel_pressed[b] = true
+	_play_click(cls, b)
+	_vibrate()
+
+func _on_feel_up(b: Button) -> void:
+	_feel_pressed.erase(b)
+	_kill_feel_tween(b)
+	var target: Vector2 = _feel_base.get(b, Vector2.ONE)
+	var tw := create_tween()
+	tw.tween_property(b, "scale", target, SPRING_TIME)
+	tw.set_trans(Tween.TRANS_BACK)
+	tw.set_ease(Tween.EASE_OUT)
+	_feel_tween[b] = tw
+
+func _refresh_feel_rest() -> void:
+	for b in _feel.keys():
+		if not is_instance_valid(b):
+			continue
+		if _feel_pressed.has(b):
+			continue
+		if _feel_tween.has(b):
+			var tw: Tween = _feel_tween[b]
+			if tw != null and tw.is_valid():
+				continue
+			_feel_tween.erase(b)
+		var ctl := b as Control
+		ctl.pivot_offset = ctl.size * 0.5
+		_feel_base[b] = ctl.scale
+
+func _recover_stuck_presses() -> void:
+	for b in _feel_pressed.keys():
+		if not is_instance_valid(b):
+			_feel_pressed.erase(b)
+			continue
+		if not (b as Control).visible:
+			_on_feel_up(b)
+
+func _sfx_muted() -> bool:
+	if _player != null and _player.get("sound_on") != null and not bool(_player.get("sound_on")):
+		return true
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm != null and sm.get("muted") != null and bool(sm.get("muted")):
+		return true
+	return false
+
+func _play_click(cls: String, b: Button) -> void:
+	if _sfx_player == null:
+		return
+	if _sfx_muted() and String(b.name) != "MuteButton18":
+		return
+	if cls == "back":
+		_sfx_player.stream = _click_back
+	elif cls == "toggle":
+		_sfx_player.stream = _click_toggle
+	else:
+		_sfx_player.stream = _click_primary
+	_sfx_player.play()
+
+func _vibrate() -> void:
+	if OS.get_name() != "Android":
+		_haptic_guarded += 1
+		return
+	_haptic_calls += 1
+	Input.vibrate_handheld(HAPTIC_MS)
 
 func _report_unmapped() -> void:
 	if _layer == null:
