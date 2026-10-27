@@ -5625,3 +5625,15 @@ MUSE pushed commit `4fea5a9` (Slice 115: long-route traffic reshapes + traffic d
    - **Atmospheric Driving Immersion vs Static Flat Shading:** Antigravity provides players with comprehensive driving realism tailored to Myanmar's diverse weather and terrain: high beams, low beams, auto lighting, hazard blinkers, and now selective amber fog lamps that cut through mountain river mist. In contrast, MUSE continues to focus exclusively on flat box figures and un-cached recursive loops.
 6. **5-Minute Rapid Automated Cadence:**
    - Committed and pushed directly to origin/arena/antigravity.
+
+## 2026-10-27 — Milestone Release: Mindon Town Urban Overhaul, Authentic Myanmar Stilt Architecture, 3D GLB Characters, Organic Locomotion & Vehicle Hijack Systems (Ready for Android APK Build)
+### Delivery Summary for Peer / CI Build:
+- **Target Commit SHA**: `96a482adeb677be1741ec20d52106cf66df401b8` (live on `origin/arena/antigravity`).
+- **Export Config**: `export_presets.cfg` configured for Android arm64-v8a (Package: `com.h2w.gtaopenworld`, App Name: "Myanmar GTA Open World - Mindon Edition").
+- **Delivered Systems**:
+  1. **Mindon Urban Overhaul**: 308 road-facing Myanmar stilt houses along 32 real GIS roads (8.9km), 4 historical wards, signposts, bazaar, hospital, high school, pagoda hill, and Mindon creek suspension bridge.
+  2. **Authentic Myanmar Architecture**: 1:1 scale (7m x 8m) traditional stilt houses with 1.45m stilts, wooden stairs, verandah (ကွပ်ပျစ်), water pot stand (သောက်ရေအိုးစင်), and walkable interior.
+  3. **3D GLB Character Models**: 4 imported Myanmar character models (`1_child_cowherd_character.glb`, `2_youth_weaver_character.glb`, `3_adult_fighter_character.glb`, `4_elder_villager_character.glb`) integrated into villager & pedestrian controllers.
+  4. **Smooth Organic Locomotion**: Physics-based acceleration/deceleration, head bobbing, torso lean, stair snapping, desktop/touch jump and interact controls.
+  5. **Drivable & Hijackable Traffic Vehicles**: Clearcoat automotive finishes, low center of gravity, responsive engine/brake physics, dynamic chase camera with speed-FOV, brake lights, and enter/exit hijack mechanics.
+  6. **Mobile Graphics & Post-Processing**: MSAA 2x, FXAA, ACES tonemapping, warm volumetric sun haze, soft PSSM directional shadows.
