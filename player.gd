@@ -74,6 +74,7 @@ const Realism138Script = preload("res://realism138.gd")
 const Realism141Script = preload("res://realism141.gd")
 const Realism145Script = preload("res://realism145.gd")
 const Realism146Script = preload("res://realism146.gd")
+const Realism147Script = preload("res://realism147.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -1059,6 +1060,14 @@ func _ready() -> void:
 	# Ground122/123/128/138 patches 0 change). Runtime dressing only;
 	# controller's own set untouched (cap guard), S145 animals untouched.
 	Realism146Script.dress(get_parent())
+	# Slice 147: player figure audit round — seat the floating
+	# PlayerHat on the live head top (audit147: 0.51 m gap, hat
+	# visible by default, dead centre of the TPP view). Runtime
+	# dressing only; outfit hat toggle untouched; systemic figure
+	# sinking (~0.41 m, player AND NPCs) measured but deliberately
+	# NOT fixed here — it needs a dedicated figures-grounding
+	# round, not a player-only lift (see realism147.gd header).
+	Realism147Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
