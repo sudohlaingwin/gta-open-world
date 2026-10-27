@@ -71,6 +71,7 @@ const Realism132Script = preload("res://realism132.gd")
 const Realism133Script = preload("res://realism133.gd")
 const Realism134Script = preload("res://realism134.gd")
 const Realism138Script = preload("res://realism138.gd")
+const Realism141Script = preload("res://realism141.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -1038,6 +1039,13 @@ func _ready() -> void:
 	# crediting tiny tree-base patches). Runtime dressing only; S137
 	# spawn-walk, S135 traffic fixes, S134 market untouched.
 	Realism138Script.dress(get_parent())
+	# Slice 141: vehicle lights + wheels round — Cart/Motorcycle
+	# duplicate-wheel hides (spinning scene wheels kept), bicycle
+	# headlight + taillight, Bus/Minibus brake-light drive (S118
+	# pattern, materials cloned, service logic untouched).
+	# Runtime dressing only; S137 spawn-walk, S135 traffic fixes,
+	# S134 market, S138 Oo yards untouched.
+	Realism141Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
