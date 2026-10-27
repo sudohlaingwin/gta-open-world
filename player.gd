@@ -77,6 +77,7 @@ const Realism146Script = preload("res://realism146.gd")
 const Realism147Script = preload("res://realism147.gd")
 const Realism148Script = preload("res://realism148.gd")
 const Realism151Script = preload("res://realism151.gd")
+const Realism152Script = preload("res://realism152.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -236,7 +237,7 @@ const GUIDE_ARRIVED_RADIUS: float = 5.0
 # capsule CENTRE 0.5 m inside the edge so the body never hangs off
 # the plane; the edge label tells the player why they stopped.
 const WORLD_MIN_X: float = -669.5
-const WORLD_MAX_X: float = 3049.5
+const WORLD_MAX_X: float = 3849.5
 const WORLD_MIN_Z: float = -509.5
 const WORLD_MAX_Z: float = 409.5
 # Last ground position where the player stood freely (on the floor
@@ -1079,6 +1080,7 @@ func _ready() -> void:
 	Realism148Script.dress(get_parent())
 	Realism147Script.dress(get_parent())
 	Realism151Script.dress(get_parent())
+	Realism152Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing

@@ -138,7 +138,7 @@ func _build(world: Node3D) -> void:
 		_cone(self, "Hill97W_%d" % int(z), hr, hh, Vector3(-655.0, hh * 0.5, z), hill_m)
 		hr = 20.0 + _hash01("hillE%d" % int(z)) * 25.0
 		hh = 15.0 + _hash01("hillEh%d" % int(z)) * 20.0
-		_cone(self, "Hill97E_%d" % int(z), hr, hh, Vector3(3035.0, hh * 0.5, z), hill_m)
+		_cone(self, "Hill97E_%d" % int(z), hr, hh, Vector3(3835.0, hh * 0.5, z), hill_m)
 		z += 100.0
 	var ti := 0
 	x = -600.0
@@ -154,7 +154,7 @@ func _build(world: Node3D) -> void:
 		var th := 7.0 + _hash01("treeW%d" % int(z)) * 4.0
 		_cone(self, "BorderTree97W_%d" % int(z), 2.5, th, Vector3(-630.0, th * 0.5, z), pine_m)
 		th = 7.0 + _hash01("treeE%d" % int(z)) * 4.0
-		_cone(self, "BorderTree97E_%d" % int(z), 2.5, th, Vector3(3010.0, th * 0.5, z), pine_m)
+		_cone(self, "BorderTree97E_%d" % int(z), 2.5, th, Vector3(3810.0, th * 0.5, z), pine_m)
 		z += 60.0
 	# Extension interior: fields + scattered pines + one pond
 	# (west), so the new ground reads as countryside, not void.

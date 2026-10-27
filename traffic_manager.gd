@@ -33,7 +33,7 @@ extends Node3D
 ## empty slots from free waypoints. No vehicle is ever teleported
 ## into the player's face: refills use the same 25-45 m band.
 
-const MAX_SLOTS: int = 10
+const MAX_SLOTS: int = 12
 const SPAWN_MIN: float = 25.0
 const SPAWN_MAX: float = 45.0
 const DESPAWN_DIST: float = 75.0
@@ -104,9 +104,9 @@ var south_route: Array = [
 ## north car, van, car; south van, car, van; east main car, van;
 ## lanes one car each. Order is the slot's position within its own
 ## route (used for spawn spreading).
-var _slot_is_van: Array = [false, true, false, true, false, true, false, true, false, false]
-var _slot_route_idx: Array = [0, 0, 0, 1, 1, 1, 2, 2, 3, 4]
-var _slot_order: Array = [0, 1, 2, 0, 1, 2, 0, 1, 0, 0]
+var _slot_is_van: Array = [false, true, false, true, false, true, false, true, false, false, false, true]
+var _slot_route_idx: Array = [0, 0, 0, 1, 1, 1, 2, 2, 3, 4, 2, 2]
+var _slot_order: Array = [0, 1, 2, 0, 1, 2, 0, 1, 0, 0, 2, 3]
 
 var _cars: Array = []
 var _player: Node3D = null
@@ -150,8 +150,12 @@ func _name_for(slot: int) -> String:
 ## (south van) and slot 6 (east main car) run, so no road network
 ## goes fully quiet; morning/evening adds slot 1 (north van),
 ## slot 4 (south car), slot 7 (east main van) and slot 8 (north
-## lane); midday runs all ten.
+## lane); midday runs all twelve (S152: slots 10/11 on the
+## east main loop, orders 2/3 — distinct from slots 6/7 orders 0/1,
+## so no two east-loop cars share a spawn waypoint).
 func _active_slots(count: int) -> Array:
+	if count >= 12:
+		return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 	if count >= 10:
 		return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	if count >= 7:
@@ -165,7 +169,7 @@ func _daylight() -> float:
 
 func _fleet_for_day(day: float) -> int:
 	if day >= 0.6:
-		return 10
+		return 12
 	if day >= 0.15:
 		return 7
 	return 3
@@ -390,7 +394,19 @@ func _physics_process(delta: float) -> void:
 				# would churn without ever bringing traffic near
 				# the player).
 				var route := _route_for(ci)
-				_spawn_car(car_node, route, _slot_order[ci] * (route.size() / 3), false)
+				# Slice 152: respawn with offset 0, NOT the slot
+				# order offset. This branch exists to bring a far
+				# car NEAR the player, but best+order can land
+				# 195 m away on a 4-point loop — and then the car
+				# re-triggers this branch every frame, resetting
+				# speed to 0 forever (probe152c: TrafficVan11 sat
+				# 13 s at (445,3), speed 0.05, respawning to
+				# itself). Offset 0 lands on best (near by
+				# definition); _first_clear_waypoint still spreads
+				# several respawning cars to adjacent clear
+				# waypoints, so no pile-up. _refill_slot keeps
+				# the slot-order offset for initial spawns.
+				_spawn_car(car_node, route, 0, false)
 		car_node.set("speed_factor", _speed_factor)
 		car_node.call("set_headlights", dark)
 		var obs := _collect_obstacles(car_node)

@@ -514,7 +514,7 @@ func _skyline_east(world: Node3D) -> void:
 	# zero colliders.
 	for k in range(16):
 		var z := -480.0 + 60.0 * float(k)
-		var x := 3110.0 + float(k % 3) * 15.0
+		var x := 3910.0 + float(k % 3) * 15.0
 		var h := 12.0 + float((k * 7) % 17)
 		var w := 30.0 + float((k * 13) % 50)
 		_box(world, Vector3(20.0, h, w), _sky_mat, Vector3(x, h * 0.5, z), "SkylineE101_%d" % k)

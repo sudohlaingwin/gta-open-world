@@ -52,7 +52,7 @@ extends RefCounted
 ## whenever the world map opens, and both call sites then apply
 ## apply_extension below, so the extended rect is the truth.
 static var min_x: float = -670.0
-static var max_x: float = 3050.0
+static var max_x: float = 3850.0
 static var min_z: float = -510.0
 static var max_z: float = 410.0
 static var configured: bool = false
@@ -94,7 +94,7 @@ static func configure_from_ground(ground: Node3D) -> bool:
 ## (new rect minus 0.5 m), not here.
 static func apply_extension() -> void:
 	min_x = -670.0
-	max_x = 3050.0
+	max_x = 3850.0
 	min_z = -510.0
 	max_z = 410.0
 	configured = true
