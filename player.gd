@@ -76,6 +76,7 @@ const Realism145Script = preload("res://realism145.gd")
 const Realism146Script = preload("res://realism146.gd")
 const Realism147Script = preload("res://realism147.gd")
 const Realism148Script = preload("res://realism148.gd")
+const Realism151Script = preload("res://realism151.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -1077,6 +1078,7 @@ func _ready() -> void:
 	# head. Physics, colliders, and animations untouched.
 	Realism148Script.dress(get_parent())
 	Realism147Script.dress(get_parent())
+	Realism151Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
