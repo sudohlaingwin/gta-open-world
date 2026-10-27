@@ -72,6 +72,7 @@ const Realism133Script = preload("res://realism133.gd")
 const Realism134Script = preload("res://realism134.gd")
 const Realism138Script = preload("res://realism138.gd")
 const Realism141Script = preload("res://realism141.gd")
+const Realism145Script = preload("res://realism145.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -1046,6 +1047,11 @@ func _ready() -> void:
 	# Runtime dressing only; S137 spawn-walk, S135 traffic fixes,
 	# S134 market, S138 Oo yards untouched.
 	Realism141Script.dress(get_parent())
+	# Slice 145: animal detail audit round — pig legs (PigPen13
+	# pigs were legless + floating 0.24 m) + Chicken12 grounding
+	# (floated 0.125 m); runtime dressing only, all other animals
+	# proven complete by audit145, untouched.
+	Realism145Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
