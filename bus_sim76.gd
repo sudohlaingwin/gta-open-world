@@ -536,16 +536,21 @@ func _physics_process(delta: float) -> void:
 			obs.append(bus_pos)
 			obs.append(bus_pos + bus_fwd * 4.5)
 			obs.append(bus_pos - bus_fwd * 4.5)
+		# Slice 154: other long-route cars are traffic obstacles
+		# (forward cone only) — same split as TrafficManager, so a
+		# follower behind a leader can never freeze the leader.
+		# Player + bus points stay non-traffic (any-side, unchanged).
+		var traffic_obs: Array = []
 		for other in traffic_cars:
 			if other != null and other != car:
-				obs.append((other as Node3D).global_position)
+				traffic_obs.append((other as Node3D).global_position)
 		car.set("speed_factor", sf)
 		car.call("set_headlights", dark)
 		var stuck: float = float(car.get("stuck_time"))
 		if stuck > STUCK_RESPAWN_S and bus_pos != Vector3.INF:
 			_respawn_car(car, bus_pos, traffic_cars.find(car))
 			continue
-		car.call("drive", delta, obs)
+		car.call("drive", delta, obs, traffic_obs)
 	# --- Night / rain gating, applied only on change
 	# (same pattern as Slice 72 rain puddles).
 	var night := day < 0.15

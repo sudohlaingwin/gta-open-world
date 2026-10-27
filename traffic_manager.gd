@@ -212,9 +212,17 @@ func _ready() -> void:
 			car.set("body_color", _colors[ci % _colors.size()])
 			car.set("route", route)
 			add_child(car)
-			_spawn_car(car, route, _slot_order[ci] * (route.size() / 3), true)
-			car.set("speed_factor", _speed_factor)
-			_cars.append(car)
+			# Slice 154: a failed initial spawn (every waypoint
+			# blocked) leaves the slot empty for the refill loop
+			# instead of a car stranded at the origin or piled
+			# onto another car.
+			if _spawn_car(car, route, _slot_order[ci] * (route.size() / 3), true):
+				car.set("speed_factor", _speed_factor)
+				_cars.append(car)
+			else:
+				remove_child(car)
+				car.queue_free()
+				_cars.append(null)
 		else:
 			_cars.append(null)
 
@@ -275,23 +283,29 @@ func _waypoint_blocked(car: Node3D, route: Array, idx: int, obstacles: Array) ->
 ## Slice 137: walk forward along the route from the picked spawn
 ## waypoint to the first one no live obstacle blocks (villagers,
 ## player vehicles, the player, other traffic cars — the same set
-## drive() stops for). Falls back to the picked waypoint when
-## every waypoint is blocked, so a spawn never fails that would
-## otherwise succeed. This fixes the spawn defect only: a car that
-## spawns clear still stops later if a villager wanders onto its
-## path — that is the manager's designed 15 s despawn cycle, and
-## the two wander areas overlapping the south loop (Villager6 at
-## the (14,36) corner, Villager5 at the bottom leg) are a
-## placement matter for the owner, not something this walk hides.
+## drive() stops for). Slice 154: returns -1 when EVERY waypoint is
+## blocked. The old fallback (return the picked waypoint) spawned a
+## car ONTO a blocked waypoint — probe154_spawnwatch proved it: a
+## far-respawned TrafficVan7 fell back to (250,-3) exactly on top of
+## TrafficCar6 (d = 0.0025 m), and neither car could ever move again
+## (any-side stop both ways). A failed spawn is safe: refills retry
+## on a later frame (the existing best=-1 path), and a failed
+## far-respawn leaves the car where it is, still driving. This fixes
+## the spawn defect only: a car that spawns clear still stops later
+## if a villager wanders onto its path — that is the manager's
+## designed 15 s despawn cycle, and the two wander areas overlapping
+## the south loop (Villager6 at the (14,36) corner, Villager5 at the
+## bottom leg) are a placement matter for the owner, not something
+## this walk hides.
 func _first_clear_waypoint(car: Node3D, route: Array, start_idx: int) -> int:
 	var obstacles: Array = _collect_obstacles(car)
 	for k in range(route.size()):
 		var idx: int = (start_idx + k) % route.size()
 		if not _waypoint_blocked(car, route, idx, obstacles):
 			return idx
-	return start_idx
+	return -1
 
-func _spawn_car(car: Node3D, route: Array, offset: int, allow_farthest: bool) -> bool:
+func _spawn_car(car: Node3D, route: Array, offset: int, allow_farthest: bool, skip_if_already_there: bool = false) -> bool:
 	var best := _pick_spawn_index(route)
 	var idx := -1
 	if best >= 0:
@@ -314,8 +328,27 @@ func _spawn_car(car: Node3D, route: Array, offset: int, allow_farthest: bool) ->
 	# _first_clear_waypoint). Without this, a refill whose picked
 	# waypoint sits under a lingering villager spawns already
 	# stuck and re-jams the same point every 15 s forever.
+	# Slice 154: _first_clear_waypoint returns -1 when every
+	# waypoint is blocked — that is a FAILED spawn, not a fallback
+	# onto a blocked point (see its comment).
 	idx = _first_clear_waypoint(car, route, idx)
+	if idx < 0:
+		return false
 	var wp0 := route[idx] as Vector2
+	# Slice 154: far-respawn no-op. A car far from the player that is
+	# ALREADY sitting on the waypoint it would respawn to must not be
+	# teleported onto itself with speed reset to 0 every frame:
+	# probe154_spawnwatch showed TrafficCar10 respawning to its own
+	# (445,-3) point frame after frame (speed 0 forever) because the
+	# picked waypoint (250,-3) stayed blocked by the coincident pair.
+	# Returning true without touching the car lets it keep driving;
+	# the branch's purpose (car near the player) is already met.
+	# Only the far-respawn branch passes true: fresh spawns must
+	# always place the car, even if a route point sits near origin.
+	if skip_if_already_there:
+		var cur := Vector2(car.global_position.x, car.global_position.z)
+		if cur.distance_to(wp0) < 2.0:
+			return true
 	var wp1 := route[(idx + 1) % route.size()] as Vector2
 	car.global_position = Vector3(wp0.x, 0.0, wp0.y)
 	var dir := wp1 - wp0
@@ -327,7 +360,15 @@ func _spawn_car(car: Node3D, route: Array, offset: int, allow_farthest: bool) ->
 func _is_dark() -> bool:
 	return _daylight() < 0.15
 
-func _collect_obstacles(except_car: Node3D) -> Array:
+## Slice 154: obstacle split for drive(). Non-traffic obstacles keep
+## the any-side stop rule (a player or villager anywhere close must
+## stop a car); other traffic cars are cone-only (see
+## traffic_car._blocked_traffic), so a follower behind a leader can
+## never freeze the leader. _collect_obstacles keeps returning the
+## FULL set: _first_clear_waypoint (spawn safety) still uses it, and
+## spawn safety MUST stay any-side — spawning within stop radius of
+## another car on any side is a pile-up even if the car is behind.
+func _collect_nontraffic_obstacles() -> Array:
 	var obs: Array = []
 	if _player != null:
 		obs.append(_player.global_position)
@@ -340,9 +381,18 @@ func _collect_obstacles(except_car: Node3D) -> Array:
 		for child in root.get_children():
 			if child.name.begins_with("Villager"):
 				obs.append((child as Node3D).global_position)
+	return obs
+
+func _collect_traffic_obstacles(except_car: Node3D) -> Array:
+	var obs: Array = []
 	for other in _cars:
 		if other != null and other != except_car:
 			obs.append((other as Node3D).global_position)
+	return obs
+
+func _collect_obstacles(except_car: Node3D) -> Array:
+	var obs: Array = _collect_nontraffic_obstacles()
+	obs.append_array(_collect_traffic_obstacles(except_car))
 	return obs
 
 ## Fills an empty ACTIVE slot with a fresh vehicle on the slot's
@@ -406,8 +456,14 @@ func _physics_process(delta: float) -> void:
 				# several respawning cars to adjacent clear
 				# waypoints, so no pile-up. _refill_slot keeps
 				# the slot-order offset for initial spawns.
-				_spawn_car(car_node, route, 0, false)
+				# Slice 154: skip_if_already_there, and a FALSE
+				# return is safe to ignore here — it means every
+				# waypoint was blocked, so the car simply stays
+				# where it is and keeps driving (no teleport onto
+				# another car, no speed reset).
+				_spawn_car(car_node, route, 0, false, true)
 		car_node.set("speed_factor", _speed_factor)
 		car_node.call("set_headlights", dark)
-		var obs := _collect_obstacles(car_node)
-		car_node.call("drive", delta, obs)
+		# Slice 154: split obstacles — non-traffic any-side, other
+		# traffic cars cone-only (see _collect_* comment).
+		car_node.call("drive", delta, _collect_nontraffic_obstacles(), _collect_traffic_obstacles(car_node))

@@ -3,8 +3,12 @@ extends Node3D
 ## NOT enterable (entering traffic is a later milestone, not this one).
 ## A traffic car follows a waypoint loop, keeps its speed believable,
 ## and STOPS for anything ahead of it (player, villager, other traffic)
-## or anything very close on any side. Avoidance is STOP-ONLY: it never
-## steers around an obstacle, so it can never swerve through a building
+## or anything very close on any side. Slice 154 narrows the second
+## half for TRAFFIC only: another traffic car blocks only through the
+## forward cone (a follower behind a leader is not in the leader's
+## path), while players, villagers and parked vehicles keep the
+## any-side rule. Avoidance is STOP-ONLY: it never steers around an
+## obstacle, so it can never swerve through a building
 ## or into the player. It has NO physics body on purpose: a moving body
 ## could push or trap the player, and this is a peaceful game with no
 ## damage system anywhere. If the player walks into a stopped traffic
@@ -97,10 +101,38 @@ func _blocked(obstacles: Array) -> bool:
 				return true
 	return false
 
-## Called by TrafficManager every physics frame. Returns nothing; the
-## car moves itself. Obstacles are Vector3 world positions (player,
-## player vehicles, villagers, other traffic cars).
-func drive(delta: float, obstacles: Array) -> void:
+## Slice 154: traffic obstacles block ONLY through the forward cone.
+## The old any-side rule made a leader freeze when a follower crept
+## within stop radius BEHIND it (probe154_mechanism case A: both cars
+## frozen, stuck_time 10/10 s) — a mutual block no queue can escape
+## without the 15 s timeout. A follower behind the leader is not in
+## the leader's path, so the leader must ignore it and drive away;
+## the follower still stops (the leader IS in its cone). Cross-lane
+## safety holds: opposite lanes 6 m apart give max cone dot 0.69
+## for vans, under the 0.7 threshold, so cross-lane cars never block.
+func _blocked_traffic(obstacles: Array) -> bool:
+	var cone_dist := half_length + 2.6 + 3.5
+	var pos := Vector2(global_position.x, global_position.z)
+	var fwd := _forward()
+	for ob in obstacles:
+		var o := Vector2(ob.x, ob.z)
+		var to_ob := o - pos
+		var dist := to_ob.length()
+		if dist < cone_dist and dist > 0.001:
+			var dir := to_ob / dist
+			var cone := fwd.x * dir.x + fwd.z * dir.y
+			if cone > 0.7:
+				return true
+	return false
+
+## Called by the traffic managers every physics frame. Returns nothing;
+## the car moves itself. `obstacles` are NON-traffic Vector3 world
+## positions (player, player vehicles, villagers, parked vehicles):
+## any-side stop + forward cone, unchanged. `traffic_obstacles` are
+## other traffic cars: forward cone ONLY (Slice 154 — see
+## _blocked_traffic). A caller that still passes everything merged
+## keeps the old behavior via the default empty traffic list.
+func drive(delta: float, obstacles: Array, traffic_obstacles: Array = []) -> void:
 	if route.is_empty():
 		return
 	var target := route[waypoint_index] as Vector2
@@ -119,7 +151,7 @@ func drive(delta: float, obstacles: Array) -> void:
 	var step := clampf(diff, -turn_rate * delta, turn_rate * delta)
 	rotation.y += step
 	var want := top_speed * speed_factor
-	if _blocked(obstacles):
+	if _blocked(obstacles) or _blocked_traffic(traffic_obstacles):
 		want = 0.0
 		# Still counts while decelerating into the jam: a car that
 		# sits blocked for the manager's whole timeout is stuck,
