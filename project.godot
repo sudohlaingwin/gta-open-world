@@ -28,3 +28,4 @@ pointing/emulate_touch_from_mouse=true
 
 SaveManager="*res://autoload/save_manager.gd"
 MissionManager="*res://autoload/mission_manager.gd"
+BackHandler161="*res://autoload/back_handler161.gd"
