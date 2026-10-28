@@ -81,6 +81,7 @@ const Realism151Script = preload("res://realism151.gd")
 const Realism152Script = preload("res://realism152.gd")
 const Realism153Script = preload("res://realism153.gd")
 const Realism162Script = preload("res://realism162.gd")
+const Realism163Script = preload("res://realism163.gd")
 ## Slice 2 player: walk + sprint + jump + enter/exit car AND cart.
 ## Walk: arrow keys / WASD, or the touch joystick (touch_vector).
 ## Slice 8 action HUD (TOUCH-FIRST — this is a mobile game):
@@ -1099,6 +1100,15 @@ func _ready() -> void:
 	# on Blade93_/94_/95_/110_ + Reed57_/62/107_/108_ only (253
 	# sub-pixel casters, zero visible change; see realism162.gd).
 	Realism162Script.dress(get_parent())
+	# Slice 163: REALISTIC WALKING PEOPLE (owner order 2026-10-28
+	# 22:48 +07) — articulated gait (shoulder/elbow/hip/knee/ankle
+	# pivots + torso twist + longyi stride) for the player + all
+	# walking villagers. Runs LAST (frame 950, after S121/S148/
+	# S162) because it reworks the S94 figures S121 hid. Static
+	# GLBs cannot bend, so walkers go segmented (see realism163
+	# header for the full GLB decision); standing figures keep
+	# their GLBs.
+	Realism163Script.dress(get_parent())
 	# Slice 61 owner-ordered GRAPHICS-ONLY style pass (master-prompt
 	# look only: vivid warm palette, soft shading — no positions,
 	# no structure, no code from that document). Recolours existing
