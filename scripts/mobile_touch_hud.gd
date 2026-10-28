@@ -134,6 +134,21 @@ func _ready() -> void:
 	if quit_to_menu_btn:
 		quit_to_menu_btn.pressed.connect(_on_quit_to_menu_pressed)
 
+	if pause_menu:
+		var pause_box = pause_menu.get_node_or_null("PauseBox")
+		if pause_box and not pause_box.has_node("CharBtn"):
+			var char_btn = Button.new()
+			char_btn.name = "CharBtn"
+			char_btn.text = "👤 ဇာတ်ကောင်ပြောင်း (Change Character)"
+			char_btn.custom_minimum_size = Vector2(0, 44)
+			pause_box.add_child(char_btn)
+			pause_box.move_child(char_btn, 1)
+			char_btn.pressed.connect(func():
+				if player and player.has_method("cycle_character_model"):
+					var m_name = player.cycle_character_model()
+					char_btn.text = "👤 %s" % m_name
+			)
+
 	var sm = get_node_or_null("/root/SaveManager")
 	if sm:
 		if sm.get("hud_scale") != null:

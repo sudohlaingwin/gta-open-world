@@ -5659,3 +5659,29 @@ MUSE pushed commit `4fea5a9` (Slice 115: long-route traffic reshapes + traffic d
 5. **Mobile Touch HUD & Fixes (scripts/mobile_touch_hud.gd):**
    - Resolved syntax references for ignition and door lock buttons.
    - Verified 100% interactive context labels: *"🐂 စီးမည် (Ride Mount)"*, *"✈️ မောင်းမည် (Fly Aircraft)"*, *"🚗 မောင်းမည် (Drive Vehicle)"*, and *"🚪 ဆင်းမည် (Exit / Dismount)"*.
+
+## 2026-10-28 — Milestone: Authentic 3D Myanmar Human Character Model & Full-Body Locomotion Overhaul
+### Architectural & Visual Upgrades:
+1. **Total Purge of Primitive Shapes from Player Scene (scenes/player.tscn):**
+   - Eliminated the primitive toy blocks (sphere head, box torso, solid cylinder longyi with no legs, and floating slipper boxes).
+   - Integrated the authentic 3D sculpted Myanmar human character model (`models/3_adult_fighter_character.glb`, 3,386 vertices) with 1:1 real anatomical proportions (1.70m height, 0.76m shoulder width).
+   - Features fully sculpted Myanmar facial features, black hair & eyes, traditional taikpon jacket, folded silk longyi, thighs, knees, calves, ankles, and traditional velvet slippers (ညှပ်ဖိနပ်).
+2. **Ground Footing & Visible Lower Body / Feet:**
+   - Grounded slipper soles at `Vector3(0.0, 0.04, 0.0)` perfectly contacting the earth without clipping or floating.
+   - Updated character capsule collider to authentic human dimensions: radius 0.38m, height 1.70m, centered at `Y = 0.85m`.
+3. **Camera Framing Overhaul (scripts/camera_orbit.gd):**
+   - Adjusted on-foot camera chase arm length from 1.95m to `2.65m` and pivot height to `1.25m` with a `-8.0°` downward pitch.
+   - Resolves the issue where the camera cropped out the lower body: the player's entire body from gaungbaung down to the velvet slippers and footsteps is now 100% visible and centered in the frame.
+4. **Procedural Organic Human Locomotion (scripts/player.gd):**
+   - **Footstep Stride Snapping & Pelvic Bob:** Dynamic vertical stride bobbing (`bob_y = 0.052 * speed_ratio`).
+   - **Thoracic Counter-Twist:** Natural human shoulder and hip counter-rotation while walking (`twist_y = 0.068 * speed_ratio`).
+   - **Athletic Forward Sprint Lean:** Aerodynamic athletic pitch tilt when sprinting (`pitch_x = 0.14`).
+   - **Lateral Weight Transfer:** Natural roll sway shifting over the planted foot on each step (`sway_z = 0.042 * speed_ratio`).
+   - **Breathing & Idle Life:** Realistic chest breathing cycle while standing idle (`idle_breath = 0.008`).
+5. **Multi-Character Selection System:**
+   - Added instant support for 4 authentic Myanmar 3D character models:
+     * 🥋 **ကိုမင်းဒင် (Adult Hero / Fighter)** — Default 1.70m adult male in taikpon and fighter longyi.
+     * 🧵 **ကိုအောင်ကျော် (Youth Weaver)** — 1.64m youth artisan in festive pasoe.
+     * 👴 **ဦးရွှေရိုး (Elder Sage)** — 1.62m revered village elder.
+     * 🐂 **ဖိုးခွား (Cowherd Boy)** — 1.35m nimble village boy.
+   - Switchable via desktop hotkey `KEY_C` on foot or via the mobile Pause Menu button *"👤 ဇာတ်ကောင်ပြောင်း (Change Character)"*.

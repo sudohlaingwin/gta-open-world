@@ -14,16 +14,16 @@ enum ViewMode { TPP, COCKPIT }
 @onready var spring_arm: SpringArm3D = $SpringArm3D
 @onready var camera: Camera3D = $SpringArm3D/Camera3D
 
-var target_arm_length: float = 1.95
-var current_arm_length: float = 1.95
+var target_arm_length: float = 2.65
+var current_arm_length: float = 2.65
 var current_view_mode: ViewMode = ViewMode.TPP
 var default_fov: float = 75.0
 var target_fov: float = 75.0
 
 # Free-look offsets & smoothing
-var base_pivot_offset: Vector3 = Vector3(0, 1.45, 0)
-var target_pivot_offset: Vector3 = Vector3(0, 1.45, 0)
-var current_pivot_offset: Vector3 = Vector3(0, 1.45, 0)
+var base_pivot_offset: Vector3 = Vector3(0.0, 1.25, 0.0)
+var target_pivot_offset: Vector3 = Vector3(0.0, 1.25, 0.0)
+var current_pivot_offset: Vector3 = Vector3(0.0, 1.25, 0.0)
 var last_look_time: int = 0
 
 signal view_mode_changed(mode_name: String)
@@ -148,8 +148,8 @@ func _physics_process(delta: float) -> void:
 
 
 	else:
-		# --- ON FOOT OVER-SHOULDER ---
-		target_arm_length = 1.95
+		# --- ON FOOT AUTHENTIC HUMAN FRAMING (Full Body, Legs & Feet Visible) ---
+		target_arm_length = 2.65
 		target_pivot_offset = base_pivot_offset
 		if player and player.get("velocity") != null and player.is_on_floor():
 			var p_speed = Vector2(player.velocity.x, player.velocity.z).length()

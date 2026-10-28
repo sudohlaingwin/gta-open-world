@@ -36,23 +36,99 @@ var footstep_timer: float = 0.0
 @onready var visual_mesh: Node3D = $VisualMesh
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 @onready var camera_pivot: Node3D = $CameraPivot
-@onready var torso_mesh: MeshInstance3D = $VisualMesh/Torso
-@onready var longyi_mesh: MeshInstance3D = $VisualMesh/Longyi
+@onready var torso_mesh: MeshInstance3D = $VisualMesh.get_node_or_null("Torso")
+@onready var longyi_mesh: MeshInstance3D = $VisualMesh.get_node_or_null("Longyi")
+
+# Authentic Myanmar 3D Human Characters (1:1 Anatomical Scale with Full Sculpted Legs, Feet & Traditional Attire)
+const CHARACTER_MODELS: Dictionary = {
+	"fighter": "res://models/3_adult_fighter_character.glb",
+	"youth": "res://models/2_youth_weaver_character.glb",
+	"elder": "res://models/4_elder_villager_character.glb",
+	"cowherd": "res://models/1_child_cowherd_character.glb"
+}
+const MODEL_NAMES: Dictionary = {
+	"fighter": "🥋 ကိုမင်းဒင် (Adult Hero)",
+	"youth": "🧵 ကိုအောင်ကျော် (Youth Weaver)",
+	"elder": "👴 ဦးရွှေရိုး (Elder Sage)",
+	"cowherd": "🐂 ဖိုးခွား (Cowherd Boy)"
+}
+var current_model_key: String = "fighter"
+var character_model: Node3D = null
 
 func _ready() -> void:
 	add_to_group("player")
-	_apply_saved_outfit()
 	_apply_game_mode()
 	# Stair step snapping & slope walking smoothness (အိမ်လှေကားနှင့် ကုန်းဆင်းကုန်းတက် ချောမွေ့မှု)
 	floor_snap_length = 0.35
 	floor_stop_on_slope = true
 	floor_max_angle = deg_to_rad(48.0)
 	wall_min_slide_angle = deg_to_rad(15.0)
-	# PUBG Full-size Character Scale (အရွယ်အစား ပီပြင်စေရန် 1.25x scale မြှင့်တင်ခြင်း)
+
+	# Authentic 1:1 Human Scale (1.70m human height, 0.76m shoulder width)
 	if visual_mesh:
-		visual_mesh.scale = Vector3(1.25, 1.25, 1.25)
+		visual_mesh.scale = Vector3.ONE
 	if collision_shape:
-		collision_shape.scale = Vector3(1.15, 1.15, 1.15)
+		collision_shape.scale = Vector3.ONE
+
+	_setup_character_model("fighter")
+
+func _setup_character_model(model_key: String) -> void:
+	var existing = visual_mesh.get_node_or_null("CharacterModel3D")
+	if existing:
+		character_model = existing
+	else:
+		var path = CHARACTER_MODELS.get(model_key, CHARACTER_MODELS["fighter"])
+		if ResourceLoader.exists(path):
+			var scn = load(path) as PackedScene
+			if scn:
+				character_model = scn.instantiate() as Node3D
+				character_model.name = "CharacterModel3D"
+				visual_mesh.add_child(character_model)
+
+	if character_model:
+		character_model.position = Vector3(0.0, 0.04, 0.0)
+		_setup_pbr_materials(character_model)
+
+func _setup_pbr_materials(node: Node) -> void:
+	for child in node.find_children("*", "MeshInstance3D", true):
+		var mesh_inst = child as MeshInstance3D
+		for s in range(mesh_inst.get_surface_override_material_count()):
+			var mat = mesh_inst.get_active_material(s)
+			if mat is StandardMaterial3D:
+				mat.vertex_color_use_as_albedo = true
+				mat.roughness = 0.72
+				mat.specular = 0.25
+				mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+
+func set_character_model(model_key: String) -> String:
+	if not CHARACTER_MODELS.has(model_key):
+		return ""
+	current_model_key = model_key
+	if character_model and is_instance_valid(character_model):
+		character_model.queue_free()
+		character_model = null
+
+	var path = CHARACTER_MODELS[model_key]
+	if ResourceLoader.exists(path):
+		var scn = load(path) as PackedScene
+		if scn:
+			character_model = scn.instantiate() as Node3D
+			character_model.name = "CharacterModel3D"
+			visual_mesh.add_child(character_model)
+			character_model.position = Vector3(0.0, 0.04, 0.0)
+			_setup_pbr_materials(character_model)
+
+	var display_name = MODEL_NAMES.get(model_key, model_key)
+	var hud = get_tree().get_first_node_in_group("hud")
+	if hud and hud.has_method("show_temporary_prompt"):
+		hud.show_temporary_prompt("👤 ဇာတ်ကောင်: %s" % display_name, 3.0)
+	return display_name
+
+func cycle_character_model() -> String:
+	var keys = ["fighter", "youth", "elder", "cowherd"]
+	var idx = keys.find(current_model_key)
+	var next_idx = (idx + 1) % keys.size()
+	return set_character_model(keys[next_idx])
 
 func _apply_game_mode() -> void:
 	var sm = get_node_or_null("/root/SaveManager")
@@ -63,9 +139,9 @@ func _apply_game_mode() -> void:
 		camera_pivot.current_arm_length = 6.5
 		camera_pivot.rotation.x = deg_to_rad(-45.0)
 	else:
-		# PUBG TPP over-the-shoulder framing
-		camera_pivot.target_arm_length = 1.95
-		camera_pivot.current_arm_length = 1.95
+		# PUBG TPP full-body framing (feet, legs & footsteps visible)
+		camera_pivot.target_arm_length = 2.65
+		camera_pivot.current_arm_length = 2.65
 		camera_pivot.rotation.x = deg_to_rad(-8.0)
 
 var highest_fall_speed: float = 0.0
@@ -139,16 +215,24 @@ func _physics_process(delta: float) -> void:
 		var target_angle = atan2(velocity.x, velocity.z)
 		visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, target_angle, rotation_speed * delta)
 
-		# Procedural organic walking bobbing & torso sway (GTA/PUBG standard physical motion)
+		# Procedural organic human locomotion (footstep stride bob, thoracic counter-twist & athletic forward lean)
 		if is_on_floor():
 			var stride_freq = 11.5 if is_sprinting else 8.5
 			locomotion_phase += delta * stride_freq
-			var bob_y = abs(sin(locomotion_phase)) * 0.045 * speed_ratio
-			var sway_z = sin(locomotion_phase) * 0.035 * speed_ratio
-			var pitch_x = (horiz_speed / sprint_speed) * 0.06
-			visual_mesh.position.y = bob_y
-			visual_mesh.rotation.z = sway_z
-			visual_mesh.rotation.x = pitch_x
+			var bob_y = abs(sin(locomotion_phase)) * 0.052 * speed_ratio
+			var twist_y = sin(locomotion_phase) * 0.068 * speed_ratio
+			var pitch_x = (0.05 + 0.09 * speed_ratio) if is_sprinting else (0.038 * speed_ratio)
+			var sway_z = sin(locomotion_phase) * 0.042 * speed_ratio
+
+			if character_model and is_instance_valid(character_model):
+				character_model.position.y = 0.04 + bob_y
+				character_model.rotation.y = twist_y
+				character_model.rotation.z = sway_z
+				character_model.rotation.x = pitch_x
+			else:
+				visual_mesh.position.y = bob_y
+				visual_mesh.rotation.z = sway_z
+				visual_mesh.rotation.x = pitch_x
 
 			# Synchronized footstep audio
 			footstep_timer -= delta
@@ -159,9 +243,22 @@ func _physics_process(delta: float) -> void:
 				if audio_mgr and audio_mgr.has_method("play_footstep"):
 					audio_mgr.play_footstep()
 	elif not is_parachuting:
-		visual_mesh.position.y = lerpf(visual_mesh.position.y, 0.0, delta * 8.0)
-		visual_mesh.rotation.z = lerpf(visual_mesh.rotation.z, 0.0, delta * 8.0)
-		visual_mesh.rotation.x = lerpf(visual_mesh.rotation.x, 0.0, delta * 8.0)
+		# Idle life: natural human breathing rhythm & grounded foot posture
+		if is_on_floor():
+			var breath = sin(Time.get_ticks_msec() * 0.0022) * 0.008
+			if character_model and is_instance_valid(character_model):
+				character_model.position.y = lerpf(character_model.position.y, 0.04 + breath, delta * 6.0)
+				character_model.rotation.y = lerp_angle(character_model.rotation.y, 0.0, delta * 6.0)
+				character_model.rotation.z = lerp_angle(character_model.rotation.z, 0.0, delta * 6.0)
+				character_model.rotation.x = lerp_angle(character_model.rotation.x, 0.0, delta * 6.0)
+			visual_mesh.position.y = lerpf(visual_mesh.position.y, 0.0, delta * 8.0)
+			visual_mesh.rotation.z = lerpf(visual_mesh.rotation.z, 0.0, delta * 8.0)
+			visual_mesh.rotation.x = lerpf(visual_mesh.rotation.x, 0.0, delta * 8.0)
+		else:
+			# Jump / Air posture: legs extending and forward pitch
+			if character_model and is_instance_valid(character_model):
+				character_model.position.y = lerpf(character_model.position.y, 0.08, delta * 8.0)
+				character_model.rotation.x = lerpf(character_model.rotation.x, clampf(-velocity.y * 0.035, -0.22, 0.22), delta * 8.0)
 		footstep_timer = 0.1
 
 	move_and_slide()
