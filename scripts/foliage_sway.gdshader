@@ -31,13 +31,18 @@ void vertex() {
 
 void fragment() {
 	float gradient = clamp(UV.y, 0.0, 1.0);
-	vec3 base_col = mix(stalk_color.rgb, foliage_color.rgb, gradient);
+	vec3 fol_col = foliage_color.rgb;
+	// Support per-instance MultiMesh color variation (wildflowers & grass hue shifts)
+	if (COLOR.a > 0.01) {
+		fol_col = COLOR.rgb;
+	}
+	vec3 base_col = mix(stalk_color.rgb, fol_col, gradient);
 	
 	// Subtle fake subsurface scattering / backlighting for lush tropical vegetation
 	float sss_factor = clamp(dot(NORMAL, vec3(0.0, 0.8, -0.6)), 0.0, 1.0) * 0.25;
 	vec3 final_col = mix(base_col, sun_transmission_color.rgb, sss_factor * gradient);
 	
 	ALBEDO = final_col;
-	ROUGHNESS = 0.55;
-	SPECULAR = 0.35;
+	ROUGHNESS = 0.65;
+	SPECULAR = 0.25;
 }

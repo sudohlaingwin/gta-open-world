@@ -146,10 +146,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 78)
 
 [node name="RideableCow" parent="." instance=ExtResource("3_cow_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, 80)
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 15.0, 0.0, 13.0)
 
 [node name="BullockCart" parent="." instance=ExtResource("4_cart_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 75)
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 11.0, 0.0, 10.0)
 
 [node name="Airplane" parent="." instance=ExtResource("5_plane_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 280, 0, -220)
@@ -161,7 +161,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 220, 0, -180)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0, 0.2, 8.0)
 
 [node name="MyanmarMotorcycle" parent="." instance=ExtResource("24_bike_scn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.2, 75)
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -5.0, 0.2, 6.0)
 
 [node name="AyeyarwadyRowboat" parent="." instance=ExtResource("26_boat_scn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, -0.2, 38)

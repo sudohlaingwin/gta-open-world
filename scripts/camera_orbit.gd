@@ -81,7 +81,13 @@ func _physics_process(delta: float) -> void:
 		target_arm_length = 0.05
 		var veh_name = current_veh.name if current_veh else ""
 		
-		if "Car" in veh_name or "Van" in veh_name:
+		if "Airplane" in veh_name or "Plane" in veh_name:
+			# Airplane cockpit: centered looking out through windshield over propeller nose
+			target_pivot_offset = Vector3(0.0, 1.85, -0.90)
+		elif "Helicopter" in veh_name or "Heli" in veh_name:
+			# Helicopter bubble cockpit: looking forward and downward through front glass
+			target_pivot_offset = Vector3(0.0, 1.55, -0.65)
+		elif "Car" in veh_name or "Van" in veh_name:
 			# Driver's seat head position inside cabin (left-hand drive Myanmar standard)
 			target_pivot_offset = Vector3(-0.35, 1.25, -0.05)
 		elif "Cart" in veh_name:
@@ -108,9 +114,26 @@ func _physics_process(delta: float) -> void:
 		target_fov = lerpf(80.0, 92.0, speed_factor)
 
 	elif is_in_vehicle and current_view_mode == ViewMode.TPP:
-		# --- VEHICLE CHASE CAMERA ---
-		target_arm_length = 5.8
-		target_pivot_offset = Vector3(0, 1.8, 0)
+		# --- VEHICLE & AIRCRAFT CHASE CAMERA ---
+		var veh_name = current_veh.name if current_veh else ""
+		if "Airplane" in veh_name or "Plane" in veh_name:
+			target_arm_length = 12.5
+			target_pivot_offset = Vector3(0, 3.2, 0)
+		elif "Helicopter" in veh_name or "Heli" in veh_name:
+			target_arm_length = 11.0
+			target_pivot_offset = Vector3(0, 2.8, 0)
+		elif "Motorcycle" in veh_name or "Bike" in veh_name:
+			target_arm_length = 4.2
+			target_pivot_offset = Vector3(0, 1.5, 0)
+		elif "Cart" in veh_name:
+			target_arm_length = 5.6
+			target_pivot_offset = Vector3(0, 2.2, 0)
+		elif "Cow" in veh_name or "Horse" in veh_name or "Elephant" in veh_name:
+			target_arm_length = 5.0
+			target_pivot_offset = Vector3(0, 2.0, 0)
+		else:
+			target_arm_length = 5.8
+			target_pivot_offset = Vector3(0, 1.8, 0)
 
 		# Dynamic Speed-FOV expansion (feels like real open-world mobile driving!)
 		var v_speed = 0.0
@@ -119,8 +142,9 @@ func _physics_process(delta: float) -> void:
 		elif current_veh and current_veh.get("velocity") != null:
 			v_speed = current_veh.velocity.length()
 		
-		var speed_factor = clampf(v_speed / 36.0, 0.0, 1.0)
-		target_fov = lerpf(default_fov, default_fov + 15.0, speed_factor)
+		var max_expected = 55.0 if ("Airplane" in veh_name or "Plane" in veh_name) else 36.0
+		var speed_factor = clampf(v_speed / max_expected, 0.0, 1.0)
+		target_fov = lerpf(default_fov, default_fov + 16.0, speed_factor)
 
 
 	else:

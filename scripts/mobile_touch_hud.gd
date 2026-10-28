@@ -23,8 +23,8 @@
 @onready var vanity_btn: Button = $ActionContainer.get_node_or_null("VanityBtn")
 @onready var gear_btn: Button = $ActionContainer.get_node_or_null("GearBtn")
 @onready var handbrake_btn: Button = $ActionContainer.get_node_or_null("HandbrakeBtn")
-@onready var ignition_btn: Button = .get_node_or_null("IgnitionBtn")
-@onready var door_lock_btn: Button = .get_node_or_null("DoorLockBtn")
+@onready var ignition_btn: Button = $ActionContainer.get_node_or_null("IgnitionBtn")
+@onready var door_lock_btn: Button = $ActionContainer.get_node_or_null("DoorLockBtn")
 @onready var quest_banner: Label = $TopCenterHUD/QuestBanner
 @onready var player_icon: ColorRect = $TopLeftHUD/MiniMap/PlayerIcon
 @onready var pagoda_icon: ColorRect = $TopLeftHUD/MiniMap/PagodaIcon
