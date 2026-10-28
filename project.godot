@@ -12,6 +12,13 @@ config/features=PackedStringArray("4.3", "GL Compatibility")
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
+; Slice 162: aspect "expand" (was the default "keep") — on
+; wider-than-16:9 phones "keep" letterboxes the whole frame to
+; 16:9 with side bars (proven: keep renders 1920x1080 centered in
+; 2400x1080). "expand" fills the window with no distortion: the
+; visible canvas widens (1600x720 at 2400x1080) so HUD corners
+; reach the true screen edges and the camera sees more sideways.
+window/stretch/aspect="expand"
 
 [rendering]
 renderer/rendering_method="gl_compatibility"
