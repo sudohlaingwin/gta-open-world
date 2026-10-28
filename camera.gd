@@ -136,6 +136,15 @@ func _sensitivity() -> float:
 	return clampf(float(sm.get("camera_sensitivity")), 0.5, 2.0)
 
 
+# Slice 158: camera invert-Y setting, read live on every drag
+# like sensitivity, so a pause-menu change applies at once.
+func _invert_y() -> bool:
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm == null:
+		return false
+	return bool(sm.get("camera_invert_y"))
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventScreenDrag:
 		var vp := get_viewport().get_visible_rect().size
@@ -156,7 +165,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			if absf(ry) < 3.0:
 				ry = 0.0
 			orbit_angle += rx * 0.005 * _sensitivity()
-			orbit_pitch = clampf(orbit_pitch + ry * 0.005 * _sensitivity(), PITCH_MIN, PITCH_MAX)
+			var pitch_delta: float = ry * 0.005 * _sensitivity()
+			if _invert_y():
+				pitch_delta = -pitch_delta
+			orbit_pitch = clampf(orbit_pitch + pitch_delta, PITCH_MIN, PITCH_MAX)
 
 # Physics bodies the camera ray must ignore. Everything on the
 # default layer that is NOT a StaticBody3D is a character, a

@@ -64,6 +64,16 @@ var _button_base_pos: Dictionary = {}
 var _layout_ready: bool = false
 var _last_vp_size: Vector2 = Vector2.ZERO
 var _vp_stable: int = 0
+# Slice 158 (owner 2026-10-28: main menu SPECIAL + full
+# settings): code-only premium layer on top of S119 — gold
+# frame, rising festival embers, gold rule under the subtitle,
+# small H2W mark. All decor IGNORE + behind buttons, exactly
+# like S119's decor, so menu entry can never regress.
+var _frame158: Panel = null
+var _embers158: Array = []
+var _h2w158: Label = null
+var _rule158: ColorRect = null
+var _rule158_placed: bool = false
 
 
 func _ready() -> void:
@@ -110,6 +120,7 @@ func _ready() -> void:
 		if b != null:
 			b.button_down.connect(_on_menu_button_down.bind(b))
 	_build_scene110()
+	_build_special158()
 
 
 func _build_scene110() -> void:
@@ -321,6 +332,82 @@ func _build_scene110() -> void:
 		_subtitle_base_pos = _subtitle_label.position
 
 
+func _build_special158() -> void:
+	var vs := get_viewport_rect().size
+	if vs.x <= 0.0 or vs.y <= 0.0:
+		vs = Vector2(1280.0, 720.0)
+	# Gold frame: transparent centre, gold border only.
+	var fstyle := StyleBoxFlat.new()
+	fstyle.bg_color = Color(0.0, 0.0, 0.0, 0.0)
+	fstyle.border_color = Color(1.0, 0.82, 0.40, 0.9)
+	fstyle.border_width_left = 4
+	fstyle.border_width_right = 4
+	fstyle.border_width_top = 4
+	fstyle.border_width_bottom = 4
+	_frame158 = Panel.new()
+	_frame158.name = "Frame158"
+	_frame158.add_theme_stylebox_override("panel", fstyle)
+	_frame158.anchor_left = 0.0
+	_frame158.anchor_top = 0.0
+	_frame158.anchor_right = 1.0
+	_frame158.anchor_bottom = 1.0
+	add_child(_frame158)
+	# Rising festival embers: warm gold/orange sparks drifting
+	# up over the sunset scene. Positions stored as x fractions
+	# so a viewport resize cannot strand them off-screen.
+	for i in range(12):
+		var e := ColorRect.new()
+		e.name = "Ember158_%d" % i
+		e.color = Color(1.0, 0.72 + 0.08 * float(i % 3), 0.30, 0.55 + 0.10 * float(i % 4))
+		var sz := 3.0 + 2.0 * float(i % 3)
+		e.size = Vector2(sz, sz)
+		var frac := fmod(float(i) * 0.173 + 0.05, 1.0)
+		e.position = Vector2(frac * vs.x, fmod(float(i) * 211.0, vs.y))
+		add_child(e)
+		_embers158.append([e, 14.0 + 6.0 * float(i % 5), float(i) * 1.3, frac])
+	# Gold rule under the subtitle: a CHILD of the subtitle
+	# label, so it rides the entrance slide and float exactly.
+	# Positioned once in _process when the label size is known.
+	if _subtitle_label != null:
+		_rule158 = ColorRect.new()
+		_rule158.name = "Rule158"
+		_rule158.color = Color(1.0, 0.82, 0.40, 0.95)
+		_rule158.size = Vector2(160.0, 3.0)
+		_rule158.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_subtitle_label.add_child(_rule158)
+	# Small H2W mark, bottom centre, clear of every button
+	# (buttons end at 0.81, NoSaveLabel at 0.84-0.90).
+	_h2w158 = Label.new()
+	_h2w158.name = "H2W158"
+	_h2w158.text = "H2W"
+	_h2w158.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_h2w158.add_theme_font_size_override("font_size", 18)
+	_h2w158.add_theme_color_override("font_color", Color(1.0, 0.82, 0.40, 0.85))
+	_h2w158.anchor_left = 0.47
+	_h2w158.anchor_top = 0.93
+	_h2w158.anchor_right = 0.53
+	_h2w158.anchor_bottom = 0.97
+	add_child(_h2w158)
+	# S119 rule, re-applied: decor IGNORE + behind buttons.
+	var decor: Array = []
+	if _frame158 != null:
+		decor.append(_frame158)
+	for em in _embers158:
+		decor.append(em[0])
+	if _h2w158 != null:
+		decor.append(_h2w158)
+	for d in decor:
+		_ignore_tree(d as Control)
+	var min_idx := 999
+	for b in [continue_button, new_game_button, settings_button, character_button, vehicle_button]:
+		if b != null:
+			min_idx = mini(min_idx, b.get_index())
+	var idx := min_idx
+	for d in decor:
+		move_child(d as Control, idx)
+		idx += 1
+
+
 func _ignore_tree(c: Control) -> void:
 	c.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for ch in c.get_children():
@@ -398,6 +485,26 @@ func _process(delta: float) -> void:
 			cl.position.x += spd * delta
 			if cl.position.x > vw:
 				cl.position.x = -cl.size.x
+	# Slice 158 embers: rise + sway, wrap to the bottom.
+	var vw158 := get_viewport_rect().size.x
+	if vw158 <= 0.0:
+		vw158 = 1280.0
+	var vh158 := get_viewport_rect().size.y
+	if vh158 <= 0.0:
+		vh158 = 720.0
+	for em in _embers158:
+		var er: ColorRect = em[0]
+		var esp: float = em[1]
+		var eph: float = em[2]
+		var efr: float = em[3]
+		er.position.y -= esp * delta
+		er.position.x = efr * vw158 + 12.0 * sin(_menu_time * 0.9 + eph)
+		if er.position.y < -12.0:
+			er.position.y = vh158 + 8.0
+	# Slice 158 gold rule: place once under the subtitle.
+	if _rule158 != null and not _rule158_placed and _subtitle_label != null and _subtitle_label.size.x > 0.0:
+		_rule158.position = Vector2((_subtitle_label.size.x - 160.0) * 0.5, _subtitle_label.size.y + 8.0)
+		_rule158_placed = true
 	# Silhouette windows: twinkle.
 	for we in _window_lights110:
 		var wl: ColorRect = we[0]

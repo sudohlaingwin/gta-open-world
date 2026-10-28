@@ -24,6 +24,16 @@ var settings_path: String = DEFAULT_SETTINGS_PATH
 var pending_load: Dictionary = {}
 var muted: bool = false
 var volume: float = 1.0
+## Slice 158 full-settings round: sfx_volume scales UI/effect
+## sounds only (HUD clicks, horn, bus chime) on top of master
+## volume; vibration_enabled gates S157 haptics; camera_invert_y
+## flips free-look pitch drag. All three persist like every other
+## setting, default to exactly the pre-158 behaviour (volumes 1.0
+## = 0 dB offset, vibration on, invert off), so an old settings
+## file loads as before.
+var sfx_volume: float = 1.0
+var vibration_enabled: bool = true
+var camera_invert_y: bool = false
 ## Slice 30 outfit: defaults are the scene's own colours (off-white
 ## taikpon, dark-green longyi, hat on), so a missing settings file
 ## looks exactly like the pre-customization player.
@@ -151,6 +161,9 @@ func save_game(data: Dictionary) -> bool:
 func load_settings() -> void:
 	muted = false
 	volume = 1.0
+	sfx_volume = 1.0
+	vibration_enabled = true
+	camera_invert_y = false
 	shirt_color_html = "#F5F0E6"
 	longyi_color_html = "#145938"
 	hat_visible = true
@@ -181,6 +194,12 @@ func load_settings() -> void:
 		muted = bool(parsed.get("muted"))
 	if parsed.has("volume"):
 		volume = clampf(float(parsed.get("volume")), 0.0, 1.0)
+	if parsed.has("sfx_volume"):
+		sfx_volume = clampf(float(parsed.get("sfx_volume")), 0.0, 1.0)
+	if parsed.has("vibration_enabled"):
+		vibration_enabled = bool(parsed.get("vibration_enabled"))
+	if parsed.has("camera_invert_y"):
+		camera_invert_y = bool(parsed.get("camera_invert_y"))
 	if parsed.has("shirt_color_html"):
 		var sh = str(parsed.get("shirt_color_html"))
 		if Color.html_is_valid(sh):
@@ -230,6 +249,9 @@ func load_settings() -> void:
 
 func save_settings() -> bool:
 	var data = {"muted": muted, "volume": volume,
+		"sfx_volume": sfx_volume,
+		"vibration_enabled": vibration_enabled,
+		"camera_invert_y": camera_invert_y,
 		"shirt_color_html": shirt_color_html,
 		"longyi_color_html": longyi_color_html,
 		"hat_visible": hat_visible,
@@ -252,6 +274,9 @@ func save_settings() -> bool:
 func reset_settings() -> void:
 	muted = false
 	volume = 1.0
+	sfx_volume = 1.0
+	vibration_enabled = true
+	camera_invert_y = false
 	shirt_color_html = "#F5F0E6"
 	longyi_color_html = "#145938"
 	hat_visible = true
@@ -275,3 +300,19 @@ func volume_db() -> float:
 	if volume <= 0.001:
 		return -80.0
 	return linear_to_db(volume)
+
+
+## Slice 158: dB OFFSETS for the live audio paths (0.0 at 1.0, so
+## defaults sound exactly as before). Master scales everything;
+## SFX scales effect sounds on top of master. Absolute volume_db()
+## above is kept for the world tone player, which already uses it.
+func volume_offset_db() -> float:
+	if volume <= 0.001:
+		return -80.0
+	return linear_to_db(volume)
+
+
+func sfx_offset_db() -> float:
+	if sfx_volume <= 0.001:
+		return -80.0
+	return linear_to_db(sfx_volume)

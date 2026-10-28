@@ -99,13 +99,36 @@ func _ready() -> void:
 	_horn_player = AudioStreamPlayer.new()
 	_horn_player.name = "Horn80"
 	_horn_player.stream = _make_horn()
-	_horn_player.volume_db = -10.0
 	add_child(_horn_player)
 	_chime_player = AudioStreamPlayer.new()
 	_chime_player.name = "Chime80"
 	_chime_player.stream = _make_chime()
-	_chime_player.volume_db = -14.0
 	add_child(_chime_player)
+	_apply_sfx_volumes()
+
+
+# Slice 158: horn + chime obey master volume AND the new SFX
+# volume (both 0 dB at 1.0, so defaults sound exactly as before).
+# Applied at setup AND before every play, so a change made in
+# the pause Settings screen takes effect immediately.
+func _sfx_volumes() -> float:
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm == null:
+		return 0.0
+	var off := 0.0
+	if sm.has_method("volume_offset_db"):
+		off += float(sm.call("volume_offset_db"))
+	if sm.has_method("sfx_offset_db"):
+		off += float(sm.call("sfx_offset_db"))
+	return off
+
+
+func _apply_sfx_volumes() -> void:
+	var off := _sfx_volumes()
+	if _horn_player != null:
+		_horn_player.volume_db = -10.0 + off
+	if _chime_player != null:
+		_chime_player.volume_db = -14.0 + off
 
 
 func _make_horn() -> AudioStreamWAV:
@@ -238,6 +261,7 @@ func _on_horn_pressed() -> void:
 		return
 	if _horn_player != null:
 		horn_plays80 += 1
+		_apply_sfx_volumes()
 		_horn_player.play()
 
 
@@ -292,6 +316,7 @@ func _physics_process(_delta: float) -> void:
 			# Every edge chimes, open AND close, unless muted.
 			if not _muted(world) and _chime_player != null:
 				chime_plays80 += 1
+				_apply_sfx_volumes()
 				_chime_player.play()
 	if ctrl != null and request_stop80 >= 0:
 		# The controller advances next_stop/direction only

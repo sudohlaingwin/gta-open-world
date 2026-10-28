@@ -119,6 +119,10 @@ var _click_back: AudioStreamWAV = null
 var _click_toggle: AudioStreamWAV = null
 var _haptic_guarded: int = 0
 var _haptic_calls: int = 0
+# Slice 158: vibration-off presses are counted, never silently
+# dropped, so the toggle gate is sim-provable on non-Android
+# headless runs (where vibrate_handheld is guarded anyway).
+var _vibration_skipped: int = 0
 
 func _ready() -> void:
 	set_process_priority(1000)
@@ -652,11 +656,29 @@ func _sfx_muted() -> bool:
 		return true
 	return false
 
+
+# Slice 158: clicks obey master volume AND the new SFX volume
+# (both 0 dB at 1.0, so defaults sound exactly as before).
+func _vol_off() -> float:
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm != null and sm.has_method("volume_offset_db"):
+		return float(sm.call("volume_offset_db"))
+	return 0.0
+
+
+func _sfx_off() -> float:
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm != null and sm.has_method("sfx_offset_db"):
+		return float(sm.call("sfx_offset_db"))
+	return 0.0
+
+
 func _play_click(cls: String, b: Button) -> void:
 	if _sfx_player == null:
 		return
 	if _sfx_muted() and String(b.name) != "MuteButton18":
 		return
+	_sfx_player.volume_db = CLICK_DB + _vol_off() + _sfx_off()
 	if cls == "back":
 		_sfx_player.stream = _click_back
 	elif cls == "toggle":
@@ -665,7 +687,13 @@ func _play_click(cls: String, b: Button) -> void:
 		_sfx_player.stream = _click_primary
 	_sfx_player.play()
 
+
 func _vibrate() -> void:
+	# Slice 158: the vibration setting gates S157 haptics.
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm != null and sm.get("vibration_enabled") != null and not bool(sm.get("vibration_enabled")):
+		_vibration_skipped += 1
+		return
 	if OS.get_name() != "Android":
 		_haptic_guarded += 1
 		return

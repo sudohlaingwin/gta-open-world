@@ -48,6 +48,17 @@ var drive_label: Label = null
 var drive_button: Button = null
 var reset_button: Button = null
 var back_button: Button = null
+## Slice 158 full-settings round: three genuinely wired controls
+## created in CODE (the .tscn is never edited): SFX volume
+## (effect sounds on top of master), vibration toggle (gates S157
+## haptics), camera invert-Y toggle (flips free-look pitch drag).
+## The panel is re-laid out in code too: existing rows compress
+## to a compact anchor table and the panel grows to 0.04-0.98,
+## so the three new rows fit with no overlap on phone or pause.
+var sfx_label: Label = null
+var sfx_slider: HSlider = null
+var vibration_check: CheckButton = null
+var invert_check: CheckButton = null
 
 
 func _ready() -> void:
@@ -89,7 +100,81 @@ func _ready() -> void:
 	back_button = get_node_or_null("BackButton") as Button
 	if back_button != null:
 		back_button.pressed.connect(_on_back_pressed)
+	_layout158()
 	refresh()
+
+
+func _layout158() -> void:
+	# Grow the panel a little (menu and pause parents are both
+	# fullscreen, so this is safe in both contexts), then make
+	# the content SCROLLABLE: measured minimum row heights
+	# (Title 71 px, checks 44 px, labels/buttons 36 px, sliders
+	# 20 px — tall Myanmar font metrics) sum to ~717 px, over
+	# the 677 px panel, so a squeezed single page would overlap
+	# rows. A VBox in a ScrollContainer keeps every row at full
+	# readable size and is the standard mobile settings pattern.
+	# Scene file untouched: children are only reparented in code.
+	anchor_top = 0.04
+	anchor_bottom = 0.98
+	var scroll := ScrollContainer.new()
+	scroll.name = "Scroll158"
+	scroll.anchor_left = 0.0
+	scroll.anchor_top = 0.0
+	scroll.anchor_right = 1.0
+	scroll.anchor_bottom = 1.0
+	var box := VBoxContainer.new()
+	box.name = "Rows158"
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	box.add_theme_constant_override("separation", 4)
+	scroll.add_child(box)
+	add_child(scroll)
+	var existing: Array = []
+	for ch in get_children():
+		if ch != scroll:
+			existing.append(ch)
+	for ch in existing:
+		remove_child(ch)
+		(ch as Control).size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		box.add_child(ch)
+	sfx_label = Label.new()
+	sfx_label.name = "SfxLabel158"
+	sfx_label.text = "SFX အသံ: 100%"
+	sfx_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	box.add_child(sfx_label)
+	sfx_slider = HSlider.new()
+	sfx_slider.name = "SfxSlider158"
+	sfx_slider.min_value = 0.0
+	sfx_slider.max_value = 100.0
+	sfx_slider.step = 1.0
+	sfx_slider.value = 100.0
+	sfx_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	sfx_slider.value_changed.connect(_on_sfx_changed)
+	box.add_child(sfx_slider)
+	vibration_check = CheckButton.new()
+	vibration_check.name = "VibrationCheck158"
+	vibration_check.text = "တုန်ခါမှု"
+	vibration_check.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vibration_check.toggled.connect(_on_vibration_toggled)
+	box.add_child(vibration_check)
+	invert_check = CheckButton.new()
+	invert_check.name = "InvertCheck158"
+	invert_check.text = "ကင်မရာ ပြောင်းပြန် (Y)"
+	invert_check.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	invert_check.toggled.connect(_on_invert_toggled)
+	box.add_child(invert_check)
+	# New rows go right after the master volume rows (same
+	# order as the anchor table they replace): move the four
+	# new nodes to just after VolumeSlider in the box.
+	var vol_idx := -1
+	for i in range(box.get_child_count()):
+		if String(box.get_child(i).name) == "VolumeSlider":
+			vol_idx = i
+			break
+	if vol_idx >= 0:
+		box.move_child(sfx_label, vol_idx + 1)
+		box.move_child(sfx_slider, vol_idx + 2)
+		box.move_child(vibration_check, vol_idx + 3)
+		box.move_child(invert_check, vol_idx + 4)
 
 
 func _sm():
@@ -124,6 +209,14 @@ func refresh() -> void:
 		tier_button.text = _tier_text(_current_tier(sm))
 	if fps_check != null:
 		fps_check.button_pressed = bool(sm.get("fps_visible"))
+	if sfx_slider != null:
+		sfx_slider.value = float(sm.get("sfx_volume")) * 100.0
+	if sfx_label != null:
+		sfx_label.text = "SFX အသံ: %d%%" % int(round(float(sm.get("sfx_volume")) * 100.0))
+	if vibration_check != null:
+		vibration_check.button_pressed = bool(sm.get("vibration_enabled"))
+	if invert_check != null:
+		invert_check.button_pressed = bool(sm.get("camera_invert_y"))
 	if drive_button != null:
 		drive_button.text = _drive_mode_text(int(sm.get("driving_mode")))
 
@@ -200,6 +293,32 @@ func _on_volume_changed(value: float) -> void:
 	sm.call("save_settings")
 	if volume_label != null:
 		volume_label.text = "အသံအတိုးအကျယ်: %d%%" % int(round(value))
+
+
+func _on_sfx_changed(value: float) -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	sm.set("sfx_volume", clampf(value / 100.0, 0.0, 1.0))
+	sm.call("save_settings")
+	if sfx_label != null:
+		sfx_label.text = "SFX အသံ: %d%%" % int(round(value))
+
+
+func _on_vibration_toggled(pressed: bool) -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	sm.set("vibration_enabled", pressed)
+	sm.call("save_settings")
+
+
+func _on_invert_toggled(pressed: bool) -> void:
+	var sm = _sm()
+	if sm == null:
+		return
+	sm.set("camera_invert_y", pressed)
+	sm.call("save_settings")
 
 
 func _on_camera_changed(value: float) -> void:

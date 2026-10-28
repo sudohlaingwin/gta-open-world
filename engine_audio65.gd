@@ -62,8 +62,13 @@ func tick_for(vehicle_name: String, speed: float, max_speed: float, muted: bool)
 	# Idle sits at the vehicle's base pitch; pitch doubles by top
 	# speed. Volume rises with speed, so idle/coast/brake stay
 	# audible but quiet instead of silent.
+	# Slice 158: master volume scales the engine hum (0 dB at
+	# 1.0, so defaults sound exactly as before).
 	current_pitch = (base / BASE_FREQ) * (1.0 + ratio)
 	current_db = lerpf(-20.0, -7.0, ratio)
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm != null and sm.has_method("volume_offset_db"):
+		current_db += float(sm.call("volume_offset_db"))
 	current_vehicle = vehicle_name
 	if _player == null:
 		return
