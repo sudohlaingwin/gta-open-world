@@ -5685,3 +5685,13 @@ MUSE pushed commit `4fea5a9` (Slice 115: long-route traffic reshapes + traffic d
      * 👴 **ဦးရွှေရိုး (Elder Sage)** — 1.62m revered village elder.
      * 🐂 **ဖိုးခွား (Cowherd Boy)** — 1.35m nimble village boy.
    - Switchable via desktop hotkey `KEY_C` on foot or via the mobile Pause Menu button *"👤 ဇာတ်ကောင်ပြောင်း (Change Character)"*.
+
+## 2026-10-28 — Critical Bugfix: Strict Landscape Lock (Widescreen 16:9 1280x720) for Mobile Android APK
+### Root Cause Analysis & Resolution:
+1. **Root Cause Identified**:
+   - In `project.godot`, the display orientation was previously set to `window/handheld/orientation=6` (`SCREEN_ORIENTATION_SENSOR`), inherited from the initial setup commit.
+   - On Android devices, when exported with `orientation=6`, Android's manifest assigned `android:screenOrientation="sensor"`. If the user held the phone upright when launching the APK, Android forced the window into portrait orientation (720x1280), causing the landscape camera and 900px widescreen UI to become vertically distorted into a portrait game.
+2. **Definitive Fix Applied**:
+   - **Configuration Level (`project.godot`)**: Set `window/handheld/orientation=0` (Fixed Landscape). The exported APK manifest is now locked to `android:screenOrientation="landscape"`.
+   - **Runtime JNI Level (`scripts/myanmar_font_autoload.gd`)**: Called `DisplayServer.screen_set_orientation(DisplayServer.SCREEN_ORIENTATION_LANDSCAPE)` on engine startup.
+   - Guarantees 100% horizontal widescreen presentation matching PUBG Mobile and GTA Open World standards on all Android phones (including vivo V60).

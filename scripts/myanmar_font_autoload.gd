@@ -7,6 +7,9 @@ const MYANMAR_FONT_PATH := "res://fonts/NotoSansMyanmar-Regular.ttf"
 var myanmar_font: Font = null
 
 func _ready() -> void:
+	# Force Android OS and DisplayServer to strict Landscape mode (PUBG/GTA Open World Standard)
+	if DisplayServer.has_method("screen_set_orientation"):
+		DisplayServer.screen_set_orientation(DisplayServer.SCREEN_ORIENTATION_LANDSCAPE)
 	if ResourceLoader.exists(MYANMAR_FONT_PATH):
 		myanmar_font = load(MYANMAR_FONT_PATH) as Font
 	
