@@ -429,6 +429,7 @@ var guestbook_button_connected: bool = false
 var pause_button: Button = null
 var pause_button_connected: bool = false
 var pause_panel: Panel = null
+var _glass159_pause_done: bool = false
 var resume_button: Button = null
 var resume_button_connected: bool = false
 var save_button21: Button = null
@@ -2114,6 +2115,32 @@ func _update_waypoint_guide() -> void:
 		guide_dist = _n("../JoystickLayer/GuidePanel34/GuideDist") as Label
 	if guide_panel == null:
 		return
+	# Slice 159: GuidePanel34 is a plain Control (no panel
+	# stylebox), so its glass is a background Panel child at
+	# index 0, full-anchored, IGNORE — behind arrow + distance
+	# labels, never an occluder. Added once, by name guard.
+	if guide_panel.get_node_or_null("GlassBg159") == null:
+		var gstyle := StyleBoxFlat.new()
+		gstyle.bg_color = Color(0.10, 0.13, 0.22, 0.50)
+		gstyle.set_corner_radius_all(12)
+		gstyle.border_width_left = 2
+		gstyle.border_width_right = 2
+		gstyle.border_width_top = 2
+		gstyle.border_width_bottom = 2
+		gstyle.border_color = Color(1.0, 0.96, 0.88, 0.50)
+		gstyle.shadow_size = 6
+		gstyle.shadow_color = Color(0.0, 0.0, 0.0, 0.30)
+		gstyle.shadow_offset = Vector2(0.0, 3.0)
+		var gbg := Panel.new()
+		gbg.name = "GlassBg159"
+		gbg.add_theme_stylebox_override("panel", gstyle)
+		gbg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		gbg.anchor_left = 0.0
+		gbg.anchor_right = 1.0
+		gbg.anchor_top = 0.0
+		gbg.anchor_bottom = 1.0
+		guide_panel.add_child(gbg)
+		guide_panel.move_child(gbg, 0)
 	var wm := _n("../JoystickLayer/WorldMapPanel")
 	if wm == null or not bool(wm.get("has_waypoint")):
 		_set_visible(guide_panel, false)
@@ -3820,7 +3847,83 @@ func _on_pause_pressed() -> void:
 	pause_panel.visible = true
 	if pause_button != null:
 		pause_button.visible = false
+	_apply_glass159_pause()
 	get_tree().paused = true
+
+
+# Slice 159 Liquid Glass: pause menu visual treatment only —
+# glass panel + top specular strips + glass buttons. Applied
+# once (guarded by flag); buttons, wiring, pause/resume, and
+# the shared SettingsPanel (glassed by settings_panel.gd
+# itself) are untouched. Strips are IGNORE children at index
+# 0, behind every button and label.
+func _apply_glass159_pause() -> void:
+	if pause_panel == null or _glass159_pause_done:
+		return
+	_glass159_pause_done = true
+	var pstyle := StyleBoxFlat.new()
+	pstyle.bg_color = Color(0.10, 0.13, 0.24, 0.60)
+	pstyle.set_corner_radius_all(18)
+	pstyle.border_width_left = 2
+	pstyle.border_width_right = 2
+	pstyle.border_width_top = 2
+	pstyle.border_width_bottom = 2
+	pstyle.border_color = Color(1.0, 0.96, 0.88, 0.55)
+	pstyle.shadow_size = 8
+	pstyle.shadow_color = Color(0.0, 0.0, 0.0, 0.35)
+	pstyle.shadow_offset = Vector2(0.0, 4.0)
+	pause_panel.add_theme_stylebox_override("panel", pstyle)
+	var band := ColorRect.new()
+	band.name = "GlassStrip159_Band"
+	band.color = Color(1.0, 1.0, 1.0, 0.10)
+	band.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	band.anchor_left = 0.0
+	band.anchor_right = 1.0
+	band.anchor_top = 0.0
+	band.anchor_bottom = 0.0
+	band.offset_left = 18.0
+	band.offset_right = -18.0
+	band.offset_top = 4.0
+	band.offset_bottom = 16.0
+	pause_panel.add_child(band)
+	pause_panel.move_child(band, 0)
+	var line := ColorRect.new()
+	line.name = "GlassStrip159_Line"
+	line.color = Color(1.0, 1.0, 1.0, 0.45)
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	line.anchor_left = 0.0
+	line.anchor_right = 1.0
+	line.anchor_top = 0.0
+	line.anchor_bottom = 0.0
+	line.offset_left = 18.0
+	line.offset_right = -18.0
+	line.offset_top = 4.0
+	line.offset_bottom = 6.0
+	pause_panel.add_child(line)
+	pause_panel.move_child(line, 0)
+	var row_n := StyleBoxFlat.new()
+	row_n.bg_color = Color(0.13, 0.16, 0.28, 0.55)
+	row_n.set_corner_radius_all(12)
+	row_n.border_width_left = 2
+	row_n.border_width_right = 2
+	row_n.border_width_top = 2
+	row_n.border_width_bottom = 2
+	row_n.border_color = Color(1.0, 0.96, 0.88, 0.55)
+	row_n.shadow_size = 4
+	row_n.shadow_color = Color(0.0, 0.0, 0.0, 0.35)
+	row_n.shadow_offset = Vector2(0.0, 2.0)
+	var row_p := StyleBoxFlat.new()
+	row_p.bg_color = Color(0.08, 0.10, 0.20, 0.70)
+	row_p.set_corner_radius_all(12)
+	row_p.border_width_left = 2
+	row_p.border_width_right = 2
+	row_p.border_width_top = 2
+	row_p.border_width_bottom = 2
+	row_p.border_color = Color(1.0, 0.96, 0.88, 0.70)
+	for b in [resume_button, save_button21, pause_settings_button, quit_button, stuck_button]:
+		if b != null:
+			b.add_theme_stylebox_override("normal", row_n)
+			b.add_theme_stylebox_override("pressed", row_p)
 
 
 func _on_resume_pressed() -> void:

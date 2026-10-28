@@ -69,6 +69,14 @@ var _vp_stable: int = 0
 # frame, rising festival embers, gold rule under the subtitle,
 # small H2W mark. All decor IGNORE + behind buttons, exactly
 # like S119's decor, so menu entry can never regress.
+# Slice 159 (owner 2026-10-28 19:31: Liquid Glass UI): the
+# S158 gold chrome becomes glass — translucent dark-glass
+# fills + pale frosted rims + soft shadows, NO backbuffer-blur
+# shader (unavailable on this gl_compatibility renderer and
+# unverifiable headless). Embers are scene decor, not chrome,
+# and stay: they do not fight readability. Layout, labels,
+# entry paths, and all function are untouched; only the
+# visual treatment changes.
 var _frame158: Panel = null
 var _embers158: Array = []
 var _h2w158: Label = null
@@ -280,46 +288,48 @@ func _build_scene110() -> void:
 		move_child(_clouds110[ci][0], 3 + ci)
 	move_child(sil, 3 + _clouds110.size())
 	# Slice 119 P1: gradient-look pill buttons with borders.
-	# StyleBoxFlat has no gradient, so the premium look comes from
-	# a rich violet fill + gold border + soft shadow + pill radius.
+	# Slice 159 Liquid Glass: the violet pill becomes dark
+	# translucent glass — frosted pale rim + soft shadow,
+	# full pill radius kept. StyleBoxFlat has no gradient, so
+	# the glass read comes from translucency + rim + shadow.
 	var btn_normal := StyleBoxFlat.new()
-	btn_normal.bg_color = Color(0.25, 0.22, 0.55, 0.95)
+	btn_normal.bg_color = Color(0.13, 0.16, 0.28, 0.55)
 	btn_normal.set_corner_radius_all(25)
 	btn_normal.border_width_left = 2
 	btn_normal.border_width_right = 2
 	btn_normal.border_width_top = 2
 	btn_normal.border_width_bottom = 2
-	btn_normal.border_color = Color(1.0, 0.82, 0.40, 1.0)
-	btn_normal.shadow_size = 6
+	btn_normal.border_color = Color(1.0, 0.96, 0.88, 0.55)
+	btn_normal.shadow_size = 8
 	btn_normal.shadow_color = Color(0.0, 0.0, 0.0, 0.35)
-	btn_normal.shadow_offset = Vector2(0.0, 3.0)
+	btn_normal.shadow_offset = Vector2(0.0, 4.0)
 	var btn_hover := StyleBoxFlat.new()
-	btn_hover.bg_color = Color(0.35, 0.31, 0.68, 0.95)
+	btn_hover.bg_color = Color(0.20, 0.24, 0.38, 0.62)
 	btn_hover.set_corner_radius_all(25)
 	btn_hover.border_width_left = 2
 	btn_hover.border_width_right = 2
 	btn_hover.border_width_top = 2
 	btn_hover.border_width_bottom = 2
-	btn_hover.border_color = Color(1.0, 0.88, 0.55, 1.0)
-	btn_hover.shadow_size = 6
+	btn_hover.border_color = Color(1.0, 0.96, 0.88, 0.70)
+	btn_hover.shadow_size = 8
 	btn_hover.shadow_color = Color(0.0, 0.0, 0.0, 0.35)
-	btn_hover.shadow_offset = Vector2(0.0, 3.0)
+	btn_hover.shadow_offset = Vector2(0.0, 4.0)
 	var btn_pressed := StyleBoxFlat.new()
-	btn_pressed.bg_color = Color(0.18, 0.16, 0.42, 0.95)
+	btn_pressed.bg_color = Color(0.08, 0.10, 0.20, 0.70)
 	btn_pressed.set_corner_radius_all(25)
 	btn_pressed.border_width_left = 2
 	btn_pressed.border_width_right = 2
 	btn_pressed.border_width_top = 2
 	btn_pressed.border_width_bottom = 2
-	btn_pressed.border_color = Color(1.0, 0.82, 0.40, 1.0)
+	btn_pressed.border_color = Color(1.0, 0.96, 0.88, 0.70)
 	var btn_disabled := StyleBoxFlat.new()
-	btn_disabled.bg_color = Color(0.25, 0.22, 0.55, 0.45)
+	btn_disabled.bg_color = Color(0.13, 0.16, 0.28, 0.30)
 	btn_disabled.set_corner_radius_all(25)
 	btn_disabled.border_width_left = 2
 	btn_disabled.border_width_right = 2
 	btn_disabled.border_width_top = 2
 	btn_disabled.border_width_bottom = 2
-	btn_disabled.border_color = Color(1.0, 0.82, 0.40, 0.4)
+	btn_disabled.border_color = Color(1.0, 0.96, 0.88, 0.25)
 	for b in [continue_button, new_game_button, settings_button, character_button, vehicle_button]:
 		if b != null:
 			b.add_theme_stylebox_override("normal", btn_normal)
@@ -337,13 +347,15 @@ func _build_special158() -> void:
 	if vs.x <= 0.0 or vs.y <= 0.0:
 		vs = Vector2(1280.0, 720.0)
 	# Gold frame: transparent centre, gold border only.
+	# Slice 159: the gold frame IS chrome, so it becomes a
+	# glass frame — transparent centre kept, pale frosted rim.
 	var fstyle := StyleBoxFlat.new()
 	fstyle.bg_color = Color(0.0, 0.0, 0.0, 0.0)
-	fstyle.border_color = Color(1.0, 0.82, 0.40, 0.9)
-	fstyle.border_width_left = 4
-	fstyle.border_width_right = 4
-	fstyle.border_width_top = 4
-	fstyle.border_width_bottom = 4
+	fstyle.border_color = Color(1.0, 0.96, 0.88, 0.55)
+	fstyle.border_width_left = 2
+	fstyle.border_width_right = 2
+	fstyle.border_width_top = 2
+	fstyle.border_width_bottom = 2
 	_frame158 = Panel.new()
 	_frame158.name = "Frame158"
 	_frame158.add_theme_stylebox_override("panel", fstyle)
@@ -368,10 +380,11 @@ func _build_special158() -> void:
 	# Gold rule under the subtitle: a CHILD of the subtitle
 	# label, so it rides the entrance slide and float exactly.
 	# Positioned once in _process when the label size is known.
+	# Slice 159: pale glass line, not gold.
 	if _subtitle_label != null:
 		_rule158 = ColorRect.new()
 		_rule158.name = "Rule158"
-		_rule158.color = Color(1.0, 0.82, 0.40, 0.95)
+		_rule158.color = Color(1.0, 0.96, 0.88, 0.55)
 		_rule158.size = Vector2(160.0, 3.0)
 		_rule158.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_subtitle_label.add_child(_rule158)
@@ -382,7 +395,7 @@ func _build_special158() -> void:
 	_h2w158.text = "H2W"
 	_h2w158.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_h2w158.add_theme_font_size_override("font_size", 18)
-	_h2w158.add_theme_color_override("font_color", Color(1.0, 0.82, 0.40, 0.85))
+	_h2w158.add_theme_color_override("font_color", Color(1.0, 0.96, 0.88, 0.60))
 	_h2w158.anchor_left = 0.47
 	_h2w158.anchor_top = 0.93
 	_h2w158.anchor_right = 0.53

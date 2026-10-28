@@ -136,15 +136,18 @@ func _ready() -> void:
 	var main := _layer.get_parent()
 	if main != null:
 		_player = main.get_node_or_null("Player")
-	_round76 = _mk_round(ACT, Color(0.08, 0.08, 0.12, 0.65))
-	_round76p = _mk_round(ACT, Color(0.22, 0.22, 0.34, 0.85))
-	_round96 = _mk_round(BIG, Color(0.08, 0.08, 0.12, 0.65))
-	_round96p = _mk_round(BIG, Color(0.22, 0.22, 0.34, 0.85))
-	_rect44 = _mk_rect(Color(0.08, 0.08, 0.12, 0.65))
-	_rect44p = _mk_rect(Color(0.22, 0.22, 0.34, 0.85))
+	# Slice 159 Liquid Glass: HUD buttons go from near-opaque
+	# dark chips to translucent dark glass (normal more
+	# see-through, pressed deeper) + the pale rim from _mk_*.
+	_round76 = _mk_round(ACT, Color(0.10, 0.13, 0.22, 0.50))
+	_round76p = _mk_round(ACT, Color(0.16, 0.20, 0.32, 0.70))
+	_round96 = _mk_round(BIG, Color(0.10, 0.13, 0.22, 0.50))
+	_round96p = _mk_round(BIG, Color(0.16, 0.20, 0.32, 0.70))
+	_rect44 = _mk_rect(Color(0.10, 0.13, 0.22, 0.50))
+	_rect44p = _mk_rect(Color(0.16, 0.20, 0.32, 0.70))
 	_mm_style = StyleBoxFlat.new()
-	_mm_style.bg_color = Color(0.05, 0.05, 0.08, 0.75)
-	_mm_style.border_color = Color(1.0, 1.0, 1.0, 0.35)
+	_mm_style.bg_color = Color(0.08, 0.10, 0.18, 0.55)
+	_mm_style.border_color = Color(1.0, 0.96, 0.88, 0.55)
 	_mm_style.border_width_left = 2
 	_mm_style.border_width_top = 2
 	_mm_style.border_width_right = 2
@@ -153,6 +156,9 @@ func _ready() -> void:
 	_mm_style.corner_radius_top_right = 12
 	_mm_style.corner_radius_bottom_left = 12
 	_mm_style.corner_radius_bottom_right = 12
+	_mm_style.shadow_size = 6
+	_mm_style.shadow_color = Color(0.0, 0.0, 0.0, 0.30)
+	_mm_style.shadow_offset = Vector2(0.0, 3.0)
 	for nm in [
 		"Joystick", "TalkButton", "SprintButton", "JumpButton",
 		"VehicleButton", "ThrottleUpButton", "ThrottleDownButton",
@@ -172,6 +178,40 @@ func _ready() -> void:
 	for nm in HORN_FAMILY:
 		_mapped[nm] = true
 	_apply_layout()
+	# Slice 159: minimap top specular strip — IGNORE, index 0
+	# (behind the map dots), added once. _apply_layout runs
+	# every frame but only re-applies the stylebox; the strip
+	# children persist untouched.
+	var mm := _ctl("MinimapPanel")
+	if mm is Panel and (mm as Panel).get_node_or_null("GlassStrip159_Line") == null:
+		var mm_band := ColorRect.new()
+		mm_band.name = "GlassStrip159_Band"
+		mm_band.color = Color(1.0, 1.0, 1.0, 0.10)
+		mm_band.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		mm_band.anchor_left = 0.0
+		mm_band.anchor_right = 1.0
+		mm_band.anchor_top = 0.0
+		mm_band.anchor_bottom = 0.0
+		mm_band.offset_left = 12.0
+		mm_band.offset_right = -12.0
+		mm_band.offset_top = 3.0
+		mm_band.offset_bottom = 13.0
+		(mm as Panel).add_child(mm_band)
+		(mm as Panel).move_child(mm_band, 0)
+		var mm_line := ColorRect.new()
+		mm_line.name = "GlassStrip159_Line"
+		mm_line.color = Color(1.0, 1.0, 1.0, 0.45)
+		mm_line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		mm_line.anchor_left = 0.0
+		mm_line.anchor_right = 1.0
+		mm_line.anchor_top = 0.0
+		mm_line.anchor_bottom = 0.0
+		mm_line.offset_left = 12.0
+		mm_line.offset_right = -12.0
+		mm_line.offset_top = 3.0
+		mm_line.offset_bottom = 5.0
+		(mm as Panel).add_child(mm_line)
+		(mm as Panel).move_child(mm_line, 0)
 	_rewire_all()
 	_init_sfx()
 	_wire_feel()
@@ -184,6 +224,17 @@ func _mk_round(size: float, col: Color) -> StyleBoxFlat:
 	sb.corner_radius_top_right = r
 	sb.corner_radius_bottom_left = r
 	sb.corner_radius_bottom_right = r
+	# Slice 159 Liquid Glass: frosted pale rim + soft shadow.
+	# Fill translucency + rim carry the glass read; no blur
+	# shader (unavailable on this gl_compatibility renderer).
+	sb.border_width_left = 2
+	sb.border_width_right = 2
+	sb.border_width_top = 2
+	sb.border_width_bottom = 2
+	sb.border_color = Color(1.0, 0.96, 0.88, 0.50)
+	sb.shadow_size = 6
+	sb.shadow_color = Color(0.0, 0.0, 0.0, 0.30)
+	sb.shadow_offset = Vector2(0.0, 3.0)
 	return sb
 
 func _mk_rect(col: Color) -> StyleBoxFlat:
@@ -193,6 +244,14 @@ func _mk_rect(col: Color) -> StyleBoxFlat:
 	sb.corner_radius_top_right = 14
 	sb.corner_radius_bottom_left = 14
 	sb.corner_radius_bottom_right = 14
+	sb.border_width_left = 2
+	sb.border_width_right = 2
+	sb.border_width_top = 2
+	sb.border_width_bottom = 2
+	sb.border_color = Color(1.0, 0.96, 0.88, 0.50)
+	sb.shadow_size = 6
+	sb.shadow_color = Color(0.0, 0.0, 0.0, 0.30)
+	sb.shadow_offset = Vector2(0.0, 3.0)
 	return sb
 
 func _process(_delta: float) -> void:

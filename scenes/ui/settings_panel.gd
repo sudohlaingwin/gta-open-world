@@ -175,6 +175,93 @@ func _layout158() -> void:
 		box.move_child(sfx_slider, vol_idx + 2)
 		box.move_child(vibration_check, vol_idx + 3)
 		box.move_child(invert_check, vol_idx + 4)
+	_glass159(box)
+
+
+# Slice 159 Liquid Glass: visual treatment only — panel glass,
+# top specular strips, glass slider grabbers, glass row
+# buttons. Values, toggles, persistence, Reset, and the
+# scrollable VBox are untouched. Strips are IGNORE children
+# moved to index 0/1, behind the scroll content, so they can
+# never occlude a row; they use anchors, so they follow the
+# panel size on menu and pause alike. NO blur shader: not
+# available on this gl_compatibility renderer.
+func _glass159(_box: VBoxContainer) -> void:
+	var pstyle := StyleBoxFlat.new()
+	pstyle.bg_color = Color(0.10, 0.13, 0.24, 0.60)
+	pstyle.set_corner_radius_all(18)
+	pstyle.border_width_left = 2
+	pstyle.border_width_right = 2
+	pstyle.border_width_top = 2
+	pstyle.border_width_bottom = 2
+	pstyle.border_color = Color(1.0, 0.96, 0.88, 0.55)
+	pstyle.shadow_size = 8
+	pstyle.shadow_color = Color(0.0, 0.0, 0.0, 0.35)
+	pstyle.shadow_offset = Vector2(0.0, 4.0)
+	add_theme_stylebox_override("panel", pstyle)
+	var band := ColorRect.new()
+	band.name = "GlassStrip159_Band"
+	band.color = Color(1.0, 1.0, 1.0, 0.10)
+	band.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	band.anchor_left = 0.0
+	band.anchor_right = 1.0
+	band.anchor_top = 0.0
+	band.anchor_bottom = 0.0
+	band.offset_left = 18.0
+	band.offset_right = -18.0
+	band.offset_top = 4.0
+	band.offset_bottom = 16.0
+	add_child(band)
+	move_child(band, 0)
+	var line := ColorRect.new()
+	line.name = "GlassStrip159_Line"
+	line.color = Color(1.0, 1.0, 1.0, 0.45)
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	line.anchor_left = 0.0
+	line.anchor_right = 1.0
+	line.anchor_top = 0.0
+	line.anchor_bottom = 0.0
+	line.offset_left = 18.0
+	line.offset_right = -18.0
+	line.offset_top = 4.0
+	line.offset_bottom = 6.0
+	add_child(line)
+	move_child(line, 0)
+	var grab := StyleBoxFlat.new()
+	grab.bg_color = Color(1.0, 0.97, 0.92, 0.95)
+	grab.set_corner_radius_all(8)
+	grab.border_width_left = 1
+	grab.border_width_right = 1
+	grab.border_width_top = 1
+	grab.border_width_bottom = 1
+	grab.border_color = Color(1.0, 0.96, 0.88, 0.80)
+	for s in [volume_slider, sfx_slider, camera_slider, hud_slider, deadzone_slider]:
+		if s != null:
+			s.add_theme_stylebox_override("grabber", grab)
+			s.add_theme_stylebox_override("grabber_highlight", grab)
+	var row_n := StyleBoxFlat.new()
+	row_n.bg_color = Color(0.13, 0.16, 0.28, 0.55)
+	row_n.set_corner_radius_all(12)
+	row_n.border_width_left = 2
+	row_n.border_width_right = 2
+	row_n.border_width_top = 2
+	row_n.border_width_bottom = 2
+	row_n.border_color = Color(1.0, 0.96, 0.88, 0.55)
+	row_n.shadow_size = 4
+	row_n.shadow_color = Color(0.0, 0.0, 0.0, 0.35)
+	row_n.shadow_offset = Vector2(0.0, 2.0)
+	var row_p := StyleBoxFlat.new()
+	row_p.bg_color = Color(0.08, 0.10, 0.20, 0.70)
+	row_p.set_corner_radius_all(12)
+	row_p.border_width_left = 2
+	row_p.border_width_right = 2
+	row_p.border_width_top = 2
+	row_p.border_width_bottom = 2
+	row_p.border_color = Color(1.0, 0.96, 0.88, 0.70)
+	for b in [tier_button, drive_button, reset_button, back_button]:
+		if b != null:
+			b.add_theme_stylebox_override("normal", row_n)
+			b.add_theme_stylebox_override("pressed", row_p)
 
 
 func _sm():

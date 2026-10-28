@@ -38,6 +38,53 @@ func _ready() -> void:
 	if back_button != null:
 		back_button.pressed.connect(_on_back_pressed)
 	refresh()
+	_glass159()
+
+
+# Slice 159 Liquid Glass: visual treatment only — glass panel
+# + glass preset/back buttons. Preset data, persistence, and
+# refresh() are untouched.
+func _glass159() -> void:
+	var pstyle := StyleBoxFlat.new()
+	pstyle.bg_color = Color(0.10, 0.13, 0.24, 0.60)
+	pstyle.set_corner_radius_all(18)
+	pstyle.border_width_left = 2
+	pstyle.border_width_right = 2
+	pstyle.border_width_top = 2
+	pstyle.border_width_bottom = 2
+	pstyle.border_color = Color(1.0, 0.96, 0.88, 0.55)
+	pstyle.shadow_size = 8
+	pstyle.shadow_color = Color(0.0, 0.0, 0.0, 0.35)
+	pstyle.shadow_offset = Vector2(0.0, 4.0)
+	add_theme_stylebox_override("panel", pstyle)
+	var row_n := StyleBoxFlat.new()
+	row_n.bg_color = Color(0.13, 0.16, 0.28, 0.55)
+	row_n.set_corner_radius_all(12)
+	row_n.border_width_left = 2
+	row_n.border_width_right = 2
+	row_n.border_width_top = 2
+	row_n.border_width_bottom = 2
+	row_n.border_color = Color(1.0, 0.96, 0.88, 0.55)
+	row_n.shadow_size = 4
+	row_n.shadow_color = Color(0.0, 0.0, 0.0, 0.35)
+	row_n.shadow_offset = Vector2(0.0, 2.0)
+	var row_p := StyleBoxFlat.new()
+	row_p.bg_color = Color(0.08, 0.10, 0.20, 0.70)
+	row_p.set_corner_radius_all(12)
+	row_p.border_width_left = 2
+	row_p.border_width_right = 2
+	row_p.border_width_top = 2
+	row_p.border_width_bottom = 2
+	row_p.border_color = Color(1.0, 0.96, 0.88, 0.70)
+	var btns: Array = []
+	for b in preset_buttons:
+		btns.append(b)
+	if back_button != null:
+		btns.append(back_button)
+	for b in btns:
+		if b is Button:
+			(b as Button).add_theme_stylebox_override("normal", row_n)
+			(b as Button).add_theme_stylebox_override("pressed", row_p)
 
 
 func _sm():
