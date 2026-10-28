@@ -34,6 +34,13 @@ var volume: float = 1.0
 var sfx_volume: float = 1.0
 var vibration_enabled: bool = true
 var camera_invert_y: bool = false
+## Slice 160 Custom Controls: per-control centre fractions
+## (key -> {"x": float, "y": float}) from the layout editor.
+## Empty = exactly the S157 defaults. Horn buttons share the
+## "HornSlot160" entry, context buttons "ContextSlot160".
+## Entries are validated on load (numeric x/y, clamped 0-1) so
+## a hand-edited file can never strand a button off-screen.
+var custom_controls: Dictionary = {}
 ## Slice 30 outfit: defaults are the scene's own colours (off-white
 ## taikpon, dark-green longyi, hat on), so a missing settings file
 ## looks exactly like the pre-customization player.
@@ -164,6 +171,7 @@ func load_settings() -> void:
 	sfx_volume = 1.0
 	vibration_enabled = true
 	camera_invert_y = false
+	custom_controls = {}
 	shirt_color_html = "#F5F0E6"
 	longyi_color_html = "#145938"
 	hat_visible = true
@@ -200,6 +208,18 @@ func load_settings() -> void:
 		vibration_enabled = bool(parsed.get("vibration_enabled"))
 	if parsed.has("camera_invert_y"):
 		camera_invert_y = bool(parsed.get("camera_invert_y"))
+	if parsed.has("custom_controls"):
+		var cc = parsed.get("custom_controls")
+		if cc is Dictionary:
+			var clean: Dictionary = {}
+			for k in (cc as Dictionary).keys():
+				var e = (cc as Dictionary)[k]
+				if e is Dictionary and (e as Dictionary).has("x") and (e as Dictionary).has("y"):
+					var ex = float((e as Dictionary)["x"])
+					var ey = float((e as Dictionary)["y"])
+					if ex == ex and ey == ey:
+						clean[str(k)] = {"x": clampf(ex, 0.0, 1.0), "y": clampf(ey, 0.0, 1.0)}
+			custom_controls = clean
 	if parsed.has("shirt_color_html"):
 		var sh = str(parsed.get("shirt_color_html"))
 		if Color.html_is_valid(sh):
@@ -252,6 +272,7 @@ func save_settings() -> bool:
 		"sfx_volume": sfx_volume,
 		"vibration_enabled": vibration_enabled,
 		"camera_invert_y": camera_invert_y,
+		"custom_controls": custom_controls,
 		"shirt_color_html": shirt_color_html,
 		"longyi_color_html": longyi_color_html,
 		"hat_visible": hat_visible,
@@ -277,6 +298,7 @@ func reset_settings() -> void:
 	sfx_volume = 1.0
 	vibration_enabled = true
 	camera_invert_y = false
+	custom_controls = {}
 	shirt_color_html = "#F5F0E6"
 	longyi_color_html = "#145938"
 	hat_visible = true

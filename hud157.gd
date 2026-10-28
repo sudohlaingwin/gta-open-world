@@ -38,6 +38,8 @@ const GAP: float = 24.0
 const JOY: float = 320.0
 const SEC_H: float = 44.0
 const MM: float = 200.0
+# Slice 160 Custom Controls: the editor's slot mapping + clamp.
+const CC160 = preload("res://custom_controls160.gd")
 
 const CONTEXT: Array = [
 	"FruitButton", "WaterButton", "BananaButton", "PrayButton",
@@ -567,6 +569,61 @@ func _apply_layout() -> void:
 	var help_l := _ctl("HelpLabel")
 	if help_l != null:
 		help_l.visible = false
+	# Slice 160 Custom Controls: a stored centre wins over every
+	# default above, in every state (on-foot / driving / flying).
+	# Styles are untouched here — only anchors/offsets move — so
+	# glass, feel, and wiring all ride along with the button.
+	_apply_custom()
+
+# Slice 160: apply SaveManager.custom_controls (centre fractions)
+# to every mapped control that has an entry. Horn buttons read
+# the HornSlot160 entry, context buttons the ContextSlot160 entry
+# (slots, not per-button positions — see custom_controls160.gd).
+# An empty map means exactly the S157 defaults above. Malformed
+# entries are skipped, never crashed on. Clamp uses the live
+# control size x HUD scale, so a hand-edited file or a narrower
+# screen can never push a button off-screen.
+func _apply_custom() -> void:
+	var sm = get_node_or_null("/root/SaveManager")
+	if sm == null or sm.get("custom_controls") == null:
+		return
+	var cmap: Dictionary = sm.get("custom_controls")
+	if cmap.is_empty():
+		return
+	var vs: Vector2 = get_viewport().get_visible_rect().size
+	if vs.x <= 0.0 or vs.y <= 0.0:
+		return
+	var sc: float = 1.0
+	if sm.get("hud_scale") != null:
+		sc = clampf(float(sm.get("hud_scale")), 0.8, 1.25)
+	for nm in _mapped.keys():
+		var key: String = CC160.slot_key(str(nm))
+		if not cmap.has(key):
+			continue
+		var e = cmap[key]
+		if not (e is Dictionary):
+			continue
+		var ed: Dictionary = e as Dictionary
+		if not ed.has("x") or not ed.has("y"):
+			continue
+		var c := _ctl(str(nm))
+		if c == null:
+			continue
+		var centre: Vector2 = Vector2(clampf(float(ed["x"]), 0.0, 1.0) * vs.x, clampf(float(ed["y"]), 0.0, 1.0) * vs.y)
+		# Capture size FIRST: offsets mutate one by one below,
+		# and a live c.size read after offset_left moves would
+		# use the stale right edge and balloon the rect (same
+		# class as the editor's 76 px -> 662x382 bug).
+		var sz: Vector2 = c.size
+		centre = CC160.clamp_centre(centre, sz * sc, vs)
+		c.anchor_left = 0.0
+		c.anchor_top = 0.0
+		c.anchor_right = 0.0
+		c.anchor_bottom = 0.0
+		c.offset_left = centre.x - sz.x * 0.5
+		c.offset_top = centre.y - sz.y * 0.5
+		c.offset_right = centre.x + sz.x * 0.5
+		c.offset_bottom = centre.y + sz.y * 0.5
 
 func _rewire_all() -> void:
 	var tap: Array = [

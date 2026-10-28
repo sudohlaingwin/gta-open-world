@@ -59,6 +59,12 @@ var sfx_label: Label = null
 var sfx_slider: HSlider = null
 var vibration_check: CheckButton = null
 var invert_check: CheckButton = null
+## Slice 160 Custom Controls: one row button opening the layout
+## editor. Same shared panel, so menu settings AND pause settings
+## both reach it. The editor is a CanvasLayer on the tree root,
+## so it works in both contexts; the panel itself is untouched
+## beyond this row.
+var customize_button: Button = null
 
 
 func _ready() -> void:
@@ -162,6 +168,12 @@ func _layout158() -> void:
 	invert_check.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	invert_check.toggled.connect(_on_invert_toggled)
 	box.add_child(invert_check)
+	customize_button = Button.new()
+	customize_button.name = "CustomizeButton160"
+	customize_button.text = "ခလုတ်နေရာ ပြင်"
+	customize_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	customize_button.pressed.connect(_on_customize_pressed)
+	box.add_child(customize_button)
 	# New rows go right after the master volume rows (same
 	# order as the anchor table they replace): move the four
 	# new nodes to just after VolumeSlider in the box.
@@ -175,6 +187,7 @@ func _layout158() -> void:
 		box.move_child(sfx_slider, vol_idx + 2)
 		box.move_child(vibration_check, vol_idx + 3)
 		box.move_child(invert_check, vol_idx + 4)
+		box.move_child(customize_button, vol_idx + 5)
 	_glass159(box)
 
 
@@ -258,7 +271,7 @@ func _glass159(_box: VBoxContainer) -> void:
 	row_p.border_width_top = 2
 	row_p.border_width_bottom = 2
 	row_p.border_color = Color(1.0, 0.96, 0.88, 0.70)
-	for b in [tier_button, drive_button, reset_button, back_button]:
+	for b in [tier_button, drive_button, reset_button, back_button, customize_button]:
 		if b != null:
 			b.add_theme_stylebox_override("normal", row_n)
 			b.add_theme_stylebox_override("pressed", row_p)
@@ -465,6 +478,24 @@ func _on_reset_pressed() -> void:
 		return
 	sm.call("reset_settings")
 	refresh()
+
+
+## Slice 160: open the Custom Controls layout editor. A CanvasLayer
+## on the tree root, above menu and HUD alike, PROCESS_MODE_ALWAYS
+## so it also receives input from the paused game (pause sets
+## get_tree().paused = true). One editor at a time.
+func _on_customize_pressed() -> void:
+	var tree := get_tree()
+	if tree == null or tree.root == null:
+		return
+	if tree.root.get_node_or_null("CustomControls160") != null:
+		return
+	var ed := CanvasLayer.new()
+	ed.name = "CustomControls160"
+	ed.set_script(preload("res://custom_controls160.gd"))
+	ed.layer = 50
+	ed.process_mode = Node.PROCESS_MODE_ALWAYS
+	tree.root.add_child(ed)
 
 
 func _on_back_pressed() -> void:
